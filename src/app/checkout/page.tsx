@@ -1,14 +1,22 @@
 import { PageLayout } from "@/components/layout";
-import { CustomCheckoutProvider } from "@stripe/react-stripe-js";
-import { initStripe } from "./lib/stripe/client";
-import { Checkout } from "./components/checkout-form";
-import { createStripeSession } from "./lib/stripe/session";
+import { Checkout } from "./components/form";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function Page() {
+  const clientSecret = cookies().get("checkout-clientSecret");
+  if (!clientSecret) {
+    // redirect to home
+    // TODO: Add a toast message to inform the user
+    return redirect("/");
+  }
+
   return (
-    <PageLayout>
-      <h1>Checkout Page</h1>
-      <Checkout stripe={stripe} clientSecret={clientSecret} />
-    </PageLayout>
+    <Suspense>
+      <div className="flex flex-col justify-content">
+        <Checkout clientSecret={clientSecret.value} />
+      </div>
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 import { initStripe } from "./stripe/server";
 
-const monthlyAboApiID = "MONTHLY_ABO";
+const monthlyAboProductId = "prod_Ccmy87SuPqF5OM";
 
 type MonthlyAboPurchase = {
   clientSecret: string;
@@ -9,7 +9,8 @@ type MonthlyAboPurchase = {
 export async function initMonthlyAboPurchase(): Promise<MonthlyAboPurchase> {
   const stripe = initStripe("REPUBLIK");
 
-  const monthlyAboProduct = await stripe.products.retrieve(monthlyAboApiID);
+  const monthlyAboProduct = await stripe.products.retrieve(monthlyAboProductId);
+  // const price = await stripe.prices.retrieve(monthlyAboApiID);
 
   const session = await stripe.checkout.sessions.create({
     line_items: [
@@ -17,7 +18,10 @@ export async function initMonthlyAboPurchase(): Promise<MonthlyAboPurchase> {
         price_data: {
           currency: "chf",
           product: monthlyAboProduct.id,
-          unit_amount: monthlyAboProduct.,
+          unit_amount: 2200,
+          recurring: {
+            interval: "month",
+          },
         },
         quantity: 1,
       },
@@ -26,7 +30,7 @@ export async function initMonthlyAboPurchase(): Promise<MonthlyAboPurchase> {
     mode: "subscription",
     ui_mode: "custom" as any,
     // The URL of your payment completion page
-    return_url: "/foo",
+    return_url: `${process.env.NEXT_PUBLIC_URL}/foo`,
   });
 
   if (!session.client_secret) {
