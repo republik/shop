@@ -1,0 +1,97 @@
+/* eslint-disable */
+import * as types from './graphql';
+import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+
+/**
+ * Map of all GraphQL operations in the project.
+ *
+ * This map has several performance disadvantages:
+ * 1. It is not tree-shakeable, so it will include all operations in the project.
+ * 2. It is not minifiable, so the string of a GraphQL query will be multiple times inside the bundle.
+ * 3. It does not support dead code elimination, so it will add unused operations.
+ *
+ * Therefore it is highly recommended to use the babel or swc plugin for production.
+ */
+const documents = {
+    "fragment AudioQueueItem on AudioQueueItem {\n  id\n  sequence\n  document {\n    id\n    meta {\n      title\n      path\n      publishDate\n      image\n      audioCoverCrop {\n        x\n        y\n        width\n        height\n      }\n      coverForNativeApp: audioCover(properties: {width: 1024, height: 1024})\n      coverMd: audioCover(properties: {width: 256, height: 256})\n      coverSm: audioCover(properties: {width: 128, height: 128})\n      audioSource {\n        mediaId\n        kind\n        mp3\n        aac\n        ogg\n        durationMs\n        userProgress {\n          id\n          secs\n        }\n      }\n      format {\n        id\n        meta {\n          title\n          color\n          shareLogo\n          shareBackgroundImage\n          shareBackgroundImageInverted\n        }\n      }\n    }\n  }\n}\n\nquery AudioQueueQuery {\n  me {\n    id\n    audioQueue {\n      ...AudioQueueItem\n    }\n  }\n}\n\nmutation AddAudioQueueItems($entity: AudioQueueEntityInput!, $sequence: Int) {\n  audioQueueItems: addAudioQueueItem(entity: $entity, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation MoveAudioQueueItem($id: ID!, $sequence: Int!) {\n  audioQueueItems: moveAudioQueueItem(id: $id, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation RemoveAudioQueueItem($id: ID!) {\n  audioQueueItems: removeAudioQueueItem(id: $id) {\n    ...AudioQueueItem\n  }\n}\n\nmutation ClearAudioQueue {\n  audioQueueItems: clearAudioQueue {\n    id\n  }\n}\n\nmutation ReorderAudioQueue($ids: [ID!]!) {\n  audioQueueItems: reorderAudioQueue(ids: $ids) {\n    ...AudioQueueItem\n  }\n}\n\nquery LatestArticles($count: Int!, $after: String) {\n  latestArticles: documents(first: $count, after: $after) {\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n    nodes {\n      id\n      meta {\n        title\n        path\n        publishDate\n        image\n        audioCoverCrop {\n          x\n          y\n          width\n          height\n        }\n        coverSm: audioCover(properties: {width: 128, height: 128})\n        audioSource {\n          mediaId\n          kind\n          mp3\n          aac\n          ogg\n          durationMs\n          userProgress {\n            id\n            secs\n          }\n        }\n        format {\n          id\n          meta {\n            title\n            color\n            shareLogo\n            shareBackgroundImage\n            shareBackgroundImageInverted\n          }\n        }\n      }\n    }\n  }\n}": types.AudioQueueItemFragmentDoc,
+    "mutation AcknowledgeCTA($id: ID!, $response: JSON) {\n  acknowledgeCallToAction(id: $id, response: $response) {\n    id\n    acknowledgedAt\n  }\n}": types.AcknowledgeCtaDocument,
+    "mutation SignUpForNewsletter($email: String!, $name: NewsletterName!, $context: String!) {\n  requestNewsletterSubscription(email: $email, name: $name, context: $context)\n}": types.SignUpForNewsletterDocument,
+    "mutation UpdateNewsletterSubscription($name: NewsletterName!, $subscribed: Boolean!) {\n  updateNewsletterSubscription(name: $name, subscribed: $subscribed) {\n    id\n    name\n    subscribed\n  }\n}": types.UpdateNewsletterSubscriptionDocument,
+    "query ArticleTeaser($path: String!) {\n  article: document(path: $path) {\n    meta {\n      title\n      description\n      image\n      credits\n    }\n  }\n}": types.ArticleTeaserDocument,
+    "query CANewsletter($name: NewsletterName!) {\n  me {\n    newsletterSettings {\n      id\n      status\n      subscriptions(name: $name) {\n        id\n        name\n        subscribed\n      }\n    }\n  }\n}": types.CaNewsletterDocument,
+    "query CampaignInvite($code: String!) {\n  me {\n    id\n    slug\n    activeMembership {\n      type {\n        id\n        name\n      }\n    }\n  }\n  validateReferralCode(code: $code)\n  sender: user(slug: $code) {\n    id\n    firstName\n    lastName\n    portrait\n    username\n    referralCode\n  }\n}": types.CampaignInviteDocument,
+    "query CampaignReferrals($campaignSlug: String!) {\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n    referrals {\n      count\n    }\n  }\n}": types.CampaignReferralsDocument,
+    "query CampaignSender($campaignSlug: String!) {\n  me {\n    id\n    hasPublicProfile\n    username\n    referralCode\n    activeMembership {\n      type {\n        name\n      }\n    }\n    referrals(campaignSlug: $campaignSlug) {\n      count\n    }\n  }\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n  }\n}": types.CampaignSenderDocument,
+    "query Me {\n  me {\n    id\n    username\n    slug\n    portrait\n    name\n    firstName\n    lastName\n    email\n    initials\n    roles\n    isListed\n    hasPublicProfile\n    discussionNotificationChannels\n    accessCampaigns {\n      id\n    }\n    hasDormantMembership\n    prolongBeforeDate\n    activeMembership {\n      id\n      type {\n        name\n      }\n      renew\n      endDate\n      graceEndDate\n      canProlong\n    }\n  }\n}": types.MeDocument,
+    "query MyCallToActions {\n  me {\n    id\n    callToActions {\n      id\n      beginAt\n      endAt\n      acknowledgedAt\n      payload {\n        ... on CallToActionBasicPayload {\n          text\n          linkHref\n          linkLabel\n        }\n        ... on CallToActionComponentPayload {\n          customComponent {\n            key\n            args\n          }\n        }\n      }\n    }\n  }\n}": types.MyCallToActionsDocument,
+    "query PendingAppSignIn {\n  pendingAppSignIn {\n    title\n    body\n    verificationUrl\n    expiresAt\n  }\n}": types.PendingAppSignInDocument,
+};
+
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ *
+ *
+ * @example
+ * ```ts
+ * const query = gql(`query GetUser($id: ID!) { user(id: $id) { name } }`);
+ * ```
+ *
+ * The query argument is unknown!
+ * Please regenerate the types.
+ */
+export function gql(source: string): unknown;
+
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "fragment AudioQueueItem on AudioQueueItem {\n  id\n  sequence\n  document {\n    id\n    meta {\n      title\n      path\n      publishDate\n      image\n      audioCoverCrop {\n        x\n        y\n        width\n        height\n      }\n      coverForNativeApp: audioCover(properties: {width: 1024, height: 1024})\n      coverMd: audioCover(properties: {width: 256, height: 256})\n      coverSm: audioCover(properties: {width: 128, height: 128})\n      audioSource {\n        mediaId\n        kind\n        mp3\n        aac\n        ogg\n        durationMs\n        userProgress {\n          id\n          secs\n        }\n      }\n      format {\n        id\n        meta {\n          title\n          color\n          shareLogo\n          shareBackgroundImage\n          shareBackgroundImageInverted\n        }\n      }\n    }\n  }\n}\n\nquery AudioQueueQuery {\n  me {\n    id\n    audioQueue {\n      ...AudioQueueItem\n    }\n  }\n}\n\nmutation AddAudioQueueItems($entity: AudioQueueEntityInput!, $sequence: Int) {\n  audioQueueItems: addAudioQueueItem(entity: $entity, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation MoveAudioQueueItem($id: ID!, $sequence: Int!) {\n  audioQueueItems: moveAudioQueueItem(id: $id, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation RemoveAudioQueueItem($id: ID!) {\n  audioQueueItems: removeAudioQueueItem(id: $id) {\n    ...AudioQueueItem\n  }\n}\n\nmutation ClearAudioQueue {\n  audioQueueItems: clearAudioQueue {\n    id\n  }\n}\n\nmutation ReorderAudioQueue($ids: [ID!]!) {\n  audioQueueItems: reorderAudioQueue(ids: $ids) {\n    ...AudioQueueItem\n  }\n}\n\nquery LatestArticles($count: Int!, $after: String) {\n  latestArticles: documents(first: $count, after: $after) {\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n    nodes {\n      id\n      meta {\n        title\n        path\n        publishDate\n        image\n        audioCoverCrop {\n          x\n          y\n          width\n          height\n        }\n        coverSm: audioCover(properties: {width: 128, height: 128})\n        audioSource {\n          mediaId\n          kind\n          mp3\n          aac\n          ogg\n          durationMs\n          userProgress {\n            id\n            secs\n          }\n        }\n        format {\n          id\n          meta {\n            title\n            color\n            shareLogo\n            shareBackgroundImage\n            shareBackgroundImageInverted\n          }\n        }\n      }\n    }\n  }\n}"): (typeof documents)["fragment AudioQueueItem on AudioQueueItem {\n  id\n  sequence\n  document {\n    id\n    meta {\n      title\n      path\n      publishDate\n      image\n      audioCoverCrop {\n        x\n        y\n        width\n        height\n      }\n      coverForNativeApp: audioCover(properties: {width: 1024, height: 1024})\n      coverMd: audioCover(properties: {width: 256, height: 256})\n      coverSm: audioCover(properties: {width: 128, height: 128})\n      audioSource {\n        mediaId\n        kind\n        mp3\n        aac\n        ogg\n        durationMs\n        userProgress {\n          id\n          secs\n        }\n      }\n      format {\n        id\n        meta {\n          title\n          color\n          shareLogo\n          shareBackgroundImage\n          shareBackgroundImageInverted\n        }\n      }\n    }\n  }\n}\n\nquery AudioQueueQuery {\n  me {\n    id\n    audioQueue {\n      ...AudioQueueItem\n    }\n  }\n}\n\nmutation AddAudioQueueItems($entity: AudioQueueEntityInput!, $sequence: Int) {\n  audioQueueItems: addAudioQueueItem(entity: $entity, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation MoveAudioQueueItem($id: ID!, $sequence: Int!) {\n  audioQueueItems: moveAudioQueueItem(id: $id, sequence: $sequence) {\n    ...AudioQueueItem\n  }\n}\n\nmutation RemoveAudioQueueItem($id: ID!) {\n  audioQueueItems: removeAudioQueueItem(id: $id) {\n    ...AudioQueueItem\n  }\n}\n\nmutation ClearAudioQueue {\n  audioQueueItems: clearAudioQueue {\n    id\n  }\n}\n\nmutation ReorderAudioQueue($ids: [ID!]!) {\n  audioQueueItems: reorderAudioQueue(ids: $ids) {\n    ...AudioQueueItem\n  }\n}\n\nquery LatestArticles($count: Int!, $after: String) {\n  latestArticles: documents(first: $count, after: $after) {\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n    nodes {\n      id\n      meta {\n        title\n        path\n        publishDate\n        image\n        audioCoverCrop {\n          x\n          y\n          width\n          height\n        }\n        coverSm: audioCover(properties: {width: 128, height: 128})\n        audioSource {\n          mediaId\n          kind\n          mp3\n          aac\n          ogg\n          durationMs\n          userProgress {\n            id\n            secs\n          }\n        }\n        format {\n          id\n          meta {\n            title\n            color\n            shareLogo\n            shareBackgroundImage\n            shareBackgroundImageInverted\n          }\n        }\n      }\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "mutation AcknowledgeCTA($id: ID!, $response: JSON) {\n  acknowledgeCallToAction(id: $id, response: $response) {\n    id\n    acknowledgedAt\n  }\n}"): (typeof documents)["mutation AcknowledgeCTA($id: ID!, $response: JSON) {\n  acknowledgeCallToAction(id: $id, response: $response) {\n    id\n    acknowledgedAt\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "mutation SignUpForNewsletter($email: String!, $name: NewsletterName!, $context: String!) {\n  requestNewsletterSubscription(email: $email, name: $name, context: $context)\n}"): (typeof documents)["mutation SignUpForNewsletter($email: String!, $name: NewsletterName!, $context: String!) {\n  requestNewsletterSubscription(email: $email, name: $name, context: $context)\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "mutation UpdateNewsletterSubscription($name: NewsletterName!, $subscribed: Boolean!) {\n  updateNewsletterSubscription(name: $name, subscribed: $subscribed) {\n    id\n    name\n    subscribed\n  }\n}"): (typeof documents)["mutation UpdateNewsletterSubscription($name: NewsletterName!, $subscribed: Boolean!) {\n  updateNewsletterSubscription(name: $name, subscribed: $subscribed) {\n    id\n    name\n    subscribed\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query ArticleTeaser($path: String!) {\n  article: document(path: $path) {\n    meta {\n      title\n      description\n      image\n      credits\n    }\n  }\n}"): (typeof documents)["query ArticleTeaser($path: String!) {\n  article: document(path: $path) {\n    meta {\n      title\n      description\n      image\n      credits\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query CANewsletter($name: NewsletterName!) {\n  me {\n    newsletterSettings {\n      id\n      status\n      subscriptions(name: $name) {\n        id\n        name\n        subscribed\n      }\n    }\n  }\n}"): (typeof documents)["query CANewsletter($name: NewsletterName!) {\n  me {\n    newsletterSettings {\n      id\n      status\n      subscriptions(name: $name) {\n        id\n        name\n        subscribed\n      }\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query CampaignInvite($code: String!) {\n  me {\n    id\n    slug\n    activeMembership {\n      type {\n        id\n        name\n      }\n    }\n  }\n  validateReferralCode(code: $code)\n  sender: user(slug: $code) {\n    id\n    firstName\n    lastName\n    portrait\n    username\n    referralCode\n  }\n}"): (typeof documents)["query CampaignInvite($code: String!) {\n  me {\n    id\n    slug\n    activeMembership {\n      type {\n        id\n        name\n      }\n    }\n  }\n  validateReferralCode(code: $code)\n  sender: user(slug: $code) {\n    id\n    firstName\n    lastName\n    portrait\n    username\n    referralCode\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query CampaignReferrals($campaignSlug: String!) {\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n    referrals {\n      count\n    }\n  }\n}"): (typeof documents)["query CampaignReferrals($campaignSlug: String!) {\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n    referrals {\n      count\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query CampaignSender($campaignSlug: String!) {\n  me {\n    id\n    hasPublicProfile\n    username\n    referralCode\n    activeMembership {\n      type {\n        name\n      }\n    }\n    referrals(campaignSlug: $campaignSlug) {\n      count\n    }\n  }\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n  }\n}"): (typeof documents)["query CampaignSender($campaignSlug: String!) {\n  me {\n    id\n    hasPublicProfile\n    username\n    referralCode\n    activeMembership {\n      type {\n        name\n      }\n    }\n    referrals(campaignSlug: $campaignSlug) {\n      count\n    }\n  }\n  campaign(slug: $campaignSlug) {\n    id\n    isActive\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query Me {\n  me {\n    id\n    username\n    slug\n    portrait\n    name\n    firstName\n    lastName\n    email\n    initials\n    roles\n    isListed\n    hasPublicProfile\n    discussionNotificationChannels\n    accessCampaigns {\n      id\n    }\n    hasDormantMembership\n    prolongBeforeDate\n    activeMembership {\n      id\n      type {\n        name\n      }\n      renew\n      endDate\n      graceEndDate\n      canProlong\n    }\n  }\n}"): (typeof documents)["query Me {\n  me {\n    id\n    username\n    slug\n    portrait\n    name\n    firstName\n    lastName\n    email\n    initials\n    roles\n    isListed\n    hasPublicProfile\n    discussionNotificationChannels\n    accessCampaigns {\n      id\n    }\n    hasDormantMembership\n    prolongBeforeDate\n    activeMembership {\n      id\n      type {\n        name\n      }\n      renew\n      endDate\n      graceEndDate\n      canProlong\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query MyCallToActions {\n  me {\n    id\n    callToActions {\n      id\n      beginAt\n      endAt\n      acknowledgedAt\n      payload {\n        ... on CallToActionBasicPayload {\n          text\n          linkHref\n          linkLabel\n        }\n        ... on CallToActionComponentPayload {\n          customComponent {\n            key\n            args\n          }\n        }\n      }\n    }\n  }\n}"): (typeof documents)["query MyCallToActions {\n  me {\n    id\n    callToActions {\n      id\n      beginAt\n      endAt\n      acknowledgedAt\n      payload {\n        ... on CallToActionBasicPayload {\n          text\n          linkHref\n          linkLabel\n        }\n        ... on CallToActionComponentPayload {\n          customComponent {\n            key\n            args\n          }\n        }\n      }\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "query PendingAppSignIn {\n  pendingAppSignIn {\n    title\n    body\n    verificationUrl\n    expiresAt\n  }\n}"): (typeof documents)["query PendingAppSignIn {\n  pendingAppSignIn {\n    title\n    body\n    verificationUrl\n    expiresAt\n  }\n}"];
+
+export function gql(source: string) {
+  return (documents as any)[source] ?? {};
+}
+
+export type DocumentType<TDocumentNode extends DocumentNode<any, any>> = TDocumentNode extends DocumentNode<  infer TType,  any>  ? TType  : never;
