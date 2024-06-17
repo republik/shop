@@ -2,7 +2,14 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       NODE_ENV?: "development" | "production" | "test";
+      // GENERAL
       NEXT_PUBLIC_DOMAIN: string;
+      NEXT_PUBLIC_API_URL: string;
+      // DATOCMS
+      DATO_CMS_API_URL: string;
+      DATO_CMS_API_TOKEN: string;
+      DATO_CMS_ENVIRONMENT: string | undefined;
+      // STRIPE
       STRIPE_ACCOUNT_PROJECT_R: string;
       STRIPE_SECRET_KEY_PROJECT_R: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;

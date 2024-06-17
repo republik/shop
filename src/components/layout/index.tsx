@@ -1,16 +1,22 @@
 import Link from "next/link";
 import { Skeleton } from "../ui/skeleton";
+import { getClient } from "@/lib/apollo/client";
+import {
+  MeDocument,
+  MeQuery,
+} from "../../../graphql/republik-api/__generated__/gql/graphql";
+import { Portrait } from "./portrait";
 
 interface PageLayoutProps {
   children: React.ReactNode;
 }
 
-export function PageLayout({ children }: PageLayoutProps) {
+export async function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <header className="grid gap-4 grid-cols-7">
         <div className="p-2">
-          <Skeleton className="h-10 w-10" />
+          <Portrait />
         </div>
         <div className="col-span-5 flex flex-row justify-center items-center">
           <Link href="/" title="Republik">

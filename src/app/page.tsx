@@ -1,8 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { initPurchase } from "./action";
-import { PageLayout } from "@/components/layout";
+import { Login } from "@/components/login";
 
 export default function Home() {
   return (
@@ -13,6 +12,7 @@ export default function Home() {
       >
         Create monthly abo
       </Button>
+      <Login />
     </div>
   );
 }

@@ -3019,7 +3019,7 @@ type mutations {
 
   """Commit an upload to file"""
   repoFileUploadCommit(id: ID!): RepoFile!
-  reportComment(id: ID!): Comment!
+  reportComment(description: String, id: ID!): Comment!
   reportUser(
     """Reason for reporting the user. Max 500 characters."""
     reason: String!

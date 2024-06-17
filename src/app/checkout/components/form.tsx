@@ -23,6 +23,11 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  MeDocument,
+  MeQuery,
+} from "../../../../graphql/republik-api/__generated__/gql/graphql";
+import { useQuery } from "@apollo/client";
 
 const CheckoutSchema = v.object({
   email: v.pipe(v.string(), v.email()),
@@ -33,18 +38,29 @@ type CheckoutData = v.InferOutput<typeof CheckoutSchema>;
 
 interface CheckoutFormProps {
   actionText?: string;
-  onSubmit: (data: CheckoutData) => Promise<void>;
+  onSuccess: () => Promise<void>;
+  existingCustomer?: boolean;
+  emailValue?: string;
 }
 
-function CheckoutForm({ actionText, onSubmit }: CheckoutFormProps) {
+function CheckoutForm({
+  actionText,
+  onSuccess,
+  existingCustomer,
+  emailValue,
+}: CheckoutFormProps) {
   const checkout = useCustomCheckout();
   const form = useForm<CheckoutData>({
     resolver: valibotResolver(CheckoutSchema),
+    defaultValues: {
+      email: emailValue,
+    },
   });
 
   async function handleSubmit(data: CheckoutData) {
     console.log(data);
     checkout.updateEmail(data.email);
+    const loadingToastId = toast.loading("Confirming payment");
     await checkout
       .confirm()
       .then((res) => {
@@ -55,12 +71,14 @@ function CheckoutForm({ actionText, onSubmit }: CheckoutFormProps) {
           return;
         }
         toast.success("Payment confirmed");
-        console.log(res);
+        toast.dismiss(loadingToastId);
+        onSuccess();
       })
       .catch((err) => {
         toast.error("Failed to confirm payment", {
           description: err.message,
         });
+        toast.dismiss(loadingToastId);
       });
   }
 
@@ -79,7 +97,11 @@ function CheckoutForm({ actionText, onSubmit }: CheckoutFormProps) {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="rick.astley@example.com" {...field} />
+                    <Input
+                      placeholder="rick.astley@example.com"
+                      {...field}
+                      disabled={existingCustomer}
+                    />
                   </FormControl>
                   <FormDescription>The email to your account.</FormDescription>
                   <FormMessage />
@@ -118,10 +140,12 @@ function CheckoutForm({ actionText, onSubmit }: CheckoutFormProps) {
 
 interface CheckoutProps {
   clientSecret: string;
+  customer?: MeQuery["me"];
 }
 
 export function Checkout({ clientSecret }: CheckoutProps) {
   const [stripe, setStripe] = useState<Stripe | null>(null);
+  const { data } = useQuery(MeDocument);
 
   useEffect(() => {
     initStripe("REPUBLIK")
@@ -152,7 +176,13 @@ export function Checkout({ clientSecret }: CheckoutProps) {
         },
       }}
     >
-      <CheckoutForm onSubmit={async (data) => {}} />
+      <CheckoutForm
+        existingCustomer={!!data?.me}
+        emailValue={data?.me?.email || undefined}
+        onSuccess={async () => {
+          toast.success("Welcome!");
+        }}
+      />
     </CustomCheckoutProvider>
   );
 }
