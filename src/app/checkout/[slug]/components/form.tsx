@@ -37,14 +37,12 @@ const CheckoutSchema = v.object({
 type CheckoutData = v.InferOutput<typeof CheckoutSchema>;
 
 interface CheckoutFormProps {
-  actionText?: string;
   onSuccess: () => Promise<void>;
   existingCustomer?: boolean;
   emailValue?: string;
 }
 
 function CheckoutForm({
-  actionText,
   onSuccess,
   existingCustomer,
   emailValue,
