@@ -16,6 +16,8 @@ declare global {
       STRIPE_ACCOUNT_REPUBLIK: string;
       STRIPE_SECRET_KEY_REPUBLIK: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: string;
+      // CURTAIN
+      CURTAIN_BACKDOOR_URL?: string;
     }
   }
 }
