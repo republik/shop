@@ -9,7 +9,10 @@ export function Login() {
   const handleClick = () => {
     const currentUrl = window.location.href;
 
-    const redirectUrl = new URL("http://localhost:3010/anmelden");
+    const redirectUrl = new URL(
+      "/anmelden",
+      process.env.NEXT_PUBLIC_MAGAZIN_URL
+    );
     redirectUrl.searchParams.append("redirect", currentUrl);
     window.location.assign(redirectUrl.toString());
   };
