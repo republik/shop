@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import {
   MeDocument,
   MeQuery,
-} from "../../../../graphql/republik-api/__generated__/gql/graphql";
+} from "../../../../../graphql/republik-api/__generated__/gql/graphql";
 import { useQuery } from "@apollo/client";
 
 const CheckoutSchema = v.object({
@@ -138,6 +138,52 @@ function CheckoutForm({
   );
 }
 
+function PurchaseDetails() {
+  const checkout = useCustomCheckout();
+
+  return (
+    <div className="flex flex-col gap-8">
+      <h2 className="text-xl font-bold">Purchase Details</h2>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-lg font-bold">Product</h3>
+          <ul>
+            {checkout.lineItems.map((item) => (
+              <li key={item.id}>
+                <h4>{item.name}</h4>
+                <p>{item.description}</p>
+                <p>
+                  {checkout.currency.toUpperCase()}{" "}
+                  {(item.amountSubtotal / 100).toFixed(2)}
+                </p>
+                {checkout.recurring && (
+                  <p>
+                    Recurring: {checkout.recurring.interval}{" "}
+                    {checkout.recurring.intervalCount} for{" "}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 className="text-lg font-bold">Price</h3>
+          <p>
+            {checkout.currency.toUpperCase()}{" "}
+            {(checkout.total.subtotal / 100).toFixed(2)}
+          </p>
+        </div>
+      </div>
+      <details>
+        <summary>Checkout data</summary>
+        <pre className="font-mono p-2 bg-gray-200 text-xs rounded border border-gray-600">
+          {JSON.stringify(checkout, null, 2)}
+        </pre>
+      </details>
+    </div>
+  );
+}
+
 interface CheckoutProps {
   clientSecret: string;
   customer?: MeQuery["me"];
@@ -176,13 +222,18 @@ export function Checkout({ clientSecret }: CheckoutProps) {
         },
       }}
     >
-      <CheckoutForm
-        existingCustomer={!!data?.me}
-        emailValue={data?.me?.email || undefined}
-        onSuccess={async () => {
-          toast.success("Welcome!");
-        }}
-      />
+      <div className="px-16 py-4 grid w-full grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <PurchaseDetails />
+        </div>
+        <CheckoutForm
+          existingCustomer={!!data?.me}
+          emailValue={data?.me?.email || undefined}
+          onSuccess={async () => {
+            toast.success("Welcome!");
+          }}
+        />
+      </div>
     </CustomCheckoutProvider>
   );
 }
