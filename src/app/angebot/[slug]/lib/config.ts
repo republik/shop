@@ -5,7 +5,7 @@
  * ================================
  */
 
-import { AboPurchaseOptions } from "./action";
+import { AboPurchaseOptions } from "./stripe/types";
 
 export const checkoutConfig: Record<string, AboPurchaseOptions> = {
   MONTHLY: {

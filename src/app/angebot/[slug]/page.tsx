@@ -1,9 +1,11 @@
 import { getClient } from "@/lib/apollo/client";
-import { checkoutConfig } from "./checkout/lib/config";
-import { initStripe } from "./checkout/lib/stripe/server";
+import { checkoutConfig } from "./lib/config";
+import { initStripe } from "./lib/stripe/server";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { notFound, redirect } from "next/navigation";
-import { BuyButton } from "../../components/buy-button";
+import { CheckoutView } from "./components/checkout-view";
+import { StripeService } from "./lib/stripe/service";
+import { initializeCheckout } from "./action";
 
 export default async function ProductPage({
   params,
@@ -26,41 +28,25 @@ export default async function ProductPage({
 
   const aboConfig = checkoutConfig[params.slug];
   const stripe = await initStripe(aboConfig.stripeAccount);
-  const [price, product, coupon] = await Promise.all([
-    stripe.prices.retrieve(aboConfig.priceId),
-    stripe.products.retrieve(aboConfig.productId),
-    aboConfig.couponCode ? stripe.coupons.retrieve(aboConfig.couponCode) : null,
-  ]);
+  const aboData = await StripeService(stripe)
+    .getAboTypeData(aboConfig)
+    .catch((error) => {
+      console.error(error);
+      return notFound();
+    });
 
-  if (!price || !product) {
-    notFound();
-  }
+  const { clientSecret } = await initializeCheckout(
+    params.slug,
+    meRes?.data?.me?.email || undefined
+  );
 
   return (
-    <div>
-      <h1>Product Page</h1>
-      <div></div>
-      <div>
-        <details>
-          <summary>Product details</summary>
-          <pre>{JSON.stringify(product, null, 2)}</pre>
-        </details>
-      </div>
-      <div>
-        <details>
-          <summary>Price details</summary>
-          <pre>{JSON.stringify(price, null, 2)}</pre>{" "}
-        </details>
-      </div>
-      {coupon && (
-        <div>
-          <details>
-            <summary>Coupon details</summary>
-            <pre>{JSON.stringify(coupon, null, 2)}</pre>{" "}
-          </details>
-        </div>
-      )}
-      <BuyButton aboType={params.slug} price={price.unit_amount || 0} />
-    </div>
+    <CheckoutView
+      email={meRes.data?.me?.email || undefined}
+      aboType={params.slug}
+      aboPurchaseOptions={aboConfig}
+      aboData={aboData}
+      clientSecret={clientSecret}
+    />
   );
 }
