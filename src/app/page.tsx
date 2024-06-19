@@ -1,6 +1,6 @@
-import { checkoutConfig } from "./checkout/[slug]/lib/config";
 import { ProductCard } from "./components/product-card";
 import { AuthButton } from "./components/auth-button";
+import { checkoutConfig } from "./angebot/[slug]/checkout/lib/config";
 
 export default async function Home() {
   const config = checkoutConfig;

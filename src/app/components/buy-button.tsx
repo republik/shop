@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { AboTypes } from "../checkout/[slug]/lib/config";
 import { useQuery } from "@apollo/client";
 import { MeDocument } from "../../../graphql/republik-api/__generated__/gql/graphql";
 import { toast } from "sonner";
+import { AboTypes } from "../angebot/[slug]/checkout/lib/config";
 
 type BuyButtonProps = {
   aboType: AboTypes;
@@ -19,7 +19,7 @@ export function BuyButton({ aboType, price }: BuyButtonProps) {
       className="w-full"
       onClick={() => {
         toast.loading("Kauf wird vorbereitet...");
-        window.location.assign(`/checkout/${aboType}`);
+        window.location.assign(`/${aboType}/checkout`);
       }}
     >
       Kaufen {price && <>für CHF {(price / 100).toFixed(2)}</>}

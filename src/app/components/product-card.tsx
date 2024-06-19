@@ -7,12 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { AboTypes, aboTypesMeta } from "../checkout/[slug]/lib/config";
-import { AboPurchaseOptions } from "../checkout/[slug]/lib/action";
-import { initStripe } from "../checkout/[slug]/lib/stripe/server";
 import { BuyButton } from "./buy-button";
 import { getClient } from "@/lib/apollo/client";
 import { MeDocument } from "../../../graphql/republik-api/__generated__/gql/graphql";
+import { initStripe } from "../angebot/[slug]/checkout/lib/stripe/server";
+import { AboTypes, aboTypesMeta } from "../angebot/[slug]/checkout/lib/config";
+import { AboPurchaseOptions } from "../angebot/[slug]/checkout/lib/action";
+import Link from "next/link";
 
 type ProductCardProps = {
   aboType: AboTypes;
@@ -72,10 +73,9 @@ export async function ProductCard({
         </details>
       </CardContent>
       <CardFooter>
-        <BuyButton
-          aboType={aboType}
-          price={!price.unit_amount || coupon ? undefined : price.unit_amount}
-        />
+        <Button asChild className="w-full">
+          <Link href={`/angebot/${aboType}`}>Zum Angebot</Link>
+        </Button>
       </CardFooter>
     </Card>
   );

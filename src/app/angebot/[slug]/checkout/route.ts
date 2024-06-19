@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { MeDocument } from "../../../../graphql/republik-api/__generated__/gql/graphql";
+import { MeDocument } from "../../../../../graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/apollo/client";
 import { initStripe } from "./lib/stripe/server";
 import { checkoutConfig } from "./lib/config";
@@ -22,7 +22,7 @@ export async function GET(
     if (!data.me) {
       const url = new URL("/anmelden", process.env.NEXT_PUBLIC_MAGAZIN_URL);
       const afterLoginUrl = new URL(
-        `/checkout/${params.slug}`,
+        `/${params.slug}/checkout`,
         process.env.NEXT_PUBLIC_URL
       );
       url.searchParams.append("redirect", afterLoginUrl.toString());
@@ -63,11 +63,11 @@ export async function GET(
     // Create link
     const session = await stripe.checkout.sessions.create({
       success_url: new URL(
-        `/checkout/${params.slug}/success`,
+        `/${params.slug}/checkout/success`,
         process.env.NEXT_PUBLIC_URL
       ).toString(),
       cancel_url: new URL(
-        `/checkout/cancel`,
+        `/${params.slug}`,
         process.env.NEXT_PUBLIC_URL
       ).toString(),
       line_items: [
