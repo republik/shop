@@ -1,3 +1,4 @@
+import Stripe from "stripe";
 import { initStripe } from "./stripe/server";
 import { StripeAccount } from "./stripe/types";
 
@@ -26,7 +27,7 @@ export async function initAboPurchase({
   priceId,
   couponCode,
   userEmail,
-}: AboPurchaseOptions): Promise<AboPurchaseSession> {
+}: AboPurchaseOptions): Promise<Stripe.Checkout.Session> {
   const stripe = initStripe(stripeAccount);
 
   const [product, price] = await Promise.all([
@@ -79,7 +80,5 @@ export async function initAboPurchase({
     throw new Error("Missing client secret");
   }
 
-  return {
-    clientSecret: session.client_secret,
-  };
+  return session;
 }

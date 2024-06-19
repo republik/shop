@@ -33,31 +33,64 @@ export async function GET(
       // TODO: ERROR, KAPUTT, WHERE TO GO
       return NextResponse.redirect("/", { status: 307 });
     }
+
     const aboConfig = checkoutConfig[params.slug];
     const stripe = initStripe(aboConfig.stripeAccount);
 
+    const [product, price] = await Promise.all([
+      stripe.products.retrieve(aboConfig.productId).catch((err) => {
+        console.error("Failed to retrieve product", err);
+        throw err;
+      }),
+      stripe.prices.retrieve(aboConfig.priceId).catch((err) => {
+        console.error("Failed to retrieve price", err);
+        throw err;
+      }),
+    ]);
+
+    if (!price.unit_amount || !price.recurring) {
+      throw new Error("Missing unit amount or recurring");
+    }
+
     // Create link
-    const paymentLink = await stripe.paymentLinks.create({
+    const session = await stripe.checkout.sessions.create({
+      success_url: new URL(
+        `/checkout/${params.slug}/success`,
+        process.env.NEXT_PUBLIC_URL
+      ).toString(),
+      cancel_url: new URL(
+        `/checkout/cancel`,
+        process.env.NEXT_PUBLIC_URL
+      ).toString(),
       line_items: [
         {
-          price: aboConfig.priceId,
+          price_data: {
+            currency: "chf",
+            product: product.id,
+            unit_amount: price.unit_amount!,
+            recurring: {
+              interval: price.recurring.interval,
+              interval_count: price.recurring.interval_count,
+            },
+          },
           quantity: 1,
         },
       ],
+      allow_promotion_codes: true,
       billing_address_collection: "required",
-      after_completion: {
-        redirect: {
-          url: new URL(
-            `/checkout/${params.slug}/success`,
-            process.env.NEXT_PUBLIC_URL
-          ).toString(),
-        },
-        type: "redirect",
-      },
-    });
-    //TODO: handle error
+      // discounts: couponCode ? [{ coupon: couponCode }] : undefined,
 
-    return NextResponse.redirect(paymentLink.url, { status: 307 });
+      mode: "subscription",
+      locale: "de",
+      customer_email: data?.me?.email || undefined,
+    });
+
+    if (!session.url) {
+      // TODO: handle this error properly
+      throw new Error("No session URL");
+    }
+
+    return NextResponse.redirect(session.url, { status: 307 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(

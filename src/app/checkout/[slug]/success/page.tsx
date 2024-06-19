@@ -1,8 +1,7 @@
-export default function Page() {
+export default function Page({}) {
   return (
     <div>
-      <h1>Success</h1>
-      <p>This is the success page</p>
+      <h1>Payment successful! 🤑💰</h1>
     </div>
   );
 }
