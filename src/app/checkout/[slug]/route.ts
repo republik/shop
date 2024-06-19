@@ -11,13 +11,13 @@ export async function GET(
   }: {
     params: { slug: string };
   }
-): Promise<NextResponse> {
+): Promise<Response> {
   try {
     const client = getClient();
     const { data } = await client.query({
       query: MeDocument,
     });
-    console.log(data);
+
     // Send to login page if user is not logged in, and redirect back to checkout after login
     if (!data.me) {
       const url = new URL("/anmelden", process.env.NEXT_PUBLIC_MAGAZIN_URL);
@@ -27,8 +27,14 @@ export async function GET(
       );
       url.searchParams.append("redirect", afterLoginUrl.toString());
 
-      return NextResponse.redirect(url.toString(), { status: 307 });
+      return new Response(null, {
+        status: 307,
+        headers: {
+          Location: url.toString(),
+        },
+      });
     }
+
     if (!checkoutConfig[params.slug]) {
       // TODO: ERROR, KAPUTT, WHERE TO GO
       return NextResponse.redirect("/", { status: 307 });
@@ -51,6 +57,8 @@ export async function GET(
     if (!price.unit_amount || !price.recurring) {
       throw new Error("Missing unit amount or recurring");
     }
+
+    const isEliglibleForDiscount = data?.me?.memberships?.length == 0;
 
     // Create link
     const session = await stripe.checkout.sessions.create({
@@ -76,9 +84,11 @@ export async function GET(
           quantity: 1,
         },
       ],
-      allow_promotion_codes: true,
       billing_address_collection: "required",
-      // discounts: couponCode ? [{ coupon: couponCode }] : undefined,
+      discounts:
+        isEliglibleForDiscount && aboConfig.couponCode
+          ? [{ coupon: aboConfig.couponCode }]
+          : undefined,
 
       mode: "subscription",
       locale: "de",
