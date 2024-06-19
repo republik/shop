@@ -216,6 +216,7 @@ export function Checkout({ clientSecret }: CheckoutProps) {
             variables: {
               borderRadius: "var(--border-radius)",
             },
+            labels: "floating",
           },
         },
       }}
@@ -225,8 +226,8 @@ export function Checkout({ clientSecret }: CheckoutProps) {
           <PurchaseDetails />
         </div>
         <CheckoutForm
-          existingCustomer={!!data?.me}
-          emailValue={data?.me?.email || undefined}
+          // existingCustomer={!!data?.me}
+          // emailValue={data?.me?.email || undefined}
           onSuccess={async () => {
             toast.success("Welcome!");
           }}

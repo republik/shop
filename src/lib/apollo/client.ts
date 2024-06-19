@@ -4,6 +4,7 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/experimental-nextjs-app-support";
+import { headers } from "next/headers";
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
   return new ApolloClient({
@@ -15,6 +16,11 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
       // (this does not work if you are rendering your page with `export const dynamic = "force-static"`)
       fetchOptions: { cache: "no-store" },
       credentials: "include",
+      headers: {
+        cookie: headers().get("cookie") ?? "",
+        accept: headers().get("accept") ?? "",
+        Authorization: headers().get("Authorization") ?? "",
+      },
     }),
   });
 });

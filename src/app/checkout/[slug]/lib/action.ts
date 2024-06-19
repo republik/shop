@@ -7,6 +7,7 @@ export type AboPurchaseOptions = {
   priceId: string;
   couponCode?: string;
   // TODO: check how to properly assign existing customer.
+  userEmail?: string;
 };
 
 type AboPurchaseSession = {
@@ -24,6 +25,7 @@ export async function initAboPurchase({
   productId,
   priceId,
   couponCode,
+  userEmail,
 }: AboPurchaseOptions): Promise<AboPurchaseSession> {
   const stripe = initStripe(stripeAccount);
 
@@ -63,11 +65,13 @@ export async function initAboPurchase({
     billing_address_collection: "required",
     // TODO: check docs if this might cause issues
     discounts: couponCode ? [{ coupon: couponCode }] : undefined,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/checkout/success`,
     mode: "subscription",
     // FIXME: typings are not yet updated to include custom-checkout
     ui_mode: "custom" as any,
     // TODO: should we hardcode this?
     locale: "de",
+    customer_email: userEmail || undefined,
   });
 
   if (!session.client_secret) {

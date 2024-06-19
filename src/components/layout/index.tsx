@@ -26,7 +26,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
           </Link>
         </div>
         <Link
-          href="/"
+          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/magazin`}
           className="px-8 py-2 flex items-center justify-center bg-foreground text-background text-lg"
         >
           Magazin

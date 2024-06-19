@@ -8,7 +8,10 @@ import {
   initAboPurchase,
 } from "./checkout/[slug]/lib/action";
 
-export async function initPurchase(aboType: AboTypes): Promise<void> {
+export async function initPurchase(
+  aboType: AboTypes,
+  userEmail?: string
+): Promise<void> {
   const purchaseConfig: AboPurchaseOptions = checkoutConfig[aboType];
   const { clientSecret } = await initAboPurchase(purchaseConfig);
   // Keep track of the clientSecret in a cookie that lives for 1h

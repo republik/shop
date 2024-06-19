@@ -3,7 +3,7 @@ declare global {
     interface ProcessEnv {
       NODE_ENV?: "development" | "production" | "test";
       // GENERAL
-      NEXT_PUBLIC_DOMAIN: string;
+      NEXT_PUBLIC_URL: string;
       NEXT_PUBLIC_API_URL: string;
       NEXT_PUBLIC_MAGAZIN_URL: string;
       // DATOCMS
