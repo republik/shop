@@ -11,14 +11,12 @@ import { Stripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
 import {
   AddressElement,
-  CustomCheckoutProvider,
   PaymentElement,
   ExpressCheckoutElement,
   useCustomCheckout,
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
-import { initializeCheckout } from "../action";
 import { AboTypes } from "../lib/config";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";

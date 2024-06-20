@@ -14,7 +14,7 @@ interface PageLayoutProps {
 export async function PageLayout({ children }: PageLayoutProps) {
   return (
     <div className="flex flex-col min-h-[100dvh]">
-      <header className="grid gap-4 grid-cols-7">
+      <header className="grid gap-2 md:gap-4 grid-cols-7">
         <div className="p-2">
           <Portrait />
         </div>
@@ -27,7 +27,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
         </div>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/`}
-          className="px-8 py-2 flex items-center justify-center bg-foreground text-background text-lg"
+          className="overflow-hidden px-4 md:px-8 py-2 flex items-center justify-center bg-foreground text-background text-sm sm:text-base md:text-lg"
         >
           Magazin
         </Link>

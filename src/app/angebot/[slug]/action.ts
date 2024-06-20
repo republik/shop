@@ -42,6 +42,7 @@ export async function initializeCheckout(
     discounts:
       isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
     return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}/success`,
+    locale: "de",
   });
 
   if (!session.client_secret) {
