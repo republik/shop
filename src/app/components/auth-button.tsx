@@ -8,8 +8,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function AuthButton() {
+  const router = useRouter();
   const { data, loading, error } = useQuery(MeDocument);
   const [signOut] = useMutation(SignOutDocument);
 
@@ -25,14 +27,14 @@ export function AuthButton() {
 
     if (!data?.me) {
       const currentUrl = window.location.href;
-
       const redirectUrl = new URL(
         "/anmelden",
         process.env.NEXT_PUBLIC_MAGAZIN_URL
       );
       redirectUrl.searchParams.append("redirect", currentUrl);
       toast("Sie werden weitergeleitet...");
-      window.location.assign(redirectUrl.toString());
+      router.push(redirectUrl.toString());
+      return;
     }
 
     signOut()
