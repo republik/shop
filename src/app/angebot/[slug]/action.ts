@@ -29,8 +29,6 @@ export async function initializeCheckout(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "embedded",
-    // success_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}/success`,
-    // cancel_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}?cancled`,
     customer_email: userEmail,
     line_items: [
       {
@@ -41,8 +39,9 @@ export async function initializeCheckout(
     currency: price.currency,
     discounts:
       isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
-    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}/success`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}`,
     locale: "de",
+    billing_address_collection: "required",
   });
 
   if (!session.client_secret) {
