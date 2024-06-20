@@ -21,9 +21,13 @@ export const checkoutConfig: Record<string, AboPurchaseOptions> = {
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT-R",
-
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
+  },
+  STUDENT: {
+    stripeAccount: "PROJECT-R",
+    productId: "prod_G7dVG5BtM4wDxl",
+    priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
   },
   CUSTOM: {
     stripeAccount: "PROJECT-R",
@@ -51,6 +55,11 @@ export const aboTypesMeta: Record<
   BENEFACTOR: {
     title: "Gönner-Mitgliedschaft",
     description: "Much cash, very wow",
+    projectR: true,
+  },
+  STUDENT: {
+    title: "Ausbildungs-Mitgliedschaft",
+    description: "Für Studierende und Auszubildende",
     projectR: true,
   },
   CUSTOM: {

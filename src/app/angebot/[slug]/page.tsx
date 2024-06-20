@@ -18,7 +18,7 @@ export default async function ProductPage({
   if (!meRes.data.me) {
     const url = new URL("/anmelden", process.env.NEXT_PUBLIC_MAGAZIN_URL);
     const afterLoginUrl = new URL(
-      `/${params.slug}`,
+      `/angebot/${params.slug}`,
       process.env.NEXT_PUBLIC_URL
     );
     url.searchParams.append("redirect", afterLoginUrl.toString());

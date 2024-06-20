@@ -28,7 +28,7 @@ export async function initializeCheckout(
 
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
-    ui_mode: "custom" as any,
+    ui_mode: "embedded",
     // success_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}/success`,
     // cancel_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboTypes}?cancled`,
     customer_email: userEmail,

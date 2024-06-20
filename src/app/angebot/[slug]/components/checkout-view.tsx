@@ -15,6 +15,8 @@ import {
   PaymentElement,
   ExpressCheckoutElement,
   useCustomCheckout,
+  EmbeddedCheckoutProvider,
+  EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { initializeCheckout } from "../action";
 import { AboTypes } from "../lib/config";
@@ -109,21 +111,33 @@ export function CheckoutView(props: CheckoutViewProps) {
   }
 
   return (
-    <CustomCheckoutProvider
-      stripe={stripe}
-      options={{
-        clientSecret: props.clientSecret,
-        elementsOptions: {
-          loader: "always",
-          appearance: {
-            variables: {
-              borderRadius: "var(--border-radius)",
-            },
-          },
-        },
-      }}
-    >
-      <Checkout />
-    </CustomCheckoutProvider>
+    // <CustomCheckoutProvider
+    //   stripe={stripe}
+    //   options={{
+    //     clientSecret: props.clientSecret,
+    //     elementsOptions: {
+    //       loader: "always",
+    //       appearance: {
+    //         variables: {
+    //           borderRadius: "var(--border-radius)",
+    //         },
+    //       },
+    //     },
+    //   }}
+    // >
+    // <Checkout />
+    // </CustomCheckoutProvider>
+    <div>
+      <div id="checkout">
+        <EmbeddedCheckoutProvider
+          stripe={stripe}
+          options={{
+            clientSecret: props.clientSecret,
+          }}
+        >
+          <EmbeddedCheckout />
+        </EmbeddedCheckoutProvider>
+      </div>
+    </div>
   );
 }
