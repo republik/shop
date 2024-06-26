@@ -45,7 +45,7 @@ export function AuthButton() {
         toast.error("Fehler beim Abmelden");
         console.error(error);
       });
-  }, [loading, error, data?.me, signOut]);
+  }, [loading, error, data?.me, signOut, router]);
 
   const text = data?.me ? "Logout" : "Login";
 
