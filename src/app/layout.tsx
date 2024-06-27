@@ -4,14 +4,6 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { PageLayout } from "@/components/layout";
-import { ApolloWrapper } from "@/lib/apollo/apollo-wrapper";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-
-if (process.env.NODE_ENV === "development") {
-  // Adds messages only in a dev environment
-  loadDevMessages();
-  loadErrorMessages();
-}
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -36,9 +28,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <ApolloWrapper>
-          <PageLayout>{children}</PageLayout>
-        </ApolloWrapper>
+        <PageLayout>{children}</PageLayout>
         <Toaster />
       </body>
     </html>

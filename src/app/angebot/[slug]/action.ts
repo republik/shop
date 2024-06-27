@@ -1,9 +1,8 @@
 "use server";
 
-import { getClient } from "@/lib/apollo/client";
 import { AboTypes, checkoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
-import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { fetchMe } from "@/lib/auth/fetch-me";
 
 interface CheckoutSessionResponse {
   clientSecret: string;
@@ -13,7 +12,7 @@ export async function initializeCheckout(
   aboTypes: AboTypes,
   userEmail?: string
 ): Promise<CheckoutSessionResponse> {
-  const meRes = await getClient().query({ query: MeDocument });
+  const me = await fetchMe();
   const aboConfig = checkoutConfig[aboTypes];
   const stripe = await initStripe(aboConfig.stripeAccount);
 
@@ -24,7 +23,7 @@ export async function initializeCheckout(
       : null,
   ]);
 
-  const isEliglibleForDiscount = meRes.data?.me?.memberships?.length == 0;
+  const isEliglibleForDiscount = me?.memberships?.length == 0;
 
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",

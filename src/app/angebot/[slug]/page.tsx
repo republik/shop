@@ -1,21 +1,19 @@
-import { getClient } from "@/lib/apollo/client";
 import { checkoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
-import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { notFound, redirect } from "next/navigation";
 import { CheckoutView } from "./components/checkout-view";
 import { StripeService } from "./lib/stripe/service";
 import { initializeCheckout } from "./action";
+import { fetchMe } from "@/lib/auth/fetch-me";
 
 export default async function ProductPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const client = getClient();
-  const meRes = await client.query({ query: MeDocument });
+  const me = await fetchMe();
   // TODO: ensure you are only able to access this page if you are logged in
-  if (!meRes.data.me) {
+  if (!me) {
     const url = new URL("/anmelden", process.env.NEXT_PUBLIC_MAGAZIN_URL);
     const afterLoginUrl = new URL(
       `/angebot/${params.slug}`,
@@ -37,12 +35,12 @@ export default async function ProductPage({
 
   const { clientSecret } = await initializeCheckout(
     params.slug,
-    meRes?.data?.me?.email || undefined
+    me.email || undefined
   );
 
   return (
     <CheckoutView
-      email={meRes.data?.me?.email || undefined}
+      email={me.email || undefined}
       aboType={params.slug}
       aboPurchaseOptions={aboConfig}
       aboData={aboData}

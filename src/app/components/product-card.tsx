@@ -7,12 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getClient } from "@/lib/apollo/client";
-import { MeDocument } from "../../../graphql/republik-api/__generated__/gql/graphql";
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
 import { AboTypes, aboTypesMeta } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
 import { AboPurchaseOptions } from "../angebot/[slug]/lib/stripe/types";
+import { fetchMe } from "@/lib/auth/fetch-me";
 
 type ProductCardProps = {
   aboType: AboTypes;
@@ -26,7 +25,7 @@ export async function ProductCard({
   aboType,
   aboPurchaseOptions,
 }: ProductCardProps) {
-  const meRes = await getClient().query({ query: MeDocument });
+  const me = await fetchMe();
   const meta = aboTypesMeta[aboType];
   const stripe = await initStripe(aboPurchaseOptions.stripeAccount);
   const [product, price, coupon] = await Promise.all([
@@ -37,7 +36,7 @@ export async function ProductCard({
       : null,
   ]);
 
-  const eligibleForCoupon = (meRes?.data?.me?.memberships || []).length == 0;
+  const eligibleForCoupon = (me?.memberships || []).length == 0;
 
   return (
     <Card>
