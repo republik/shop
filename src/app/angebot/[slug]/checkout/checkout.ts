@@ -1,8 +1,8 @@
 "use server";
 
-import { AboTypes, checkoutConfig } from "./lib/config";
-import { initStripe } from "./lib/stripe/server";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { AboTypes, checkoutConfig } from "../lib/config";
+import { initStripe } from "../lib/stripe/server";
 
 interface CheckoutSessionResponse {
   clientSecret: string;
@@ -10,28 +10,44 @@ interface CheckoutSessionResponse {
 
 export async function initializeCheckout(
   aboTypes: AboTypes,
-  userEmail?: string
+  options: {
+    email?: string;
+    userPrice?: number;
+  }
 ): Promise<CheckoutSessionResponse> {
   const me = await fetchMe();
   const aboConfig = checkoutConfig[aboTypes];
   const stripe = await initStripe(aboConfig.stripeAccount);
 
-  const [price, coupon] = await Promise.all([
+  const [price, product, coupon] = await Promise.all([
     stripe.prices.retrieve(aboConfig.priceId),
+    stripe.products.retrieve(aboConfig.productId),
     aboConfig.couponCode
       ? stripe.coupons.retrieve(aboConfig.couponCode).catch(() => null)
       : null,
   ]);
 
   const isEliglibleForDiscount = me?.memberships?.length == 0;
-
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "embedded",
-    customer_email: userEmail,
+    customer_email: options.email,
     line_items: [
       {
-        price: price.id,
+        price:
+          !!options.userPrice && aboConfig.customPrice ? undefined : price.id,
+        price_data:
+          !!options.userPrice && aboConfig.customPrice
+            ? {
+                product: product.id,
+                unit_amount: options.userPrice,
+                currency: price.currency,
+                recurring: {
+                  interval: "year",
+                  interval_count: 1,
+                },
+              }
+            : undefined,
         quantity: 1,
       },
     ],

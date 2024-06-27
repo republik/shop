@@ -7,6 +7,7 @@ export interface AboPurchaseOptions {
   productId: string;
   priceId: string;
   couponCode?: string;
+  customPrice?: boolean;
 }
 
 export type AboTypeData = {

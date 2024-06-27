@@ -1,10 +1,11 @@
 import { checkoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
 import { notFound, redirect } from "next/navigation";
-import { CheckoutView } from "./components/checkout-view";
 import { StripeService } from "./lib/stripe/service";
-import { initializeCheckout } from "./action";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { PriceSelector } from "./components/price-selector";
 
 export default async function ProductPage({
   params,
@@ -12,19 +13,13 @@ export default async function ProductPage({
   params: { slug: string };
 }) {
   const me = await fetchMe();
-  // TODO: ensure you are only able to access this page if you are logged in
-  if (!me) {
-    const url = new URL("/anmelden", process.env.NEXT_PUBLIC_MAGAZIN_URL);
-    const afterLoginUrl = new URL(
-      `/angebot/${params.slug}`,
-      process.env.NEXT_PUBLIC_URL
-    );
-    url.searchParams.append("redirect", afterLoginUrl.toString());
+  const aboConfig = checkoutConfig[params.slug];
 
-    redirect(url.toString());
+  if (me && !aboConfig.customPrice) {
+    // Proceed to checkout
+    redirect(`/angebot/${params.slug}/checkout`);
   }
 
-  const aboConfig = checkoutConfig[params.slug];
   const stripe = await initStripe(aboConfig.stripeAccount);
   const aboData = await StripeService(stripe)
     .getAboTypeData(aboConfig)
@@ -33,18 +28,22 @@ export default async function ProductPage({
       return notFound();
     });
 
-  const { clientSecret } = await initializeCheckout(
-    params.slug,
-    me.email || undefined
-  );
-
   return (
-    <CheckoutView
-      email={me.email || undefined}
-      aboType={params.slug}
-      aboPurchaseOptions={aboConfig}
-      aboData={aboData}
-      clientSecret={clientSecret}
-    />
+    <div>
+      <details>
+        <summary>Available product data</summary>
+        <pre className="text-xs font-mono">
+          {JSON.stringify(aboData, null, 2)}
+        </pre>
+      </details>
+      {!me && <p>[ LOGIN-FORM ]</p>}
+      {aboConfig.customPrice ? (
+        <PriceSelector aboType={params.slug} />
+      ) : (
+        <Button asChild>
+          <Link href={`/angebot/${params.slug}/checkout`}>Jetzt kaufen</Link>
+        </Button>
+      )}
+    </div>
   );
 }

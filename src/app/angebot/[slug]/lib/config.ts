@@ -33,6 +33,7 @@ export const checkoutConfig: Record<string, AboPurchaseOptions> = {
     stripeAccount: "PROJECT-R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
+    customPrice: true,
   },
 } as const;
 

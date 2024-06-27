@@ -1,11 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  AboPurchaseOptions,
-  AboTypeData,
-  StripeAccount,
-} from "../lib/stripe/types";
+import { AboPurchaseOptions, StripeAccount } from "../lib/stripe/types";
 import { initStripe } from "../lib/stripe/client";
 import { Stripe } from "@stripe/stripe-js";
 import { Button } from "@/components/ui/button";
@@ -17,7 +13,6 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
-import { AboTypes } from "../lib/config";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -94,43 +89,30 @@ function Checkout() {
 }
 
 interface CheckoutViewProps {
-  aboType: AboTypes;
-  aboPurchaseOptions: AboPurchaseOptions;
-  aboData: AboTypeData;
-  email?: string;
   clientSecret: string;
+  aboPurchaseOptions: AboPurchaseOptions;
 }
 
-export function CheckoutView(props: CheckoutViewProps) {
-  const stripe = useStripe(props.aboPurchaseOptions.stripeAccount);
+export function CheckoutView({
+  clientSecret,
+  aboPurchaseOptions,
+}: CheckoutViewProps) {
+  const stripe = useStripe(aboPurchaseOptions.stripeAccount);
 
-  if (!stripe || !props.clientSecret) {
+  if (!stripe || !clientSecret) {
     return <p>Loading...</p>;
   }
 
   return (
-    // <CustomCheckoutProvider
-    //   stripe={stripe}
-    //   options={{
-    //     clientSecret: props.clientSecret,
-    //     elementsOptions: {
-    //       loader: "always",
-    //       appearance: {
-    //         variables: {
-    //           borderRadius: "var(--border-radius)",
-    //         },
-    //       },
-    //     },
-    //   }}
-    // >
-    // <Checkout />
-    // </CustomCheckoutProvider>
     <div>
       <div id="checkout">
         <EmbeddedCheckoutProvider
           stripe={stripe}
           options={{
-            clientSecret: props.clientSecret,
+            clientSecret,
+            onComplete() {
+              toast.success("Abokauf erfolgreich");
+            },
           }}
         >
           <EmbeddedCheckout />

@@ -63,11 +63,11 @@ export async function ProductCard({
             Genossenschaft
           </li>
         </ul>
-        <details>
+        {/* <details>
           <summary>data</summary>
           {JSON.stringify(product, null, 2)}
           {JSON.stringify(price, null, 2)}
-        </details>
+        </details> */}
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
