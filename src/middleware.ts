@@ -1,3 +1,4 @@
+import { UTM_COOKIE_NAME, collectUtmParams, toUtmCookie } from "@/lib/utm";
 import { NextRequest, NextResponse } from "next/server";
 
 const CURTAIN_COOKIE_NAME = "OpenSesame";
@@ -9,7 +10,7 @@ const CURTAIN_PASSTHROUGH_PATHS = [
   "/mitteilung",
 ];
 
-type Middleware = (req: NextRequest) => Promise<NextResponse>;
+type Middleware = (req: NextRequest) => NextResponse | Promise<NextResponse>;
 
 /**
  * A HoC that returns a wrapped middleware hidden behind a curtain.
@@ -91,28 +92,15 @@ function curtainHOC(middleware: Middleware): Middleware {
   };
 }
 
-/**
- * In case the request is not on https, redirect to https if PUBLIC_BASE_URL is set to https
- * @param req to check if the request is not already on https
- * @returns possible NextResponse to redirect to https or null
- */
-function redirectToHTTPS(req: NextRequest): NextResponse | null {
-  const reqURL = new URL(req.nextUrl.clone());
-  const baseURL = process.env.NEXT_PUBLIC_BASE_URL;
-  if (
-    !reqURL ||
-    reqURL.protocol == "https:" ||
-    !baseURL ||
-    !baseURL.startsWith("https://")
-  ) {
-    return null;
-  }
-
-  reqURL.host = new URL(baseURL).host;
-  reqURL.protocol = "https:";
-  reqURL.port = "";
-
-  return NextResponse.redirect(reqURL);
+function utmHOC(middleware: Middleware): Middleware {
+  return async (req: NextRequest) => {
+    const res = await middleware(req);
+    const utm = collectUtmParams(req.nextUrl.searchParams);
+    if (Object.keys(utm).length > 0) {
+      res.cookies.set(UTM_COOKIE_NAME, toUtmCookie(utm));
+    }
+    return res;
+  };
 }
 
 /**
@@ -124,7 +112,7 @@ async function middlewareFunc(req: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 
-export const middleware = curtainHOC(middlewareFunc);
+export const middleware = utmHOC(curtainHOC(middlewareFunc));
 
 export const config = {
   matcher: [

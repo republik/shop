@@ -12,10 +12,12 @@ import { AboTypes, aboTypesMeta } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
 import { AboPurchaseOptions } from "../angebot/[slug]/lib/stripe/types";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { UtmObject } from "@/lib/utm";
 
 type ProductCardProps = {
   aboType: AboTypes;
   aboPurchaseOptions: AboPurchaseOptions;
+  utm: UtmObject;
 };
 
 const priceStr = (price: number, currency = "CHF") =>
@@ -63,11 +65,6 @@ export async function ProductCard({
             Genossenschaft
           </li>
         </ul>
-        {/* <details>
-          <summary>data</summary>
-          {JSON.stringify(product, null, 2)}
-          {JSON.stringify(price, null, 2)}
-        </details> */}
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
