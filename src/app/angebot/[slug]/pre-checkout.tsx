@@ -46,7 +46,11 @@ export function PreCheckout(props: PreCheckoutProps) {
       <input type="text" name="aboType" hidden defaultValue={aboType} />
 
       <Button type="submit" disabled={isLoading}>
-        Jetzt kaufen
+        {isLoading ? (
+          <span className="animate-pulse">Preparing checkout…</span>
+        ) : (
+          <>Jetzt kaufen</>
+        )}
       </Button>
     </form>
   );

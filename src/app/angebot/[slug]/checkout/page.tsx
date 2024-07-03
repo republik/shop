@@ -9,10 +9,11 @@ import { initStripe } from "../lib/stripe/server";
 export default async function CheckoutPage({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string; session_id?: string };
 }) {
   const me = await fetchMe();
-  const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+  const sessionId =
+    params?.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   if (!me || !sessionId) {
     console.log("Redirecting " + JSON.stringify({ me, sessionId }, null, 2));
     redirect(`/angebot/${params.slug}`);
@@ -21,11 +22,24 @@ export default async function CheckoutPage({
   const stripe = await initStripe(checkoutConfig[params.slug].stripeAccount);
   const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-  if (!session || !session.client_secret) {
+  if (!session) {
     redirect(`/angebot/${params.slug}`);
   }
 
   const aboConfig = checkoutConfig[params.slug];
+
+  if (session.status === "complete") {
+    return <p>Thanks for your purchase!</p>;
+  }
+
+  if (session.status === "expired") {
+    // TODO: Should we return the user to the non checkout page
+    return <p>Session expired.</p>;
+  }
+
+  if (!session.client_secret) {
+    redirect(`/angebot/${params.slug}`);
+  }
 
   if (session.status === "open") {
     return (
@@ -36,15 +50,7 @@ export default async function CheckoutPage({
     );
   }
 
-  if (session.status === "complete") {
-    // TODO: What do we want to do here? Success screen? Onboarding?
-    return <p>Thanks for your purchase!</p>;
-  }
+  // TODO: sentry? this should never happen.
 
-  if (session.status === "expired") {
-    // TODO: Should we return the user to the non checkout page
-    return <p>Session expired.</p>;
-  }
-
-  return <p>This should never happen</p>;
+  redirect(`/angebot/${params.slug}`);
 }
