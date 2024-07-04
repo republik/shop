@@ -15,14 +15,6 @@ export default async function ProductPage({
   const me = await fetchMe();
   const aboConfig = checkoutConfig[params.slug];
 
-  const stripe = await initStripe(aboConfig.stripeAccount);
-  // const aboData = await StripeService(stripe)
-  //   .getAboTypeData(aboConfig)
-  //   .catch((error) => {
-  //     console.error(error);
-  //     return notFound();
-  //   });
-
   if (!me) {
     return <p>[ SHOW LOGIN ]</p>;
   }

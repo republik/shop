@@ -43,6 +43,7 @@ async function initializeCheckout(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "embedded",
+    // @TODO/BACKEND: We need to query the already registered customer with stripe to prefill the address + payment infos
     customer_email: options.email,
     line_items: [
       {
@@ -66,8 +67,9 @@ async function initializeCheckout(
     currency: price.currency,
     discounts:
       isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
-    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}/checkout`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}/checkout?session_id={CHECKOUT_SESSION_ID}"`,
     locale: "de",
+    redirect_on_completion: "if_required",
     billing_address_collection: "required",
     subscription_data: {
       metadata: { ...utmObj },
@@ -78,7 +80,10 @@ async function initializeCheckout(
     throw new Error("No client_secret in checkout session");
   }
 
-  cookies().set(CHECKOUT_SESSION_ID_COOKIE, session.id);
+  // Expire after 4
+  cookies().set(CHECKOUT_SESSION_ID_COOKIE, session.id, {
+    expires: 1000 * 60 * 60 * 4,
+  });
 }
 
 export async function createCheckout(formData: FormData): Promise<{}> {
