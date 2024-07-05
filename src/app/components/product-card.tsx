@@ -60,7 +60,6 @@ export async function ProductCard({
                 textStyle: "body",
                 fontWeight: "medium",
               })}
-              // className="bg-green-200/60 mb-8 p-4 border border-green-400/80 font-medium"
             >
               🎁 Für {priceStr(price.unit_amount - coupon.amount_off)} anstatt{" "}
               {priceStr(price.unit_amount)} bei der ersten Zahlung.

@@ -14,10 +14,6 @@ const Card = React.forwardRef<
       }),
       className
     )}
-    // className={cn(
-    //   "rounded-lg border bg-card text-card-foreground shadow-sm",
-    //   className
-    // )}
     {...props}
   />
 ));
@@ -35,7 +31,6 @@ const CardHeader = React.forwardRef<
         flexDir: "column",
         p: "6",
       }),
-      // "flex flex-col space-y-1.5 p-6",
       className
     )}
     {...props}
@@ -53,7 +48,6 @@ const CardTitle = React.forwardRef<
       css({
         textStyle: "h3Sans",
       }),
-      // "text-2xl font-semibold leading-none tracking-tight",
       className
     )}
     {...props}
@@ -71,7 +65,6 @@ const CardDescription = React.forwardRef<
       css({
         fontSize: "s",
       }),
-      // "text-sm text-muted-foreground",
       className
     )}
     {...props}
@@ -85,11 +78,7 @@ const CardContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cx(
-      css({ p: "6", pt: "0" }),
-      // "p-6 pt-0",
-      className
-    )}
+    className={cx(css({ p: "6", pt: "0" }), className)}
     {...props}
   />
 ));
@@ -108,7 +97,6 @@ const CardFooter = React.forwardRef<
         p: "6",
         pt: "0",
       }),
-      // "flex items-center p-6 pt-0",
       className
     )}
     {...props}
