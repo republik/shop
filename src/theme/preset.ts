@@ -13,6 +13,21 @@ export const presetRepublik = definePreset({
       MozOsxFontSmoothing: "auto",
     },
   },
+  patterns: {
+    extend: {
+      container: {
+        defaultValues: {},
+        transform(props) {
+          return {
+            w: "full",
+            maxWidth: "maxContent",
+            mx: "auto",
+            ...props,
+          };
+        },
+      },
+    },
+  },
   // Useful for theme customization
   theme: {
     extend: {
@@ -32,12 +47,27 @@ export const presetRepublik = definePreset({
           current: { value: "currentColor" },
         },
         shadows: {
-          sm: { value: "0 0 6px 0 rgba(0, 0, 0, 0.35)" },
+          sm: { value: "0 1px 2px 0 rgba(0,0,0,.05)" },
         },
         sizes: {
           full: { value: "100%" },
           viewportWidth: { value: "100vw" },
+          maxContent: { value: "50rem" },
+          1: { value: "0.25rem" },
+          1.5: { value: "0.375rem" },
+          2: { value: "0.5rem" },
+          2.5: { value: "0.625rem" },
+          3: { value: "0.75rem" },
+          3.5: { value: "0.9375rem" },
+          4: { value: "1rem" },
+          5: { value: "1.25rem" },
+          6: { value: "1.5rem" },
+          8: { value: "2rem" },
+          10: { value: "2.5rem" },
+          12: { value: "3rem" },
+          16: { value: "4rem" },
           24: { value: "6rem" },
+          32: { value: "8rem" },
         },
         spacing: {
           0: { value: "0rem" },
@@ -59,8 +89,11 @@ export const presetRepublik = definePreset({
           32: { value: "8rem" },
         },
         radii: {
+          md: { value: "1rem" },
+          lg: { value: "2rem" },
           full: { value: "9999px" },
         },
+        borders: {},
         fonts: {
           republikSerif: {
             value: "RepublikSerif, Georgia, serif",
