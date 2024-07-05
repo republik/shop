@@ -1,7 +1,4 @@
 import { checkoutConfig } from "./lib/config";
-import { initStripe } from "./lib/stripe/server";
-import { notFound, redirect } from "next/navigation";
-import { StripeService } from "./lib/stripe/service";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { PreCheckout } from "./pre-checkout";
 
