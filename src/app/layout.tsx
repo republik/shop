@@ -1,6 +1,5 @@
 import { PageLayout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
-import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 
 import "@/theme/fonts.css";
