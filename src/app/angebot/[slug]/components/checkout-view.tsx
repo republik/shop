@@ -7,24 +7,23 @@ import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { SuccessView } from "./success-view";
+import { toast } from "sonner";
 
 interface CheckoutViewProps {
   clientSecret: string;
-  aboPurchaseOptions: AboPurchaseOptions;
+  stripeAccount: AboPurchaseOptions["stripeAccount"];
 }
 
 export function CheckoutView({
   clientSecret,
-  aboPurchaseOptions,
+  stripeAccount,
 }: CheckoutViewProps) {
-  const stripe = initStripe(aboPurchaseOptions.stripeAccount);
+  const stripe = initStripe(stripeAccount);
   const [success, setSuccess] = useState(false);
 
   if (success) {
-    <SuccessView />;
+    return <SuccessView />;
   }
 
   return (

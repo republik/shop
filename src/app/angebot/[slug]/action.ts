@@ -5,8 +5,10 @@ import { AboTypes, checkoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
 import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
 import { cookies } from "next/headers";
-import { CHECKOUT_SESSION_ID_COOKIE } from "./checkout/checkout";
+import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
+import { getClient } from "@/lib/graphql/client";
+import { gql } from "#graphql/republik-api/__generated__/gql";
 
 function getUTM(): UtmObject {
   const utmCookie = cookies().get(UTM_COOKIE_NAME);
@@ -80,19 +82,19 @@ async function initializeCheckout(
     throw new Error("No client_secret in checkout session");
   }
 
-  // Expire after 4
   cookies().set(CHECKOUT_SESSION_ID_COOKIE, session.id, {
-    expires: 1000 * 60 * 60 * 4,
+    expires: 1000 * 60 * 30, // expire after30min
   });
 }
 
 export async function createCheckout(formData: FormData): Promise<{}> {
-  const aboType = formData.get("aboType") as string;
+  const aboType = formData.get("aboType");
   const price = formData.get("price");
 
-  if (!aboType) {
+  if (!aboType || typeof aboType !== "string") {
     throw new Error("Abo type not given");
   }
+
   if (!Object.keys(checkoutConfig).includes(aboType)) {
     throw new Error(
       `Invalid AboType '${aboType}'. AboType must be one of ${String(
@@ -111,5 +113,9 @@ export async function createCheckout(formData: FormData): Promise<{}> {
       : undefined,
   });
 
-  redirect(`/angebot/${aboType}/checkout`);
+  redirect(`/angebot/${aboType}`);
+}
+
+export async function logoutAndReload() {
+  // getClient().request();
 }
