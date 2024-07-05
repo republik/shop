@@ -2,8 +2,9 @@ import { PageLayout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
-import "@/theme/fonts.css";
 import "@/theme/styles.css";
+import "@/theme/fonts.css";
+import { css } from "@/theme/css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body
+        className={css({
+          textStyle: "body",
+        })}
+      >
         <PageLayout>{children}</PageLayout>
         <Toaster />
       </body>
