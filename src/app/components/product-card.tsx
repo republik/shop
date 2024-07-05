@@ -18,7 +18,7 @@ import { css } from "@/theme/css";
 type ProductCardProps = {
   aboType: AboTypes;
   aboPurchaseOptions: AboPurchaseOptions;
-  utm: UtmObject;
+  utm?: UtmObject;
 };
 
 const priceStr = (price: number, currency = "CHF") =>

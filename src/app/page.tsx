@@ -1,6 +1,6 @@
 import { ProductCard } from "./components/product-card";
 import { checkoutConfig } from "./angebot/[slug]/lib/config";
-import { container, grid, hstack } from "@/theme/patterns";
+import { container, grid } from "@/theme/patterns";
 
 export default async function Home() {
   const config = checkoutConfig;
