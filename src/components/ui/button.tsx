@@ -7,8 +7,8 @@ const buttonVariants = cva({
     display: "inline-flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: "md",
-    fontSize: "xs",
+    borderRadius: "sm",
+    fontSize: "md",
     lineHeight: "1",
     fontWeight: "medium",
     whiteSpace: "nowrap",
@@ -38,7 +38,7 @@ const buttonVariants = cva({
     size: {
       default: {
         px: "4",
-        py: "2",
+        py: "3",
       },
       // default: "h-10 px-4 py-2",
       // sm: "h-9 rounded-md px-3",

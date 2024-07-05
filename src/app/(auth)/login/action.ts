@@ -7,7 +7,7 @@ import {
   SignInMutation,
   SignInTokenType,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/urql-client";
 
 export async function signIn(
   prevState: any,
@@ -21,17 +21,22 @@ export async function signIn(
 
   const email = formData.get("email") as string;
 
-  try {
-    const result = await gql.request(SignInDocument, {
-      email: "blah",
-      tokenType: SignInTokenType.EmailCode,
-    });
+  const { error, data } = await gql.mutation(SignInDocument, {
+    email,
+    tokenType: SignInTokenType.EmailCode,
+  });
 
-    return { signIn: result.signIn, email };
-  } catch (e) {
-    console.error(e);
-    return { error: e.message };
+  if (error?.networkError) {
+    return { error: "Die Verbindung zur Republik schlug fehl" };
   }
+
+  if (error?.graphQLErrors) {
+    return {
+      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
+    };
+  }
+
+  return { signIn: data?.signIn, email };
 }
 
 export async function authorizeWithCode(
@@ -41,17 +46,22 @@ export async function authorizeWithCode(
   const gql = getClient();
 
   const email = formData.get("email") as string;
-  const code = formData.get("code") as string;
+  const code = (formData.get("code") as string)?.replace(/[^0-9]/g, "");
 
-  try {
-    const result = await gql.request(AuthorizeSessionDocument, {
-      email,
-      tokens: [{ type: SignInTokenType.EmailCode, payload: code }],
-    });
+  const { error, data } = await gql.mutation(AuthorizeSessionDocument, {
+    email,
+    tokens: [{ type: SignInTokenType.EmailCode, payload: code }],
+  });
 
-    return { success: result.authorizeSession };
-  } catch (e) {
-    console.error(e);
-    return { error: e.message };
+  if (error?.networkError) {
+    return { error: "Die Verbindung zur Republik schlug fehl" };
   }
+
+  if (error?.graphQLErrors) {
+    return {
+      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
+    };
+  }
+
+  return { success: data?.authorizeSession };
 }
