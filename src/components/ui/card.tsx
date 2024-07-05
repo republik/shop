@@ -10,7 +10,9 @@ const Card = React.forwardRef<
     className={cx(
       css({
         boxShadow: "sm",
-        border: "1px solid token(colors.divider)",
+        borderWidth: "thin",
+        borderStyle: "solid",
+        borderColor: "divider",
       }),
       className
     )}
@@ -63,7 +65,7 @@ const CardDescription = React.forwardRef<
     ref={ref}
     className={cx(
       css({
-        fontSize: "s",
+        fontSize: "sm",
       }),
       className
     )}

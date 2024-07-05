@@ -7,7 +7,7 @@ export default defineConfig({
   // prefix: 'r',
   strictTokens: true,
 
-  presets: [presetRepublik],
+  presets: ["@pandacss/preset-panda", presetRepublik],
 
   // Files where CSS is extracted from
   // NOTE: must include any component packages that are imported in the app

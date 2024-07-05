@@ -31,69 +31,7 @@ export const presetRepublik = definePreset({
   // Useful for theme customization
   theme: {
     extend: {
-      breakpoints: {
-        sm: "375px",
-        md: "768px",
-        lg: "1025px",
-      },
       tokens: {
-        colors: {
-          neutral: {
-            "50": { value: "#ffffff" },
-            "950": { value: "#020202" },
-          },
-          white: { value: "#fff" },
-          transparent: { value: "transparent" },
-          current: { value: "currentColor" },
-        },
-        shadows: {
-          sm: { value: "0 1px 2px 0 rgba(0,0,0,.05)" },
-        },
-        sizes: {
-          full: { value: "100%" },
-          viewportWidth: { value: "100vw" },
-          maxContent: { value: "50rem" },
-          1: { value: "0.25rem" },
-          1.5: { value: "0.375rem" },
-          2: { value: "0.5rem" },
-          2.5: { value: "0.625rem" },
-          3: { value: "0.75rem" },
-          3.5: { value: "0.9375rem" },
-          4: { value: "1rem" },
-          5: { value: "1.25rem" },
-          6: { value: "1.5rem" },
-          8: { value: "2rem" },
-          10: { value: "2.5rem" },
-          12: { value: "3rem" },
-          16: { value: "4rem" },
-          24: { value: "6rem" },
-          32: { value: "8rem" },
-        },
-        spacing: {
-          0: { value: "0rem" },
-          px: { value: "1px" },
-          0.5: { value: "0.125rem" },
-          1: { value: "0.25rem" },
-          1.5: { value: "0.375rem" },
-          2: { value: "0.5rem" },
-          2.5: { value: "0.625rem" },
-          3: { value: "0.75rem" },
-          3.5: { value: "0.9375rem" },
-          4: { value: "1rem" },
-          5: { value: "1.25rem" },
-          6: { value: "1.5rem" },
-          8: { value: "2rem" },
-          10: { value: "2.5rem" },
-          12: { value: "3rem" },
-          16: { value: "4rem" },
-          32: { value: "8rem" },
-        },
-        radii: {
-          md: { value: "1rem" },
-          lg: { value: "2rem" },
-          full: { value: "9999px" },
-        },
-        borders: {},
         fonts: {
           republikSerif: {
             value: "RepublikSerif, Georgia, serif",
@@ -111,23 +49,6 @@ export const presetRepublik = definePreset({
           druk: {
             value: "Druk, Helvetica-Neue, Arial, Roboto, sans-serif",
           },
-        },
-        fontWeights: {
-          regular: { value: "400" },
-          medium: { value: "500" },
-          bold: { value: "700" },
-          black: { value: "900" },
-        },
-        fontSizes: {
-          xs: { value: "0.75rem" },
-          s: { value: "0.875rem" },
-          base: { value: "1rem" },
-          l: { value: "1.125rem" },
-          xl: { value: "1.25rem" },
-          "2xl": { value: "1.5rem" },
-          "3xl": { value: "2rem" },
-          "4xl": { value: "3rem" },
-          "8xl": { value: "6rem" },
         },
         lineHeights: {
           1: { value: 1 },
