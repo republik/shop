@@ -157,6 +157,9 @@ export const presetRepublik = definePreset({
             black: {
               value: "{colors.neutral.950}",
             },
+            primaryForeground: {
+              value: "white",
+            },
           },
           contrast: {
             value: {
