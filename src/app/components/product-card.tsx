@@ -13,11 +13,12 @@ import Link from "next/link";
 import { AboPurchaseOptions } from "../angebot/[slug]/lib/stripe/types";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { UtmObject } from "@/lib/utm";
+import { css } from "@/theme/css";
 
 type ProductCardProps = {
   aboType: AboTypes;
   aboPurchaseOptions: AboPurchaseOptions;
-  utm: UtmObject;
+  utm?: UtmObject;
 };
 
 const priceStr = (price: number, currency = "CHF") =>
@@ -51,7 +52,15 @@ export async function ProductCard({
           coupon.amount_off &&
           eligibleForCoupon &&
           price.unit_amount && (
-            <div className="bg-green-200/60 mb-8 p-4 border border-green-400/80 font-medium">
+            <div
+              className={css({
+                bg: "disabled",
+                mb: "8",
+                p: "4",
+                textStyle: "body",
+                fontWeight: "medium",
+              })}
+            >
               🎁 Für {priceStr(price.unit_amount - coupon.amount_off)} anstatt{" "}
               {priceStr(price.unit_amount)} bei der ersten Zahlung.
             </div>
@@ -67,7 +76,7 @@ export async function ProductCard({
         </ul>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full">
+        <Button asChild>
           <Link href={`/angebot/${aboType}`}>Zum Angebot</Link>
         </Button>
       </CardFooter>

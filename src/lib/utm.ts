@@ -1,4 +1,3 @@
-import { UtmObject } from "@/lib/utm";
 import * as v from "valibot";
 
 const utmParams = [

@@ -1,12 +1,18 @@
 import { ProductCard } from "./components/product-card";
 import { checkoutConfig } from "./angebot/[slug]/lib/config";
+import { container, grid } from "@/theme/patterns";
 
 export default async function Home() {
   const config = checkoutConfig;
 
   return (
-    <div className="flex flex-col gap-16">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className={container({ gap: "16" })}>
+      <div
+        className={grid({
+          gap: "4",
+          gridTemplateColumns: "[repeat(auto-fit, minmax(24rem, 1fr))]",
+        })}
+      >
         {Object.entries(config).map(([aboType, config]) => (
           <ProductCard
             key={aboType}
