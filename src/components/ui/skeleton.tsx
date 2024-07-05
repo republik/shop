@@ -1,4 +1,4 @@
-import { cx } from "@/theme/css";
+import { css, cx } from "@/theme/css";
 
 function Skeleton({
   className,
@@ -6,7 +6,10 @@ function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cx("animate-pulse rounded-md bg-muted", className)}
+      className={cx(
+        css({ bg: "neutral.200", animation: "pulse", borderRadius: "lg" }),
+        className
+      )}
       {...props}
     />
   );
