@@ -20,7 +20,7 @@ export const presetRepublik = definePreset({
         transform(props) {
           return {
             w: "full",
-            maxWidth: "maxContent",
+            maxWidth: "4xl",
             mx: "auto",
             ...props,
           };
