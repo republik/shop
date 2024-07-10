@@ -7,15 +7,20 @@ const buttonVariants = cva({
     display: "inline-flex",
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: "sm",
+    borderRadius: "md",
     fontSize: "md",
     lineHeight: "1",
-    fontWeight: "medium",
+    fontWeight: "bold",
     whiteSpace: "nowrap",
     transitionProperty:
       "color, background-color, border-color, text-decoration-color, fill, stroke",
     transitionTimingFunction: "in-out",
     transitionDuration: "fast",
+    cursor: "pointer",
+    "&:disabled": {
+      opacity: "50%",
+      cursor: "default",
+    },
   },
   variants: {
     variant: {
@@ -37,7 +42,7 @@ const buttonVariants = cva({
     },
     size: {
       default: {
-        px: "4",
+        px: "6",
         py: "3",
       },
       // default: "h-10 px-4 py-2",
