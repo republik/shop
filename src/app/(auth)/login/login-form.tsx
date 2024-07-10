@@ -82,30 +82,32 @@ function CodeForm({ email }: { email: string }) {
 
   return (
     <form action={action}>
-      {state.error && <ErrorMessage error={state.error} />}
-      <input name="email" type="hidden" value={email}></input>
+      <div className={vstack({ gap: "2", alignItems: "stretch", w: "lg" })}>
+        {state.error && <ErrorMessage error={state.error} />}
+        <input name="email" type="hidden" value={email}></input>
 
-      <label
-        htmlFor={codeId}
-        className={css({
-          fontWeight: "medium",
-          fontSize: "sm",
-        })}
-      >
-        Code
-      </label>
-      <input
-        id={codeId}
-        name="code"
-        type="text"
-        className={css({
-          borderWidth: "1px",
-          borderColor: "text",
-          borderRadius: "sm",
-          p: "2",
-        })}
-      ></input>
-      <Submit />
+        <label
+          htmlFor={codeId}
+          className={css({
+            fontWeight: "medium",
+            fontSize: "sm",
+          })}
+        >
+          Code
+        </label>
+        <input
+          id={codeId}
+          name="code"
+          type="text"
+          className={css({
+            borderWidth: "1px",
+            borderColor: "text",
+            borderRadius: "sm",
+            p: "2",
+          })}
+        ></input>
+        <Submit />
+      </div>
     </form>
   );
 }
