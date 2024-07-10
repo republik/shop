@@ -46,6 +46,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
         className={css({
           flexGrow: 1,
           mx: "auto",
+          p: "4",
         })}
       >
         {children}

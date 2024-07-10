@@ -39,9 +39,15 @@ export const checkoutConfig: Record<string, AboPurchaseOptions> = {
 
 export type AboTypes = keyof typeof checkoutConfig;
 
+export type AboMeta = {
+  title: string;
+  description: string
+  projectR: boolean
+}
+
 export const aboTypesMeta: Record<
   AboTypes,
-  { title: string; description: string; projectR: boolean }
+  AboMeta
 > = {
   MONTHLY: {
     title: "Monats-Abo",

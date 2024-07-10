@@ -108,13 +108,13 @@ export const presetRepublik = definePreset({
           },
           primary: {
             value: {
-              base: "#00AA00",
+              base: "#000000",
               _dark: "#00AA00",
             },
           },
           primaryHover: {
             value: {
-              base: "#008800",
+              base: "#242424",
               _dark: "#008800",
             },
           },
