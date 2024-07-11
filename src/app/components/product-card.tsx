@@ -10,14 +10,14 @@ import {
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
 import { AboTypes, aboTypesMeta } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
-import { AboPurchaseOptions } from "../angebot/[slug]/lib/stripe/types";
+import { AboConfiguration } from "../angebot/[slug]/lib/stripe/types";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { UtmObject } from "@/lib/utm";
 import { css } from "@/theme/css";
 
 type ProductCardProps = {
   aboType: AboTypes;
-  aboPurchaseOptions: AboPurchaseOptions;
+  aboPurchaseOptions: AboConfiguration;
   utm?: UtmObject;
 };
 

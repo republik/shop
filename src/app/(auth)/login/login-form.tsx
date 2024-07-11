@@ -2,8 +2,8 @@
 import { authorizeWithCode, signIn } from "@/app/(auth)/login/action";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
-import { hstack, vstack } from "@/theme/patterns";
-import { useId } from "react";
+import { vstack } from "@/theme/patterns";
+import { ReactNode, useId } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 
@@ -24,26 +24,58 @@ const ErrorMessage = ({ error }: { error: string }) => {
   );
 };
 
-export const Submit = () => {
-  const { pending } = useFormStatus();
-  return (
-    <Button type="submit" disabled={pending}>
-      Anmelden
-    </Button>
-  );
+type SubmitProps = {
+  children?: ReactNode;
 };
 
-export function LoginForm() {
+export function Submit(props: SubmitProps) {
+  const { pending } = useFormStatus();
+  return (
+    <Button
+      type="submit"
+      disabled={pending}
+      className={css({
+        w: "max",
+      })}
+    >
+      {props.children ?? "Anmelden"}
+    </Button>
+  );
+}
+
+interface LoginFormProps {
+  loginFormHeader?: ReactNode;
+  loginFormInfo?: ReactNode;
+  renderCodeFormHint?: CodeFormProps["renderHint"];
+  submitButtonText?: string;
+}
+
+export function LoginForm(props: LoginFormProps) {
   const emailId = useId();
   const [state, action] = useFormState(signIn, {});
 
   if (state.signIn && state.email) {
-    return <CodeForm email={state.email} />;
+    return (
+      <CodeForm
+        email={state.email}
+        renderHint={props.renderCodeFormHint}
+        info={props.loginFormInfo}
+        submitButtonText={props.submitButtonText}
+      />
+    );
   }
 
   return (
     <form action={action}>
-      <div className={vstack({ gap: "2", alignItems: "stretch", w: "lg" })}>
+      <div
+        className={vstack({
+          gap: "4",
+          alignItems: "stretch",
+          w: "full",
+          maxW: "lg",
+        })}
+      >
+        {props.loginFormHeader}
         {state.error && <ErrorMessage error={state.error} />}
         <label
           htmlFor={emailId}
@@ -65,13 +97,21 @@ export function LoginForm() {
             p: "2",
           })}
         ></input>
-        <Submit />
+        {props.loginFormInfo}
+        <Submit>{props.submitButtonText}</Submit>
       </div>
     </form>
   );
 }
 
-function CodeForm({ email }: { email: string }) {
+interface CodeFormProps {
+  email: string;
+  renderHint?: (email: string) => ReactNode;
+  info?: ReactNode;
+  submitButtonText?: string;
+}
+
+function CodeForm(props: CodeFormProps) {
   const codeId = useId();
 
   const [state, action] = useFormState(authorizeWithCode, {});
@@ -82,9 +122,17 @@ function CodeForm({ email }: { email: string }) {
 
   return (
     <form action={action}>
-      <div className={vstack({ gap: "2", alignItems: "stretch", w: "lg" })}>
+      <div
+        className={vstack({
+          gap: "4",
+          alignItems: "stretch",
+          w: "full",
+          maxW: "lg",
+        })}
+      >
+        {props.renderHint?.(props.email)}
         {state.error && <ErrorMessage error={state.error} />}
-        <input name="email" type="hidden" value={email}></input>
+        <input name="email" type="hidden" value={props.email}></input>
 
         <label
           htmlFor={codeId}
@@ -106,7 +154,8 @@ function CodeForm({ email }: { email: string }) {
             p: "2",
           })}
         ></input>
-        <Submit />
+        {props.info}
+        <Submit>{props.submitButtonText}</Submit>
       </div>
     </form>
   );

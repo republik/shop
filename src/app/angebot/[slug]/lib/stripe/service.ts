@@ -1,8 +1,10 @@
 import Stripe from "stripe";
-import { AboPurchaseOptions, AboTypeData } from "./types";
+import { AboConfiguration, AboStripeConfig } from "./types";
 
 export const StripeService = (stripe: Stripe) => ({
-  getAboTypeData: async (options: AboPurchaseOptions): Promise<AboTypeData> => {
+  getAboTypeData: async (
+    options: AboConfiguration
+  ): Promise<AboStripeConfig> => {
     const [product, price, coupon] = await Promise.all([
       stripe.products.retrieve(options.productId),
       stripe.prices.retrieve(options.priceId),

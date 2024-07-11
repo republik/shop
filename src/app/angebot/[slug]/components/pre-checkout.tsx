@@ -3,7 +3,7 @@
 import { MeQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { useCallback, useId, useMemo, useState } from "react";
 import { AboMeta, AboTypes } from "../lib/config";
-import { AboPurchaseOptions, AboTypeData } from "../lib/stripe/types";
+import { AboConfiguration, AboStripeConfig } from "../lib/stripe/types";
 import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
 import { css } from "@/theme/css";
@@ -12,8 +12,8 @@ import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 interface PreCheckoutProps {
   me: MeQuery["me"];
   aboType: AboTypes;
-  aboConfig: AboPurchaseOptions;
-  aboData: AboTypeData;
+  aboConfig: AboConfiguration;
+  aboData: AboStripeConfig;
   aboMeta: AboMeta;
   initialPrice?: number;
 }

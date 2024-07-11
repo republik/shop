@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Portrait } from "./portrait";
 import { fetchMe } from "@/lib/auth/fetch-me";
-import { css, cx } from "@/theme/css";
-import { container, stack } from "@/theme/patterns";
+import { css } from "@/theme/css";
+import { container } from "@/theme/patterns";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -39,7 +39,18 @@ export async function PageLayout({ children }: PageLayoutProps) {
           </Link>
         </div>
         <div>
-          <Portrait me={me} />
+          {me ? (
+            <Portrait me={me} />
+          ) : (
+            <Link
+              href="/login"
+              className={css({
+                fontSize: "xs",
+              })}
+            >
+              Anmelden
+            </Link>
+          )}
         </div>
       </header>
       <main

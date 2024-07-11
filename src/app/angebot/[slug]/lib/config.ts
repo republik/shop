@@ -1,13 +1,6 @@
-/**
- * ================================
- * Sample configuration for the checkout,
- * that we could extract to the CMS
- * ================================
- */
+import { AboConfiguration } from "./stripe/types";
 
-import { AboPurchaseOptions } from "./stripe/types";
-
-export const checkoutConfig: Record<string, AboPurchaseOptions> = {
+export const CheckoutConfig: Record<string, AboConfiguration> = {
   MONTHLY: {
     stripeAccount: "REPUBLIK",
     productId: "prod_Ccmy87SuPqF5OM",
@@ -37,18 +30,17 @@ export const checkoutConfig: Record<string, AboPurchaseOptions> = {
   },
 } as const;
 
-export type AboTypes = keyof typeof checkoutConfig;
+export type AboTypes = keyof typeof CheckoutConfig;
 
 export type AboMeta = {
   title: string;
-  description: string
-  projectR: boolean
-}
+  description: string;
+  projectR: boolean;
+  // Predicate to check if a logged in user can buy the product.
+  upsellNode?: JSX.Element;
+};
 
-export const aboTypesMeta: Record<
-  AboTypes,
-  AboMeta
-> = {
+export const aboTypesMeta: Record<AboTypes, AboMeta> = {
   MONTHLY: {
     title: "Monats-Abo",
     description: "Das Abo für XYZ",
