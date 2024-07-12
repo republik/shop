@@ -84,10 +84,8 @@ export async function authorizeWithCode(
     {
       email,
       tokens: [{ type: SignInTokenType.EmailCode, payload: code }],
-      consents: unauthorizedSessionQueryRes.data?.unauthorizedSession?.newUser
-        ? unauthorizedSessionQueryRes.data?.unauthorizedSession
-            ?.requiredConsents
-        : undefined,
+      consents:
+        unauthorizedSessionQueryRes.data?.unauthorizedSession?.requiredConsents,
     }
   );
 
