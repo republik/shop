@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install depencencies",
+      "type": "shell",
+      "command": "pnpm install",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "new",
+        "close": true
+      }
+    },
+    {
+      "label": "dev",
+      "type": "shell",
+      "command": "pnpm dev",
+      "presentation": {
+        "group": "dev",
+        "panel": "dedicated",
+        "close": true,
+        "showReuseMessage": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "type": "typescript",
+      "tsconfig": "tsconfig.json",
+      "option": "watch",
+      "problemMatcher": [{ "base": "$tsc-watch", "applyTo": "allDocuments" }],
+      "label": "tsc:watch",
+      "presentation": {
+        "group": "dev",
+        "panel": "dedicated",
+        "close": true,
+        "showReuseMessage": false
+      },
+      "isBackground": true
+    }
+  ]
+}
