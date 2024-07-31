@@ -19,6 +19,10 @@ declare global {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: string;
       // CURTAIN
       CURTAIN_BACKDOOR_URL?: string;
+      // SENTRY
+      SENTRY_ORG?: string;
+      SENTRY_PROJECT?: string;
+      NEXT_PUBLIC_SENTRY_DSN?: string;
     }
   }
 }

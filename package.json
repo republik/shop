@@ -17,6 +17,7 @@
     "@hookform/resolvers": "^3.6.0",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
+    "@sentry/nextjs": "^8",
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.5.0",
     "@urql/core": "^5.0.4",
