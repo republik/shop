@@ -6,11 +6,16 @@ import "@/theme/styles.css";
 import "@/theme/fonts.css";
 import { css } from "@/theme/css";
 import "./globals.css";
+import getTranslation from "next-translate/useTranslation";
 
-export const metadata: Metadata = {
-  title: "Shop - Republik",
-  description: "",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = getTranslation("common");
+
+  return {
+    title: t("common:meta.title"),
+    description: t("common:meta.descrpition"),
+  };
+}
 
 export default function RootLayout({
   children,

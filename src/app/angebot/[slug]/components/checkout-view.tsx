@@ -31,7 +31,7 @@ export function CheckoutView({
         stripe={stripe}
         options={{
           clientSecret,
-          onComplete() {
+          onComplete: () => {
             setSuccess(true);
           },
         }}

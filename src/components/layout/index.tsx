@@ -3,6 +3,7 @@ import { Portrait } from "./portrait";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
+import useTranslation from "next-translate/useTranslation";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -10,6 +11,7 @@ interface PageLayoutProps {
 
 export async function PageLayout({ children }: PageLayoutProps) {
   const me = await fetchMe();
+  const { t } = useTranslation();
   return (
     <div
       className={css({
@@ -48,7 +50,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
                 fontSize: "xs",
               })}
             >
-              Anmelden
+              {t("login:action")}
             </Link>
           )}
         </div>
@@ -63,7 +65,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
         {children}
       </main>
       <footer className={container({ p: "4" })}>
-        <Link href="/impressum">Impressum</Link>
+        <Link href="/impressum">{t("common:imprint")}</Link>
       </footer>
     </div>
   );

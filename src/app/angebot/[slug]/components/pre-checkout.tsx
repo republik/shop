@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
 import { css } from "@/theme/css";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import Trans from "next-translate/Trans";
+import useTranslation from "next-translate/useTranslation";
 
 interface PreCheckoutProps {
   me: MeQuery["me"];
@@ -20,6 +22,7 @@ interface PreCheckoutProps {
 
 export function PreCheckout(props: PreCheckoutProps) {
   const { aboData, aboType, aboConfig, initialPrice, me } = props;
+  const { t } = useTranslation("shop");
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
@@ -100,25 +103,34 @@ export function PreCheckout(props: PreCheckoutProps) {
             gap: "[19px]",
           })}
         >
-          <p
-            className={css({
-              textStyle: "2xl",
-              fontWeight: "medium",
-            })}
-          >
-            {renderPrice(
-              aboConfig.customPrice
-                ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                : aboData.price.unit_amount
-            )}
-          </p>{" "}
-          <p
-            className={css({
-              fontSize: "sm",
-            })}
-          >
-            pro {aboData.price.recurring?.interval}
-          </p>
+          <Trans
+            i18nKey="checkout:preCheckout.pricePerInterval"
+            values={{
+              price: renderPrice(
+                aboConfig.customPrice
+                  ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
+                  : aboData.price.unit_amount
+              ),
+              interval: t(
+                `shop:preCheckout.intervals.${aboData.price.recurring?.interval}`
+              ),
+            }}
+            components={[
+              <p
+                key="price"
+                className={css({
+                  textStyle: "2xl",
+                  fontWeight: "medium",
+                })}
+              />,
+              <p
+                key="interval"
+                className={css({
+                  fontSize: "sm",
+                })}
+              />,
+            ]}
+          />
         </div>
       </div>
       {aboConfig.customPrice && (
@@ -130,7 +142,9 @@ export function PreCheckout(props: PreCheckoutProps) {
           })}
         >
           <label htmlFor={priceId} className="sr-only">
-            Ihr gewählter Preis ist CHF {userPrice} / Jahr
+            {t("checkout:preCheckout.cutomPrice", {
+              price: userPrice,
+            })}
           </label>
           <input
             id={priceId}
@@ -156,7 +170,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         type="submit"
         disabled={isLoading}
       >
-        Kaufen
+        {t("checkout:preCheckout.action")}
       </Button>
     </form>
   );

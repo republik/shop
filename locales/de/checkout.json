@@ -1,0 +1,50 @@
+{
+    "actions": {
+        "change": "Ändern",
+        "buy": "Kaufen",
+        "next": "Weiter"
+    },
+    "loginStep": {
+        "title": "Konto",
+        "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <0>Datenschutzbestimmung</0>.",
+        "email": {
+            "title": "Login oder Konto eröffnen",
+            "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik Konto, um den Kauf abzuschliessen."
+        },
+        "code": {
+            "changeEmailAction": "E-Mail-Adresse ändern",
+            "title": "Code",
+            "description": "Wir haben Ihnen einen Code an {{email}} geschickt. Geben Sie ihn ein um ihre E-Mail Adresse zu bestätigen."
+        }
+    },
+    "preCheckout": {
+        "summary": {
+            "title": "{{product}} kaufen",
+            "table": {
+                "heading": {
+                    "item": "Artikel",
+                    "currency": "Währung",
+                    "price": "Preis"
+                },
+                "summary": "Total, jetzt zu bezahlen"
+            },
+            "success": {
+                "title": "Vielen Dank für Ihren Kauf",
+                "description": "Sie werden in Kürze weitergeleitet",
+                "action": "Zum Magazin"
+            }
+        },
+        "intervals": {
+            "month": "Monat",
+            "year": "Jahr"
+        },
+        "pricePerInterval": "<0>{{price}}</0><1>pro {{interval}}</1>",
+        "action": "Kaufen",
+        "customPrice": "Ihr gewählter Preis ist CHF {{price}} / Jahr"
+    },
+    "success": {
+        "title": "Vielen Dank für Ihren Kauf",
+        "description": "Sie werden in Kürze weitergeleitet",
+        "action": "Zum Magazin"
+    }
+}

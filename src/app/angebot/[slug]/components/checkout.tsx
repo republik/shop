@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { initStripe } from "../lib/stripe/server";
 import { CheckoutView } from "./checkout-view";
 import { AboConfiguration } from "../lib/stripe/types";
+import { SuccessView } from "./success-view";
 
 export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
 
@@ -18,7 +19,7 @@ export default async function Checkout(props: CheckoutProps) {
   const session = await stripe.checkout.sessions.retrieve(sessionId!);
 
   if (session.status === "complete") {
-    return <p>Thanks for your purchase!</p>;
+    return <SuccessView />;
   }
 
   if (session.status === "expired") {
@@ -40,5 +41,5 @@ export default async function Checkout(props: CheckoutProps) {
   }
 
   // TODO: sentry? this should never happen.
-  throw new Error("Oh no");
+  throw new Error("Invalid checkout state");
 }

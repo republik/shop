@@ -2,6 +2,8 @@
 
 import { LoginForm } from "@/app/(auth)/login/login-form";
 import { css } from "@/theme/css";
+import useTranslation from "next-translate/useTranslation";
+import Trans from "next-translate/Trans";
 import Link from "next/link";
 
 const PRIVACY_POLICY_HREF = `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`;
@@ -11,9 +13,10 @@ interface LoginViewProps {
 }
 
 export function LoginView(props: LoginViewProps) {
+  const { t } = useTranslation("shop");
   return (
     <LoginForm
-      submitButtonText="Weiter"
+      submitButtonText={t("checkout:actions.next")}
       loginFormHeader={
         <>
           <h1
@@ -22,12 +25,9 @@ export function LoginView(props: LoginViewProps) {
               fontWeight: "bold",
             })}
           >
-            Login oder Konto eröffnen
+            {t("checkout:loginStep.email.title")}
           </h1>
-          <p>
-            Loggen Sie sich ein, oder erstellen Sie ein Republik Konto, um den
-            Kauf abzuschliessen.
-          </p>
+          <p>{t("checkout:loginStep.email.description")}</p>
         </>
       }
       loginFormInfo={
@@ -37,20 +37,25 @@ export function LoginView(props: LoginViewProps) {
               fontSize: "sm",
             })}
           >
-            Mit der Anmeldung akzeptieren Sie die{" "}
-            <Link href={PRIVACY_POLICY_HREF} target="_blank">
-              Datenschutzbestimmungen
-            </Link>
-            .
+            <Trans
+              i18nKey="checkout:loginStep.privacyPolicy"
+              components={[
+                <Link
+                  key="privacyPolicyLink"
+                  href={PRIVACY_POLICY_HREF}
+                  target="_blank"
+                />,
+              ]}
+            />
           </p>
         </>
       }
       renderCodeFormHint={(email) => (
         <>
           <p>
-            Wir haben Ihnen einen Code an
-            {email} geschickt. Geben Sie ihn ein um ihre E-Mail Adresse zu
-            bestätigen.
+            {t("checkout:loginStep.code.description", {
+              email,
+            })}
           </p>
           <button
             onClick={() => props.logoutAction()}
@@ -59,7 +64,7 @@ export function LoginView(props: LoginViewProps) {
               alignSelf: "flex-start",
             })}
           >
-            E-Mail-Adresse ändern
+            {t("checkout:loginStep.code.changeEmailAction")}
           </button>
         </>
       )}

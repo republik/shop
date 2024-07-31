@@ -14,6 +14,7 @@ import {
   MeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginView } from "./components/login-view";
+import useTranslation from "next-translate/useTranslation";
 
 export default async function ProductPage({
   params,
@@ -22,6 +23,7 @@ export default async function ProductPage({
   params: { slug: string };
   searchParams: { price: string };
 }) {
+  const { t } = useTranslation("shop");
   const aboConfig = CheckoutConfig[params.slug];
   const aboMeta = aboTypesMeta[params.slug];
   const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
@@ -126,7 +128,9 @@ export default async function ProductPage({
           marginBottom: "4",
         })}
       >
-        {aboMeta.title} kaufen
+        {t("checkout:preCheckout.summary.title", {
+          product: aboMeta.title,
+        })}
       </h1>
       <Stepper
         currentStep={steps.reduce(

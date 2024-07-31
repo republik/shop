@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
+import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { ComponentPropsWithoutRef } from "react";
 
@@ -10,6 +11,7 @@ const CheckCircleIcon = (props: ComponentPropsWithoutRef<"svg">) => (
 );
 
 export function SuccessView() {
+  const { t } = useTranslation("shop");
   // @TODO/BACKEND - only redirect after we have verified that the purchse was successful.
   return (
     <div
@@ -32,14 +34,14 @@ export function SuccessView() {
           fontWeight: "bold",
         })}
       >
-        Vielen Dank für Ihren Kauf
+        {t("checkout:success.title")}
       </h1>
-      <p>Sie werden in Kürze weitergeleitet</p>
+      <p> {t("checkout:success.description")}</p>
       <Button asChild className={css({ width: "max" })}>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
         >
-          Zum Magazin
+          {t("checkout:success.action")}
         </Link>
       </Button>
     </div>

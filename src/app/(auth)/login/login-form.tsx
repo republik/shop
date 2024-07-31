@@ -6,8 +6,10 @@ import { vstack } from "@/theme/patterns";
 import { ReactNode, useId } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
+import useTranslation from "next-translate/useTranslation";
 
 const ErrorMessage = ({ error }: { error: string }) => {
+  const { t } = useTranslation("error");
   return (
     <div
       className={css({
@@ -17,7 +19,7 @@ const ErrorMessage = ({ error }: { error: string }) => {
       })}
     >
       <h2 className={css({ textStyle: "h3Sans", mb: "2" })}>
-        Ein Fehler ist aufgetreten
+        {t("error:generic")}
       </h2>
       <p>{error}</p>
     </div>
@@ -30,6 +32,7 @@ type SubmitProps = {
 
 export function Submit(props: SubmitProps) {
   const { pending } = useFormStatus();
+  const { t } = useTranslation("login");
   return (
     <Button
       type="submit"
@@ -38,7 +41,7 @@ export function Submit(props: SubmitProps) {
         w: "max",
       })}
     >
-      {props.children ?? "Anmelden"}
+      {props.children ?? t("login:action")}
     </Button>
   );
 }
