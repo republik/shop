@@ -11,7 +11,7 @@ const CheckCircleIcon = (props: ComponentPropsWithoutRef<"svg">) => (
 );
 
 export function SuccessView() {
-  const { t } = useTranslation("shop");
+  const { t } = useTranslation();
   // @TODO/BACKEND - only redirect after we have verified that the purchse was successful.
   return (
     <div

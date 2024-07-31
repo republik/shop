@@ -22,7 +22,7 @@ interface PreCheckoutProps {
 
 export function PreCheckout(props: PreCheckoutProps) {
   const { aboData, aboType, aboConfig, initialPrice, me } = props;
-  const { t } = useTranslation("shop");
+  const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)

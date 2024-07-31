@@ -23,7 +23,7 @@ export default async function ProductPage({
   params: { slug: string };
   searchParams: { price: string };
 }) {
-  const { t } = useTranslation("shop");
+  const { t } = useTranslation();
   const aboConfig = CheckoutConfig[params.slug];
   const aboMeta = aboTypesMeta[params.slug];
   const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;

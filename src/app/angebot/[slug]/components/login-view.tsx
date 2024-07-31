@@ -13,7 +13,7 @@ interface LoginViewProps {
 }
 
 export function LoginView(props: LoginViewProps) {
-  const { t } = useTranslation("shop");
+  const { t } = useTranslation();
   return (
     <LoginForm
       submitButtonText={t("checkout:actions.next")}
