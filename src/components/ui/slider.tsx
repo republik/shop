@@ -17,6 +17,8 @@ const Slider = React.forwardRef<
         width: "full",
         alignItems: "center",
         height: "4",
+        touchAction: "none,
+        userSelect: "none",
       }),
       className
     )}
