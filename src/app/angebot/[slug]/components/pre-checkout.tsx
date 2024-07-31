@@ -10,6 +10,7 @@ import { css } from "@/theme/css";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 import Trans from "next-translate/Trans";
 import useTranslation from "next-translate/useTranslation";
+import { Slider } from "@/components/ui/slider";
 
 interface PreCheckoutProps {
   me: MeQuery["me"];
@@ -112,7 +113,7 @@ export function PreCheckout(props: PreCheckoutProps) {
                   : aboData.price.unit_amount
               ),
               interval: t(
-                `shop:preCheckout.intervals.${aboData.price.recurring?.interval}`
+                `checkout:preCheckout.intervals.${aboConfig.customPrice ? "year" : aboData.price.recurring?.interval}`
               ),
             }}
             components={[
@@ -146,8 +147,21 @@ export function PreCheckout(props: PreCheckoutProps) {
               price: userPrice,
             })}
           </label>
+          <Slider
+            id={priceId}
+            name="price"
+            min={240}
+            max={1000}
+            step={5}
+            value={[userPrice]}
+            onValueChange={(e) => setUserPrice(e?.[0])}
+          />
           <input
             id={priceId}
+            className={css({
+              visibility: "hidden",
+            })}
+            readOnly
             type="range"
             name="price"
             min={240}

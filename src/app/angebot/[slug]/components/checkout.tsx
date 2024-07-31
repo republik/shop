@@ -40,6 +40,5 @@ export default async function Checkout(props: CheckoutProps) {
     );
   }
 
-  // TODO: sentry? this should never happen.
   throw new Error("Invalid checkout state");
 }
