@@ -16,6 +16,7 @@ const Slider = React.forwardRef<
         display: "flex",
         width: "full",
         alignItems: "center",
+        height: "4",
       }),
       className
     )}
