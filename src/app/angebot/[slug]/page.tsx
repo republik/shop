@@ -51,7 +51,7 @@ export default async function ProductPage({
   }
 
   const loginStep: Step = {
-    name: "Konto",
+    name: t("checkout:loginStep.title"),
     detail: me ? <span>{me.email}</span> : undefined,
     changeAction: me ? logout : undefined,
     content: <LoginView logoutAction={logout} />,
@@ -64,7 +64,7 @@ export default async function ProductPage({
   }
 
   const productDetails: Step = {
-    name: "Abonnement",
+    name: t("checkout:preCheckout.title"),
     detail: checkoutSession ? (
       <span>
         {checkoutSession.currency?.toUpperCase()}{" "}
@@ -93,7 +93,7 @@ export default async function ProductPage({
   };
 
   const checkoutStep: Step = {
-    name: "Bezahlen",
+    name: t("checkout:checkout.title"),
     content: checkoutSession ? (
       <Checkout
         sessionId={checkoutSession.id}
