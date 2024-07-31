@@ -1,14 +1,12 @@
 "use server";
 
 import { fetchMe } from "@/lib/auth/fetch-me";
-import { AboTypes, checkoutConfig } from "./lib/config";
+import { AboTypes, CheckoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
 import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
 import { cookies } from "next/headers";
 import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
-import { getClient } from "@/lib/graphql/client";
-import { gql } from "#graphql/republik-api/__generated__/gql";
 
 function getUTM(): UtmObject {
   const utmCookie = cookies().get(UTM_COOKIE_NAME);
@@ -29,7 +27,7 @@ async function initializeCheckout(
   options: CheckoutOptions
 ): Promise<void> {
   const me = await fetchMe();
-  const aboConfig = checkoutConfig[aboType];
+  const aboConfig = CheckoutConfig[aboType];
   const stripe = await initStripe(aboConfig.stripeAccount);
 
   const [price, product, coupon] = await Promise.all([
@@ -76,6 +74,9 @@ async function initializeCheckout(
     subscription_data: {
       metadata: { ...utmObj },
     },
+    consent_collection: {
+      terms_of_service: "required",
+    },
   });
 
   if (!session.client_secret) {
@@ -95,16 +96,16 @@ export async function createCheckout(formData: FormData): Promise<{}> {
     throw new Error("Abo type not given");
   }
 
-  if (!Object.keys(checkoutConfig).includes(aboType)) {
+  if (!Object.keys(CheckoutConfig).includes(aboType)) {
     throw new Error(
       `Invalid AboType '${aboType}'. AboType must be one of ${String(
-        Object.keys(checkoutConfig)
+        Object.keys(CheckoutConfig)
       )}`
     );
   }
 
   const me = await fetchMe();
-  const aboConfig = checkoutConfig[aboType as AboTypes];
+  const aboConfig = CheckoutConfig[aboType as AboTypes];
 
   await initializeCheckout(aboType, {
     email: me?.email || undefined,
@@ -114,8 +115,4 @@ export async function createCheckout(formData: FormData): Promise<{}> {
   });
 
   redirect(`/angebot/${aboType}`);
-}
-
-export async function logoutAndReload() {
-  // getClient().request();
 }

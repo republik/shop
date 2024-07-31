@@ -1,3 +1,7 @@
+p a {
+  text-decoration: underline;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

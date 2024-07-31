@@ -1,18 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { AboPurchaseOptions } from "../lib/stripe/types";
+import { AboConfiguration } from "../lib/stripe/types";
 import { initStripe } from "../lib/stripe/client";
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { SuccessView } from "./success-view";
-import { toast } from "sonner";
 
 interface CheckoutViewProps {
   clientSecret: string;
-  stripeAccount: AboPurchaseOptions["stripeAccount"];
+  stripeAccount: AboConfiguration["stripeAccount"];
 }
 
 export function CheckoutView({
@@ -32,7 +31,7 @@ export function CheckoutView({
         stripe={stripe}
         options={{
           clientSecret,
-          onComplete() {
+          onComplete: () => {
             setSuccess(true);
           },
         }}

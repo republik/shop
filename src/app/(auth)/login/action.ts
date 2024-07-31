@@ -6,8 +6,24 @@ import {
   SignInMutation,
   SignInTokenType,
   SignOutDocument,
+  UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/urql-client";
+import { CombinedError } from "@urql/core";
+
+function handleError(
+  error: CombinedError | undefined
+): { error: string } | undefined {
+  if (error?.networkError) {
+    return { error: "Die Verbindung zur Republik schlug fehl" };
+  }
+
+  if (error?.graphQLErrors) {
+    return {
+      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
+    };
+  }
+}
 
 export async function signIn(
   prevState: any,
@@ -26,14 +42,9 @@ export async function signIn(
     tokenType: SignInTokenType.EmailCode,
   });
 
-  if (error?.networkError) {
-    return { error: "Die Verbindung zur Republik schlug fehl" };
-  }
-
-  if (error?.graphQLErrors) {
-    return {
-      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
-    };
+  const errResponse = handleError(error);
+  if (errResponse) {
+    return errResponse;
   }
 
   return { signIn: data?.signIn, email };
@@ -43,14 +54,9 @@ export async function signOut(prevState: any, formData: FormData) {
   const gql = getClient();
   const { error, data } = await gql.mutation(SignOutDocument, {});
 
-  if (error?.networkError) {
-    return { error: "Die Verbindung zur Republik schlug fehl" };
-  }
-
-  if (error?.graphQLErrors) {
-    return {
-      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
-    };
+  const errResponse = handleError(error);
+  if (errResponse) {
+    return errResponse;
   }
 
   return { success: data?.signOut };
@@ -65,20 +71,28 @@ export async function authorizeWithCode(
   const email = formData.get("email") as string;
   const code = (formData.get("code") as string)?.replace(/[^0-9]/g, "");
 
-  const { error, data } = await gql.mutation(AuthorizeSessionDocument, {
-    email,
-    tokens: [{ type: SignInTokenType.EmailCode, payload: code }],
-  });
+  const unauthorizedSessionQueryRes = await gql.query(
+    UnauthorizedSessionDocument,
+    {
+      email,
+      token: { type: SignInTokenType.EmailCode, payload: code },
+    }
+  );
 
-  if (error?.networkError) {
-    return { error: "Die Verbindung zur Republik schlug fehl" };
+  const authorizeSessionMutationRes = await gql.mutation(
+    AuthorizeSessionDocument,
+    {
+      email,
+      tokens: [{ type: SignInTokenType.EmailCode, payload: code }],
+      consents:
+        unauthorizedSessionQueryRes.data?.unauthorizedSession?.requiredConsents,
+    }
+  );
+
+  const errResponse = handleError(authorizeSessionMutationRes.error);
+  if (errResponse) {
+    return errResponse;
   }
 
-  if (error?.graphQLErrors) {
-    return {
-      error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
-    };
-  }
-
-  return { success: data?.authorizeSession };
+  return { success: authorizeSessionMutationRes.data?.authorizeSession };
 }

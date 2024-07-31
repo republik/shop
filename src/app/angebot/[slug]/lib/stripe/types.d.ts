@@ -2,7 +2,7 @@ import Stripe from "stripe";
 
 export type StripeAccount = "REPUBLIK" | "PROJECT-R";
 
-export interface AboPurchaseOptions {
+export interface AboConfiguration {
   stripeAccount: StripeAccount;
   productId: string;
   priceId: string;
@@ -10,7 +10,7 @@ export interface AboPurchaseOptions {
   customPrice?: boolean;
 }
 
-export type AboTypeData = {
+export type AboStripeConfig = {
   product: Stripe.Product;
   price: Stripe.Price;
   coupon: Stripe.Coupon | null;

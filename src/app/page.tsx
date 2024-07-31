@@ -1,9 +1,9 @@
 import { ProductCard } from "./components/product-card";
-import { checkoutConfig } from "./angebot/[slug]/lib/config";
+import { CheckoutConfig } from "./angebot/[slug]/lib/config";
 import { container, grid } from "@/theme/patterns";
 
 export default async function Home() {
-  const config = checkoutConfig;
+  const config = CheckoutConfig;
 
   return (
     <div className={container({ gap: "16" })}>
