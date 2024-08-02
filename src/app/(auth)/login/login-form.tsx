@@ -7,6 +7,7 @@ import { ReactNode, useId } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import useTranslation from "next-translate/useTranslation";
+import { redirect } from "next/navigation";
 
 const ErrorMessage = ({ error }: { error: string }) => {
   const { t } = useTranslation("error");
@@ -120,7 +121,8 @@ function CodeForm(props: CodeFormProps) {
   const [state, action] = useFormState(authorizeWithCode, {});
 
   if (state.success) {
-    return <div>Yay</div>;
+    redirect("/");
+    return null;
   }
 
   return (
