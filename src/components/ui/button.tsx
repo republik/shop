@@ -33,6 +33,13 @@ const buttonVariants = cva({
           bg: "primaryHover",
         },
       },
+      ghost: {
+        bg: "transparent",
+        color: "current",
+        _hover: {
+          textDecoration: "underline",
+        },
+      },
       //         destructive:
       //           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       //         outline:

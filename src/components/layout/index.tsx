@@ -4,6 +4,11 @@ import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
 import useTranslation from "next-translate/useTranslation";
+import {
+  SignOutDocument,
+  SignOutMutation,
+} from "#graphql/republik-api/__generated__/gql/graphql";
+import { getClient } from "@/lib/graphql/client";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -12,6 +17,12 @@ interface PageLayoutProps {
 export async function PageLayout({ children }: PageLayoutProps) {
   const me = await fetchMe();
   const { t } = useTranslation();
+
+  async function signOut(): Promise<SignOutMutation> {
+    "use server";
+    return getClient().request(SignOutDocument);
+  }
+
   return (
     <div
       className={css({
@@ -42,7 +53,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
         </div>
         <div>
           {me ? (
-            <Portrait me={me} />
+            <Portrait me={me} handleSignOut={signOut} />
           ) : (
             <Link
               href="/login"
