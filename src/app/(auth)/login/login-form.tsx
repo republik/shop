@@ -7,6 +7,8 @@ import { ReactNode, useId } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import useTranslation from "next-translate/useTranslation";
+import { redirect } from "next/navigation";
+import { CodeInput } from "./code-input";
 
 const ErrorMessage = ({ error }: { error: string }) => {
   const { t } = useTranslation("error");
@@ -120,7 +122,7 @@ function CodeForm(props: CodeFormProps) {
   const [state, action] = useFormState(authorizeWithCode, {});
 
   if (state.success) {
-    return <div>Yay</div>;
+    redirect("/");
   }
 
   return (
@@ -136,7 +138,6 @@ function CodeForm(props: CodeFormProps) {
         {props.renderHint?.(props.email)}
         {state.error && <ErrorMessage error={state.error} />}
         <input name="email" type="hidden" value={props.email}></input>
-
         <label
           htmlFor={codeId}
           className={css({
@@ -146,7 +147,7 @@ function CodeForm(props: CodeFormProps) {
         >
           Code
         </label>
-        <input
+        {/* <input
           id={codeId}
           name="code"
           type="text"
@@ -156,7 +157,17 @@ function CodeForm(props: CodeFormProps) {
             borderRadius: "sm",
             p: "2",
           })}
-        ></input>
+        ></input> */}
+        <div
+          className={css({
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          })}
+        >
+          <CodeInput id={codeId} name="code" />
+        </div>
+
         {props.info}
         <Submit>{props.submitButtonText}</Submit>
       </div>
