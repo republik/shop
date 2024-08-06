@@ -1,14 +1,7 @@
 import { css, cx } from "@/theme/css";
-import { OTPInput, SlotProps } from "input-otp";
+import { OTPInput } from "input-otp";
 import { ComponentPropsWithoutRef } from "react";
-
-function FakeCaret() {
-  return (
-    <div className="absolute pointer-events-none inset-0 flex items-center justify-center animate-caret-blink">
-      <div className="w-px h-8 bg-white" />
-    </div>
-  );
-}
+import { toast } from "sonner";
 
 export function CodeInput(
   props: Omit<
@@ -25,6 +18,13 @@ export function CodeInput(
         gap: "4",
       })}
       maxLength={6}
+      onPaste={(e) => {
+        const pastedText = e.clipboardData.getData("text/plain");
+        const trimmedText = pastedText.trim().replace(/[-.,_ ]/g, "");
+        if (trimmedText.length === 6) {
+          props.onChange?.(trimmedText);
+        }
+      }}
       render={({ slots }) => (
         <>
           {[

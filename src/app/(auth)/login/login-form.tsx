@@ -3,7 +3,7 @@ import { authorizeWithCode, signIn } from "@/app/(auth)/login/action";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { vstack } from "@/theme/patterns";
-import { ReactNode, useId } from "react";
+import { ReactNode, useId, useState } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import useTranslation from "next-translate/useTranslation";
@@ -118,6 +118,7 @@ interface CodeFormProps {
 
 function CodeForm(props: CodeFormProps) {
   const codeId = useId();
+  const [code, setCode] = useState("");
 
   const [state, action] = useFormState(authorizeWithCode, {});
 
@@ -147,17 +148,6 @@ function CodeForm(props: CodeFormProps) {
         >
           Code
         </label>
-        {/* <input
-          id={codeId}
-          name="code"
-          type="text"
-          className={css({
-            borderWidth: "1px",
-            borderColor: "text",
-            borderRadius: "sm",
-            p: "2",
-          })}
-        ></input> */}
         <div
           className={css({
             display: "flex",
@@ -165,7 +155,12 @@ function CodeForm(props: CodeFormProps) {
             justifyContent: "center",
           })}
         >
-          <CodeInput id={codeId} name="code" />
+          <CodeInput
+            id={codeId}
+            name="code"
+            value={code}
+            onChange={(val) => setCode(val)}
+          />
         </div>
 
         {props.info}
