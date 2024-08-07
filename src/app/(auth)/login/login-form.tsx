@@ -39,6 +39,7 @@ export function Submit(props: SubmitProps) {
     <Button
       type="submit"
       disabled={pending}
+      loading={pending}
       className={css({
         w: "max",
       })}
