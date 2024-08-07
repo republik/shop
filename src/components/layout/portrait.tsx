@@ -5,7 +5,6 @@ import {
   MeQuery,
   SignOutMutation,
 } from "../../../graphql/republik-api/__generated__/gql/graphql";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { useCallback } from "react";
 import { toast } from "sonner";
@@ -23,13 +22,15 @@ type PortraitProps = {
 
 export function Portrait({ me, handleSignOut }: PortraitProps) {
   const signOut = useCallback(() => {
+    const loadingToast = toast.loading("Sie werden abgemeldet…");
     handleSignOut()
       .then(() => window.location.reload())
-      .catch(() =>
+      .catch(() => {
+        toast.dismiss(loadingToast);
         toast.error("Abmelden fehlgeschlagen.", {
           description: "Bitte Versuchen Sie es erneut",
-        })
-      );
+        });
+      });
   }, [handleSignOut]);
 
   return (
