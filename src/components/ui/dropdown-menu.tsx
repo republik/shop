@@ -77,10 +77,20 @@ const DropdownMenuContent = React.forwardRef<
           minWidth: "[8rem]",
           overflow: "hidden",
           borderRadius: "md",
-          // border:
+          borderWidth: "1px",
+          borderStyle: "solid",
+          borderColor: "divider",
           bg: "background",
+          // bg: 'popover'
+          // color: 'popover-foreground'
           p: "1",
           shadow: "md",
+          '&[data-state="open"]': {},
+          '&[data-state="closed]': {},
+          '&[data-side="left"]': {},
+          '&[data-side="top"]': {},
+          '&[data-side="right"]': {},
+          '&[data-side="bottom"]': {},
         }),
         className
       )}
@@ -99,10 +109,6 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cx(
-      // "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5",
-      // "text-sm outline-none transition-colors",
-      // "focus:bg-accent focus:text-accent-foreground",
-      // "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       css({
         position: "relative",
         cursor: "default",
@@ -115,6 +121,10 @@ const DropdownMenuItem = React.forwardRef<
         fontSize: "sm",
         outline: "none",
         transition: "colors",
+        w: "full",
+        _hover: {
+          cursor: "pointer",
+        },
         _focus: {
           bg: "gray.100",
           // bg: 'accent',
@@ -140,13 +150,44 @@ const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cx(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      css({
+        position: "relative",
+        cursor: "default",
+        userSelect: "none",
+        borderRadius: "sm",
+        py: "1.5",
+        pl: "8",
+        pr: "2",
+        fontSize: "sm",
+        outline: "none",
+        transition: "colors",
+        _focus: {
+          // bg: 'acccent',
+          // color: 'accent-foreground'
+        },
+        _disabled: {
+          pointerEvents: "none",
+          opacity: "0.5",
+        },
+      }),
       className
     )}
     checked={checked}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span
+      className={cx(
+        css({
+          position: "absolute",
+          left: "2",
+          display: "flex",
+          h: "3.5",
+          w: "3.5",
+          alignItems: "center",
+          justifyContent: "center",
+        })
+      )}
+    >
       <DropdownMenuPrimitive.ItemIndicator>
         <Check className="h-4 w-4" />
       </DropdownMenuPrimitive.ItemIndicator>
@@ -164,14 +205,50 @@ const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cx(
-      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      css({
+        position: "relative",
+        display: "flex",
+        cursor: "default",
+        alignItems: "center",
+        borderRadius: "sm",
+        py: "1.5",
+        pl: "8",
+        pr: "2",
+        fontSize: "sm",
+        outline: "none",
+        transition: "colors",
+        _focus: {
+          // bg: 'accent'
+          // color: 'accent-foreground
+        },
+        _disabled: {
+          pointerEvents: "none",
+          opacity: "0.5",
+        },
+      }),
       className
     )}
     {...props}
   >
-    <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+    <span
+      className={css({
+        position: "absolute",
+        left: "2",
+        h: "3.5",
+        w: "3.5",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      })}
+    >
       <DropdownMenuPrimitive.ItemIndicator>
-        <Circle className="h-2 w-2 fill-current" />
+        <Circle
+          className={css({
+            h: "2",
+            w: "2",
+            fill: "current",
+          })}
+        />
       </DropdownMenuPrimitive.ItemIndicator>
     </span>
     {children}
@@ -188,7 +265,6 @@ const DropdownMenuLabel = React.forwardRef<
   <DropdownMenuPrimitive.Label
     ref={ref}
     className={cx(
-      // "px-2 py-1.5 text-sm font-semibold",
       css({
         px: "2",
         py: "1.5",
@@ -210,7 +286,6 @@ const DropdownMenuSeparator = React.forwardRef<
   <DropdownMenuPrimitive.Separator
     ref={ref}
     className={cx(
-      // "-mx-1 my-1 h-px bg-muted",
       css({ mx: "-1", my: "1", h: "[1px]", bg: "divider" }),
       className
     )}
@@ -225,7 +300,15 @@ const DropdownMenuShortcut = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cx("ml-auto text-xs tracking-widest opacity-60", className)}
+      className={cx(
+        css({
+          ml: "auto",
+          fontSize: "xs",
+          letterSpacing: "widest",
+          opacity: "0.6",
+        }),
+        className
+      )}
       {...props}
     />
   );
