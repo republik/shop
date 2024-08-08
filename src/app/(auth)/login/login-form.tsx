@@ -39,6 +39,7 @@ export function Submit(props: SubmitProps) {
     <Button
       type="submit"
       disabled={pending}
+      loading={pending}
       className={css({
         w: "max",
       })}
@@ -138,7 +139,7 @@ function CodeForm(props: CodeFormProps) {
       >
         {props.renderHint?.(props.email)}
         {state.error && <ErrorMessage error={state.error} />}
-        <input name="email" type="hidden" value={props.email}></input>
+        <input name="email" type="hidden" value={props.email} readOnly></input>
         <label
           htmlFor={codeId}
           className={css({

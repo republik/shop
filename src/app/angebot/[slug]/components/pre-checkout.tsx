@@ -182,6 +182,7 @@ export function PreCheckout(props: PreCheckoutProps) {
           width: "max",
         })}
         type="submit"
+        loading={isLoading}
         disabled={isLoading}
       >
         {t("checkout:preCheckout.action")}

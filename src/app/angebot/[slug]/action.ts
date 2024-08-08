@@ -7,6 +7,8 @@ import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
 import { cookies } from "next/headers";
 import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
+import { MeQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import { StripeAccount } from "./lib/stripe/types";
 
 function getUTM(): UtmObject {
   const utmCookie = cookies().get(UTM_COOKIE_NAME);
@@ -14,6 +16,20 @@ function getUTM(): UtmObject {
     return {};
   }
   return fromUtmCookie(utmCookie.value);
+}
+
+function getRelevantStripeCustomer(
+  me: MeQuery["me"],
+  stripeAccount: StripeAccount
+): string | undefined {
+  switch (stripeAccount) {
+    case "REPUBLIK":
+      return me?.stripeCustomerRepublik?.customerId;
+    case "PROJECT-R":
+      return me?.stripeCustomerProjectR?.customerId;
+    default:
+      return undefined;
+  }
 }
 
 interface CheckoutOptions {
@@ -40,11 +56,14 @@ async function initializeCheckout(
   const isEliglibleForDiscount = me?.memberships?.length == 0;
   const utmObj = getUTM();
 
+  const stripeCustomer = getRelevantStripeCustomer(me, aboConfig.stripeAccount);
+
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "embedded",
     // @TODO/BACKEND: We need to query the already registered customer with stripe to prefill the address + payment infos
-    customer_email: options.email,
+    customer: stripeCustomer,
+    customer_email: !stripeCustomer ? options.email : undefined,
     line_items: [
       {
         price:

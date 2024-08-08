@@ -5,11 +5,15 @@ import {
   MeQuery,
   SignOutMutation,
 } from "../../../graphql/republik-api/__generated__/gql/graphql";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { useCallback } from "react";
 import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 
 type PortraitProps = {
   me: MeQuery["me"];
@@ -18,18 +22,20 @@ type PortraitProps = {
 
 export function Portrait({ me, handleSignOut }: PortraitProps) {
   const signOut = useCallback(() => {
+    const loadingToast = toast.loading("Sie werden abgemeldet…");
     handleSignOut()
       .then(() => window.location.reload())
-      .catch(() =>
+      .catch(() => {
+        toast.dismiss(loadingToast);
         toast.error("Abmelden fehlgeschlagen.", {
           description: "Bitte Versuchen Sie es erneut",
-        })
-      );
+        });
+      });
   }, [handleSignOut]);
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
         <button
           className={css({
             height: "8",
@@ -76,24 +82,20 @@ export function Portrait({ me, handleSignOut }: PortraitProps) {
             </div>
           )}
         </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-80">
-        <div className="grid gap-4">
-          <div className="grid gap-2">
-            <Button variant="ghost" asChild>
-              <Link
-                target="_blank"
-                href={process.env.NEXT_PUBLIC_MAGAZIN_URL + "/konto"}
-              >
-                Mein Konto
-              </Link>
-            </Button>
-            <Button variant="ghost" onClick={() => signOut()}>
-              Abmelden
-            </Button>
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem asChild>
+          <Link
+            target="_blank"
+            href={process.env.NEXT_PUBLIC_MAGAZIN_URL + "/konto"}
+          >
+            Mein Konto
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <button onClick={() => signOut()}>Abmelden</button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

@@ -24,5 +24,17 @@ query Me {
       id
       endDate
     }
+    activeMagazineSubscription {
+      id
+      type
+      currentPeriodStart
+      currentPeriodEnd
+    }
+    stripeCustomerRepublik: stripeCustomer(company: REPUBLIK_AG) {
+      customerId
+    }
+    stripeCustomerProjectR: stripeCustomer(company: PROJECT_R) {
+      customerId
+    }
   }
 }
