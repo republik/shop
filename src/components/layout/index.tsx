@@ -8,7 +8,7 @@ import {
   SignOutDocument,
   SignOutMutation,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/urql-client";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -20,7 +20,14 @@ export async function PageLayout({ children }: PageLayoutProps) {
 
   async function signOut(): Promise<SignOutMutation> {
     "use server";
-    return getClient().request(SignOutDocument);
+    const { data, error } = await getClient().mutation(SignOutDocument, {});
+    if (error) {
+      throw new Error(error.message, { cause: error.cause });
+    }
+    if (!data) {
+      throw new Error("SignOut returned no data");
+    }
+    return data;
   }
 
   return (

@@ -8,7 +8,7 @@ import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 import { css } from "@/theme/css";
 import { redirect } from "next/navigation";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/urql-client";
 import {
   SignOutDocument,
   MeDocument,
@@ -41,10 +41,10 @@ export default async function ProductPage({
   async function logout() {
     "use server";
     const client = getClient();
-    await client.request(SignOutDocument);
+    await client.query(SignOutDocument, {});
 
-    const res = await client.request(MeDocument);
-    if (res.me === null) {
+    const { data } = await client.query(MeDocument, {});
+    if (data?.me === null) {
       redirect(`/angebot/${params.slug}`);
     }
     throw new Error("Everything is broken");
