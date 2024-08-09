@@ -1,6 +1,6 @@
 "use server";
 
-import { fetchMe } from "@/lib/auth/fetch-me";
+import { fetchMe, Me } from "@/lib/auth/fetch-me";
 import { AboTypes, CheckoutConfig } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
 import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
@@ -19,7 +19,7 @@ function getUTM(): UtmObject {
 }
 
 function getRelevantStripeCustomer(
-  me: MeQuery["me"],
+  me: Me,
   stripeAccount: StripeAccount
 ): string | undefined {
   switch (stripeAccount) {

@@ -11,9 +11,10 @@ import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 import Trans from "next-translate/Trans";
 import useTranslation from "next-translate/useTranslation";
 import { Slider } from "@/components/ui/slider";
+import { Me } from "@/lib/auth/fetch-me";
 
 interface PreCheckoutProps {
-  me: MeQuery["me"];
+  me: Me;
   aboType: AboTypes;
   aboConfig: AboConfiguration;
   aboData: AboStripeConfig;

@@ -14,9 +14,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Me } from "@/lib/auth/fetch-me";
 
 type PortraitProps = {
-  me: MeQuery["me"];
+  me: Me;
   handleSignOut: () => Promise<SignOutMutation>;
 };
 
