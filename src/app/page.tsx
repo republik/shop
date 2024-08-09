@@ -10,7 +10,10 @@ export default async function Home() {
       <div
         className={grid({
           gap: "4",
-          gridTemplateColumns: "[repeat(auto-fit, minmax(24rem, 1fr))]",
+          gridTemplateColumns: "[1fr]",
+          md: {
+            gridTemplateColumns: "[repeat(auto-fit, minmax(24rem, 1fr))]",
+          },
         })}
       >
         {Object.entries(config).map(([aboType, config]) => (

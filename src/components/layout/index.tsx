@@ -10,14 +10,14 @@ import {
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 
-function intersperse<T>(arr: T[], separator: T): T[] {
+function intersperse<T>(arr: T[], separator: (idx: number) => T): T[] {
   if (arr.length === 0) return [];
 
   const result: T[] = [];
   for (let i = 0; i < arr.length; i++) {
     result.push(arr[i]);
     if (i < arr.length - 1) {
-      result.push(separator);
+      result.push(separator(i));
     }
   }
 
@@ -152,7 +152,9 @@ export async function PageLayout({ children }: PageLayoutProps) {
           borderTopStyle: "solid",
         })}
       >
-        {intersperse(footerLinkNodes, <span>-</span>)}
+        {intersperse(footerLinkNodes, (idx: number) => (
+          <span key={idx}>-</span>
+        ))}
       </footer>
     </div>
   );
