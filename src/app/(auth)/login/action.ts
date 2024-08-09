@@ -33,7 +33,9 @@ export async function signIn(
   email?: string;
   error?: string;
 }> {
-  const gql = getClient();
+  const gql = getClient({
+    setReceivedCookies: true,
+  });
 
   const email = formData.get("email") as string;
 
@@ -51,7 +53,9 @@ export async function signIn(
 }
 
 export async function signOut(prevState: any, formData: FormData) {
-  const gql = getClient();
+  const gql = getClient({
+    setReceivedCookies: true,
+  });
   const { error, data } = await gql.mutation(SignOutDocument, {});
 
   const errResponse = handleError(error);
@@ -66,7 +70,9 @@ export async function authorizeWithCode(
   prevState: any,
   formData: FormData
 ): Promise<{ success?: boolean; error?: string }> {
-  const gql = getClient();
+  const gql = getClient({
+    setReceivedCookies: true,
+  });
 
   const email = formData.get("email") as string;
   const code = (formData.get("code") as string)?.replace(/[^0-9]/g, "");
