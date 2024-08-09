@@ -8,7 +8,7 @@ import {
   SignOutDocument,
   UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/urql-client";
+import { getClient } from "@/lib/graphql/client";
 import { CombinedError } from "@urql/core";
 
 function handleError(

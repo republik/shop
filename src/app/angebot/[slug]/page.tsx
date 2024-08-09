@@ -8,7 +8,7 @@ import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 import { css } from "@/theme/css";
 import { redirect } from "next/navigation";
-import { getClient } from "@/lib/graphql/urql-client";
+import { getClient } from "@/lib/graphql/client";
 import {
   SignOutDocument,
   MeDocument,
