@@ -1,10 +1,4 @@
-/**
- * Get a apollo client to interact with DatoCMS on the server.
- *
- * @returns ApolloClient to interact with DatoCMS
- */
-
-import { GraphQLClient } from "graphql-request";
+import { Client, fetchExchange } from "@urql/core";
 
 export function getCMSClient() {
   const headers: Record<string, string> = {
@@ -20,7 +14,13 @@ export function getCMSClient() {
     headers["X-Include-Drafts"] = "true";
   }
 
-  return new GraphQLClient(process.env.DATO_CMS_API_URL, {
-    headers,
+  return new Client({
+    url: process.env.DATO_CMS_API_URL,
+    exchanges: [fetchExchange],
+    requestPolicy: "network-only",
+    fetchOptions: {
+      headers,
+      cache: "no-store",
+    },
   });
 }
