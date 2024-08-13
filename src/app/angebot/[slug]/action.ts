@@ -144,3 +144,7 @@ export async function createCheckout(formData: FormData): Promise<{}> {
 
   redirect(`/angebot/${aboType}`);
 }
+
+export async function getMe(): Promise<Me | null> {
+  return fetchMe();
+}
