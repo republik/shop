@@ -93,10 +93,12 @@ export async function PageLayout({ children }: PageLayoutProps) {
       })}
     >
       <header
-        className={css({
+        className={container({
           display: "flex",
           justifyContent: "space-between",
-          p: "4",
+          py: "5",
+          px: "4",
+          maxWidth: "5xl",
         })}
       >
         <div
@@ -137,24 +139,29 @@ export async function PageLayout({ children }: PageLayoutProps) {
         {children}
       </main>
       <footer
-        className={container({
-          py: "4",
-          px: "6",
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          columnGap: "2",
-          rowGap: "1",
-          justifyContent: "center",
-          color: "[rgba(0, 0, 0, 0.50)]",
+        className={css({
           borderTopColor: "[rgba(0, 0, 0, 0.2)]",
           borderTopWidth: "1px",
           borderTopStyle: "solid",
         })}
       >
-        {intersperse(footerLinkNodes, (idx: number) => (
-          <span key={idx}>-</span>
-        ))}
+        <div
+          className={container({
+            py: "4",
+            px: "6",
+            color: "[rgba(0, 0, 0, 0.50)]",
+            display: "flex",
+            flexDirection: "row",
+            flexWrap: "wrap",
+            columnGap: "2",
+            rowGap: "1",
+            justifyContent: "center",
+          })}
+        >
+          {intersperse(footerLinkNodes, (idx: number) => (
+            <span key={idx}>-</span>
+          ))}
+        </div>
       </footer>
     </div>
   );
