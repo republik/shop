@@ -96,6 +96,10 @@ async function initializeCheckout(
     consent_collection: {
       terms_of_service: "required",
     },
+    payment_method_configuration:
+      aboConfig.stripeAccount === "REPUBLIK"
+        ? process.env.STRIPE_PAYMENT_CONFIGURATION_REPUBLIK
+        : undefined,
   });
 
   if (!session.client_secret) {
