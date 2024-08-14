@@ -7,7 +7,7 @@ const CURTAIN_PASSTHROUGH_PATHS = [
   "/_next/",
   "/static/",
   "/favicon.ico",
-  "/mitteilung",
+  "/.well-known/",
 ];
 
 type Middleware = (req: NextRequest) => NextResponse | Promise<NextResponse>;
