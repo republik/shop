@@ -3,7 +3,7 @@ import { authorizeWithCode, signIn } from "@/app/(auth)/login/action";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { vstack } from "@/theme/patterns";
-import { ReactNode, useId, useState } from "react";
+import { ReactNode, useId, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { useFormStatus } from "react-dom";
 import useTranslation from "next-translate/useTranslation";
@@ -96,6 +96,7 @@ export function LoginForm(props: LoginFormProps) {
           id={emailId}
           name="email"
           type="email"
+          autoFocus
           className={css({
             borderWidth: "1px",
             borderColor: "text",
@@ -119,6 +120,7 @@ interface CodeFormProps {
 
 function CodeForm(props: CodeFormProps) {
   const codeId = useId();
+  const formRef = useRef<HTMLFormElement>(null);
   const [code, setCode] = useState("");
 
   const [state, action] = useFormState(authorizeWithCode, {});
@@ -128,7 +130,7 @@ function CodeForm(props: CodeFormProps) {
   }
 
   return (
-    <form action={action}>
+    <form action={action} ref={formRef}>
       <div
         className={vstack({
           gap: "4",
@@ -157,6 +159,7 @@ function CodeForm(props: CodeFormProps) {
           })}
         >
           <CodeInput
+            formRef={formRef}
             id={codeId}
             name="code"
             value={code}

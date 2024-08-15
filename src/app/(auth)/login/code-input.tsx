@@ -1,17 +1,18 @@
 import { css, cx } from "@/theme/css";
 import { OTPInput } from "input-otp";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, RefObject } from "react";
 import { toast } from "sonner";
 
 export function CodeInput(
   props: Omit<
     ComponentPropsWithoutRef<typeof OTPInput>,
     "children" | "containerClassName" | "maxLength" | "render"
-  >
+  > & { formRef: RefObject<HTMLFormElement> }
 ) {
   return (
     <OTPInput
       {...props}
+      autoFocus
       containerClassName={css({
         display: "flex",
         flexDirection: "row",
@@ -25,6 +26,7 @@ export function CodeInput(
           props.onChange?.(trimmedText);
         }
       }}
+      onComplete={() => props.formRef.current?.requestSubmit()}
       render={({ slots }) => (
         <>
           {[
