@@ -41,7 +41,7 @@ export default async function ProductPage({
   async function logout() {
     "use server";
     const client = getClient();
-    await client.query(SignOutDocument, {});
+    await client.mutation(SignOutDocument, {});
 
     const { data } = await client.query(MeDocument, {});
     if (data?.me === null) {
