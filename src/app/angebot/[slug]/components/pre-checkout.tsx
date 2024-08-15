@@ -90,50 +90,28 @@ export function PreCheckout(props: PreCheckoutProps) {
       >
         <h3
           className={css({
-            textStyle: "md",
+            textStyle: "2xl",
             fontWeight: "medium",
           })}
         >
           {props.aboMeta.title}
         </h3>
-        <div
+        <p
           className={css({
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-end",
-            flexWrap: "wrap",
-            gap: "[19px]",
+            textStyle: "md",
           })}
         >
-          <Trans
-            i18nKey="checkout:preCheckout.pricePerInterval"
-            values={{
-              price: renderPrice(
-                aboConfig.customPrice
-                  ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                  : aboData.price.unit_amount
-              ),
-              interval: t(
-                `checkout:preCheckout.intervals.${aboConfig.customPrice ? "year" : aboData.price.recurring?.interval}`
-              ),
-            }}
-            components={[
-              <p
-                key="price"
-                className={css({
-                  textStyle: "2xl",
-                  fontWeight: "medium",
-                })}
-              />,
-              <p
-                key="interval"
-                className={css({
-                  fontSize: "sm",
-                })}
-              />,
-            ]}
-          />
-        </div>
+          {t("checkout:preCheckout.pricePerInterval", {
+            price: renderPrice(
+              aboConfig.customPrice
+                ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
+                : aboData.price.unit_amount
+            ),
+            interval: t(
+              `checkout:preCheckout.intervals.${aboConfig.customPrice ? "year" : aboData.price.recurring?.interval}`
+            ),
+          })}
+        </p>
       </div>
       {aboConfig.customPrice && (
         <fieldset

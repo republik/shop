@@ -39,7 +39,7 @@
             "month": "Monat",
             "year": "Jahr"
         },
-        "pricePerInterval": "<0>{{price}}</0><1>pro {{interval}}</1>",
+        "pricePerInterval": "{{price}} pro {{interval}}",
         "action": "Kaufen",
         "customPrice": "Ihr gewählter Preis ist CHF {{price}} / Jahr"
     },
