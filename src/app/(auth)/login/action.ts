@@ -49,6 +49,12 @@ export async function signIn(
     return errResponse;
   }
 
+  if (!data) {
+    return {
+      error: "Irgendwas hat nicht geklappt, versuchen Sie es nochmal",
+    };
+  }
+
   return { signIn: data?.signIn, email };
 }
 
