@@ -3,5 +3,9 @@
         "title": "Shop - republik.ch",
         "description": ""
     },
-    "imprint": "Impressum"
+    "imprint": "Impressum",
+    "notFound": {
+        "title": "Ooops! Diese Seite existiert nicht.",
+        "buttonLabel": "Zur Startseite"
+    }
 }

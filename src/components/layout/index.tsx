@@ -81,6 +81,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
           flexGrow: 1,
           mx: "auto",
           p: "4",
+          display: "flex",
         })}
       >
         {children}
