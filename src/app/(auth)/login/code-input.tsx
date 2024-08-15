@@ -16,7 +16,7 @@ export function CodeInput(
       containerClassName={css({
         display: "flex",
         flexDirection: "row",
-        gap: "4",
+        gap: "2",
       })}
       maxLength={6}
       onPaste={(e) => {
@@ -29,55 +29,33 @@ export function CodeInput(
       onComplete={() => props.formRef.current?.requestSubmit()}
       render={({ slots }) => (
         <>
-          {[
-            [0, 3],
-            [3, 6],
-          ].map(([from, to]) => (
+          {slots.map((slot, idx) => (
             <div
-              key={`${from}-${to}`}
-              className={css({
-                display: "flex",
-                flexDirection: "row",
-                width: "max",
-              })}
-            >
-              {slots.slice(from, to).map((slot, idx) => (
-                <div
-                  key={idx}
-                  className={cx(
-                    css({
-                      position: "relative",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      borderWidth: "1px",
-                      borderLeftWidth: "0px",
-                      borderColor: "text",
-                      padding: "4",
-                      height: "12",
-                      width: "12",
-                      fontSize: "md",
-                      _first: {
-                        borderLeftRadius: "sm",
-                        borderLeftWidth: "1px",
-                      },
-                      _last: {
-                        borderRightRadius: "sm",
-                      },
-                    }),
+              key={idx}
+              className={cx(
+                css({
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: "1px",
+                  borderColor: "text",
+                  borderRadius: "md",
+                  padding: "2",
+                  height: "12",
+                  width: "10",
+                  fontSize: "md",
+                }),
 
-                    !props.disabled &&
-                      slot.isActive &&
-                      css({
-                        borderLeftWidth: "1px",
-                        outline: "[solid]",
-                      })
-                  )}
-                >
-                  {slot.char && <div>{slot.char}</div>}
-                </div>
-              ))}
+                !props.disabled &&
+                  slot.isActive &&
+                  css({
+                    outline: "[solid]",
+                  })
+              )}
+            >
+              {slot.char && <div>{slot.char}</div>}
             </div>
           ))}
         </>
