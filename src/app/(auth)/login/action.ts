@@ -14,11 +14,18 @@ import { CombinedError } from "@urql/core";
 function handleError(
   error: CombinedError | undefined
 ): { error: string } | undefined {
+  if (error) {
+    console.error(error);
+  }
+
   if (error?.networkError) {
     return { error: "Die Verbindung zur Republik schlug fehl" };
   }
 
   if (error?.graphQLErrors) {
+    console.error("GraphQL Errors");
+    error.graphQLErrors.map((err) => console.error(err));
+
     return {
       error: error.graphQLErrors[0]?.message ?? "Irgendwas klappte nicht",
     };
