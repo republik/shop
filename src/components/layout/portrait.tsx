@@ -1,38 +1,29 @@
 "use client";
 
+import { Me } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
-import {
-  MeQuery,
-  SignOutMutation,
-} from "../../../graphql/republik-api/__generated__/gql/graphql";
 import Link from "next/link";
-import { useCallback } from "react";
 import { toast } from "sonner";
+import { useClient } from "urql";
+import { SignOutDocument } from "../../../graphql/republik-api/__generated__/gql/graphql";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Me } from "@/lib/auth/fetch-me";
 
 type PortraitProps = {
   me: Me;
-  handleSignOut: () => Promise<SignOutMutation>;
 };
 
-export function Portrait({ me, handleSignOut }: PortraitProps) {
-  const signOut = useCallback(() => {
+export function Portrait({ me }: PortraitProps) {
+  const gql = useClient();
+
+  const signOut = () => {
     const loadingToast = toast.loading("Sie werden abgemeldet…");
-    handleSignOut()
-      .then(() => window.location.reload())
-      .catch(() => {
-        toast.dismiss(loadingToast);
-        toast.error("Abmelden fehlgeschlagen.", {
-          description: "Bitte Versuchen Sie es erneut",
-        });
-      });
-  }, [handleSignOut]);
+    gql.mutation(SignOutDocument, {}).then(() => window.location.reload());
+  };
 
   return (
     <DropdownMenu>

@@ -1,7 +1,7 @@
 import { aboTypesMeta, CheckoutConfig } from "./lib/config";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { PreCheckout } from "./components/pre-checkout";
-import { Step, Stepper } from "./components/stepper";
+import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
 import Checkout, { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { cookies } from "next/headers";
 import { initStripe } from "./lib/stripe/server";
@@ -13,8 +13,9 @@ import {
   SignOutDocument,
   MeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { LoginView } from "./components/login-view";
+import { LoginView, StepperSignOutButton } from "./components/login-view";
 import useTranslation from "next-translate/useTranslation";
+import { useClient } from "urql";
 
 export default async function ProductPage({
   params,
@@ -38,23 +39,15 @@ export default async function ProductPage({
   // TODO: if checkoutSession could be retrieved, ensure that the checkoutSession
   // is for the correct product received in 'AboData'
 
-  async function logout() {
-    "use server";
-    const client = getClient();
-    await client.mutation(SignOutDocument, {});
-
-    const { data } = await client.query(MeDocument, {});
-    if (data?.me === null) {
-      redirect(`/angebot/${params.slug}`);
-    }
-    throw new Error("Everything is broken");
-  }
-
   const loginStep: Step = {
     name: t("checkout:loginStep.title"),
-    detail: me ? <span>{me.email}</span> : undefined,
-    changeAction: me ? logout : undefined,
-    content: <LoginView logoutAction={logout} />,
+    detail: me ? (
+      <>
+        <span>{me.email}</span>
+        <StepperSignOutButton />
+      </>
+    ) : undefined,
+    content: <LoginView />,
   };
 
   async function resetCheckoutSession() {
@@ -66,12 +59,14 @@ export default async function ProductPage({
   const productDetails: Step = {
     name: t("checkout:preCheckout.title"),
     detail: checkoutSession ? (
-      <span>
-        {checkoutSession.currency?.toUpperCase()}{" "}
-        {((checkoutSession?.amount_total || 0) / 100).toFixed(2)}
-      </span>
+      <>
+        <span>
+          {checkoutSession.currency?.toUpperCase()}{" "}
+          {((checkoutSession?.amount_total || 0) / 100).toFixed(2)}
+        </span>
+        <StepperChangeStepButton onChange={resetCheckoutSession} />
+      </>
     ) : undefined,
-    changeAction: checkoutSession ? resetCheckoutSession : undefined,
     content: (
       <PreCheckout
         me={me}
