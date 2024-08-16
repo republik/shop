@@ -9,6 +9,13 @@ import { useFormStatus } from "react-dom";
 import useTranslation from "next-translate/useTranslation";
 import { redirect } from "next/navigation";
 import { CodeInput } from "./code-input";
+import { useClient, useMutation, useQuery } from "urql";
+import {
+  AuthorizeSessionDocument,
+  SignInDocument,
+  SignInTokenType,
+  UnauthorizedSessionDocument,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 
 const ErrorMessage = ({ error }: { error: string }) => {
   const { t } = useTranslation("error");
@@ -29,11 +36,11 @@ const ErrorMessage = ({ error }: { error: string }) => {
 };
 
 type SubmitProps = {
+  pending?: boolean;
   children?: ReactNode;
 };
 
-export function Submit(props: SubmitProps) {
-  const { pending } = useFormStatus();
+export function Submit({ children, pending }: SubmitProps) {
   const { t } = useTranslation("login");
   return (
     <Button
@@ -44,7 +51,7 @@ export function Submit(props: SubmitProps) {
         w: "max",
       })}
     >
-      {props.children ?? t("login:action")}
+      {children ?? t("login:action")}
     </Button>
   );
 }
@@ -58,12 +65,14 @@ interface LoginFormProps {
 
 export function LoginForm(props: LoginFormProps) {
   const emailId = useId();
-  const [state, action] = useFormState(signIn, {});
 
-  if (state.signIn && state.email) {
+  const [{ data, error, fetching, operation }, signIn] =
+    useMutation(SignInDocument);
+
+  if (data?.signIn && operation?.variables.email) {
     return (
       <CodeForm
-        email={state.email}
+        email={operation?.variables.email}
         renderHint={props.renderCodeFormHint}
         info={props.loginFormInfo}
         submitButtonText={props.submitButtonText}
@@ -72,7 +81,19 @@ export function LoginForm(props: LoginFormProps) {
   }
 
   return (
-    <form action={action}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get("email") as string;
+        if (email) {
+          signIn({
+            email: email,
+            tokenType: SignInTokenType.EmailCode,
+          });
+        }
+      }}
+    >
       <div
         className={vstack({
           gap: "4",
@@ -82,7 +103,7 @@ export function LoginForm(props: LoginFormProps) {
         })}
       >
         {props.loginFormHeader}
-        {state.error && <ErrorMessage error={state.error} />}
+        {error && <ErrorMessage error={error.message} />}
         <label
           htmlFor={emailId}
           className={css({
@@ -105,7 +126,7 @@ export function LoginForm(props: LoginFormProps) {
           })}
         ></input>
         {props.loginFormInfo}
-        <Submit>{props.submitButtonText}</Submit>
+        <Submit pending={fetching}>{props.submitButtonText}</Submit>
       </div>
     </form>
   );
@@ -118,19 +139,52 @@ interface CodeFormProps {
   submitButtonText?: string;
 }
 
-function CodeForm(props: CodeFormProps) {
+function CodeForm({
+  email,
+  renderHint,
+  info,
+  submitButtonText,
+}: CodeFormProps) {
   const codeId = useId();
   const formRef = useRef<HTMLFormElement>(null);
-  const [code, setCode] = useState("");
+  // const [code, setCode] = useState("");
 
-  const [state, action] = useFormState(authorizeWithCode, {});
+  const gql = useClient();
 
-  if (state.success) {
-    redirect("/");
+  const [{ data, error, fetching }, authorizeCode] = useMutation(
+    AuthorizeSessionDocument
+  );
+
+  if (data?.authorizeSession) {
+    window?.location.reload();
   }
 
   return (
-    <form action={action} ref={formRef}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.currentTarget);
+
+        const email = formData.get("email") as string;
+        const code = (formData.get("code") as string)?.replace(/[^0-9]/g, "");
+        const token = { type: SignInTokenType.EmailCode, payload: code };
+
+        gql
+          .query(UnauthorizedSessionDocument, {
+            email,
+            token,
+          })
+          .then((res) => {
+            return authorizeCode({
+              email,
+              tokens: [token],
+              consents: res.data?.unauthorizedSession?.requiredConsents,
+            });
+          });
+      }}
+      ref={formRef}
+    >
       <div
         className={vstack({
           gap: "4",
@@ -139,9 +193,9 @@ function CodeForm(props: CodeFormProps) {
           maxW: "lg",
         })}
       >
-        {props.renderHint?.(props.email)}
-        {state.error && <ErrorMessage error={state.error} />}
-        <input name="email" type="hidden" value={props.email} readOnly></input>
+        {renderHint?.(email)}
+        {error && <ErrorMessage error={error.message} />}
+        <input name="email" type="hidden" value={email} readOnly></input>
         <label
           htmlFor={codeId}
           className={css({
@@ -162,13 +216,13 @@ function CodeForm(props: CodeFormProps) {
             formRef={formRef}
             id={codeId}
             name="code"
-            value={code}
-            onChange={(val) => setCode(val)}
+            // value={code}
+            // onChange={(val) => setCode(val)}
           />
         </div>
 
-        {props.info}
-        <Submit>{props.submitButtonText}</Submit>
+        {info}
+        <Submit pending={fetching}>{submitButtonText}</Submit>
       </div>
     </form>
   );
