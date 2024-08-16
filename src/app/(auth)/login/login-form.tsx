@@ -36,11 +36,11 @@ const ErrorMessage = ({ error }: { error: string }) => {
 };
 
 type SubmitProps = {
-  pending?: boolean;
   children?: ReactNode;
 };
 
-export function Submit({ children, pending }: SubmitProps) {
+export function Submit({ children }: SubmitProps) {
+  const { pending } = useFormStatus();
   const { t } = useTranslation("login");
   return (
     <Button
@@ -66,8 +66,7 @@ interface LoginFormProps {
 export function LoginForm(props: LoginFormProps) {
   const emailId = useId();
 
-  const [{ data, error, fetching, operation }, signIn] =
-    useMutation(SignInDocument);
+  const [{ data, error, operation }, signIn] = useMutation(SignInDocument);
 
   if (data?.signIn && operation?.variables.email) {
     return (
@@ -82,12 +81,10 @@ export function LoginForm(props: LoginFormProps) {
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
+      action={async (formData) => {
         const email = formData.get("email") as string;
         if (email) {
-          signIn({
+          await signIn({
             email: email,
             tokenType: SignInTokenType.EmailCode,
           });
@@ -126,7 +123,7 @@ export function LoginForm(props: LoginFormProps) {
           })}
         ></input>
         {props.loginFormInfo}
-        <Submit pending={fetching}>{props.submitButtonText}</Submit>
+        <Submit>{props.submitButtonText}</Submit>
       </div>
     </form>
   );
@@ -147,41 +144,32 @@ function CodeForm({
 }: CodeFormProps) {
   const codeId = useId();
   const formRef = useRef<HTMLFormElement>(null);
-  // const [code, setCode] = useState("");
 
   const gql = useClient();
 
-  const [{ data, error, fetching }, authorizeCode] = useMutation(
-    AuthorizeSessionDocument
-  );
-
-  if (data?.authorizeSession) {
-    window?.location.reload();
-  }
+  const [{ error }, authorizeCode] = useMutation(AuthorizeSessionDocument);
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-
-        const formData = new FormData(e.currentTarget);
-
+      action={async (formData) => {
         const email = formData.get("email") as string;
         const code = (formData.get("code") as string)?.replace(/[^0-9]/g, "");
         const token = { type: SignInTokenType.EmailCode, payload: code };
 
-        gql
-          .query(UnauthorizedSessionDocument, {
-            email,
-            token,
-          })
-          .then((res) => {
-            return authorizeCode({
-              email,
-              tokens: [token],
-              consents: res.data?.unauthorizedSession?.requiredConsents,
-            });
-          });
+        const unauthorizedRes = await gql.query(UnauthorizedSessionDocument, {
+          email,
+          token,
+        });
+
+        const autorizedRes = await authorizeCode({
+          email,
+          tokens: [token],
+          consents: unauthorizedRes.data?.unauthorizedSession?.requiredConsents,
+        });
+
+        if (autorizedRes.data?.authorizeSession) {
+          window.location.reload();
+        }
       }}
       ref={formRef}
     >
@@ -212,17 +200,11 @@ function CodeForm({
             justifyContent: "center",
           })}
         >
-          <CodeInput
-            formRef={formRef}
-            id={codeId}
-            name="code"
-            // value={code}
-            // onChange={(val) => setCode(val)}
-          />
+          <CodeInput formRef={formRef} id={codeId} name="code" />
         </div>
 
         {info}
-        <Submit pending={fetching}>{submitButtonText}</Submit>
+        <Submit>{submitButtonText}</Submit>
       </div>
     </form>
   );
