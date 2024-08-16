@@ -1,24 +1,33 @@
 "use client";
-import { authorizeWithCode, signIn } from "@/app/(auth)/login/action";
-import { Button } from "@/components/ui/button";
-import { css } from "@/theme/css";
-import { vstack } from "@/theme/patterns";
-import { ReactNode, useId, useRef, useState } from "react";
-import { useFormState } from "react-dom";
-import { useFormStatus } from "react-dom";
-import useTranslation from "next-translate/useTranslation";
-import { redirect } from "next/navigation";
-import { CodeInput } from "./code-input";
-import { useClient, useMutation, useQuery } from "urql";
 import {
   AuthorizeSessionDocument,
   SignInDocument,
   SignInTokenType,
   UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
+import { Button } from "@/components/ui/button";
+import { css } from "@/theme/css";
+import { vstack } from "@/theme/patterns";
+import useTranslation from "next-translate/useTranslation";
+import { ReactNode, useId, useRef } from "react";
+import { useFormStatus } from "react-dom";
+import { CombinedError, useClient, useMutation } from "urql";
+import { CodeInput } from "./code-input";
 
-const ErrorMessage = ({ error }: { error: string }) => {
+const ErrorMessage = ({
+  error,
+}: {
+  error: string | CombinedError | undefined;
+}) => {
   const { t } = useTranslation("error");
+
+  const message =
+    typeof error === "string"
+      ? error
+      : error?.networkError
+        ? t("error:graphql.networkError")
+        : error?.graphQLErrors[0]?.message;
+
   return (
     <div
       className={css({
@@ -30,7 +39,7 @@ const ErrorMessage = ({ error }: { error: string }) => {
       <h2 className={css({ textStyle: "h3Sans", mb: "2" })}>
         {t("error:generic")}
       </h2>
-      <p>{error}</p>
+      {message && <p>{message}</p>}
     </div>
   );
 };
@@ -100,7 +109,7 @@ export function LoginForm(props: LoginFormProps) {
         })}
       >
         {props.loginFormHeader}
-        {error && <ErrorMessage error={error.message} />}
+        {error && <ErrorMessage error={error} />}
         <label
           htmlFor={emailId}
           className={css({
@@ -182,7 +191,7 @@ function CodeForm({
         })}
       >
         {renderHint?.(email)}
-        {error && <ErrorMessage error={error.message} />}
+        {error && <ErrorMessage error={error} />}
         <input name="email" type="hidden" value={email} readOnly></input>
         <label
           htmlFor={codeId}
