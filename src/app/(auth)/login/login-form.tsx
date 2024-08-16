@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { vstack } from "@/theme/patterns";
 import useTranslation from "next-translate/useTranslation";
-import { ReactNode, useId, useRef } from "react";
+import { ReactNode, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { CombinedError, useClient, useMutation } from "urql";
 import { CodeInput } from "./code-input";
@@ -153,10 +153,9 @@ function CodeForm({
 }: CodeFormProps) {
   const codeId = useId();
   const formRef = useRef<HTMLFormElement>(null);
+  const [error, setError] = useState<CombinedError | undefined>();
 
   const gql = useClient();
-
-  const [{ error }, authorizeCode] = useMutation(AuthorizeSessionDocument);
 
   return (
     <form
@@ -170,11 +169,21 @@ function CodeForm({
           token,
         });
 
-        const autorizedRes = await authorizeCode({
+        if (unauthorizedRes.error) {
+          setError(unauthorizedRes.error);
+          return;
+        }
+
+        const autorizedRes = await gql.mutation(AuthorizeSessionDocument, {
           email,
           tokens: [token],
           consents: unauthorizedRes.data?.unauthorizedSession?.requiredConsents,
         });
+
+        if (autorizedRes.error) {
+          setError(autorizedRes.error);
+          return;
+        }
 
         if (autorizedRes.data?.authorizeSession) {
           window.location.reload();
