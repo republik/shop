@@ -3,12 +3,13 @@ import { OTPInput } from "input-otp";
 import { ComponentPropsWithoutRef, RefObject } from "react";
 import { toast } from "sonner";
 
-export function CodeInput(
-  props: Omit<
-    ComponentPropsWithoutRef<typeof OTPInput>,
-    "children" | "containerClassName" | "maxLength" | "render"
-  > & { formRef: RefObject<HTMLFormElement> }
-) {
+export function CodeInput({
+  formRef,
+  ...props
+}: Omit<
+  ComponentPropsWithoutRef<typeof OTPInput>,
+  "children" | "containerClassName" | "maxLength" | "render"
+> & { formRef: RefObject<HTMLFormElement> }) {
   return (
     <OTPInput
       {...props}
@@ -26,7 +27,7 @@ export function CodeInput(
           props.onChange?.(trimmedText);
         }
       }}
-      onComplete={() => props.formRef.current?.requestSubmit()}
+      onComplete={() => formRef.current?.requestSubmit()}
       render={({ slots }) => (
         <>
           {slots.map((slot, idx) => (
