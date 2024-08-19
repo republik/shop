@@ -7,6 +7,7 @@ import "@/theme/fonts.css";
 import { css } from "@/theme/css";
 import "./globals.css";
 import getTranslation from "next-translate/useTranslation";
+import { GraphQLProvider } from "@/lib/graphql/client-browser";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = getTranslation("common");
@@ -29,8 +30,10 @@ export default function RootLayout({
           textStyle: "body",
         })}
       >
-        <PageLayout>{children}</PageLayout>
-        <Toaster />
+        <GraphQLProvider>
+          <PageLayout>{children}</PageLayout>
+          <Toaster />
+        </GraphQLProvider>
       </body>
     </html>
   );

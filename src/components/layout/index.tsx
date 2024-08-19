@@ -1,15 +1,10 @@
-import Link from "next/link";
-import { Portrait } from "./portrait";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
 import useTranslation from "next-translate/useTranslation";
-import {
-  SignOutDocument,
-  SignOutMutation,
-} from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import Link from "next/link";
 import { Footer } from "./footer";
+import { Portrait } from "./portrait";
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -18,18 +13,6 @@ interface PageLayoutProps {
 export async function PageLayout({ children }: PageLayoutProps) {
   const me = await fetchMe();
   const { t } = useTranslation();
-
-  async function signOut(): Promise<SignOutMutation> {
-    "use server";
-    const { data, error } = await getClient().mutation(SignOutDocument, {});
-    if (error) {
-      throw new Error(error.message, { cause: error.cause });
-    }
-    if (!data) {
-      throw new Error("SignOut returned no data");
-    }
-    return data;
-  }
 
   return (
     <div
@@ -63,7 +46,7 @@ export async function PageLayout({ children }: PageLayoutProps) {
         </div>
         <div>
           {me ? (
-            <Portrait me={me} handleSignOut={signOut} />
+            <Portrait me={me} />
           ) : (
             <Link
               href="/login"

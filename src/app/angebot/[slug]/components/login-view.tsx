@@ -5,15 +5,35 @@ import { css } from "@/theme/css";
 import useTranslation from "next-translate/useTranslation";
 import Trans from "next-translate/Trans";
 import Link from "next/link";
+import { useClient } from "urql";
+import {
+  MeDocument,
+  SignOutDocument,
+} from "#graphql/republik-api/__generated__/gql/graphql";
+import { redirect } from "next/navigation";
+import { StepperChangeStepButton } from "@/app/angebot/[slug]/components/stepper";
 
 const PRIVACY_POLICY_HREF = `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`;
 
-interface LoginViewProps {
-  logoutAction: () => Promise<void>;
+export function StepperSignOutButton() {
+  const gql = useClient();
+
+  return (
+    <StepperChangeStepButton
+      onChange={() => {
+        gql.mutation(SignOutDocument, {}).then(() => window.location.reload());
+      }}
+    />
+  );
 }
+
+interface LoginViewProps {}
 
 export function LoginView(props: LoginViewProps) {
   const { t } = useTranslation();
+
+  const gql = useClient();
+
   return (
     <LoginForm
       submitButtonText={t("checkout:actions.next")}
@@ -58,7 +78,7 @@ export function LoginView(props: LoginViewProps) {
             })}
           </p>
           <button
-            onClick={() => props.logoutAction()}
+            onClick={() => window.location.reload()}
             className={css({
               textDecoration: "underline",
               alignSelf: "flex-start",

@@ -6,7 +6,6 @@ import { ReactNode } from "react";
 export interface Step {
   name: string;
   detail?: ReactNode;
-  changeAction?: () => void;
   disabled?: boolean;
   content?: ReactNode;
 }
@@ -18,7 +17,6 @@ interface StepperProps {
 
 export function Stepper(props: StepperProps) {
   const { steps, currentStep } = props;
-  const { t } = useTranslation();
 
   return (
     <ol>
@@ -68,17 +66,6 @@ export function Stepper(props: StepperProps) {
               })}
             >
               {step.detail}
-              {step.changeAction && (
-                <button
-                  className={css({
-                    textDecoration: "underline",
-                    cursor: "pointer",
-                  })}
-                  onClick={() => step.changeAction?.()}
-                >
-                  {t("checkout:actions.change")}
-                </button>
-              )}
             </div>
           </div>
           {currentStep === idx && (
@@ -87,5 +74,25 @@ export function Stepper(props: StepperProps) {
         </li>
       ))}
     </ol>
+  );
+}
+
+export function StepperChangeStepButton({
+  onChange,
+}: {
+  onChange: () => void;
+}) {
+  const { t } = useTranslation("checkout");
+
+  return (
+    <button
+      className={css({
+        textDecoration: "underline",
+        cursor: "pointer",
+      })}
+      onClick={() => onChange()}
+    >
+      {t("checkout:actions.change")}
+    </button>
   );
 }
