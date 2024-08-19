@@ -24,7 +24,7 @@
     "@sentry/nextjs": "^8",
     "@stripe/react-stripe-js": "^2.7.1",
     "@stripe/stripe-js": "^3.5.0",
-    "@urql/core": "^5.0.4",
+    "@urql/core": "^5.0.6",
     "graphql": "^16.9.0",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.395.0",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
-    "@next/env": "^14.2.4",
+    "@next/env": "^14.2.5",
     "@pandacss/dev": "^0.41.0",
     "@parcel/watcher": "^2.4.1",
     "@playwright/test": "^1.44.1",
