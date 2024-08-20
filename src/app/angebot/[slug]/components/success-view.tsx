@@ -1,8 +1,13 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import useInterval from "@/lib/hooks/use-interval";
 import { css } from "@/theme/css";
 import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { ComponentPropsWithoutRef } from "react";
+import { useRouter } from "next/navigation";
+import { ComponentPropsWithoutRef, useState } from "react";
+import { getMe } from "../action";
+import { MagazineSubscriptionStatus } from "#graphql/republik-api/__generated__/gql/graphql";
 
 const CheckCircleIcon = (props: ComponentPropsWithoutRef<"svg">) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" {...props}>
@@ -12,7 +17,25 @@ const CheckCircleIcon = (props: ComponentPropsWithoutRef<"svg">) => (
 
 export function SuccessView() {
   const { t } = useTranslation();
-  // @TODO/BACKEND - only redirect after we have verified that the purchse was successful.
+  const router = useRouter();
+
+  const [subscriptionIsActive, setSubscriptionIsActive] = useState(false);
+
+  useInterval(
+    () => {
+      getMe().then((me) => {
+        if (
+          me?.activeMagazineSubscription?.status ===
+          MagazineSubscriptionStatus.Active
+        ) {
+          setSubscriptionIsActive(true);
+          router.push(process.env.NEXT_PUBLIC_MAGAZIN_URL);
+        }
+      });
+    },
+    subscriptionIsActive ? null : 1_000
+  );
+
   return (
     <div
       className={css({
@@ -37,7 +60,7 @@ export function SuccessView() {
         {t("checkout:success.title")}
       </h1>
       <p> {t("checkout:success.description")}</p>
-      <Button asChild className={css({ width: "max" })}>
+      <Button asChild className={css({ width: "max" })} loading>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
         >

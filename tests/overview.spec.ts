@@ -11,7 +11,6 @@ import {
 } from "#graphql/republik-api/__generated__/gql/graphql";
 
 const apiGQLLink = graphql.link(`${process.env.NEXT_PUBLIC_API_URL}`);
-// const datoCMSGQLLink = graphql.link(`${process.env.DATO_CMS_API_URL}`);
 
 const johnDoeNonMember = mockUser("John", "Doe");
 
