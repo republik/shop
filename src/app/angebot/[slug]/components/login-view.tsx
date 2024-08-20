@@ -78,6 +78,7 @@ export function LoginView(props: LoginViewProps) {
             })}
           </p>
           <button
+            type="button" // Important, so this button isn't used to submit the form
             onClick={() => window.location.reload()}
             className={css({
               textDecoration: "underline",
