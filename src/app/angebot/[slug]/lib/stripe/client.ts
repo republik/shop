@@ -6,7 +6,7 @@ export function getStripePublishablekey(account: StripeAccount): string {
   switch (account) {
     case "REPUBLIK":
       return process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK;
-    case "PROJECT-R":
+    case "PROJECT_R":
       return process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R;
     default:
       throw new Error(`Invalid account: ${account}`);
