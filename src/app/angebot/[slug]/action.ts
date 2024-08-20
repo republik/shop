@@ -86,7 +86,7 @@ async function initializeCheckout(
     currency: price.currency,
     discounts:
       isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
-    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}/checkout?session_id={CHECKOUT_SESSION_ID}"`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
     redirect_on_completion: "if_required",
     billing_address_collection: "required",
@@ -100,6 +100,7 @@ async function initializeCheckout(
       aboConfig.stripeAccount === "REPUBLIK"
         ? process.env.STRIPE_PAYMENT_CONFIGURATION_REPUBLIK
         : undefined,
+    // payment_method_types: ["card", "paypal"],
   });
 
   if (!session.client_secret) {

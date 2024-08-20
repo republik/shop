@@ -13,11 +13,10 @@ interface CheckoutProps {
 }
 
 export default async function Checkout(props: CheckoutProps) {
-  const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-
   const stripe = await initStripe(props.stripeAccount);
-  const session = await stripe.checkout.sessions.retrieve(sessionId!);
+  const session = await stripe.checkout.sessions.retrieve(props.sessionId);
 
+  // Handle return_url as defined in the Stripe Checkout session
   if (session.status === "complete") {
     return <SuccessView />;
   }

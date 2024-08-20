@@ -8,27 +8,21 @@ import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 import { css } from "@/theme/css";
 import { redirect } from "next/navigation";
-import { getClient } from "@/lib/graphql/client";
-import {
-  SignOutDocument,
-  MeDocument,
-} from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import useTranslation from "next-translate/useTranslation";
-import { useClient } from "urql";
 
 export default async function ProductPage({
   params,
   searchParams,
 }: {
   params: { slug: string };
-  searchParams: { price: string };
+  searchParams: { price: string; session_id?: string };
 }) {
   const { t } = useTranslation();
   const aboConfig = CheckoutConfig[params.slug];
   const aboMeta = aboTypesMeta[params.slug];
-  const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-
+  const sessionId =
+    searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const stripe = initStripe(aboConfig.stripeAccount);
   const [me, checkoutSession, aboData] = await Promise.all([
     fetchMe(),
