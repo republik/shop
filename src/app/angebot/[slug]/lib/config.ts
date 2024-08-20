@@ -8,22 +8,22 @@ export const CheckoutConfig: Record<string, AboConfiguration> = {
     couponCode: "jgxhEDj9",
   },
   YEARLY: {
-    stripeAccount: "PROJECT-R",
+    stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "ABO-SUB",
   },
   BENEFACTOR: {
-    stripeAccount: "PROJECT-R",
+    stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
   },
   STUDENT: {
-    stripeAccount: "PROJECT-R",
+    stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
   },
   CUSTOM: {
-    stripeAccount: "PROJECT-R",
+    stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
     customPrice: true,

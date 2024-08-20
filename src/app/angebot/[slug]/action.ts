@@ -1,14 +1,17 @@
 "use server";
 
-import { fetchMe, Me } from "@/lib/auth/fetch-me";
+import { fetchMe } from "@/lib/auth/fetch-me";
 import { AboTypes, CheckoutConfig } from "./lib/config";
-import { initStripe } from "./lib/stripe/server";
+import {
+  getAccountPaymentsConfiguration,
+  initStripe,
+} from "./lib/stripe/server";
 import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
 import { cookies } from "next/headers";
 import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
-import { MeQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { StripeAccount } from "./lib/stripe/types";
+import { Me } from "@/lib/auth/types";
 
 function getUTM(): UtmObject {
   const utmCookie = cookies().get(UTM_COOKIE_NAME);
@@ -25,7 +28,7 @@ function getRelevantStripeCustomer(
   switch (stripeAccount) {
     case "REPUBLIK":
       return me?.stripeCustomerRepublik?.customerId;
-    case "PROJECT-R":
+    case "PROJECT_R":
       return me?.stripeCustomerProjectR?.customerId;
     default:
       return undefined;
@@ -56,7 +59,10 @@ async function initializeCheckout(
   const isEliglibleForDiscount = me?.memberships?.length == 0;
   const utmObj = getUTM();
 
-  const stripeCustomer = getRelevantStripeCustomer(me, aboConfig.stripeAccount);
+  const stripeCustomer = getRelevantStripeCustomer(
+    me!,
+    aboConfig.stripeAccount
+  );
 
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
@@ -86,7 +92,7 @@ async function initializeCheckout(
     currency: price.currency,
     discounts:
       isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
-    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}/checkout?session_id={CHECKOUT_SESSION_ID}"`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
     redirect_on_completion: "if_required",
     billing_address_collection: "required",
@@ -96,10 +102,9 @@ async function initializeCheckout(
     consent_collection: {
       terms_of_service: "required",
     },
-    payment_method_configuration:
-      aboConfig.stripeAccount === "REPUBLIK"
-        ? process.env.STRIPE_PAYMENT_CONFIGURATION_REPUBLIK
-        : undefined,
+    payment_method_configuration: getAccountPaymentsConfiguration(
+      aboConfig.stripeAccount
+    ),
   });
 
   if (!session.client_secret) {

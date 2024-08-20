@@ -1,6 +1,5 @@
 "use client";
 
-import { Me } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -12,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Me } from "@/lib/auth/types";
 
 type PortraitProps = {
   me: Me;

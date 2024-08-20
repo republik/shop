@@ -12,15 +12,14 @@ function getEnvVar(name: string): string {
   return value;
 }
 
+export function getAccountPaymentsConfiguration(
+  account: StripeAccount
+): string {
+  return getEnvVar(`STRIPE_PAYMENT_CONFIGURATION_${account}`);
+}
+
 function getStripeSecretKey(account: StripeAccount): string {
-  switch (account) {
-    case "REPUBLIK":
-      return getEnvVar("STRIPE_SECRET_KEY_REPUBLIK");
-    case "PROJECT-R":
-      return getEnvVar("STRIPE_SECRET_KEY_PROJECT_R");
-    default:
-      throw new Error(`Invalid account: ${account}`);
-  }
+  return getEnvVar(`STRIPE_SECRET_KEY_${account}`);
 }
 
 export function initStripe(account: StripeAccount): Stripe {

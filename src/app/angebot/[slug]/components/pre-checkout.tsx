@@ -1,6 +1,5 @@
 "use client";
 
-import { MeQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { useCallback, useId, useMemo, useState } from "react";
 import { AboMeta, AboTypes } from "../lib/config";
 import { AboConfiguration, AboStripeConfig } from "../lib/stripe/types";
@@ -8,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
 import { css } from "@/theme/css";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import Trans from "next-translate/Trans";
 import useTranslation from "next-translate/useTranslation";
 import { Slider } from "@/components/ui/slider";
-import { Me } from "@/lib/auth/fetch-me";
+import { Me } from "@/lib/auth/types";
+import { isEligibleForCoupon } from "@/lib/auth/discount-eligability";
 
 interface PreCheckoutProps {
   me: Me;
@@ -39,7 +38,7 @@ export function PreCheckout(props: PreCheckoutProps) {
     [aboData.price.currency]
   );
 
-  const isEligibleForCoupon = me?.memberships.length == 0;
+  const hasCoupon = useMemo(() => isEligibleForCoupon(me), [me]);
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
@@ -56,7 +55,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         hidden: true,
       });
     }
-    if (aboData.coupon && isEligibleForCoupon && !aboConfig.customPrice) {
+    if (aboData.coupon && hasCoupon && !aboConfig.customPrice) {
       items.push({
         label: aboData.coupon.name || "Rabatt", // TODO: should we repor this to sentry?
         amount: (-1 * (aboData.coupon.amount_off ?? 0)) / 100,
@@ -66,7 +65,7 @@ export function PreCheckout(props: PreCheckoutProps) {
   }, [
     aboConfig.customPrice,
     aboData.coupon,
-    isEligibleForCoupon,
+    hasCoupon,
     aboData.price.unit_amount,
     aboData.product.name,
     userPrice,

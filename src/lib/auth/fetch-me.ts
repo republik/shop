@@ -1,10 +1,6 @@
-import {
-  MeDocument,
-  MeQuery,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "../graphql/client";
-
-export type Me = MeQuery["me"];
+import { Me } from "./types";
 
 export async function fetchMe(): Promise<Me | null> {
   const { data, error } = await getClient().query(MeDocument, {});

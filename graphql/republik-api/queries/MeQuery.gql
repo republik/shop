@@ -15,18 +15,28 @@ query Me {
       type {
         name
       }
-      renew
+      active
       endDate
-      graceEndDate
-      canProlong
     }
     memberships {
       id
+      type {
+        name
+      }
+      active
       endDate
     }
     activeMagazineSubscription {
       id
       type
+      status
+      currentPeriodStart
+      currentPeriodEnd
+    }
+    magazineSubscriptions {
+      id
+      type
+      status
       currentPeriodStart
       currentPeriodEnd
     }

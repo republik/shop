@@ -12,6 +12,7 @@ declare global {
       DATO_CMS_ENVIRONMENT: string | undefined;
       // STRIPE
       STRIPE_ACCOUNT_PROJECT_R: string;
+      STRIPE_PAYMENT_CONFIGURATION_PROJECT_R: string;
       STRIPE_SECRET_KEY_PROJECT_R: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;
       STRIPE_ACCOUNT_REPUBLIK: string;

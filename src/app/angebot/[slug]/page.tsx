@@ -8,27 +8,25 @@ import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 import { css } from "@/theme/css";
 import { redirect } from "next/navigation";
-import { getClient } from "@/lib/graphql/client";
-import {
-  SignOutDocument,
-  MeDocument,
-} from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import useTranslation from "next-translate/useTranslation";
-import { useClient } from "urql";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, AlertCircleIcon, Terminal } from "lucide-react";
+import Link from "next/link";
+import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 
 export default async function ProductPage({
   params,
   searchParams,
 }: {
   params: { slug: string };
-  searchParams: { price: string };
+  searchParams: { price: string; session_id?: string };
 }) {
   const { t } = useTranslation();
   const aboConfig = CheckoutConfig[params.slug];
   const aboMeta = aboTypesMeta[params.slug];
-  const sessionId = cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-
+  const sessionId =
+    searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const stripe = initStripe(aboConfig.stripeAccount);
   const [me, checkoutSession, aboData] = await Promise.all([
     fetchMe(),
@@ -56,6 +54,13 @@ export default async function ProductPage({
     redirect(`/angebot/${params.slug}`);
   }
 
+  const canUserBuy =
+    me &&
+    checkIfUserCanPurchase(
+      me,
+      aboConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY"
+    );
+
   const productDetails: Step = {
     name: t("checkout:preCheckout.title"),
     detail: checkoutSession ? (
@@ -67,9 +72,9 @@ export default async function ProductPage({
         <StepperChangeStepButton onChange={resetCheckoutSession} />
       </>
     ) : undefined,
-    content: (
+    content: canUserBuy?.available ? (
       <PreCheckout
-        me={me}
+        me={me!}
         aboType={params.slug}
         aboConfig={aboConfig}
         aboMeta={aboMeta}
@@ -83,6 +88,20 @@ export default async function ProductPage({
             : undefined
         }
       />
+    ) : (
+      <Alert variant="info">
+        <AlertCircleIcon />
+        <AlertTitle>{t("checkout:preCheckout.unavailable.title")}</AlertTitle>
+        <AlertDescription>{canUserBuy?.reason}</AlertDescription>
+        <AlertDescription>
+          <Link
+            href={process.env.NEXT_PUBLIC_MAGAZIN_URL}
+            className={css({ textDecoration: "underline", marginTop: "2" })}
+          >
+            {t("checkout:preCheckout.unavailable.action")}
+          </Link>
+        </AlertDescription>
+      </Alert>
     ),
     disabled: !me,
   };
