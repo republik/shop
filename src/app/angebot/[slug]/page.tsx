@@ -35,9 +35,6 @@ export default async function ProductPage({
     StripeService(stripe).getAboTypeData(aboConfig),
   ]);
 
-  // TODO: if checkoutSession could be retrieved, ensure that the checkoutSession
-  // is for the correct product received in 'AboData'
-
   const loginStep: Step = {
     name: t("checkout:loginStep.title"),
     detail: me ? (

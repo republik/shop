@@ -57,7 +57,7 @@ export function PreCheckout(props: PreCheckoutProps) {
     }
     if (aboData.coupon && hasCoupon && !aboConfig.customPrice) {
       items.push({
-        label: aboData.coupon.name || "Rabatt", // TODO: should we repor this to sentry?
+        label: aboData.coupon.name || "Rabatt",
         amount: (-1 * (aboData.coupon.amount_off ?? 0)) / 100,
       });
     }
