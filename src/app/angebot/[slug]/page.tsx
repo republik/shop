@@ -11,9 +11,10 @@ import { redirect } from "next/navigation";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import useTranslation from "next-translate/useTranslation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, AlertCircleIcon, Terminal } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 export default async function ProductPage({
   params,
@@ -80,7 +81,10 @@ export default async function ProductPage({
         aboMeta={aboMeta}
         aboData={{
           ...aboData,
-          coupon: me?.memberships.length === 0 ? aboData.coupon : null,
+          coupon:
+            isEligibleForEntryCoupon(me) && aboData.coupon
+              ? aboData.coupon
+              : null,
         }}
         initialPrice={
           aboConfig.customPrice && searchParams.price

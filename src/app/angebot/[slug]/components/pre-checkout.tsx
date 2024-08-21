@@ -10,7 +10,7 @@ import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 import useTranslation from "next-translate/useTranslation";
 import { Slider } from "@/components/ui/slider";
 import { Me } from "@/lib/auth/types";
-import { isEligibleForCoupon } from "@/lib/auth/discount-eligability";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 interface PreCheckoutProps {
   me: Me;
@@ -38,7 +38,7 @@ export function PreCheckout(props: PreCheckoutProps) {
     [aboData.price.currency]
   );
 
-  const hasCoupon = useMemo(() => isEligibleForCoupon(me), [me]);
+  const hasCoupon = useMemo(() => isEligibleForEntryCoupon(me), [me]);
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];

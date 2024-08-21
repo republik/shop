@@ -12,6 +12,7 @@ import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
 import { StripeAccount } from "./lib/stripe/types";
 import { Me } from "@/lib/auth/types";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 function getUTM(): UtmObject {
   const utmCookie = cookies().get(UTM_COOKIE_NAME);
@@ -56,7 +57,6 @@ async function initializeCheckout(
       ? stripe.coupons.retrieve(aboConfig.couponCode).catch(() => null)
       : null,
   ]);
-  const isEliglibleForDiscount = me?.memberships?.length == 0;
   const utmObj = getUTM();
 
   const stripeCustomer = getRelevantStripeCustomer(
@@ -90,7 +90,9 @@ async function initializeCheckout(
     ],
     currency: price.currency,
     discounts:
-      isEliglibleForDiscount && coupon ? [{ coupon: coupon.id }] : undefined,
+      isEligibleForEntryCoupon(me) && coupon
+        ? [{ coupon: coupon.id }]
+        : undefined,
     return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
     redirect_on_completion: "if_required",

@@ -14,6 +14,7 @@ import { AboConfiguration } from "../angebot/[slug]/lib/stripe/types";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { UtmObject } from "@/lib/utm";
 import { css } from "@/theme/css";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 type ProductCardProps = {
   aboType: AboTypes;
@@ -39,8 +40,6 @@ export async function ProductCard({
       : null,
   ]);
 
-  const eligibleForCoupon = (me?.memberships || []).length == 0;
-
   return (
     <Card>
       <CardHeader>
@@ -50,7 +49,7 @@ export async function ProductCard({
       <CardContent>
         {coupon &&
           coupon.amount_off &&
-          eligibleForCoupon &&
+          isEligibleForEntryCoupon(me) &&
           price.unit_amount && (
             <div
               className={css({
