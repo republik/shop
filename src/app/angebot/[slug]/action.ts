@@ -67,7 +67,6 @@ async function initializeCheckout(
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "embedded",
-    // @TODO/BACKEND: We need to query the already registered customer with stripe to prefill the address + payment infos
     customer: stripeCustomer,
     customer_email: !stripeCustomer ? options.email : undefined,
     line_items: [
@@ -105,6 +104,9 @@ async function initializeCheckout(
     payment_method_configuration: getAccountPaymentsConfiguration(
       aboConfig.stripeAccount
     ),
+    saved_payment_method_options: {
+      payment_method_save: "enabled",
+    },
   });
 
   if (!session.client_secret) {
