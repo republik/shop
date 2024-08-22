@@ -1,5 +1,6 @@
 import { UTM_COOKIE_NAME, collectUtmParams, toUtmCookie } from "@/lib/utm";
 import { NextRequest, NextResponse } from "next/server";
+import { REFERRER_ID_COOKIE_NAME } from "./lib/referrer";
 
 const CURTAIN_COOKIE_NAME = "OpenSesame";
 const CURTAIN_PASSTHROUGH_PATHS = [
@@ -103,6 +104,17 @@ function utmHOC(middleware: Middleware): Middleware {
   };
 }
 
+function referrerIdHOC(middleware: Middleware): Middleware {
+  return async (req: NextRequest) => {
+    const res = await middleware(req);
+    const referrerId = req.nextUrl.searchParams.get("referrerId");
+    if (referrerId) {
+      res.cookies.set(REFERRER_ID_COOKIE_NAME, referrerId);
+    }
+    return res;
+  };
+}
+
 /**
  * Middleware used to conditionally redirect between the marketing and front page
  * depending on the user authentication status and roles.
@@ -112,7 +124,7 @@ async function middlewareFunc(req: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 
-export const middleware = utmHOC(curtainHOC(middlewareFunc));
+export const middleware = referrerIdHOC(utmHOC(curtainHOC(middlewareFunc)));
 
 export const config = {
   matcher: [
