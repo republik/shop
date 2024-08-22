@@ -1,7 +1,7 @@
 "use server";
 
 import { fetchMe } from "@/lib/auth/fetch-me";
-import { AboTypes, CheckoutConfig } from "./lib/config";
+import { SubscriptionTypes, SubscriptionsConfiguration } from "./lib/config";
 import {
   getAccountPaymentsConfiguration,
   initStripe,
@@ -43,25 +43,25 @@ interface CheckoutOptions {
 }
 
 async function initializeCheckout(
-  aboType: AboTypes,
+  subscriptionType: SubscriptionTypes,
   options: CheckoutOptions
 ): Promise<void> {
   const me = await fetchMe();
-  const aboConfig = CheckoutConfig[aboType];
-  const stripe = await initStripe(aboConfig.stripeAccount);
+  const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
+  const stripe = await initStripe(subscriptionConfig.stripeAccount);
 
   const [price, product, coupon] = await Promise.all([
-    stripe.prices.retrieve(aboConfig.priceId),
-    stripe.products.retrieve(aboConfig.productId),
-    aboConfig.couponCode
-      ? stripe.coupons.retrieve(aboConfig.couponCode).catch(() => null)
+    stripe.prices.retrieve(subscriptionConfig.priceId),
+    stripe.products.retrieve(subscriptionConfig.productId),
+    subscriptionConfig.couponCode
+      ? stripe.coupons.retrieve(subscriptionConfig.couponCode).catch(() => null)
       : null,
   ]);
   const utmObj = getUTM();
 
   const stripeCustomer = getRelevantStripeCustomer(
     me!,
-    aboConfig.stripeAccount
+    subscriptionConfig.stripeAccount
   );
 
   const session = await stripe.checkout.sessions.create({
@@ -72,9 +72,11 @@ async function initializeCheckout(
     line_items: [
       {
         price:
-          !!options.userPrice && aboConfig.customPrice ? undefined : price.id,
+          !!options.userPrice && subscriptionConfig.customPrice
+            ? undefined
+            : price.id,
         price_data:
-          !!options.userPrice && aboConfig.customPrice
+          !!options.userPrice && subscriptionConfig.customPrice
             ? {
                 product: product.id,
                 unit_amount: options.userPrice,
@@ -85,7 +87,9 @@ async function initializeCheckout(
                 },
               }
             : undefined,
-        tax_rates: aboConfig.taxRateId ? [aboConfig.taxRateId] : undefined,
+        tax_rates: subscriptionConfig.taxRateId
+          ? [subscriptionConfig.taxRateId]
+          : undefined,
         quantity: 1,
       },
     ],
@@ -94,7 +98,7 @@ async function initializeCheckout(
       isEligibleForEntryCoupon(me) && coupon
         ? [{ coupon: coupon.id }]
         : undefined,
-    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${aboType}?session_id={CHECKOUT_SESSION_ID}`,
+    return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
     redirect_on_completion: "if_required",
     billing_address_collection: "required",
@@ -105,7 +109,7 @@ async function initializeCheckout(
       terms_of_service: "required",
     },
     payment_method_configuration: getAccountPaymentsConfiguration(
-      aboConfig.stripeAccount
+      subscriptionConfig.stripeAccount
     ),
     saved_payment_method_options: {
       payment_method_save: "enabled",
@@ -122,30 +126,31 @@ async function initializeCheckout(
 }
 
 export async function createCheckout(formData: FormData): Promise<{}> {
-  const aboType = formData.get("aboType");
+  const subscriptionType = formData.get("subscriptionType");
   const price = formData.get("price");
 
-  if (!aboType || typeof aboType !== "string") {
-    throw new Error("Abo type not given");
+  if (!subscriptionType || typeof subscriptionType !== "string") {
+    throw new Error(`SubscriptionType "${subscriptionType}" is invalid`);
   }
 
-  if (!Object.keys(CheckoutConfig).includes(aboType)) {
+  if (!Object.keys(SubscriptionsConfiguration).includes(subscriptionType)) {
     throw new Error(
-      `Invalid AboType '${aboType}'. AboType must be one of ${String(
-        Object.keys(CheckoutConfig)
+      `Invalid AboType '${subscriptionType}'. AboType must be one of ${String(
+        Object.keys(SubscriptionsConfiguration)
       )}`
     );
   }
 
   const me = await fetchMe();
-  const aboConfig = CheckoutConfig[aboType as AboTypes];
+  const subscriptionConfig =
+    SubscriptionsConfiguration[subscriptionType as SubscriptionTypes];
 
-  await initializeCheckout(aboType, {
+  await initializeCheckout(subscriptionType, {
     email: me?.email || undefined,
-    userPrice: aboConfig.customPrice
+    userPrice: subscriptionConfig.customPrice
       ? Math.max(240, price ? Number(price) : 0) * 100
       : undefined,
   });
 
-  redirect(`/angebot/${aboType}`);
+  redirect(`/angebot/${subscriptionType}`);
 }

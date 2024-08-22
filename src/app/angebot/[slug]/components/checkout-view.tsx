@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AboConfiguration } from "../lib/stripe/types";
+import { SubscriptionConfiguration } from "../lib/stripe/types";
 import { initStripe } from "../lib/stripe/client";
 import {
   EmbeddedCheckoutProvider,
@@ -11,7 +11,7 @@ import { SuccessView } from "./success-view";
 
 interface CheckoutViewProps {
   clientSecret: string;
-  stripeAccount: AboConfiguration["stripeAccount"];
+  stripeAccount: SubscriptionConfiguration["stripeAccount"];
 }
 
 export function CheckoutView({

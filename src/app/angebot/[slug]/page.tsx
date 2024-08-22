@@ -1,4 +1,4 @@
-import { aboTypesMeta, CheckoutConfig } from "./lib/config";
+import { SubscriptionsMeta, SubscriptionsConfiguration } from "./lib/config";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
@@ -24,15 +24,15 @@ export default async function ProductPage({
   searchParams: { price: string; session_id?: string };
 }) {
   const { t } = useTranslation();
-  const aboConfig = CheckoutConfig[params.slug];
-  const aboMeta = aboTypesMeta[params.slug];
+  const subscriptionConfig = SubscriptionsConfiguration[params.slug];
+  const subscriptionMeta = SubscriptionsMeta[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-  const stripe = initStripe(aboConfig.stripeAccount);
-  const [me, checkoutSession, aboData] = await Promise.all([
+  const stripe = initStripe(subscriptionConfig.stripeAccount);
+  const [me, checkoutSession, subscriptionData] = await Promise.all([
     fetchMe(),
     sessionId ? stripe.checkout.sessions.retrieve(sessionId) : null,
-    StripeService(stripe).getAboTypeData(aboConfig),
+    StripeService(stripe).getAboTypeData(subscriptionConfig),
   ]);
 
   const loginStep: Step = {
@@ -56,7 +56,7 @@ export default async function ProductPage({
     me &&
     checkIfUserCanPurchase(
       me,
-      aboConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY"
+      subscriptionConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY"
     );
 
   const productDetails: Step = {
@@ -73,18 +73,18 @@ export default async function ProductPage({
     content: canUserBuy?.available ? (
       <PreCheckout
         me={me!}
-        aboType={params.slug}
-        aboConfig={aboConfig}
-        aboMeta={aboMeta}
-        aboData={{
-          ...aboData,
+        subscriptionType={params.slug}
+        subscriptionConfig={subscriptionConfig}
+        subscriptionMeta={subscriptionMeta}
+        stripeSubscriptionItems={{
+          ...subscriptionData,
           coupon:
-            isEligibleForEntryCoupon(me) && aboData.coupon
-              ? aboData.coupon
+            isEligibleForEntryCoupon(me) && subscriptionData.coupon
+              ? subscriptionData.coupon
               : null,
         }}
         initialPrice={
-          aboConfig.customPrice && searchParams.price
+          subscriptionConfig.customPrice && searchParams.price
             ? Number(searchParams.price)
             : undefined
         }
@@ -112,7 +112,7 @@ export default async function ProductPage({
     content: checkoutSession ? (
       <Checkout
         sessionId={checkoutSession.id}
-        stripeAccount={aboConfig.stripeAccount}
+        stripeAccount={subscriptionConfig.stripeAccount}
         clientSecret={checkoutSession.client_secret!}
       />
     ) : (
@@ -144,7 +144,7 @@ export default async function ProductPage({
         })}
       >
         {t("checkout:preCheckout.summary.title", {
-          product: aboMeta.title,
+          product: subscriptionMeta.title,
         })}
       </h1>
       <Stepper

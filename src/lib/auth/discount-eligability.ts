@@ -5,7 +5,7 @@ import { Me } from "./types";
  * @param me The user object.
  * @returns Whether the user is eligible for an entry coupon.
  */
-export function isEligibleForEntryCoupon(me: Me | null): boolean {
+export function isEligibleForEntryCoupon(me: Me | null | undefined): boolean {
   if (!me) {
     return true;
   }

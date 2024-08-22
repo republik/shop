@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { initStripe } from "../lib/stripe/server";
 import { CheckoutView } from "./checkout-view";
-import { AboConfiguration } from "../lib/stripe/types";
+import { SubscriptionConfiguration } from "../lib/stripe/types";
 import { SuccessView } from "./success-view";
 
 export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
@@ -9,7 +9,7 @@ export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
 interface CheckoutProps {
   sessionId: string;
   clientSecret: string;
-  stripeAccount: AboConfiguration["stripeAccount"];
+  stripeAccount: SubscriptionConfiguration["stripeAccount"];
 }
 
 export default async function Checkout(props: CheckoutProps) {

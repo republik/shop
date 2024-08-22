@@ -12,7 +12,7 @@ export type IsProductAvailableForUserPredicate = (
   me: Me
 ) => ProductAvailabilityResult;
 
-export interface AboConfiguration {
+export interface SubscriptionConfiguration {
   stripeAccount: StripeAccount;
   productId: string;
   priceId: string;
@@ -21,7 +21,7 @@ export interface AboConfiguration {
   customPrice?: boolean;
 }
 
-export type AboStripeConfig = {
+export type StripeSubscriptonItems = {
   product: Stripe.Product;
   price: Stripe.Price;
   coupon: Stripe.Coupon | null;

@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useId, useMemo, useState } from "react";
-import { AboMeta, AboTypes } from "../lib/config";
-import { AboConfiguration, AboStripeConfig } from "../lib/stripe/types";
+import { SubscriptionMeta, SubscriptionTypes } from "../lib/config";
+import {
+  SubscriptionConfiguration,
+  StripeSubscriptonItems,
+} from "../lib/stripe/types";
 import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
 import { css } from "@/theme/css";
@@ -14,15 +17,21 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 interface PreCheckoutProps {
   me: Me;
-  aboType: AboTypes;
-  aboConfig: AboConfiguration;
-  aboData: AboStripeConfig;
-  aboMeta: AboMeta;
+  subscriptionType: SubscriptionTypes;
+  subscriptionConfig: SubscriptionConfiguration;
+  stripeSubscriptionItems: StripeSubscriptonItems;
+  subscriptionMeta: SubscriptionMeta;
   initialPrice?: number;
 }
 
 export function PreCheckout(props: PreCheckoutProps) {
-  const { aboData, aboType, aboConfig, initialPrice, me } = props;
+  const {
+    stripeSubscriptionItems,
+    subscriptionType,
+    subscriptionConfig,
+    initialPrice,
+    me,
+  } = props;
   const { t } = useTranslation();
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
@@ -33,16 +42,16 @@ export function PreCheckout(props: PreCheckoutProps) {
   const renderPrice = useCallback(
     (price: number | null) =>
       price != null
-        ? `${(price / 100).toFixed(0)} ${aboData.price.currency.toUpperCase()}`
+        ? `${(price / 100).toFixed(0)} ${stripeSubscriptionItems.price.currency.toUpperCase()}`
         : null,
-    [aboData.price.currency]
+    [stripeSubscriptionItems.price.currency]
   );
 
   const hasCoupon = useMemo(() => isEligibleForEntryCoupon(me), [me]);
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
-    if (aboConfig.customPrice) {
+    if (subscriptionConfig.customPrice) {
       items.push({
         label: "Mitgliedschaft mit selbst gewähltem Preis",
         amount: userPrice,
@@ -50,24 +59,28 @@ export function PreCheckout(props: PreCheckoutProps) {
       });
     } else {
       items.push({
-        label: aboData.product.name,
-        amount: (aboData.price.unit_amount ?? 0) / 100,
+        label: stripeSubscriptionItems.product.name,
+        amount: (stripeSubscriptionItems.price.unit_amount ?? 0) / 100,
         hidden: true,
       });
     }
-    if (aboData.coupon && hasCoupon && !aboConfig.customPrice) {
+    if (
+      stripeSubscriptionItems.coupon &&
+      hasCoupon &&
+      !subscriptionConfig.customPrice
+    ) {
       items.push({
-        label: aboData.coupon.name || "Rabatt",
-        amount: (-1 * (aboData.coupon.amount_off ?? 0)) / 100,
+        label: stripeSubscriptionItems.coupon.name || "Rabatt",
+        amount: (-1 * (stripeSubscriptionItems.coupon.amount_off ?? 0)) / 100,
       });
     }
     return items;
   }, [
-    aboConfig.customPrice,
-    aboData.coupon,
+    subscriptionConfig.customPrice,
+    stripeSubscriptionItems.coupon,
     hasCoupon,
-    aboData.price.unit_amount,
-    aboData.product.name,
+    stripeSubscriptionItems.price.unit_amount,
+    stripeSubscriptionItems.product.name,
     userPrice,
   ]);
 
@@ -81,7 +94,12 @@ export function PreCheckout(props: PreCheckoutProps) {
         gap: "4",
       })}
     >
-      <input type="text" name="aboType" hidden defaultValue={aboType} />
+      <input
+        type="text"
+        name="subscriptionType"
+        hidden
+        defaultValue={subscriptionType}
+      />
       <div
         className={css({
           spaceY: "[6px]",
@@ -93,7 +111,7 @@ export function PreCheckout(props: PreCheckoutProps) {
             fontWeight: "medium",
           })}
         >
-          {props.aboMeta.title}
+          {props.subscriptionMeta.title}
         </h3>
         <p
           className={css({
@@ -102,17 +120,17 @@ export function PreCheckout(props: PreCheckoutProps) {
         >
           {t("checkout:preCheckout.pricePerInterval", {
             price: renderPrice(
-              aboConfig.customPrice
+              subscriptionConfig.customPrice
                 ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                : aboData.price.unit_amount
+                : stripeSubscriptionItems.price.unit_amount
             ),
             interval: t(
-              `checkout:preCheckout.intervals.${aboConfig.customPrice ? "year" : aboData.price.recurring?.interval}`
+              `checkout:preCheckout.intervals.${subscriptionConfig.customPrice ? "year" : stripeSubscriptionItems.price.recurring?.interval}`
             ),
           })}
         </p>
       </div>
-      {aboConfig.customPrice && (
+      {subscriptionConfig.customPrice && (
         <fieldset
           className={css({
             display: "flex",
@@ -151,7 +169,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         </fieldset>
       )}
       <CheckoutPricingTable
-        currency={aboData.price.currency}
+        currency={stripeSubscriptionItems.price.currency}
         items={checkoutItems}
       />
 
