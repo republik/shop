@@ -32,8 +32,8 @@ export async function ProductCard({
   const me = await fetchMe();
   const meta = aboTypesMeta[aboType];
   const stripe = await initStripe(aboPurchaseOptions.stripeAccount);
-  const [product, price, coupon] = await Promise.all([
-    stripe.products.retrieve(aboPurchaseOptions.productId),
+  const [price, coupon] = await Promise.all([
+    // stripe.products.retrieve(aboPurchaseOptions.productId),
     stripe.prices.retrieve(aboPurchaseOptions.priceId),
     aboPurchaseOptions.couponCode
       ? stripe.coupons.retrieve(aboPurchaseOptions.couponCode).catch(() => null)
