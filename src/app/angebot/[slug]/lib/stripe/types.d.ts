@@ -16,6 +16,7 @@ export interface AboConfiguration {
   stripeAccount: StripeAccount;
   productId: string;
   priceId: string;
+  taxRateId?: string;
   couponCode?: string;
   customPrice?: boolean;
 }

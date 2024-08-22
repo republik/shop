@@ -85,6 +85,7 @@ async function initializeCheckout(
                 },
               }
             : undefined,
+        tax_rates: aboConfig.taxRateId ? [aboConfig.taxRateId] : undefined,
         quantity: 1,
       },
     ],

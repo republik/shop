@@ -5,6 +5,7 @@ export const CheckoutConfig: Record<string, AboConfiguration> = {
     stripeAccount: "REPUBLIK",
     productId: "prod_Ccmy87SuPqF5OM",
     priceId: "MONTHLY_ABO",
+    taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
     couponCode: "jgxhEDj9",
   },
   YEARLY: {
