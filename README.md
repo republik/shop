@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Republik Shop
 
-## Getting Started
+## Setup
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Node.js v20](https://nodejs.org/en/)
+- [PNPM v9](https://pnpm.io/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The following environment variables are required to run the application in development mode or to build it for production.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+#### General
 
-## Learn More
+The following environment variables are required for the application to correctly link to it's self, the API and the magazine:
 
-To learn more about Next.js, take a look at the following resources:
+- NEXT_PUBLIC_URL: The URL of the website.
+- NEXT_PUBLIC_API_URL: The URL of the API.
+- NEXT_PUBLIC_MAGAZIN_URL: Used for linking to the magazine front, account page and the imprint.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Stripe
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The following environment variables are required to connect to the Stripe API for both organizations:
 
-## Deploy on Vercel
+- STRIPE_ACCOUNT_PROJECT_R
+- STRIPE_PAYMENT_CONFIGURATION_PROJECT_R
+- STRIPE_SECRET_KEY_PROJECT_R
+- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R
+- STRIPE_ACCOUNT_REPUBLIK
+- STRIPE_PAYMENT_CONFIGURATION_REPUBLIK
+- STRIPE_SECRET_KEY_REPUBLIK
+- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Shop configuration
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The shop configuration is located in the [config.ts](./src/app/angebot/[slug]/lib/config.ts) file.
+More documentation on the configuration options can be found directly in the code.

@@ -1,9 +1,10 @@
 import { ProductCard } from "./components/product-card";
-import { CheckoutConfig } from "./angebot/[slug]/lib/config";
+import { SubscriptionsConfiguration } from "./angebot/[slug]/lib/config";
 import { container, grid } from "@/theme/patterns";
+import { fetchMe } from "@/lib/auth/fetch-me";
 
 export default async function Home() {
-  const config = CheckoutConfig;
+  const me = await fetchMe();
 
   return (
     <div className={container({ gap: "16" })}>
@@ -16,13 +17,16 @@ export default async function Home() {
           },
         })}
       >
-        {Object.entries(config).map(([aboType, config]) => (
-          <ProductCard
-            key={aboType}
-            aboType={aboType}
-            aboPurchaseOptions={config}
-          />
-        ))}
+        {Object.entries(SubscriptionsConfiguration).map(
+          ([subscriptionType, subscriptionConfiguration]) => (
+            <ProductCard
+              key={subscriptionType}
+              me={me}
+              subscriptionType={subscriptionType}
+              subscriptionConfiguration={subscriptionConfiguration}
+            />
+          )
+        )}
       </div>
     </div>
   );

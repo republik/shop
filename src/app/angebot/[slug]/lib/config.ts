@@ -1,6 +1,9 @@
-import { AboConfiguration } from "./stripe/types";
+import { SubscriptionConfiguration } from "./stripe/types";
 
-export const CheckoutConfig: Record<string, AboConfiguration> = {
+export const SubscriptionsConfiguration: Record<
+  string,
+  SubscriptionConfiguration
+> = {
   MONTHLY: {
     stripeAccount: "REPUBLIK",
     productId: "prod_Ccmy87SuPqF5OM",
@@ -31,9 +34,9 @@ export const CheckoutConfig: Record<string, AboConfiguration> = {
   },
 } as const;
 
-export type AboTypes = keyof typeof CheckoutConfig;
+export type SubscriptionTypes = keyof typeof SubscriptionsConfiguration;
 
-export type AboMeta = {
+export type SubscriptionMeta = {
   title: string;
   description: string;
   projectR: boolean;
@@ -41,7 +44,7 @@ export type AboMeta = {
   upsellNode?: JSX.Element;
 };
 
-export const aboTypesMeta: Record<AboTypes, AboMeta> = {
+export const SubscriptionsMeta: Record<SubscriptionTypes, SubscriptionMeta> = {
   MONTHLY: {
     title: "Monats-Abo",
     description: "Das Abo für XYZ",

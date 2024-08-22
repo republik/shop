@@ -8,17 +8,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
-import { AboTypes, aboTypesMeta } from "../angebot/[slug]/lib/config";
+import {
+  SubscriptionTypes,
+  SubscriptionsMeta,
+} from "../angebot/[slug]/lib/config";
 import Link from "next/link";
-import { AboConfiguration } from "../angebot/[slug]/lib/stripe/types";
-import { fetchMe } from "@/lib/auth/fetch-me";
+import { SubscriptionConfiguration } from "../angebot/[slug]/lib/stripe/types";
 import { UtmObject } from "@/lib/utm";
 import { css } from "@/theme/css";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
+import { Me } from "@/lib/auth/types";
 
 type ProductCardProps = {
-  aboType: AboTypes;
-  aboPurchaseOptions: AboConfiguration;
+  me?: Me | null | undefined;
+  subscriptionType: SubscriptionTypes;
+  subscriptionConfiguration: SubscriptionConfiguration;
   utm?: UtmObject;
 };
 
@@ -26,25 +30,26 @@ const priceStr = (price: number, currency = "CHF") =>
   `${currency} ${(price / 100).toFixed(2)}`;
 
 export async function ProductCard({
-  aboType,
-  aboPurchaseOptions,
+  me,
+  subscriptionType,
+  subscriptionConfiguration,
 }: ProductCardProps) {
-  const me = await fetchMe();
-  const meta = aboTypesMeta[aboType];
-  const stripe = await initStripe(aboPurchaseOptions.stripeAccount);
-  const [product, price, coupon] = await Promise.all([
-    stripe.products.retrieve(aboPurchaseOptions.productId),
-    stripe.prices.retrieve(aboPurchaseOptions.priceId),
-    aboPurchaseOptions.couponCode
-      ? stripe.coupons.retrieve(aboPurchaseOptions.couponCode).catch(() => null)
+  const subscriptionMeta = SubscriptionsMeta[subscriptionType];
+  const stripe = await initStripe(subscriptionConfiguration.stripeAccount);
+  const [price, coupon] = await Promise.all([
+    stripe.prices.retrieve(subscriptionConfiguration.priceId),
+    subscriptionConfiguration.couponCode
+      ? stripe.coupons
+          .retrieve(subscriptionConfiguration.couponCode)
+          .catch(() => null)
       : null,
   ]);
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{meta.title}</CardTitle>
-        <CardDescription>{meta.description}</CardDescription>
+        <CardTitle>{subscriptionMeta.title}</CardTitle>
+        <CardDescription>{subscriptionMeta.description}</CardDescription>
       </CardHeader>
       <CardContent>
         {coupon &&
@@ -69,14 +74,14 @@ export async function ProductCard({
           <li>✅ Das auch</li>
 
           <li>
-            {meta.projectR ? "✅" : "❌"} Du wirst Teil der Project-R
-            Genossenschaft
+            {subscriptionMeta.projectR ? "✅" : "❌"} Du wirst Teil der
+            Project-R Genossenschaft
           </li>
         </ul>
       </CardContent>
       <CardFooter>
         <Button asChild>
-          <Link href={`/angebot/${aboType}`}>Zum Angebot</Link>
+          <Link href={`/angebot/${subscriptionType}`}>Zum Angebot</Link>
         </Button>
       </CardFooter>
     </Card>
