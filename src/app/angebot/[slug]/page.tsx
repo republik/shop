@@ -32,7 +32,7 @@ export default async function ProductPage({
   const [me, checkoutSession, subscriptionData] = await Promise.all([
     fetchMe(),
     sessionId ? stripe.checkout.sessions.retrieve(sessionId) : null,
-    StripeService(stripe).getAboTypeData(subscriptionConfig),
+    StripeService(stripe).getStripeSubscriptionItems(subscriptionConfig),
   ]);
 
   const loginStep: Step = {
