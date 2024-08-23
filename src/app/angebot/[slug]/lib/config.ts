@@ -30,7 +30,11 @@ export const SubscriptionsConfiguration: Record<
     stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
-    customPrice: true,
+    customPrice: {
+      max: 1000,
+      min: 240,
+      step: 5,
+    },
   },
 } as const;
 

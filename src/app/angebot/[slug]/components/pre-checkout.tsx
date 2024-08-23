@@ -148,10 +148,9 @@ export function PreCheckout(props: PreCheckoutProps) {
           <Slider
             id={priceId}
             name="price"
-            // TODO: define range for custom price in SubscriptionConfiguration object
-            min={240}
-            max={1000}
-            step={5}
+            min={subscriptionConfig.customPrice.min}
+            max={subscriptionConfig.customPrice.max}
+            step={subscriptionConfig.customPrice.step}
             value={[userPrice]}
             onValueChange={(e) => setUserPrice(e?.[0])}
           />
