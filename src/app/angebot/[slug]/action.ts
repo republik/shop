@@ -54,8 +54,10 @@ export async function createCheckout(formData: FormData): Promise<{}> {
     {
       email: me?.email || undefined, // TODO: don't require me as a parameter
       userPrice: subscriptionConfig.customPrice
-        ? // TODO: enforce minimum price here base on Subscription Configuration object
-          Math.max(240, price ? Number(price) : 0) * 100
+        ? Math.max(
+            subscriptionConfig.customPrice.min,
+            price ? Number(price) : 0
+          ) * 100
         : undefined,
       analytics: analyticsParams,
     }
