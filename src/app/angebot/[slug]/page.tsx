@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 import { css } from "@/theme/css";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import useTranslation from "next-translate/useTranslation";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,6 +23,10 @@ export default async function ProductPage({
   params: { slug: string };
   searchParams: { price: string; session_id?: string };
 }) {
+  if (!SubscriptionsConfiguration[params.slug]) {
+    notFound();
+  }
+
   const { t } = useTranslation();
   const subscriptionConfig = SubscriptionsConfiguration[params.slug];
   const subscriptionMeta = SubscriptionsMeta[params.slug];
@@ -116,7 +120,7 @@ export default async function ProductPage({
         clientSecret={checkoutSession.client_secret!}
       />
     ) : (
-      // TODO: log to sentry
+      // TODO: log to sentry and render alert
       <p>Something went wrong…</p>
     ),
     disabled: !checkoutSession,

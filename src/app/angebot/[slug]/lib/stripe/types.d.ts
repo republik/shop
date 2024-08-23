@@ -18,6 +18,7 @@ export interface SubscriptionConfiguration {
   priceId: string;
   taxRateId?: string;
   couponCode?: string;
+  // TODO: Check if this can be infered from price object
   customPrice?: boolean;
 }
 

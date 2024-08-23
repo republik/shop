@@ -48,14 +48,16 @@ export async function createCheckout(formData: FormData): Promise<{}> {
   const stripe = initStripe(
     SubscriptionsConfiguration[subscriptionType].stripeAccount
   );
+
   const checkoutSession = await StripeService(stripe).initializeCheckoutSession(
     subscriptionType,
     {
-      email: me?.email || undefined,
+      email: me?.email || undefined, // TODO: don't require me as a parameter
       userPrice: subscriptionConfig.customPrice
-        ? Math.max(240, price ? Number(price) : 0) * 100
+        ? // TODO: enforce minimum price here base on Subscription Configuration object
+          Math.max(240, price ? Number(price) : 0) * 100
         : undefined,
-      analytics: analyticsParams ? analyticsParams : undefined,
+      analytics: analyticsParams,
     }
   );
 

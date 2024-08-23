@@ -16,16 +16,6 @@ export default async function Checkout(props: CheckoutProps) {
   const stripe = await initStripe(props.stripeAccount);
   const session = await stripe.checkout.sessions.retrieve(props.sessionId);
 
-  // Handle return_url as defined in the Stripe Checkout session
-  if (session.status === "complete") {
-    return <SuccessView />;
-  }
-
-  if (session.status === "expired") {
-    // TODO: Should we return the user to the non checkout page
-    return <p>Session expired.</p>;
-  }
-
   if (!session.client_secret) {
     return <p>Something is wrong</p>;
   }
@@ -39,5 +29,15 @@ export default async function Checkout(props: CheckoutProps) {
     );
   }
 
+  if (session.status === "complete") {
+    return <SuccessView />;
+  }
+
+  if (session.status === "expired") {
+    // TODO: Should we return the user to the non checkout page
+    return <p>Session expired.</p>;
+  }
+
+  // TODO: render alert with error message
   throw new Error("Invalid checkout state");
 }

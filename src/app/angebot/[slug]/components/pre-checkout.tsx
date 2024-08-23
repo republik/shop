@@ -47,6 +47,7 @@ export function PreCheckout(props: PreCheckoutProps) {
     [stripeSubscriptionItems.price.currency]
   );
 
+  // TODO: remove as coupon is not forwarded if not eligible as checked in [slug].tsx
   const hasCoupon = useMemo(() => isEligibleForEntryCoupon(me), [me]);
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
@@ -98,6 +99,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         type="text"
         name="subscriptionType"
         hidden
+        readOnly
         defaultValue={subscriptionType}
       />
       <div
@@ -146,6 +148,7 @@ export function PreCheckout(props: PreCheckoutProps) {
           <Slider
             id={priceId}
             name="price"
+            // TODO: define range for custom price in SubscriptionConfiguration object
             min={240}
             max={1000}
             step={5}

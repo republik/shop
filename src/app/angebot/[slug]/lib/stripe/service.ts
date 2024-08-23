@@ -52,13 +52,10 @@ async function initializeCheckout(
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
 
-  const [price, product, coupon] = await Promise.all([
-    stripe.prices.retrieve(subscriptionConfig.priceId),
-    stripe.products.retrieve(subscriptionConfig.productId),
-    subscriptionConfig.couponCode
-      ? stripe.coupons.retrieve(subscriptionConfig.couponCode).catch(() => null)
-      : null,
-  ]);
+  const { price, product, coupon } = await fetchStripeSubscriptionData(
+    stripe,
+    subscriptionConfig
+  );
 
   const me = await fetchMe();
   const stripeCustomer = me
@@ -82,6 +79,7 @@ async function initializeCheckout(
                 product: product.id,
                 unit_amount: options.userPrice,
                 currency: price.currency,
+                // TODO: add recurring for custom prices into SubscriptionConfiguration object
                 recurring: {
                   interval: "year",
                   interval_count: 1,
@@ -99,6 +97,7 @@ async function initializeCheckout(
       isEligibleForEntryCoupon(me) && coupon
         ? [{ coupon: coupon.id }]
         : undefined,
+    // '{CHECKOUT_SESSION_ID}' is prefilled by stripe
     return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
     redirect_on_completion: "if_required",
