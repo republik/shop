@@ -3,19 +3,22 @@
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { SubscriptionTypes, SubscriptionsConfiguration } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
-import { UTM_COOKIE_NAME, UtmObject, fromUtmCookie } from "@/lib/utm";
+import {
+  ANALYTICS_COOKIE_NAME,
+  AnalyticsObject,
+  fromAnalyticsCookie,
+} from "@/lib/analytics";
 import { cookies } from "next/headers";
 import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
-import { REFERRER_ID_COOKIE_NAME } from "@/lib/referrer";
 import { StripeService } from "./lib/stripe/service";
 
-function readUTMFromCookies(): UtmObject {
-  const utmCookie = cookies().get(UTM_COOKIE_NAME);
-  if (!utmCookie) {
+function readAnalyticsParamsFromCookie(): AnalyticsObject {
+  const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
+  if (!cookie) {
     return {};
   }
-  return fromUtmCookie(utmCookie.value);
+  return fromAnalyticsCookie(cookie.value);
 }
 
 function ensureValidSubscriptionType(
@@ -40,8 +43,7 @@ export async function createCheckout(formData: FormData): Promise<{}> {
   const me = await fetchMe();
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
 
-  const utm = readUTMFromCookies();
-  const referrerId = cookies().get(REFERRER_ID_COOKIE_NAME)?.value;
+  const analyticsParams = readAnalyticsParamsFromCookie();
 
   const stripe = initStripe(
     SubscriptionsConfiguration[subscriptionType].stripeAccount
@@ -53,10 +55,7 @@ export async function createCheckout(formData: FormData): Promise<{}> {
       userPrice: subscriptionConfig.customPrice
         ? Math.max(240, price ? Number(price) : 0) * 100
         : undefined,
-      analytics: {
-        utm,
-        referrerId,
-      },
+      analytics: analyticsParams ? analyticsParams : undefined,
     }
   );
 

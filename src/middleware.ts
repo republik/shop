@@ -1,6 +1,11 @@
-import { UTM_COOKIE_NAME, collectUtmParams, toUtmCookie } from "@/lib/utm";
+import {
+  ANALYTICS_COOKIE_NAME,
+  collectAnalyticsParams,
+  toAnalyticsCookie,
+} from "@/lib/analytics";
 import { NextRequest, NextResponse } from "next/server";
-import { REFERRER_ID_COOKIE_NAME } from "./lib/referrer";
+
+const ANALYTICS_COOKIE_MAX_AGE = 60 * 60 * 24 * 3; // 3 days
 
 const CURTAIN_COOKIE_NAME = "OpenSesame";
 const CURTAIN_PASSTHROUGH_PATHS = [
@@ -93,38 +98,38 @@ function curtainHOC(middleware: Middleware): Middleware {
   };
 }
 
-function utmHOC(middleware: Middleware): Middleware {
+function analyticsHOC(middleware: Middleware): Middleware {
   return async (req: NextRequest) => {
     const res = await middleware(req);
-    const utm = collectUtmParams(req.nextUrl.searchParams);
-    if (Object.keys(utm).length > 0) {
-      res.cookies.set(UTM_COOKIE_NAME, toUtmCookie(utm));
+    const analyticsParams = collectAnalyticsParams(
+      Object.fromEntries(req.nextUrl.searchParams.entries())
+    );
+
+    if (Object.keys(analyticsParams).length > 0) {
+      const url = req.nextUrl.clone();
+      Object.keys(analyticsParams).forEach((key) => {
+        url.searchParams.delete(key);
+      });
+      const res = NextResponse.redirect(url.toString());
+      res.cookies.set(
+        ANALYTICS_COOKIE_NAME,
+        toAnalyticsCookie(analyticsParams),
+        {
+          maxAge: ANALYTICS_COOKIE_MAX_AGE,
+        }
+      );
+      return res;
     }
+
     return res;
   };
 }
 
-function referrerIdHOC(middleware: Middleware): Middleware {
-  return async (req: NextRequest) => {
-    const res = await middleware(req);
-    const referrerId = req.nextUrl.searchParams.get("referrerId");
-    if (referrerId) {
-      res.cookies.set(REFERRER_ID_COOKIE_NAME, referrerId);
-    }
-    return res;
-  };
-}
-
-/**
- * Middleware used to conditionally redirect between the marketing and front page
- * depending on the user authentication status and roles.
- * @param req
- */
 async function middlewareFunc(req: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 
-export const middleware = referrerIdHOC(utmHOC(curtainHOC(middlewareFunc)));
+export const middleware = analyticsHOC(curtainHOC(middlewareFunc));
 
 export const config = {
   matcher: [

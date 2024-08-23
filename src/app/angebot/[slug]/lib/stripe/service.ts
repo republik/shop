@@ -6,7 +6,7 @@ import {
 } from "./types";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { getAccountPaymentsConfiguration } from "./server";
-import { UtmObject } from "@/lib/utm";
+import { AnalyticsObject } from "@/lib/analytics";
 import { Me } from "@/lib/auth/types";
 import { SubscriptionsConfiguration, SubscriptionTypes } from "../config";
 import { fetchMe } from "@/lib/auth/fetch-me";
@@ -42,10 +42,7 @@ function getRelevantStripeCustomer(
 interface CheckoutOptions {
   email?: string;
   userPrice?: number;
-  analytics?: {
-    utm?: UtmObject;
-    referrerId?: string;
-  };
+  analytics?: AnalyticsObject;
 }
 
 async function initializeCheckout(
@@ -108,8 +105,7 @@ async function initializeCheckout(
     billing_address_collection: "required",
     subscription_data: {
       metadata: {
-        ...options.analytics?.utm,
-        referrerId: options.analytics?.referrerId || null,
+        ...options.analytics,
       },
     },
     consent_collection: {

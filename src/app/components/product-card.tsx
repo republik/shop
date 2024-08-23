@@ -14,7 +14,7 @@ import {
 } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
 import { SubscriptionConfiguration } from "../angebot/[slug]/lib/stripe/types";
-import { UtmObject } from "@/lib/utm";
+import { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { Me } from "@/lib/auth/types";
@@ -23,7 +23,7 @@ type ProductCardProps = {
   me?: Me | null | undefined;
   subscriptionType: SubscriptionTypes;
   subscriptionConfiguration: SubscriptionConfiguration;
-  utm?: UtmObject;
+  utm?: AnalyticsObject;
 };
 
 const priceStr = (price: number, currency = "CHF") =>
