@@ -7,10 +7,8 @@ import Trans from "next-translate/Trans";
 import Link from "next/link";
 import { useClient } from "urql";
 import {
-  MeDocument,
   SignOutDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { redirect } from "next/navigation";
 import { StepperChangeStepButton } from "@/app/angebot/[slug]/components/stepper";
 
 const PRIVACY_POLICY_HREF = `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`;
@@ -29,10 +27,8 @@ export function StepperSignOutButton() {
 
 interface LoginViewProps {}
 
-export function LoginView(props: LoginViewProps) {
+export function LoginView(_: LoginViewProps) {
   const { t } = useTranslation();
-
-  const gql = useClient();
 
   return (
     <LoginForm

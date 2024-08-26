@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
-import useTranslation from "next-translate/useTranslation";
 
 function intersperse<T>(arr: T[], separator: (idx: number) => T): T[] {
   if (arr.length === 0) return [];
@@ -42,7 +41,6 @@ const footerLinks: Link[] = [
 ];
 
 export async function Footer() {
-  const { t } = useTranslation();
   const footerLinkNodes = footerLinks.map((link) => (
     <Link
       key={link.href}

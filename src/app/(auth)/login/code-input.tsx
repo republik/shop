@@ -1,7 +1,6 @@
 import { css, cx } from "@/theme/css";
 import { OTPInput } from "input-otp";
 import { ComponentPropsWithoutRef, RefObject } from "react";
-import { toast } from "sonner";
 
 export function CodeInput({
   formRef,

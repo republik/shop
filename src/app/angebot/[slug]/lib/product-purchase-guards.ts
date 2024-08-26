@@ -1,6 +1,5 @@
 import getTranslation from "next-translate/useTranslation";
 import { IsProductAvailableForUserPredicate } from "./stripe/types";
-import { MagazineSubscriptionType } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Me } from "@/lib/auth/types";
 
 type SubscriptionType = "MONTHLY" | "YEARLY";

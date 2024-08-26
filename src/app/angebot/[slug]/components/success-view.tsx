@@ -60,8 +60,10 @@ export function SuccessView() {
             width: "8",
           })}
         />
-        <AlertTitle>{t("checkout:success.title")}</AlertTitle>
-        <AlertDescription>{t("checkout:success.description")}</AlertDescription>
+        <AlertTitle>{t("checkout:checkout.success.title")}</AlertTitle>
+        <AlertDescription>
+          {t("checkout:checkout.success.description")}
+        </AlertDescription>
       </Alert>
     </div>
   );

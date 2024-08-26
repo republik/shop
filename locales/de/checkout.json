@@ -53,11 +53,11 @@
         "customPrice": "Ihr gewählter Preis ist CHF {{price}} / Jahr"
     },
     "checkout": {
-        "title": "Bezahlen"
-    },
-    "success": {
-        "title": "Vielen Dank für Ihren Kauf",
-        "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet",
-        "action": "Zum Magazin"
+        "title": "Bezahlen",
+        "success": {
+            "title": "Vielen Dank für Ihren Kauf",
+            "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet",
+            "action": "Zum Magazin"
+        }
     }
 }

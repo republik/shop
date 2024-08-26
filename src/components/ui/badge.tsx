@@ -1,5 +1,5 @@
 import * as React from "react";
-import { css, cva, cx, type RecipeVariantProps } from "@/theme/css";
+import { cva, cx, type RecipeVariantProps } from "@/theme/css";
 
 const badgeVariants = cva({
   base: {
