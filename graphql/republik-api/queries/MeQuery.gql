@@ -40,7 +40,7 @@ query Me {
       currentPeriodStart
       currentPeriodEnd
     }
-    stripeCustomerRepublik: stripeCustomer(company: REPUBLIK_AG) {
+    stripeCustomerRepublik: stripeCustomer(company: REPUBLIK) {
       customerId
     }
     stripeCustomerProjectR: stripeCustomer(company: PROJECT_R) {

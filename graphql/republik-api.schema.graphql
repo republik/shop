@@ -514,9 +514,14 @@ type CommitConnection {
   totalCount: Int!
 }
 
-enum Company {
+type Company {
+  id: ID!
+  name: String!
+}
+
+enum CompanyName {
   PROJECT_R
-  REPUBLIK_AG
+  REPUBLIK
 }
 
 type Contributor {
@@ -1027,7 +1032,7 @@ type LinkPreview {
 type MagazineSubscription {
   cancelAt: DateTime
   canceledAt: DateTime
-  company: Company!
+  company: CompanyName!
   createdAt: DateTime!
   currentPeriodEnd: DateTime
   currentPeriodStart: DateTime
@@ -2455,7 +2460,7 @@ input StringArrayFilter {
 scalar StringOrNumber
 
 type StripeCustomer {
-  company: Company!
+  company: CompanyName!
   customerId: String!
 }
 
@@ -2694,7 +2699,7 @@ type User {
   sessions: [Session!]
   slug: String
   statement: String
-  stripeCustomer(company: Company): StripeCustomer
+  stripeCustomer(company: CompanyName): StripeCustomer
   subscribedBy(after: String, before: String, first: Int, last: Int, onlyMe: Boolean): SubscriptionConnection!
   subscribedByMe: Subscription
   subscribedTo(after: String, before: String, first: Int, last: Int, objectType: SubscriptionObjectType): SubscriptionConnection!
