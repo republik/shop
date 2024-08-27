@@ -13,6 +13,7 @@ import { ReactNode, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { CombinedError, useClient, useMutation } from "urql";
 import { CodeInput } from "./code-input";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const ErrorMessage = ({
   error,
@@ -29,18 +30,10 @@ const ErrorMessage = ({
         : error?.graphQLErrors[0]?.message;
 
   return (
-    <div
-      className={css({
-        bg: "amber.700",
-        color: "text.inverted",
-        p: "4",
-      })}
-    >
-      <h2 className={css({ textStyle: "h3Sans", mb: "2" })}>
-        {t("error:generic")}
-      </h2>
-      {message && <p>{message}</p>}
-    </div>
+    <Alert variant="error">
+      <AlertTitle>{t("error:generic")}</AlertTitle>
+      {message && <AlertDescription>{message}</AlertDescription>}
+    </Alert>
   );
 };
 

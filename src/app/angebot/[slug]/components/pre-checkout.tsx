@@ -4,7 +4,7 @@ import { useCallback, useId, useMemo, useState } from "react";
 import { SubscriptionMeta, SubscriptionTypes } from "../lib/config";
 import {
   SubscriptionConfiguration,
-  StripeSubscriptonItems,
+  StripeSubscriptionItems,
 } from "../lib/stripe/types";
 import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
@@ -19,7 +19,7 @@ interface PreCheckoutProps {
   me: Me;
   subscriptionType: SubscriptionTypes;
   subscriptionConfig: SubscriptionConfiguration;
-  stripeSubscriptionItems: StripeSubscriptonItems;
+  stripeSubscriptionItems: StripeSubscriptionItems;
   subscriptionMeta: SubscriptionMeta;
   initialPrice?: number;
 }

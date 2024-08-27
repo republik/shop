@@ -125,7 +125,7 @@ function analyticsHOC(middleware: Middleware): Middleware {
   };
 }
 
-async function middlewareFunc(req: NextRequest): Promise<NextResponse> {
+async function middlewareFunc(_: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 

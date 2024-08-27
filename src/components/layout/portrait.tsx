@@ -4,7 +4,7 @@ import { css } from "@/theme/css";
 import Link from "next/link";
 import { toast } from "sonner";
 import { useClient } from "urql";
-import { SignOutDocument } from "../../../graphql/republik-api/__generated__/gql/graphql";
+import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,10 +20,18 @@ type PortraitProps = {
 export function Portrait({ me }: PortraitProps) {
   const gql = useClient();
 
-  const signOut = () => {
-    const loadingToast = toast.loading("Sie werden abgemeldet…");
-    gql.mutation(SignOutDocument, {}).then(() => window.location.reload());
-  };
+  function signOut() {
+    const logoutPromise = async () => gql.mutation(SignOutDocument, {});
+    toast.promise(
+        logoutPromise()
+          .then(() => window.location.reload()),
+        {
+          loading: "Sie werden abgemeldet…",
+          success: "Sie wurden abgemeldet",
+          error: "Fehler beim Abmelden",
+        }
+        );
+  }
 
   return (
     <DropdownMenu>

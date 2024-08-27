@@ -5,9 +5,10 @@ import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
 import { Footer } from "./footer";
 import { Portrait } from "./portrait";
+import {ReactNode} from "react";
 
 interface PageLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export async function PageLayout({ children }: PageLayoutProps) {

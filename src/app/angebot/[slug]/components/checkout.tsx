@@ -1,4 +1,3 @@
-import { cookies } from "next/headers";
 import { initStripe } from "../lib/stripe/server";
 import { CheckoutView } from "./checkout-view";
 import { SubscriptionConfiguration } from "../lib/stripe/types";

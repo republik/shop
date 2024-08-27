@@ -1,9 +1,10 @@
 import { css, cx } from "@/theme/css";
+import {HTMLAttributes} from "react";
 
 function Skeleton({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cx(

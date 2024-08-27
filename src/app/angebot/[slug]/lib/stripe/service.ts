@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 import {
   SubscriptionConfiguration,
-  StripeSubscriptonItems,
+  StripeSubscriptionItems,
   StripeAccount,
 } from "./types";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
@@ -13,8 +13,8 @@ import { fetchMe } from "@/lib/auth/fetch-me";
 
 async function fetchStripeSubscriptionData(
   stripe: Stripe,
-  subscriptionConfig: SubscriptionConfiguration
-): Promise<StripeSubscriptonItems> {
+  subscriptionConfig: SubscriptionConfiguration,
+): Promise<StripeSubscriptionItems> {
   const [product, price, coupon] = await Promise.all([
     stripe.products.retrieve(subscriptionConfig.productId),
     stripe.prices.retrieve(subscriptionConfig.priceId),
@@ -27,7 +27,7 @@ async function fetchStripeSubscriptionData(
 
 function getRelevantStripeCustomer(
   me: Me,
-  stripeAccount: StripeAccount
+  stripeAccount: StripeAccount,
 ): string | undefined {
   switch (stripeAccount) {
     case "REPUBLIK":
@@ -48,13 +48,13 @@ interface CheckoutOptions {
 async function initializeCheckout(
   stripe: Stripe,
   subscriptionType: SubscriptionTypes,
-  options: CheckoutOptions
+  options: CheckoutOptions,
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
 
   const { price, product, coupon } = await fetchStripeSubscriptionData(
     stripe,
-    subscriptionConfig
+    subscriptionConfig,
   );
 
   const me = await fetchMe();
@@ -111,7 +111,7 @@ async function initializeCheckout(
       terms_of_service: "required",
     },
     payment_method_configuration: getAccountPaymentsConfiguration(
-      subscriptionConfig.stripeAccount
+      subscriptionConfig.stripeAccount,
     ),
     saved_payment_method_options: {
       payment_method_save: "enabled",
@@ -123,12 +123,12 @@ async function initializeCheckout(
 
 export const StripeService = (stripe: Stripe) => ({
   getStripeSubscriptionItems: async (
-    options: SubscriptionConfiguration
-  ): Promise<StripeSubscriptonItems> =>
+    options: SubscriptionConfiguration,
+  ): Promise<StripeSubscriptionItems> =>
     fetchStripeSubscriptionData(stripe, options),
   initializeCheckoutSession: async (
     subscriptionType: SubscriptionTypes,
-    options: CheckoutOptions
+    options: CheckoutOptions,
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> =>
     initializeCheckout(stripe, subscriptionType, options),
 });

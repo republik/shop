@@ -25,7 +25,7 @@ export interface SubscriptionConfiguration {
   };
 }
 
-export type StripeSubscriptonItems = {
+export type StripeSubscriptionItems = {
   product: Stripe.Product;
   price: Stripe.Price;
   coupon: Stripe.Coupon | null;
