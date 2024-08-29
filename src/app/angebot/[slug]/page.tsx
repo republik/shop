@@ -123,7 +123,7 @@ export default async function ProductPage({
       // TODO: log to sentry and render alert
       <p>Something went wrong…</p>
     ),
-    disabled: !checkoutSession,
+    disabled: !checkoutSession || checkoutSession.status === "expired",
   };
 
   const steps: Step[] = [loginStep, productDetails, checkoutStep];
@@ -151,6 +151,11 @@ export default async function ProductPage({
           product: subscriptionMeta.title,
         })}
       </h1>
+      <pre>
+        {
+          JSON.stringify(checkoutSession?.line_items, null, 2) // TODO: remove
+        }
+      </pre>
       <Stepper
         currentStep={steps.reduce(
           (acc, step, index) => (!step.disabled ? index : acc),
