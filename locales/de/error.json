@@ -1,6 +1,6 @@
 {
-  "generic": "Ein Fehler ist aufgetreten",
+  "generic": "Ein Fehler ist aufgetreten.",
   "graphql": {
-    "networkError": "Die Verbindung zur Republik schlug fehl"
+    "networkError": "Die Verbindung zur Republik schlug fehl."
   }
 }

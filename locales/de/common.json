@@ -1,11 +1,11 @@
 {
-    "meta": {
-        "title": "Shop - republik.ch",
-        "description": ""
-    },
-    "imprint": "Impressum",
-    "notFound": {
-        "title": "Ooops! Diese Seite existiert nicht.",
-        "buttonLabel": "Zur Startseite"
-    }
+  "meta": {
+    "title": "Shop - republik.ch",
+    "description": ""
+  },
+  "imprint": "Impressum",
+  "notFound": {
+    "title": "Ooops! Diese Seite existiert nicht.",
+    "buttonLabel": "Zur Startseite"
+  }
 }
