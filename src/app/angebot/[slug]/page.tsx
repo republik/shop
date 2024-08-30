@@ -1,8 +1,4 @@
-import {
-  SubscriptionsMeta,
-  SubscriptionsConfiguration,
-  SubscriptionType,
-} from "./lib/config";
+import { SubscriptionsMeta, SubscriptionsConfiguration } from "./lib/config";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
@@ -20,12 +16,6 @@ import Link from "next/link";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
-function isValidSubscriptionType(
-  subscriptionType: string
-): subscriptionType is SubscriptionType {
-  return Object.keys(SubscriptionsConfiguration).includes(subscriptionType);
-}
-
 export default async function ProductPage({
   params,
   searchParams,
@@ -33,7 +23,7 @@ export default async function ProductPage({
   params: { slug: string };
   searchParams: { price: string; session_id?: string };
 }) {
-  if (!isValidSubscriptionType(params.slug)) {
+  if (!SubscriptionsConfiguration[params.slug]) {
     notFound();
   }
 

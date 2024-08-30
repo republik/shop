@@ -13,26 +13,20 @@ export type IsProductAvailableForUserPredicate = (
   me: Me
 ) => ProductAvailabilityResult;
 
-type BaseSubscriptionConfiguration = {
+export interface SubscriptionConfiguration {
   stripeAccount: StripeAccount;
-  lookupKey: string;
+  productId: string;
+  priceId: string;
   taxRateId?: string;
-  couponId?: string;
+  couponCode?: string;
+  customPrice?: {
+    min: number;
+    max: number;
+    step: number;
+  };
   // Data to be appended to the subscription's metadata.
   metaData?: MetadataParam;
-};
-
-type CustomPricingConfiguration = {
-  max: number;
-  min: number;
-  step: number;
-  // configure in what interval the subscription is charged
-  recurring: Stripe.Checkout.SessionCreateParams.LineItem.PriceData.Recurring;
-};
-
-export type SubscriptionConfiguration = BaseSubscriptionConfiguration & {
-  customPrice?: CustomPricingConfiguration;
-};
+}
 
 export type StripeSubscriptionItems = {
   product: Stripe.Product;
