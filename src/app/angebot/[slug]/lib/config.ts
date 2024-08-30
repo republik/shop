@@ -14,14 +14,11 @@ export const SubscriptionsConfiguration: Record<
   },
   YEARLY: {
     stripeAccount: "PROJECT_R",
-    // productId: "prod_G7dVG5BtM4wDxl",
-    // priceId: "ABO-SUB",
     lookupKey: "ABO",
+    couponCode: "DcUryHEx",
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT_R",
-    // productId: "prod_G7dVG5BtM4wDxl",
-    // priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
     lookupKey: "BENEFACTOR_ABO",
     metaData: {
       isBenefactor: "true",
@@ -29,8 +26,6 @@ export const SubscriptionsConfiguration: Record<
   },
   STUDENT: {
     stripeAccount: "PROJECT_R",
-    // productId: "prod_G7dVG5BtM4wDxl",
-    // priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
     lookupKey: "STUDENT_ABO",
     metaData: {
       isStudent: "true",
@@ -38,8 +33,6 @@ export const SubscriptionsConfiguration: Record<
   },
   CUSTOM: {
     stripeAccount: "PROJECT_R",
-    // productId: "prod_G7dVG5BtM4wDxl",
-    // priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
     lookupKey: "CUSTOM_ABO",
     customPrice: {
       max: 1000,
