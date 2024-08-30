@@ -101,11 +101,11 @@ function validateStripeProductConfiguration() {
         );
       }
 
-      if (subscriptionConfig.couponId) {
+      if (subscriptionConfig.firstTimeCustomerCouponId) {
         await checkStripeItemExists(
           subscriptionConfig.stripeAccount,
           "coupon",
-          subscriptionConfig.couponId,
+          subscriptionConfig.firstTimeCustomerCouponId,
           async (id) => {
             const coupon = await stripe.coupons.retrieve(id);
             if (!coupon) {
@@ -119,7 +119,7 @@ function validateStripeProductConfiguration() {
               !coupon.applies_to.products.includes(price.product as string)
             ) {
               throw new Error(
-                `Coupon ${id} can't be applied to product ${price.product} associated with price '${subscriptionConfig.lookupKey}'`
+                `First-time customer discount coupon with id '${id}' can't be applied to product '${price.product}' associated with price '${subscriptionConfig.lookupKey}'`
               );
             }
             return coupon;
