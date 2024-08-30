@@ -18,12 +18,12 @@ export const SubscriptionsConfiguration: Record<
     stripeAccount: "REPUBLIK",
     lookupKey: "MONTHLY_ABO",
     taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
-    firstTimeCustomerCouponId: "jgxhEDj9",
+    couponId: "jgxhEDj9",
   },
   YEARLY: {
     stripeAccount: "PROJECT_R",
     lookupKey: "ABO",
-    firstTimeCustomerCouponId: "DcUryHEx",
+    couponId: "DcUryHEx",
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT_R",

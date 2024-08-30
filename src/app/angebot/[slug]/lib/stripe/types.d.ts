@@ -17,8 +17,7 @@ type BaseSubscriptionConfiguration = {
   stripeAccount: StripeAccount;
   lookupKey: string;
   taxRateId?: string;
-  // Reference to the coupon that is automatically applied to the subscription if the user is eligible.
-  firstTimeCustomerCouponId?: string;
+  couponId?: string;
   // Data to be appended to the subscription's metadata.
   metaData?: MetadataParam;
 };
