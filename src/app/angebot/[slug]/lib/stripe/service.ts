@@ -26,8 +26,8 @@ async function fetchStripeSubscriptionData(
   }
   const [product, coupon] = await Promise.all([
     stripe.products.retrieve(price.product as string),
-    subscriptionConfig.couponCode
-      ? stripe.coupons.retrieve(subscriptionConfig.couponCode)
+    subscriptionConfig.couponId
+      ? stripe.coupons.retrieve(subscriptionConfig.couponId)
       : null,
   ]);
   return { product, price, coupon };

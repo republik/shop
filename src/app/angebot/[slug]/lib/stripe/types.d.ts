@@ -17,7 +17,7 @@ type BaseSubscriptionConfiguration = {
   stripeAccount: StripeAccount;
   lookupKey: string;
   taxRateId?: string;
-  couponCode?: string;
+  couponId?: string;
   // Data to be appended to the subscription's metadata.
   metaData?: MetadataParam;
 };

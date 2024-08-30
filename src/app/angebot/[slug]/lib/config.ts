@@ -10,12 +10,12 @@ export const SubscriptionsConfiguration: Record<
     // priceId: "MONTHLY_ABO",
     lookupKey: "MONTHLY_ABO",
     taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
-    couponCode: "jgxhEDj9",
+    couponId: "jgxhEDj9",
   },
   YEARLY: {
     stripeAccount: "PROJECT_R",
     lookupKey: "ABO",
-    couponCode: "DcUryHEx",
+    couponId: "DcUryHEx",
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT_R",

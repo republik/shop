@@ -98,11 +98,11 @@ function validateStripeProductConfiguration() {
         );
       }
 
-      if (subscriptionConfig.couponCode) {
+      if (subscriptionConfig.couponId) {
         await checkStripeItemExists(
           subscriptionConfig.stripeAccount,
           "coupon",
-          subscriptionConfig.couponCode,
+          subscriptionConfig.couponId,
           async (id) => {
             const coupon = await stripe.coupons.retrieve(id);
             if (!coupon) {
