@@ -13,7 +13,7 @@ import { fetchMe } from "@/lib/auth/fetch-me";
 
 async function fetchStripeSubscriptionData(
   stripe: Stripe,
-  subscriptionConfig: SubscriptionConfiguration,
+  subscriptionConfig: SubscriptionConfiguration
 ): Promise<StripeSubscriptionItems> {
   const [product, price, coupon] = await Promise.all([
     stripe.products.retrieve(subscriptionConfig.productId),
@@ -27,7 +27,7 @@ async function fetchStripeSubscriptionData(
 
 function getRelevantStripeCustomer(
   me: Me,
-  stripeAccount: StripeAccount,
+  stripeAccount: StripeAccount
 ): string | undefined {
   switch (stripeAccount) {
     case "REPUBLIK":
@@ -48,13 +48,13 @@ interface CheckoutOptions {
 async function initializeCheckout(
   stripe: Stripe,
   subscriptionType: SubscriptionTypes,
-  options: CheckoutOptions,
+  options: CheckoutOptions
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
 
   const { price, product, coupon } = await fetchStripeSubscriptionData(
     stripe,
-    subscriptionConfig,
+    subscriptionConfig
   );
 
   const me = await fetchMe();
@@ -105,13 +105,14 @@ async function initializeCheckout(
     subscription_data: {
       metadata: {
         ...options.analytics,
+        ...subscriptionConfig.metaData,
       },
     },
     consent_collection: {
       terms_of_service: "required",
     },
     payment_method_configuration: getAccountPaymentsConfiguration(
-      subscriptionConfig.stripeAccount,
+      subscriptionConfig.stripeAccount
     ),
     saved_payment_method_options: {
       payment_method_save: "enabled",
@@ -123,12 +124,12 @@ async function initializeCheckout(
 
 export const StripeService = (stripe: Stripe) => ({
   getStripeSubscriptionItems: async (
-    options: SubscriptionConfiguration,
+    options: SubscriptionConfiguration
   ): Promise<StripeSubscriptionItems> =>
     fetchStripeSubscriptionData(stripe, options),
   initializeCheckoutSession: async (
     subscriptionType: SubscriptionTypes,
-    options: CheckoutOptions,
+    options: CheckoutOptions
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> =>
     initializeCheckout(stripe, subscriptionType, options),
 });

@@ -31,9 +31,14 @@ export function collectAnalyticsParams(
   );
   if (!success) {
     console.error("Failed to parse Analytics-params", issues);
-    throw new Error("Failed to parse Analytics-params");
+    return {};
   }
-  return success ? output : {};
+  const analyticsParams = Object.fromEntries(
+    Object.entries(output).filter(([key]) =>
+      analyticsSearchParams.includes(key as unknown as AnalyticsParameter)
+    )
+  ) as AnalyticsObject;
+  return analyticsParams;
 }
 
 export const ANALYTICS_COOKIE_NAME = "SUBSCRIPTION_CONTEXT";
