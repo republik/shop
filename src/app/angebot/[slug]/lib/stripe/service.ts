@@ -8,18 +8,26 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { getAccountPaymentsConfiguration } from "./server";
 import { AnalyticsObject } from "@/lib/analytics";
 import { Me } from "@/lib/auth/types";
-import { SubscriptionsConfiguration, SubscriptionTypes } from "../config";
+import { SubscriptionsConfiguration, SubscriptionType } from "../config";
 import { fetchMe } from "@/lib/auth/fetch-me";
 
 async function fetchStripeSubscriptionData(
   stripe: Stripe,
   subscriptionConfig: SubscriptionConfiguration
 ): Promise<StripeSubscriptionItems> {
-  const [product, price, coupon] = await Promise.all([
-    stripe.products.retrieve(subscriptionConfig.productId),
-    stripe.prices.retrieve(subscriptionConfig.priceId),
-    subscriptionConfig.couponCode
-      ? stripe.coupons.retrieve(subscriptionConfig.couponCode).catch(() => null)
+  const prices = await stripe.prices.list({
+    lookup_keys: [subscriptionConfig.lookupKey],
+  });
+  const price = prices.data?.[0] || null;
+  if (!price) {
+    throw new Error(
+      `No price with lookup-key '${subscriptionConfig.lookupKey}'`
+    );
+  }
+  const [product, coupon] = await Promise.all([
+    stripe.products.retrieve(price.product as string),
+    subscriptionConfig.couponId
+      ? stripe.coupons.retrieve(subscriptionConfig.couponId)
       : null,
   ]);
   return { product, price, coupon };
@@ -47,7 +55,7 @@ interface CheckoutOptions {
 
 async function initializeCheckout(
   stripe: Stripe,
-  subscriptionType: SubscriptionTypes,
+  subscriptionType: SubscriptionType,
   options: CheckoutOptions
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
@@ -69,21 +77,14 @@ async function initializeCheckout(
     customer_email: !stripeCustomer ? options.email : undefined,
     line_items: [
       {
-        price:
-          !!options.userPrice && subscriptionConfig.customPrice
-            ? undefined
-            : price.id,
+        price: !subscriptionConfig.customPrice ? price.id : undefined,
         price_data:
-          !!options.userPrice && subscriptionConfig.customPrice
+          subscriptionConfig.customPrice && options.userPrice
             ? {
                 product: product.id,
                 unit_amount: options.userPrice,
                 currency: price.currency,
-                // TODO: add recurring for custom prices into SubscriptionConfiguration object
-                recurring: {
-                  interval: "year",
-                  interval_count: 1,
-                },
+                recurring: subscriptionConfig.customPrice.recurring,
               }
             : undefined,
         tax_rates: subscriptionConfig.taxRateId
@@ -128,7 +129,7 @@ export const StripeService = (stripe: Stripe) => ({
   ): Promise<StripeSubscriptionItems> =>
     fetchStripeSubscriptionData(stripe, options),
   initializeCheckoutSession: async (
-    subscriptionType: SubscriptionTypes,
+    subscriptionType: SubscriptionType,
     options: CheckoutOptions
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> =>
     initializeCheckout(stripe, subscriptionType, options),

@@ -1,8 +1,12 @@
-import { SubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/config";
+import {
+  SubscriptionsConfiguration,
+  subscriptionsTypes,
+} from "@/app/angebot/[slug]/lib/config";
 import { initStripe } from "@/app/angebot/[slug]/lib/stripe/server";
 import { StripeAccount } from "@/app/angebot/[slug]/lib/stripe/types";
 import { loadEnvConfig } from "@next/env";
 import path from "path";
+import Stripe from "stripe";
 
 type ScriptEnvironment = "dev" | "production" | "test";
 
@@ -26,7 +30,7 @@ loadEnvConfig(projectRoot, environment === "dev");
 
 async function checkStripeItemExists(
   account: StripeAccount,
-  type: "product" | "price" | "taxRate" | "coupon",
+  type: "price" | "taxRate" | "coupon",
   id: string,
   func?: (id: string) => Promise<unknown>
 ) {
@@ -39,6 +43,7 @@ async function checkStripeItemExists(
     if (!res) {
       throw new Error(errMsg);
     }
+    return res;
   } catch (error) {
     // console.error(error);
     throw new Error(errMsg);
@@ -55,36 +60,33 @@ function validateStripeProductConfiguration() {
   const projectRStripe = initStripe("PROJECT_R");
 
   return Promise.all(
-    Object.keys(SubscriptionsConfiguration).map(async (slug) => {
+    subscriptionsTypes.map(async (slug) => {
       const subscriptionConfig = SubscriptionsConfiguration[slug];
       const stripe =
         subscriptionConfig.stripeAccount === "REPUBLIK"
           ? republikStripe
           : projectRStripe;
 
-      await checkStripeItemExists(
-        subscriptionConfig.stripeAccount,
-        "product",
-        subscriptionConfig.productId,
-        async (id) => {
-          const product = await stripe.products.retrieve(id);
-          return product;
-        }
-      );
+      const stripePriceFromLookupKey = (
+        lookupKey: string
+      ): Promise<Stripe.Price> =>
+        stripe.prices
+          .list({
+            lookup_keys: [lookupKey],
+          })
+          .then((prices) => {
+            const price = prices.data?.[0] || null;
+            if (!price) {
+              throw new Error(`No price with lookup-key '${lookupKey}'`);
+            }
+            return price;
+          });
 
       await checkStripeItemExists(
         subscriptionConfig.stripeAccount,
         "price",
-        subscriptionConfig.priceId,
-        async (id) => {
-          const price = await stripe.prices.retrieve(id);
-          if (price.product !== subscriptionConfig.productId) {
-            throw new Error(
-              `Product id ${subscriptionConfig.productId} does not match product associated with price id ${id}`
-            );
-          }
-          return price;
-        }
+        subscriptionConfig.lookupKey,
+        stripePriceFromLookupKey
       );
 
       if (subscriptionConfig.taxRateId) {
@@ -99,19 +101,25 @@ function validateStripeProductConfiguration() {
         );
       }
 
-      if (subscriptionConfig.couponCode) {
+      if (subscriptionConfig.couponId) {
         await checkStripeItemExists(
           subscriptionConfig.stripeAccount,
           "coupon",
-          subscriptionConfig.couponCode,
+          subscriptionConfig.couponId,
           async (id) => {
             const coupon = await stripe.coupons.retrieve(id);
+            if (!coupon) {
+              throw new Error(`Coupon ${id} not found`);
+            }
+            const price = await stripePriceFromLookupKey(
+              subscriptionConfig.lookupKey
+            );
             if (
               coupon.applies_to &&
-              !coupon.applies_to.products.includes(subscriptionConfig.productId)
+              !coupon.applies_to.products.includes(price.product as string)
             ) {
               throw new Error(
-                `Coupon ${id} does not apply to product ${subscriptionConfig.productId}`
+                `Coupon ${id} can't be applied to product ${price.product} associated with price '${subscriptionConfig.lookupKey}'`
               );
             }
             return coupon;

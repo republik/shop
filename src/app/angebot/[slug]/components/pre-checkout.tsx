@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useId, useMemo, useState } from "react";
-import { SubscriptionMeta, SubscriptionTypes } from "../lib/config";
+import { SubscriptionMeta, SubscriptionType } from "../lib/config";
 import {
   SubscriptionConfiguration,
   StripeSubscriptionItems,
@@ -17,7 +17,7 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 interface PreCheckoutProps {
   me: Me;
-  subscriptionType: SubscriptionTypes;
+  subscriptionType: SubscriptionType;
   subscriptionConfig: SubscriptionConfiguration;
   stripeSubscriptionItems: StripeSubscriptionItems;
   subscriptionMeta: SubscriptionMeta;

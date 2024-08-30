@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
 import {
-  SubscriptionTypes,
+  SubscriptionType,
   SubscriptionsMeta,
 } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
@@ -18,10 +18,11 @@ import { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { Me } from "@/lib/auth/types";
+import { StripeService } from "../angebot/[slug]/lib/stripe/service";
 
 type ProductCardProps = {
   me?: Me | null | undefined;
-  subscriptionType: SubscriptionTypes;
+  subscriptionType: SubscriptionType;
   subscriptionConfiguration: SubscriptionConfiguration;
   utm?: AnalyticsObject;
 };
@@ -35,15 +36,10 @@ export async function ProductCard({
   subscriptionConfiguration,
 }: ProductCardProps) {
   const subscriptionMeta = SubscriptionsMeta[subscriptionType];
-  const stripe = await initStripe(subscriptionConfiguration.stripeAccount);
-  const [price, coupon] = await Promise.all([
-    stripe.prices.retrieve(subscriptionConfiguration.priceId),
-    subscriptionConfiguration.couponCode
-      ? stripe.coupons
-          .retrieve(subscriptionConfiguration.couponCode)
-          .catch(() => null)
-      : null,
-  ]);
+  const stripe = initStripe(subscriptionConfiguration.stripeAccount);
+  const { price, coupon } = await StripeService(
+    stripe
+  ).getStripeSubscriptionItems(subscriptionConfiguration);
 
   return (
     <Card>
