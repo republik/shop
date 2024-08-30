@@ -6,40 +6,49 @@ export const SubscriptionsConfiguration: Record<
 > = {
   MONTHLY: {
     stripeAccount: "REPUBLIK",
-    productId: "prod_Ccmy87SuPqF5OM",
-    priceId: "MONTHLY_ABO",
+    // productId: "prod_Ccmy87SuPqF5OM",
+    // priceId: "MONTHLY_ABO",
+    lookupKey: "MONTHLY_ABO",
     taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
     couponCode: "jgxhEDj9",
   },
   YEARLY: {
     stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "ABO-SUB",
+    // productId: "prod_G7dVG5BtM4wDxl",
+    // priceId: "ABO-SUB",
+    lookupKey: "ABO",
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
+    // productId: "prod_G7dVG5BtM4wDxl",
+    // priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
+    lookupKey: "BENEFACTOR_ABO",
     metaData: {
       isBenefactor: "true",
     },
   },
   STUDENT: {
     stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
+    // productId: "prod_G7dVG5BtM4wDxl",
+    // priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
+    lookupKey: "STUDENT_ABO",
     metaData: {
       isStudent: "true",
     },
   },
   CUSTOM: {
     stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
+    // productId: "prod_G7dVG5BtM4wDxl",
+    // priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
+    lookupKey: "CUSTOM_ABO",
     customPrice: {
       max: 1000,
       min: 240,
       step: 5,
+      recurring: {
+        interval: "year",
+        interval_count: 1,
+      },
     },
   },
 } as const;
