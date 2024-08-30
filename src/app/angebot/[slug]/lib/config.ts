@@ -1,58 +1,50 @@
 import { SubscriptionConfiguration } from "./stripe/types";
 
-export const subscriptionsTypes = [
-  "MONTHLY",
-  "YEARLY",
-  "BENEFACTOR",
-  "STUDENT",
-  "CUSTOM",
-] as const;
-
-export type SubscriptionType = (typeof subscriptionsTypes)[number];
-
 export const SubscriptionsConfiguration: Record<
-  SubscriptionType,
+  string,
   SubscriptionConfiguration
 > = {
   MONTHLY: {
     stripeAccount: "REPUBLIK",
-    lookupKey: "MONTHLY_ABO",
+    productId: "prod_Ccmy87SuPqF5OM",
+    priceId: "MONTHLY_ABO",
     taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
-    couponId: "jgxhEDj9",
+    couponCode: "jgxhEDj9",
   },
   YEARLY: {
     stripeAccount: "PROJECT_R",
-    lookupKey: "ABO",
-    couponId: "DcUryHEx",
+    productId: "prod_G7dVG5BtM4wDxl",
+    priceId: "ABO-SUB",
   },
   BENEFACTOR: {
     stripeAccount: "PROJECT_R",
-    lookupKey: "BENEFACTOR_ABO",
+    productId: "prod_G7dVG5BtM4wDxl",
+    priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
     metaData: {
       isBenefactor: "true",
     },
   },
   STUDENT: {
     stripeAccount: "PROJECT_R",
-    lookupKey: "STUDENT_ABO",
+    productId: "prod_G7dVG5BtM4wDxl",
+    priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
     metaData: {
       isStudent: "true",
     },
   },
   CUSTOM: {
     stripeAccount: "PROJECT_R",
-    lookupKey: "CUSTOM_ABO",
+    productId: "prod_G7dVG5BtM4wDxl",
+    priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
     customPrice: {
       max: 1000,
       min: 240,
       step: 5,
-      recurring: {
-        interval: "year",
-        interval_count: 1,
-      },
     },
   },
 } as const;
+
+export type SubscriptionTypes = keyof typeof SubscriptionsConfiguration;
 
 export type SubscriptionMeta = {
   title: string;
@@ -62,7 +54,7 @@ export type SubscriptionMeta = {
   upsellNode?: JSX.Element;
 };
 
-export const SubscriptionsMeta: Record<SubscriptionType, SubscriptionMeta> = {
+export const SubscriptionsMeta: Record<SubscriptionTypes, SubscriptionMeta> = {
   MONTHLY: {
     title: "Monats-Abo",
     description: "Das Abo für XYZ",

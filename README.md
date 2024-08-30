@@ -35,11 +35,4 @@ The following environment variables are required to connect to the Stripe API fo
 ## Shop configuration
 
 The shop configuration is located in the [config.ts](./src/app/angebot/[slug]/lib/config.ts) file.
-
-For each type of subscription, a lookup key to the associated price is required in the stripe configuration.
-The lookup keys for the individual subscription must be identicall in the stripe production and test environment.
-
-To ensure that only valid subscription-configurations exist, a check is run on the subscription-configurations at build time (see [scripts/validate-config.ts](./scripts/validate-config.ts)).
-
-Still the configuration could be broken, if the lookup keys in stripe are removed without changing the code. In that case, the checkout will show a 404
-page for the miss-configured subscription.
+More documentation on the configuration options can be found directly in the code.

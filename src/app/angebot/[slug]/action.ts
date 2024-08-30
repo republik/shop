@@ -1,11 +1,7 @@
 "use server";
 
 import { fetchMe } from "@/lib/auth/fetch-me";
-import {
-  SubscriptionType,
-  SubscriptionsConfiguration,
-  subscriptionsTypes,
-} from "./lib/config";
+import { SubscriptionTypes, SubscriptionsConfiguration } from "./lib/config";
 import { initStripe } from "./lib/stripe/server";
 import {
   ANALYTICS_COOKIE_NAME,
@@ -27,15 +23,15 @@ function readAnalyticsParamsFromCookie(): AnalyticsObject {
 
 function ensureValidSubscriptionType(
   subscriptionType: string
-): SubscriptionType {
-  if (subscriptionsTypes.includes(subscriptionType as SubscriptionType)) {
+): SubscriptionTypes {
+  if (!Object.keys(SubscriptionsConfiguration).includes(subscriptionType)) {
     throw new Error(
       `Invalid SubscriptionType '${subscriptionType}', must be one of ${String(
         Object.keys(SubscriptionsConfiguration)
       )}`
     );
   }
-  return subscriptionType as SubscriptionType;
+  return subscriptionType as SubscriptionTypes;
 }
 
 export async function createCheckout(formData: FormData): Promise<{}> {
