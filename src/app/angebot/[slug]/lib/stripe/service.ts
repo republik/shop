@@ -8,7 +8,7 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { getAccountPaymentsConfiguration } from "./server";
 import { AnalyticsObject } from "@/lib/analytics";
 import { Me } from "@/lib/auth/types";
-import { SubscriptionsConfiguration, SubscriptionTypes } from "../config";
+import { SubscriptionsConfiguration, SubscriptionType } from "../config";
 import { fetchMe } from "@/lib/auth/fetch-me";
 
 async function fetchStripeSubscriptionData(
@@ -55,7 +55,7 @@ interface CheckoutOptions {
 
 async function initializeCheckout(
   stripe: Stripe,
-  subscriptionType: SubscriptionTypes,
+  subscriptionType: SubscriptionType,
   options: CheckoutOptions
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
   const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
@@ -129,7 +129,7 @@ export const StripeService = (stripe: Stripe) => ({
   ): Promise<StripeSubscriptionItems> =>
     fetchStripeSubscriptionData(stripe, options),
   initializeCheckoutSession: async (
-    subscriptionType: SubscriptionTypes,
+    subscriptionType: SubscriptionType,
     options: CheckoutOptions
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> =>
     initializeCheckout(stripe, subscriptionType, options),

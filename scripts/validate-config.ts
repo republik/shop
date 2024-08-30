@@ -1,4 +1,7 @@
-import { SubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/config";
+import {
+  SubscriptionsConfiguration,
+  subscriptionsTypes,
+} from "@/app/angebot/[slug]/lib/config";
 import { initStripe } from "@/app/angebot/[slug]/lib/stripe/server";
 import { StripeAccount } from "@/app/angebot/[slug]/lib/stripe/types";
 import { loadEnvConfig } from "@next/env";
@@ -57,7 +60,7 @@ function validateStripeProductConfiguration() {
   const projectRStripe = initStripe("PROJECT_R");
 
   return Promise.all(
-    Object.keys(SubscriptionsConfiguration).map(async (slug) => {
+    subscriptionsTypes.map(async (slug) => {
       const subscriptionConfig = SubscriptionsConfiguration[slug];
       const stripe =
         subscriptionConfig.stripeAccount === "REPUBLIK"

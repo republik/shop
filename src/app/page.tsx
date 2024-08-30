@@ -1,5 +1,8 @@
 import { ProductCard } from "./components/product-card";
-import { SubscriptionsConfiguration } from "./angebot/[slug]/lib/config";
+import {
+  SubscriptionsConfiguration,
+  subscriptionsTypes,
+} from "./angebot/[slug]/lib/config";
 import { container, grid } from "@/theme/patterns";
 import { fetchMe } from "@/lib/auth/fetch-me";
 
@@ -17,16 +20,16 @@ export default async function Home() {
           },
         })}
       >
-        {Object.entries(SubscriptionsConfiguration).map(
-          ([subscriptionType, subscriptionConfiguration]) => (
-            <ProductCard
-              key={subscriptionType}
-              me={me}
-              subscriptionType={subscriptionType}
-              subscriptionConfiguration={subscriptionConfiguration}
-            />
-          )
-        )}
+        {subscriptionsTypes.map((subscriptionType) => (
+          <ProductCard
+            key={subscriptionType}
+            me={me}
+            subscriptionType={subscriptionType}
+            subscriptionConfiguration={
+              SubscriptionsConfiguration[subscriptionType]
+            }
+          />
+        ))}
       </div>
     </div>
   );

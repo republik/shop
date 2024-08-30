@@ -1,13 +1,21 @@
 import { SubscriptionConfiguration } from "./stripe/types";
 
+export const subscriptionsTypes = [
+  "MONTHLY",
+  "YEARLY",
+  "BENEFACTOR",
+  "STUDENT",
+  "CUSTOM",
+] as const;
+
+export type SubscriptionType = (typeof subscriptionsTypes)[number];
+
 export const SubscriptionsConfiguration: Record<
-  string,
+  SubscriptionType,
   SubscriptionConfiguration
 > = {
   MONTHLY: {
     stripeAccount: "REPUBLIK",
-    // productId: "prod_Ccmy87SuPqF5OM",
-    // priceId: "MONTHLY_ABO",
     lookupKey: "MONTHLY_ABO",
     taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
     couponId: "jgxhEDj9",
@@ -46,8 +54,6 @@ export const SubscriptionsConfiguration: Record<
   },
 } as const;
 
-export type SubscriptionTypes = keyof typeof SubscriptionsConfiguration;
-
 export type SubscriptionMeta = {
   title: string;
   description: string;
@@ -56,7 +62,7 @@ export type SubscriptionMeta = {
   upsellNode?: JSX.Element;
 };
 
-export const SubscriptionsMeta: Record<SubscriptionTypes, SubscriptionMeta> = {
+export const SubscriptionsMeta: Record<SubscriptionType, SubscriptionMeta> = {
   MONTHLY: {
     title: "Monats-Abo",
     description: "Das Abo für XYZ",

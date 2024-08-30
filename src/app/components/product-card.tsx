@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/card";
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
 import {
-  SubscriptionTypes,
+  SubscriptionType,
   SubscriptionsMeta,
 } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
@@ -22,7 +22,7 @@ import { StripeService } from "../angebot/[slug]/lib/stripe/service";
 
 type ProductCardProps = {
   me?: Me | null | undefined;
-  subscriptionType: SubscriptionTypes;
+  subscriptionType: SubscriptionType;
   subscriptionConfiguration: SubscriptionConfiguration;
   utm?: AnalyticsObject;
 };
