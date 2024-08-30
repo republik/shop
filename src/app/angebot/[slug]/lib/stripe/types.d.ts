@@ -1,4 +1,5 @@
 import { Me } from "@/lib/auth/types";
+import { MetadataParam } from "@stripe/stripe-js";
 import Stripe from "stripe";
 
 export type StripeAccount = "REPUBLIK" | "PROJECT_R";
@@ -23,6 +24,8 @@ export interface SubscriptionConfiguration {
     max: number;
     step: number;
   };
+  // Data to be appended to the subscription's metadata.
+  metaData?: MetadataParam;
 }
 
 export type StripeSubscriptionItems = {

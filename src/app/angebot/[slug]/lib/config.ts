@@ -20,11 +20,17 @@ export const SubscriptionsConfiguration: Record<
     stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
+    metaData: {
+      isBenefactor: "true",
+    },
   },
   STUDENT: {
     stripeAccount: "PROJECT_R",
     productId: "prod_G7dVG5BtM4wDxl",
     priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
+    metaData: {
+      isStudent: "true",
+    },
   },
   CUSTOM: {
     stripeAccount: "PROJECT_R",
