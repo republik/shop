@@ -6,6 +6,22 @@ const nextConfig = {
   experimental: {
     testProxy: true,
   },
+  redirects() {
+    return [
+      {
+        source: "/angebot",
+        has: [
+          {
+            type: "query",
+            key: "product",
+            value: "(?<slug>.*)",
+          },
+        ],
+        destination: "/angebot/:slug",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default withSentryConfig(nextTranslate(nextConfig), {
