@@ -58,6 +58,10 @@
       "title": "Vielen Dank für Ihren Kauf",
       "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
       "action": "Zum Magazin"
+    },
+    "failed": {
+      "title": "Der Bezahlvorgang ist fehlgeschlagen",
+      "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
     }
   }
 }
