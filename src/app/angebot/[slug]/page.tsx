@@ -32,7 +32,7 @@ export default async function ProductPage({
   const subscriptionMeta = SubscriptionsMeta[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-  const hasBeenRedirect = typeof searchParams.session_id === "string";
+  const afterCheckoutRedirect = typeof searchParams.session_id === "string";
   const stripe = initStripe(subscriptionConfig.stripeAccount);
   const [me, checkoutSession, subscriptionData] = await Promise.all([
     fetchMe(),
@@ -116,10 +116,9 @@ export default async function ProductPage({
     name: t("checkout:checkout.title"),
     content: checkoutSession ? (
       <Checkout
-        sessionId={checkoutSession.id}
         stripeAccount={subscriptionConfig.stripeAccount}
-        clientSecret={checkoutSession.client_secret!}
-        afterRedirect={hasBeenRedirect}
+        session={checkoutSession}
+        afterRedirect={afterCheckoutRedirect}
       />
     ) : (
       // TODO: log to sentry and render alert

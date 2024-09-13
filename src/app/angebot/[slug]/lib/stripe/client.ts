@@ -13,14 +13,12 @@ export function getStripePublishablekey(account: StripeAccount): string {
   }
 }
 
-export async function initStripe(account: StripeAccount): Promise<Stripe> {
+export async function initStripe(
+  account: StripeAccount,
+): Promise<Stripe | null> {
   const stripePublishableKey = getStripePublishablekey(account);
 
-  const stripe = await loadStripe(stripePublishableKey, {
+  return await loadStripe(stripePublishableKey, {
     betas: ["custom_checkout_beta_2"],
   });
-  if (!stripe) {
-    throw new Error("Failed to load Stripe");
-  }
-  return stripe;
 }
