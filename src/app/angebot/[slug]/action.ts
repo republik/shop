@@ -1,16 +1,16 @@
 "use server";
 
-import { fetchMe } from "@/lib/auth/fetch-me";
-import { SubscriptionTypes, SubscriptionsConfiguration } from "./lib/config";
-import { initStripe } from "./lib/stripe/server";
+import { getSubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/get-config";
 import {
   ANALYTICS_COOKIE_NAME,
   AnalyticsObject,
   fromAnalyticsCookie,
 } from "@/lib/analytics";
+import { fetchMe } from "@/lib/auth/fetch-me";
 import { cookies } from "next/headers";
-import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { redirect } from "next/navigation";
+import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
+import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
 
 function readAnalyticsParamsFromCookie(): AnalyticsObject {
@@ -21,33 +21,16 @@ function readAnalyticsParamsFromCookie(): AnalyticsObject {
   return fromAnalyticsCookie(cookie.value);
 }
 
-function ensureValidSubscriptionType(
-  subscriptionType: string
-): SubscriptionTypes {
-  if (!Object.keys(SubscriptionsConfiguration).includes(subscriptionType)) {
-    throw new Error(
-      `Invalid SubscriptionType '${subscriptionType}', must be one of ${String(
-        Object.keys(SubscriptionsConfiguration)
-      )}`
-    );
-  }
-  return subscriptionType as SubscriptionTypes;
-}
-
 export async function createCheckout(formData: FormData): Promise<{}> {
-  const subscriptionType = ensureValidSubscriptionType(
-    formData.get("subscriptionType")?.toString() || ""
-  );
+  const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
   const me = await fetchMe();
-  const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
+  const subscriptionConfig = getSubscriptionsConfiguration(subscriptionType);
 
   const analyticsParams = readAnalyticsParamsFromCookie();
 
-  const stripe = initStripe(
-    SubscriptionsConfiguration[subscriptionType].stripeAccount
-  );
+  const stripe = initStripe(subscriptionConfig.stripeAccount);
 
   const checkoutSession = await StripeService(stripe).initializeCheckoutSession(
     subscriptionType,

@@ -10,7 +10,7 @@ import {
 import { initStripe } from "../angebot/[slug]/lib/stripe/server";
 import {
   SubscriptionTypes,
-  SubscriptionsMeta,
+  SUBSCRIPTION_META,
 } from "../angebot/[slug]/lib/config";
 import Link from "next/link";
 import { SubscriptionConfiguration } from "../angebot/[slug]/lib/stripe/types";
@@ -34,7 +34,7 @@ export async function ProductCard({
   subscriptionType,
   subscriptionConfiguration,
 }: ProductCardProps) {
-  const subscriptionMeta = SubscriptionsMeta[subscriptionType];
+  const subscriptionMeta = SUBSCRIPTION_META[subscriptionType];
   const stripe = await initStripe(subscriptionConfiguration.stripeAccount);
   const [price, coupon] = await Promise.all([
     stripe.prices.retrieve(subscriptionConfiguration.priceId),

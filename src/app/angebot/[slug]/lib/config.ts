@@ -1,50 +1,52 @@
 import { SubscriptionConfiguration } from "./stripe/types";
 
-export const SubscriptionsConfiguration: Record<
+export const SUBSCRIPTION_CONFIGURATIONS: Record<
   string,
-  SubscriptionConfiguration
+  Record<string, SubscriptionConfiguration>
 > = {
-  MONTHLY: {
-    stripeAccount: "REPUBLIK",
-    productId: "prod_Ccmy87SuPqF5OM",
-    priceId: "MONTHLY_ABO",
-    taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
-    couponCode: "jgxhEDj9",
-  },
-  YEARLY: {
-    stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "ABO-SUB",
-  },
-  BENEFACTOR: {
-    stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
-    metaData: {
-      isBenefactor: "true",
+  test: {
+    MONTHLY: {
+      stripeAccount: "REPUBLIK",
+      productId: "prod_Ccmy87SuPqF5OM",
+      priceId: "MONTHLY_ABO",
+      taxRateId: "txr_1PqUouD5iIOpR5wNiT5EiKld",
+      couponCode: "jgxhEDj9",
     },
-  },
-  STUDENT: {
-    stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
-    metaData: {
-      isStudent: "true",
+    YEARLY: {
+      stripeAccount: "PROJECT_R",
+      productId: "prod_G7dVG5BtM4wDxl",
+      priceId: "ABO-SUB",
     },
-  },
-  CUSTOM: {
-    stripeAccount: "PROJECT_R",
-    productId: "prod_G7dVG5BtM4wDxl",
-    priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
-    customPrice: {
-      max: 1000,
-      min: 240,
-      step: 5,
+    BENEFACTOR: {
+      stripeAccount: "PROJECT_R",
+      productId: "prod_G7dVG5BtM4wDxl",
+      priceId: "price_1PMVJrFHX910KaTHymVJY6Vp",
+      metaData: {
+        isBenefactor: "true",
+      },
+    },
+    STUDENT: {
+      stripeAccount: "PROJECT_R",
+      productId: "prod_G7dVG5BtM4wDxl",
+      priceId: "price_1PTg6ZFHX910KaTHlAFB6YvK",
+      metaData: {
+        isStudent: "true",
+      },
+    },
+    CUSTOM: {
+      stripeAccount: "PROJECT_R",
+      productId: "prod_G7dVG5BtM4wDxl",
+      priceId: "price_1PMWNCFHX910KaTH4xiYtyqW",
+      customPrice: {
+        max: 1000,
+        min: 240,
+        step: 5,
+      },
     },
   },
 } as const;
 
-export type SubscriptionTypes = keyof typeof SubscriptionsConfiguration;
+export type SubscriptionTypes = keyof typeof SUBSCRIPTION_CONFIGURATIONS;
 
 export type SubscriptionMeta = {
   title: string;
@@ -54,7 +56,7 @@ export type SubscriptionMeta = {
   upsellNode?: JSX.Element;
 };
 
-export const SubscriptionsMeta: Record<SubscriptionTypes, SubscriptionMeta> = {
+export const SUBSCRIPTION_META: Record<SubscriptionTypes, SubscriptionMeta> = {
   MONTHLY: {
     title: "Monats-Abo",
     description: "Das Abo für XYZ",

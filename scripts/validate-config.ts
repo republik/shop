@@ -1,4 +1,4 @@
-import { SubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/config";
+import { SUBSCRIPTION_CONFIGURATIONS } from "@/app/angebot/[slug]/lib/config";
 import { initStripe } from "@/app/angebot/[slug]/lib/stripe/server";
 import { StripeAccount } from "@/app/angebot/[slug]/lib/stripe/types";
 import { loadEnvConfig } from "@next/env";
@@ -54,9 +54,12 @@ function validateStripeProductConfiguration() {
   const republikStripe = initStripe("REPUBLIK");
   const projectRStripe = initStripe("PROJECT_R");
 
+  const configMode = process.env.NEXT_PUBLIC_PRODUCT_CONFIGURATION ?? "test";
+  const config = SUBSCRIPTION_CONFIGURATIONS[configMode];
+
   return Promise.all(
-    Object.keys(SubscriptionsConfiguration).map(async (slug) => {
-      const subscriptionConfig = SubscriptionsConfiguration[slug];
+    Object.keys(config).map(async (slug) => {
+      const subscriptionConfig = config[slug];
       const stripe =
         subscriptionConfig.stripeAccount === "REPUBLIK"
           ? republikStripe
