@@ -1,19 +1,20 @@
-import Stripe from "stripe";
-import {
-  SubscriptionConfiguration,
-  StripeSubscriptionItems,
-  StripeAccount,
-} from "./types";
-import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
-import { getAccountPaymentsConfiguration } from "./server";
+import { getSubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/get-config";
 import { AnalyticsObject } from "@/lib/analytics";
-import { Me } from "@/lib/auth/types";
-import { SubscriptionsConfiguration, SubscriptionTypes } from "../config";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { Me } from "@/lib/auth/types";
+import Stripe from "stripe";
+import { SubscriptionTypes } from "../config";
+import { getAccountPaymentsConfiguration } from "./server";
+import {
+  StripeAccount,
+  StripeSubscriptionItems,
+  SubscriptionConfiguration,
+} from "./types";
 
 async function fetchStripeSubscriptionData(
   stripe: Stripe,
-  subscriptionConfig: SubscriptionConfiguration,
+  subscriptionConfig: SubscriptionConfiguration
 ): Promise<StripeSubscriptionItems> {
   const [product, price, coupon] = await Promise.all([
     stripe.products.retrieve(subscriptionConfig.productId),
@@ -27,7 +28,7 @@ async function fetchStripeSubscriptionData(
 
 function getRelevantStripeCustomer(
   me: Me,
-  stripeAccount: StripeAccount,
+  stripeAccount: StripeAccount
 ): string | undefined {
   switch (stripeAccount) {
     case "REPUBLIK":
@@ -48,13 +49,13 @@ interface CheckoutOptions {
 async function initializeCheckout(
   stripe: Stripe,
   subscriptionType: SubscriptionTypes,
-  options: CheckoutOptions,
+  options: CheckoutOptions
 ): Promise<Stripe.Response<Stripe.Checkout.Session>> {
-  const subscriptionConfig = SubscriptionsConfiguration[subscriptionType];
+  const subscriptionConfig = getSubscriptionsConfiguration(subscriptionType);
 
   const { price, product, coupon } = await fetchStripeSubscriptionData(
     stripe,
-    subscriptionConfig,
+    subscriptionConfig
   );
 
   const me = await fetchMe();
@@ -63,7 +64,7 @@ async function initializeCheckout(
   }
   const stripeCustomer = getRelevantStripeCustomer(
     me,
-    subscriptionConfig.stripeAccount,
+    subscriptionConfig.stripeAccount
   );
   if (!stripeCustomer) {
     throw Error("Stripe customer is missing");
@@ -119,7 +120,7 @@ async function initializeCheckout(
       terms_of_service: "required",
     },
     payment_method_configuration: getAccountPaymentsConfiguration(
-      subscriptionConfig.stripeAccount,
+      subscriptionConfig.stripeAccount
     ),
     saved_payment_method_options: {
       payment_method_save: "enabled",
@@ -130,7 +131,7 @@ async function initializeCheckout(
 }
 
 export function requiredCustomFields(
-  me: Me,
+  me: Me
 ): Stripe.Checkout.SessionCreateParams["custom_fields"] {
   if (!me.firstName && !me.lastName) {
     return [
@@ -160,12 +161,12 @@ export function requiredCustomFields(
 
 export const StripeService = (stripe: Stripe) => ({
   getStripeSubscriptionItems: async (
-    options: SubscriptionConfiguration,
+    options: SubscriptionConfiguration
   ): Promise<StripeSubscriptionItems> =>
     fetchStripeSubscriptionData(stripe, options),
   initializeCheckoutSession: async (
     subscriptionType: SubscriptionTypes,
-    options: CheckoutOptions,
+    options: CheckoutOptions
   ): Promise<Stripe.Response<Stripe.Checkout.Session>> =>
     initializeCheckout(stripe, subscriptionType, options),
 });

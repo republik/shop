@@ -38,7 +38,7 @@ export function getClient(
       if (options.setReceivedCookies) {
         const setCookies = parse(res.headers.getSetCookie());
         for (const cookie of setCookies) {
-          cookies().set(cookie);
+          cookies().set(cookie as any);
         }
       }
       return res;

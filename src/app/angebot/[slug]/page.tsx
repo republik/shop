@@ -1,20 +1,21 @@
-import { SubscriptionsMeta, SubscriptionsConfiguration } from "./lib/config";
+import { getSubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/get-config";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { css } from "@/theme/css";
+import { AlertCircleIcon } from "lucide-react";
+import useTranslation from "next-translate/useTranslation";
+import { cookies } from "next/headers";
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import Checkout, { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
+import { LoginView, StepperSignOutButton } from "./components/login-view";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
-import Checkout, { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
-import { cookies } from "next/headers";
+import { SUBSCRIPTION_META } from "./lib/config";
+import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
-import { css } from "@/theme/css";
-import { notFound, redirect } from "next/navigation";
-import { LoginView, StepperSignOutButton } from "./components/login-view";
-import useTranslation from "next-translate/useTranslation";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
-import Link from "next/link";
-import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 
 export default async function ProductPage({
   params,
@@ -23,13 +24,18 @@ export default async function ProductPage({
   params: { slug: string };
   searchParams: { price: string; session_id?: string };
 }) {
-  if (!SubscriptionsConfiguration[params.slug]) {
+  let subscriptionConfig;
+
+  try {
+    subscriptionConfig = getSubscriptionsConfiguration(params.slug);
+  } catch {}
+
+  if (!subscriptionConfig) {
     notFound();
   }
 
   const { t } = useTranslation();
-  const subscriptionConfig = SubscriptionsConfiguration[params.slug];
-  const subscriptionMeta = SubscriptionsMeta[params.slug];
+  const subscriptionMeta = SUBSCRIPTION_META[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = typeof searchParams.session_id === "string";

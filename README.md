@@ -18,6 +18,7 @@ The following environment variables are required for the application to correctl
 - NEXT_PUBLIC_URL: The URL of the website.
 - NEXT_PUBLIC_API_URL: The URL of the API.
 - NEXT_PUBLIC_MAGAZIN_URL: Used for linking to the magazine front, account page and the imprint.
+- NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION: which configuration is used (`test` or `production`)
 
 #### Stripe
 
