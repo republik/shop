@@ -44,6 +44,20 @@ export const SUBSCRIPTION_CONFIGURATIONS: Record<
       },
     },
   },
+  production: {
+    MONTHLY: {
+      stripeAccount: "REPUBLIK",
+      productId: "prod_C7VZTy0Xao40t4",
+      priceId: "MONTHLY_ABO",
+      taxRateId: "txr_1Q00SXD5iIOpR5wNM71PX8nI",
+      couponCode: "z943tBMK",
+    },
+    YEARLY: {
+      stripeAccount: "PROJECT_R",
+      productId: "prod_QprPOc48HYG6FO",
+      priceId: "price_1PyBgDFHX910KaTHm6ZeAQiP",
+    },
+  },
 } as const;
 
 export type SubscriptionTypes = keyof typeof SUBSCRIPTION_CONFIGURATIONS;
