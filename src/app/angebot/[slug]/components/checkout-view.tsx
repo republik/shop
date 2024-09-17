@@ -8,17 +8,19 @@ import {
   EmbeddedCheckout,
 } from "@stripe/react-stripe-js";
 import { SuccessView } from "./success-view";
+import { ErrorMessage } from "./error-message";
 
 interface CheckoutViewProps {
   clientSecret: string;
   stripeAccount: SubscriptionConfiguration["stripeAccount"];
+  errors: { title: string; description: string }[];
 }
 
 export function CheckoutView({
   clientSecret,
   stripeAccount,
+  errors,
 }: CheckoutViewProps) {
-  const stripe = initStripe(stripeAccount);
   const [success, setSuccess] = useState(false);
 
   if (success) {
@@ -27,8 +29,15 @@ export function CheckoutView({
 
   return (
     <div id="checkout">
+      {errors.map((e) => (
+        <ErrorMessage
+          key={e.title}
+          title={e.title}
+          description={e.description}
+        />
+      ))}
       <EmbeddedCheckoutProvider
-        stripe={stripe}
+        stripe={initStripe(stripeAccount)}
         options={{
           clientSecret,
           onComplete: () => {

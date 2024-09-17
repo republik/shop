@@ -32,6 +32,7 @@ export default async function ProductPage({
   const subscriptionMeta = SubscriptionsMeta[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+  const afterCheckoutRedirect = typeof searchParams.session_id === "string";
   const stripe = initStripe(subscriptionConfig.stripeAccount);
   const [me, checkoutSession, subscriptionData] = await Promise.all([
     fetchMe(),
@@ -115,13 +116,13 @@ export default async function ProductPage({
     name: t("checkout:checkout.title"),
     content: checkoutSession ? (
       <Checkout
-        sessionId={checkoutSession.id}
         stripeAccount={subscriptionConfig.stripeAccount}
-        clientSecret={checkoutSession.client_secret!}
+        session={checkoutSession}
+        afterRedirect={afterCheckoutRedirect}
       />
     ) : (
       // TODO: log to sentry and render alert
-      <p>Something went wrong…</p>
+      <p>{t("error:generic")}</p>
     ),
     disabled: !checkoutSession || checkoutSession.status === "expired",
   };
@@ -151,11 +152,6 @@ export default async function ProductPage({
           product: subscriptionMeta.title,
         })}
       </h1>
-      <pre>
-        {
-          JSON.stringify(checkoutSession?.line_items, null, 2) // TODO: remove
-        }
-      </pre>
       <Stepper
         currentStep={steps.reduce(
           (acc, step, index) => (!step.disabled ? index : acc),

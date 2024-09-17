@@ -13,7 +13,7 @@ type SubscriptionType = "MONTHLY" | "YEARLY";
 const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
   const { t } = getTranslation();
 
-  if (me.magazineSubscriptions.length > 0 || me.activeMembership) {
+  if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
       reason: t("checkout:preCheckout.unavailable.reasons.hasSubscription"),
@@ -32,7 +32,7 @@ const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
 const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
   const { t } = getTranslation();
 
-  if (me.magazineSubscriptions.length > 0 || me.activeMembership) {
+  if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
       reason: t("checkout:preCheckout.unavailable.reasons.hasSubscription"),
@@ -50,7 +50,7 @@ const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
  */
 export function checkIfUserCanPurchase(
   me: Me,
-  subscriptionType: SubscriptionType
+  subscriptionType: SubscriptionType,
 ): ReturnType<IsProductAvailableForUserPredicate> {
   if (subscriptionType === "MONTHLY") {
     return canUserBuyMonthlyAbo(me);

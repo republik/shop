@@ -1,42 +1,45 @@
-import { initStripe } from "../lib/stripe/server";
-import { CheckoutView } from "./checkout-view";
+import useTranslation from "next-translate/useTranslation";
+import Stripe from "stripe";
 import { SubscriptionConfiguration } from "../lib/stripe/types";
+import { CheckoutView } from "./checkout-view";
 import { SuccessView } from "./success-view";
 
 export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
 
 interface CheckoutProps {
-  sessionId: string;
-  clientSecret: string;
+  session: Stripe.Checkout.Session;
   stripeAccount: SubscriptionConfiguration["stripeAccount"];
+  afterRedirect?: boolean;
 }
 
 export default async function Checkout(props: CheckoutProps) {
-  const stripe = await initStripe(props.stripeAccount);
-  const session = await stripe.checkout.sessions.retrieve(props.sessionId);
+  const { t } = useTranslation();
 
-  if (!session.client_secret) {
-    return <p>Something is wrong</p>;
+  if (props.session.status === "complete") {
+    return <SuccessView />;
   }
 
-  if (session.status === "open") {
+  if (props.session.status === "open") {
+    if (!props.session.client_secret) {
+      throw new Error("Stripe Client sercet missing");
+    }
+    // we need to display an error message if the session is still open after a redirect
+    const errors = props.afterRedirect
+      ? [
+          {
+            title: t("checkout:checkout.failed.title"),
+            description: t("checkout:checkout.failed.description"),
+          },
+        ]
+      : [];
     return (
       <CheckoutView
-        clientSecret={session.client_secret}
+        clientSecret={props.session.client_secret}
         stripeAccount={props.stripeAccount}
+        errors={errors}
       />
     );
   }
 
-  if (session.status === "complete") {
-    return <SuccessView />;
-  }
-
-  if (session.status === "expired") {
-    // TODO: Should we return the user to the non checkout page
-    return <p>Session expired.</p>;
-  }
-
-  // TODO: render alert with error message
-  throw new Error("Invalid checkout state");
+  // We should never end up here because the check for the expired session is on the parent page
 }
