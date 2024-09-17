@@ -14,6 +14,7 @@ import useTranslation from "next-translate/useTranslation";
 import { Slider } from "@/components/ui/slider";
 import { Me } from "@/lib/auth/types";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
+import { usePlausible } from "next-plausible";
 
 interface PreCheckoutProps {
   me: Me;
@@ -85,10 +86,25 @@ export function PreCheckout(props: PreCheckoutProps) {
     userPrice,
   ]);
 
+  const total = useMemo(
+    () =>
+      checkoutItems.reduce((acc, item) => {
+        return acc + item.amount;
+      }, 0),
+    [checkoutItems]
+  );
+
+  const plausible = usePlausible();
+
   return (
     <form
       action={createCheckout}
-      onSubmit={() => setLoading(true)}
+      onSubmit={() => {
+        setLoading(true);
+        plausible("Sales", {
+          revenue: { currency: "CHF", amount: total },
+        });
+      }}
       className={css({
         display: "flex",
         flexDirection: "column",

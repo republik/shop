@@ -7,6 +7,8 @@ declare global {
       NEXT_PUBLIC_API_URL: string;
       NEXT_PUBLIC_MAGAZIN_URL: string;
       NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION?: string;
+      NEXT_PUBLIC_PLAUSIBLE_DOMAIN: string;
+
       // DATOCMS
       DATO_CMS_API_URL: string;
       DATO_CMS_API_TOKEN: string;
