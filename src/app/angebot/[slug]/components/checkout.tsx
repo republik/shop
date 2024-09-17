@@ -42,13 +42,4 @@ export default async function Checkout(props: CheckoutProps) {
       />
     );
   }
-
-  if (props.session.status === "open" && props.session.client_secret) {
-    return (
-      <CheckoutView
-        clientSecret={props.session.client_secret}
-        stripeAccount={props.stripeAccount}
-      />
-    );
-  }
 }
