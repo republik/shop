@@ -4,7 +4,8 @@ import { SubscriptionConfiguration } from "@/app/angebot/[slug]/lib/stripe/types
 export function getSubscriptionsConfiguration(
   key: string
 ): SubscriptionConfiguration {
-  const configMode = process.env.NEXT_PUBLIC_PRODUCT_CONFIGURATION ?? "test";
+  const configMode =
+    process.env.NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION ?? "test";
 
   const config = SUBSCRIPTION_CONFIGURATIONS[configMode][key];
 

@@ -54,7 +54,8 @@ function validateStripeProductConfiguration() {
   const republikStripe = initStripe("REPUBLIK");
   const projectRStripe = initStripe("PROJECT_R");
 
-  const configMode = process.env.NEXT_PUBLIC_PRODUCT_CONFIGURATION ?? "test";
+  const configMode =
+    process.env.NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION ?? "test";
   const config = SUBSCRIPTION_CONFIGURATIONS[configMode];
 
   return Promise.all(
