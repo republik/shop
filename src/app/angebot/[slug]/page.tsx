@@ -61,7 +61,7 @@ export default async function ProductPage({
     me &&
     checkIfUserCanPurchase(
       me,
-      subscriptionConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY",
+      subscriptionConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY"
     );
 
   const productDetails: Step = {
@@ -122,7 +122,7 @@ export default async function ProductPage({
       />
     ) : (
       // TODO: log to sentry and render alert
-      <p>Something went wrong…</p>
+      <p>{t("error:generic")}</p>
     ),
     disabled: !checkoutSession || checkoutSession.status === "expired",
   };
@@ -152,15 +152,10 @@ export default async function ProductPage({
           product: subscriptionMeta.title,
         })}
       </h1>
-      <pre>
-        {
-          JSON.stringify(checkoutSession?.line_items, null, 2) // TODO: remove
-        }
-      </pre>
       <Stepper
         currentStep={steps.reduce(
           (acc, step, index) => (!step.disabled ? index : acc),
-          0,
+          0
         )}
         steps={steps}
       />

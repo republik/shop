@@ -1,10 +1,8 @@
-import { initStripe } from "../lib/stripe/server";
-import { CheckoutView } from "./checkout-view";
-import { SubscriptionConfiguration } from "../lib/stripe/types";
-import { SuccessView } from "./success-view";
-import { ErrorMessage } from "./error-message";
 import useTranslation from "next-translate/useTranslation";
 import Stripe from "stripe";
+import { SubscriptionConfiguration } from "../lib/stripe/types";
+import { CheckoutView } from "./checkout-view";
+import { SuccessView } from "./success-view";
 
 export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
 
@@ -42,4 +40,6 @@ export default async function Checkout(props: CheckoutProps) {
       />
     );
   }
+
+  // We should never end up here because the check for the expired session is on the parent page
 }
