@@ -20,7 +20,7 @@ export default function NotFound() {
       <BotIcon
         className={css({ color: "zinc.800", width: "10", height: "10" })}
       />
-      <h2 className={css({ fontSize: "lg" })}>{t("common:notFound.title")}</h2>
+      <h1 className={css({ fontSize: "lg" })}>{t("common:notFound.title")}</h1>
       <Button asChild>
         <Link href="/">{t("common:notFound.buttonLabel")}</Link>
       </Button>
