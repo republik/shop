@@ -45,7 +45,6 @@ async function sleep(timeout: number) {
 }
 
 interface CheckoutOptions {
-  email?: string;
   userPrice?: number;
   analytics?: AnalyticsObject;
 }
