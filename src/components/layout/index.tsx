@@ -24,12 +24,14 @@ export async function PageLayout({ children }: PageLayoutProps) {
       })}
     >
       <header
-        className={container({
+        className={css({
           display: "flex",
-          justifyContent: "space-between",
-          py: "5",
+          justifyContent: "center",
+          py: "4",
           px: "4",
-          maxWidth: "4xl",
+          borderBottomColor: "divider",
+          borderBottomWidth: "1px",
+          borderBottomStyle: "solid",
         })}
       >
         <div
@@ -45,13 +47,14 @@ export async function PageLayout({ children }: PageLayoutProps) {
             </svg>
           </Link>
         </div>
-        <div>{me && <Portrait me={me} />}</div>
+        {/* <div>{me && <Portrait me={me} />}</div> */}
       </header>
       <main
         className={css({
           flexGrow: 1,
           mx: "auto",
-          p: "4",
+          px: "4",
+          py: "8",
           display: "flex",
         })}
       >

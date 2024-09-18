@@ -6,7 +6,6 @@ import {
   AnalyticsObject,
   fromAnalyticsCookie,
 } from "@/lib/analytics";
-import { fetchMe } from "@/lib/auth/fetch-me";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";

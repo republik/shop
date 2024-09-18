@@ -2,20 +2,6 @@ import Link from "next/link";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
 
-function intersperse<T>(arr: T[], separator: (idx: number) => T): T[] {
-  if (arr.length === 0) return [];
-
-  const result: T[] = [];
-  for (let i = 0; i < arr.length; i++) {
-    result.push(arr[i]);
-    if (i < arr.length - 1) {
-      result.push(separator(i));
-    }
-  }
-
-  return result;
-}
-
 type Link = {
   text: string;
   href: string;
@@ -60,7 +46,7 @@ export async function Footer() {
   return (
     <footer
       className={css({
-        borderTopColor: "zinc.300",
+        borderTopColor: "divider",
         borderTopWidth: "1px",
         borderTopStyle: "solid",
       })}
@@ -73,15 +59,13 @@ export async function Footer() {
           display: "flex",
           flexDirection: "row",
           flexWrap: "wrap",
-          columnGap: "2",
+          columnGap: "4",
           rowGap: "1",
           justifyContent: "center",
           fontSize: "xs",
         })}
       >
-        {intersperse(footerLinkNodes, (idx: number) => (
-          <span key={idx}>-</span>
-        ))}
+        {footerLinkNodes}
       </div>
     </footer>
   );
