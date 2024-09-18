@@ -27,7 +27,7 @@ async function fetchStripeSubscriptionData(
 }
 
 function getRelevantStripeCustomer(
-  me: Me,
+  me: Me | undefined | null,
   stripeAccount: StripeAccount
 ): string | undefined {
   switch (stripeAccount) {
@@ -38,6 +38,10 @@ function getRelevantStripeCustomer(
     default:
       return undefined;
   }
+}
+
+async function sleep(timeout: number) {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
 interface CheckoutOptions {
@@ -58,16 +62,27 @@ async function initializeCheckout(
     subscriptionConfig
   );
 
-  const me = await fetchMe();
-  if (!me) {
-    throw Error("you are not logged in");
+  let me: Me | undefined | null;
+  let stripeCustomer: string | undefined;
+  const timeoutStart = Date.now();
+
+  // Wait for stripe Customer to be present
+  while (!stripeCustomer) {
+    me = await fetchMe();
+    stripeCustomer = getRelevantStripeCustomer(
+      me,
+      subscriptionConfig.stripeAccount
+    );
+    if (Date.now() - timeoutStart > 10_000) {
+      break;
+    }
+    if (!stripeCustomer) {
+      await sleep(500);
+    }
   }
-  const stripeCustomer = getRelevantStripeCustomer(
-    me,
-    subscriptionConfig.stripeAccount
-  );
-  if (!stripeCustomer) {
-    throw Error("Stripe customer is missing");
+
+  if (!(me && stripeCustomer)) {
+    throw new Error(`Couldn't retrieve Stripe Customer`);
   }
 
   const session = await stripe.checkout.sessions.create({
