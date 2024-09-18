@@ -8,7 +8,8 @@ import { css } from "@/theme/css";
 import "./globals.css";
 import getTranslation from "next-translate/useTranslation";
 import { GraphQLProvider } from "@/lib/graphql/client-browser";
-import {ReactNode} from "react";
+import { ReactNode } from "react";
+import { AnalyticsProvider } from "@/lib/analytics-provider";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { t } = getTranslation("common");
@@ -26,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <AnalyticsProvider />
+      </head>
       <body
         className={css({
           textStyle: "body",
