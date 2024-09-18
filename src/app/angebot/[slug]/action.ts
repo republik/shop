@@ -25,7 +25,6 @@ export async function createCheckout(formData: FormData): Promise<{}> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
-  const me = await fetchMe();
   const subscriptionConfig = getSubscriptionsConfiguration(subscriptionType);
 
   const analyticsParams = readAnalyticsParamsFromCookie();

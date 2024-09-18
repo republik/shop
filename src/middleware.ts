@@ -5,7 +5,7 @@ import {
 } from "@/lib/analytics";
 import { NextRequest, NextResponse } from "next/server";
 
-const ANALYTICS_COOKIE_MAX_AGE = 60 * 60 * 24 * 3; // 3 days
+const ANALYTICS_COOKIE_MAX_AGE = 60 * 60 * 24; // 24h
 
 const CURTAIN_COOKIE_NAME = "OpenSesame";
 const CURTAIN_PASSTHROUGH_PATHS = [

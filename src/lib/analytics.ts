@@ -11,7 +11,7 @@ export function collectAnalyticsParams(
   return analyticsParams;
 }
 
-export const ANALYTICS_COOKIE_NAME = "SUBSCRIPTION_CONTEXT";
+export const ANALYTICS_COOKIE_NAME = "republik-analytics-params";
 
 export function toAnalyticsCookie(object: AnalyticsObject): string {
   return JSON.stringify(object);
