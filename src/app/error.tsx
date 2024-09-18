@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import * as Sentry from "@sentry/nextjs";
-import { BotIcon, CircleXIcon } from "lucide-react";
+import { CircleXIcon } from "lucide-react";
 import useTranslation from "next-translate/useTranslation";
 import { useEffect } from "react";
 
