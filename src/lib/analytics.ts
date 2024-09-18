@@ -1,43 +1,13 @@
-import * as v from "valibot";
+const allowedParamsRe = /^(utm_|rep_|referrer|source)/;
 
-const analyticsSearchParams = [
-  "utm_source",
-  "utm_medium",
-  "utm_campaign",
-  "utm_term",
-  "utm_content",
-  "referrer_id",
-] as const;
-
-type AnalyticsParameter = (typeof analyticsSearchParams)[number];
-
-export type AnalyticsObject = Partial<Record<AnalyticsParameter, string>>;
-
-const AnalyticsSearchParamsSchema = v.looseObject({
-  utm_source: v.optional(v.pipe(v.unknown(), v.transform(String))),
-  utm_medium: v.optional(v.pipe(v.unknown(), v.transform(String))),
-  utm_campaign: v.optional(v.pipe(v.unknown(), v.transform(String))),
-  utm_term: v.optional(v.pipe(v.unknown(), v.transform(String))),
-  utm_content: v.optional(v.pipe(v.unknown(), v.transform(String))),
-  referrer_id: v.optional(v.pipe(v.unknown(), v.transform(String))),
-});
+export type AnalyticsObject = Record<string, string>;
 
 export function collectAnalyticsParams(
-  object: Record<string, unknown>
+  params: Record<string, string>
 ): AnalyticsObject {
-  const { success, output, issues } = v.safeParse(
-    AnalyticsSearchParamsSchema,
-    object
-  );
-  if (!success) {
-    console.error("Failed to parse Analytics-params", issues);
-    return {};
-  }
   const analyticsParams = Object.fromEntries(
-    Object.entries(output).filter(([key]) =>
-      analyticsSearchParams.includes(key as unknown as AnalyticsParameter)
-    )
-  ) as AnalyticsObject;
+    Object.entries(params).filter(([key]) => allowedParamsRe.test(key))
+  );
   return analyticsParams;
 }
 
