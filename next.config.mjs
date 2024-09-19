@@ -7,6 +7,37 @@ const nextConfig = {
   experimental: {
     // testProxy: true,
   },
+  async headers() {
+    return [
+      // Migrated from custom express server
+      {
+        source: "/:path*",
+        headers: [
+          // Security headers, peviously handled by helmet
+          ...Object.entries({
+            // 'Content-Security-Policy': `default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests`,
+            // 'Cross-Origin-Opener-Policy': 'same-origin',
+            // 'Cross-Origin-Resource-Policy': 'same-origin',
+            // 'Origin-Agent-Cluster': '?1',
+            // Preload approval for 1 year
+            "Referrer-Policy": "no-referrer",
+            "Strict-Transport-Security": `max-age=${
+              60 * 60 * 24 * 365
+            }; includeSubDomains; preload`,
+            "X-Content-Type-Options": "nosniff",
+            "X-Download-Options": "noopen",
+            "X-Frame-Options": "SAMEORIGIN",
+            // removed by helmet by default, but we keep it for now
+            "X-Powered-By": "Republik",
+            "X-XSS-Protection": "1; mode=block",
+          }).map(([key, value]) => ({
+            key,
+            value,
+          })),
+        ],
+      },
+    ];
+  },
   redirects() {
     return [
       {
