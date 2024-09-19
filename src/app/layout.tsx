@@ -26,7 +26,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="de">
       <head>
         <AnalyticsProvider />
       </head>
