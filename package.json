@@ -2,6 +2,9 @@
   "name": "shop-republik-ch",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "concurrently \"next dev\" \"npm run gql:types --watch\" \"panda --watch\"",
     "build": "pnpm run validate-config production && panda && pnpm run gql:types && next build",
