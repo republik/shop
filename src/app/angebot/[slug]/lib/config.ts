@@ -16,6 +16,7 @@ export const SUBSCRIPTION_CONFIGURATIONS: Record<
       stripeAccount: "PROJECT_R",
       productId: "prod_G7dVG5BtM4wDxl",
       priceId: "ABO-SUB",
+      couponCode: "As9xMVUF",
     },
     BENEFACTOR: {
       stripeAccount: "PROJECT_R",
@@ -56,6 +57,7 @@ export const SUBSCRIPTION_CONFIGURATIONS: Record<
       stripeAccount: "PROJECT_R",
       productId: "prod_QprPOc48HYG6FO",
       priceId: "price_1PyBgDFHX910KaTHm6ZeAQiP",
+      couponCode: "tq0iexZY",
     },
   },
 } as const;
