@@ -3,9 +3,94 @@
     "title": "Shop – Republik",
     "description": ""
   },
+
   "imprint": "Impressum",
   "notFound": {
     "title": "Diese Seite existiert nicht.",
     "buttonLabel": "Zur Startseite"
+  },
+
+  "error": {
+    "generic": "Es ist ein Fehler aufgetreten.",
+    "globalError": {
+      "message": "Sollte dieser Fehler zum wiederholten Male aufgetreten sein, wenden Sie sich bitte an",
+      "reloadPage": "Seite neu laden"
+    },
+    "graphql": {
+      "networkError": "Die Verbindung zur Republik schlug fehl."
+    }
+  },
+
+  "login": { "action": "Anmelden" },
+
+  "checkout": {
+    "actions": {
+      "change": "Ändern",
+      "buy": "Kaufen",
+      "next": "Weiter"
+    },
+    "loginStep": {
+      "title": "Konto",
+      "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmung</privacyLink>.",
+      "email": {
+        "title": "Login oder Konto eröffnen",
+        "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik-Konto, um den Kauf abzuschliessen."
+      },
+      "code": {
+        "changeEmailAction": "E-Mail-Adresse ändern",
+        "title": "Code",
+        "description": "Wir haben Ihnen einen Code an {email} geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
+      }
+    },
+    "preCheckout": {
+      "title": "Abonnement",
+      "summary": {
+        "title": "{product} kaufen",
+        "table": {
+          "heading": {
+            "item": "Artikel",
+            "currency": "Währung",
+            "price": "Preis"
+          },
+          "summary": "Total, jetzt zu bezahlen"
+        },
+        "success": {
+          "title": "Vielen Dank für Ihren Kauf",
+          "description": "Sie werden in Kürze weitergeleitet.",
+          "action": "Zum Magazin"
+        }
+      },
+      "unavailable": {
+        "title": "Das gewählte Produkt ist nicht verfügbar.",
+        "action": "Zurück zum Magazin",
+        "reasons": {
+          "hasSubscription": "Sie haben schon ein aktives Abonnement.",
+          "hasMonthly": "Sie haben schon ein aktives Monatsabo.",
+          "hasYearly": "Sie haben schon ein aktives Jahresabo."
+        }
+      },
+      "intervals": {
+        "month": "Monat",
+        "year": "Jahr",
+        "week": "Woche",
+        "day": "Tag",
+        "undefined": ""
+      },
+      "pricePerInterval": "{price} pro {interval}",
+      "action": "Kaufen",
+      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr."
+    },
+    "checkout": {
+      "title": "Bezahlen",
+      "success": {
+        "title": "Vielen Dank für Ihren Kauf",
+        "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
+        "action": "Zum Magazin"
+      },
+      "failed": {
+        "title": "Der Bezahlvorgang ist fehlgeschlagen",
+        "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
+      }
+    }
   }
 }

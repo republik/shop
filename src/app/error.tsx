@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import * as Sentry from "@sentry/nextjs";
 import { CircleXIcon } from "lucide-react";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { useEffect } from "react";
 
 export default function Error({
@@ -16,7 +16,7 @@ export default function Error({
     Sentry.captureException(error);
   }, [error]);
 
-  const { t } = useTranslation("error");
+  const t = useTranslations("error");
 
   return (
     <div

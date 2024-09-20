@@ -1,7 +1,7 @@
 "use client";
 import useInterval from "@/lib/hooks/use-interval";
 import { css } from "@/theme/css";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import useTimeout from "@/lib/hooks/use-timeout";
@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { CheckCircleIcon } from "lucide-react";
 
 export function SuccessView() {
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
   });
@@ -60,9 +60,9 @@ export function SuccessView() {
             width: "8",
           })}
         />
-        <AlertTitle>{t("checkout:checkout.success.title")}</AlertTitle>
+        <AlertTitle>{t("checkout.checkout.success.title")}</AlertTitle>
         <AlertDescription>
-          {t("checkout:checkout.success.description")}
+          {t("checkout.checkout.success.description")}
         </AlertDescription>
       </Alert>
     </div>

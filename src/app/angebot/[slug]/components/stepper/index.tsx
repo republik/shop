@@ -1,6 +1,6 @@
 "use client";
 import { css, cx } from "@/theme/css";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 
 export interface Step {
@@ -82,7 +82,7 @@ export function StepperChangeStepButton({
 }: {
   onChange: () => void;
 }) {
-  const { t } = useTranslation("checkout");
+  const t = useTranslations("checkout");
 
   return (
     <button
@@ -92,7 +92,7 @@ export function StepperChangeStepButton({
       })}
       onClick={() => onChange()}
     >
-      {t("checkout:actions.change")}
+      {t("actions.change")}
     </button>
   );
 }

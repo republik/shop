@@ -1,4 +1,4 @@
-import useTranslation from "next-translate/useTranslation";
+import { getTranslations } from "next-intl/server";
 import Stripe from "stripe";
 import { SubscriptionConfiguration } from "../lib/stripe/types";
 import { CheckoutView } from "./checkout-view";
@@ -13,7 +13,7 @@ interface CheckoutProps {
 }
 
 export default async function Checkout(props: CheckoutProps) {
-  const { t } = useTranslation();
+  const t = await getTranslations();
 
   if (props.session.status === "complete") {
     return <SuccessView />;
@@ -27,8 +27,8 @@ export default async function Checkout(props: CheckoutProps) {
     const errors = props.afterRedirect
       ? [
           {
-            title: t("checkout:checkout.failed.title"),
-            description: t("checkout:checkout.failed.description"),
+            title: t("checkout.checkout.failed.title"),
+            description: t("checkout.checkout.failed.description"),
           },
         ]
       : [];

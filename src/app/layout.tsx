@@ -2,33 +2,40 @@ import { PageLayout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
-import "@/theme/styles.css";
-import "@/theme/fonts.css";
-import { css } from "@/theme/css";
-import "./globals.css";
-import getTranslation from "next-translate/useTranslation";
-import { GraphQLProvider } from "@/lib/graphql/client-browser";
-import { ReactNode } from "react";
 import { AnalyticsProvider } from "@/lib/analytics-provider";
+import { GraphQLProvider } from "@/lib/graphql/client-browser";
+import { css } from "@/theme/css";
+import "@/theme/fonts.css";
+import "@/theme/styles.css";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { ReactNode } from "react";
+import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = getTranslation("common");
+  const t = await getTranslations();
 
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_URL),
     title: {
-      default: t("common:meta.title"),
-      template: `%s – ${t("common:meta.title")}`,
+      default: t("meta.title"),
+      template: `%s – ${t("meta.title")}`,
     },
-    description: t("common:meta.description"),
+    description: t("meta.description"),
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const locale = await getLocale();
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages({ locale });
+
   return (
     <html lang="de">
       <head>
@@ -39,10 +46,12 @@ export default function RootLayout({
           textStyle: "body",
         })}
       >
-        <GraphQLProvider>
-          <PageLayout>{children}</PageLayout>
-          <Toaster />
-        </GraphQLProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <GraphQLProvider>
+            <PageLayout>{children}</PageLayout>
+            <Toaster />
+          </GraphQLProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );
