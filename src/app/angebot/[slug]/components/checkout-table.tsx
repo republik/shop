@@ -1,7 +1,7 @@
 "use client";
 import { css, cx } from "@/theme/css";
 import { useMemo } from "react";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 export interface CheckoutItem {
   label: string;
   amount: number;
@@ -14,7 +14,7 @@ interface CheckoutTableProps {
 
 function CheckoutTable(props: CheckoutTableProps) {
   const { currency, items } = props;
-  const { t } = useTranslation();
+  const t = useTranslations();
   const total = useMemo(
     () =>
       items.reduce((acc, item) => {
@@ -47,13 +47,13 @@ function CheckoutTable(props: CheckoutTableProps) {
       <thead>
         <tr className="sr-only">
           <th scope="col">
-            {t("checkout:preCheckout.summary.table.heading.item")}
+            {t("checkout.preCheckout.summary.table.heading.item")}
           </th>
           <th scope="col">
-            {t("checkout:preCheckout.summary.table.heading.currency")}
+            {t("checkout.preCheckout.summary.table.heading.currency")}
           </th>
           <th scope="col">
-            {t("checkout:preCheckout.summary.table.heading.price")}
+            {t("checkout.preCheckout.summary.table.heading.price")}
           </th>
         </tr>
       </thead>
@@ -72,7 +72,7 @@ function CheckoutTable(props: CheckoutTableProps) {
       </tbody>
       <tfoot>
         <tr>
-          <th scope="row">{t("checkout:preCheckout.summary.table.summary")}</th>
+          <th scope="row">{t("checkout.preCheckout.summary.table.summary")}</th>
           <td>{currency.toUpperCase()}</td>
           <td>{total.toFixed(2)}</td>
         </tr>

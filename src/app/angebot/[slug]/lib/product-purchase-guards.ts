@@ -1,6 +1,6 @@
-import getTranslation from "next-translate/useTranslation";
-import { IsProductAvailableForUserPredicate } from "./stripe/types";
 import { Me } from "@/lib/auth/types";
+import { getTranslations } from "next-intl/server";
+import { IsProductAvailableForUserPredicate } from "./stripe/types";
 
 type SubscriptionType = "MONTHLY" | "YEARLY";
 
@@ -11,12 +11,10 @@ type SubscriptionType = "MONTHLY" | "YEARLY";
  * @returns An object with the availability status and a reason if not available
  */
 const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
-  const { t } = getTranslation();
-
   if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
-      reason: t("checkout:preCheckout.unavailable.reasons.hasSubscription"),
+      // reason: t("checkout.preCheckout.unavailable.reasons.hasSubscription"),
     };
   }
 
@@ -30,12 +28,10 @@ const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
  * @returns An object with the availability status and a reason if not available
  */
 const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
-  const { t } = getTranslation();
-
   if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
-      reason: t("checkout:preCheckout.unavailable.reasons.hasSubscription"),
+      // reason: t("checkout.preCheckout.unavailable.reasons.hasSubscription"),
     };
   }
   return { available: true };
@@ -50,7 +46,7 @@ const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
  */
 export function checkIfUserCanPurchase(
   me: Me,
-  subscriptionType: SubscriptionType,
+  subscriptionType: SubscriptionType
 ): ReturnType<IsProductAvailableForUserPredicate> {
   if (subscriptionType === "MONTHLY") {
     return canUserBuyMonthlyAbo(me);

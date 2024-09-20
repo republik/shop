@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { vstack } from "@/theme/patterns";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { ReactNode, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { CombinedError, useClient, useMutation } from "urql";
@@ -20,18 +20,18 @@ const ErrorMessage = ({
 }: {
   error: string | CombinedError | undefined;
 }) => {
-  const { t } = useTranslation("error");
+  const t = useTranslations("error");
 
   const message =
     typeof error === "string"
       ? error
       : error?.networkError
-        ? t("error:graphql.networkError")
+        ? t("graphql.networkError")
         : error?.graphQLErrors[0]?.message;
 
   return (
     <Alert variant="error">
-      <AlertTitle>{t("error:generic")}</AlertTitle>
+      <AlertTitle>{t("generic")}</AlertTitle>
       {message && <AlertDescription>{message}</AlertDescription>}
     </Alert>
   );
@@ -43,7 +43,7 @@ type SubmitProps = {
 
 export function Submit({ children }: SubmitProps) {
   const { pending } = useFormStatus();
-  const { t } = useTranslation("login");
+  const t = useTranslations("login");
   return (
     <Button
       type="submit"
@@ -53,7 +53,7 @@ export function Submit({ children }: SubmitProps) {
         w: "max",
       })}
     >
-      {children ?? t("login:action")}
+      {children ?? t("action")}
     </Button>
   );
 }

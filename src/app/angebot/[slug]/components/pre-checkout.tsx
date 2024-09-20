@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { createCheckout } from "../action";
 import { css } from "@/theme/css";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { Slider } from "@/components/ui/slider";
 import { Me } from "@/lib/auth/types";
 import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
@@ -33,7 +33,7 @@ export function PreCheckout(props: PreCheckoutProps) {
     initialPrice,
     me,
   } = props;
-  const { t } = useTranslation();
+  const t = useTranslations();
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
@@ -136,14 +136,14 @@ export function PreCheckout(props: PreCheckoutProps) {
             textStyle: "md",
           })}
         >
-          {t("checkout:preCheckout.pricePerInterval", {
+          {t("checkout.preCheckout.pricePerInterval", {
             price: renderPrice(
               subscriptionConfig.customPrice
                 ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
                 : stripeSubscriptionItems.price.unit_amount
             ),
             interval: t(
-              `checkout:preCheckout.intervals.${subscriptionConfig.customPrice ? "year" : stripeSubscriptionItems.price.recurring?.interval}`
+              `checkout.preCheckout.intervals.${subscriptionConfig.customPrice ? "year" : stripeSubscriptionItems.price.recurring?.interval}`
             ),
           })}
         </p>
@@ -157,7 +157,7 @@ export function PreCheckout(props: PreCheckoutProps) {
           })}
         >
           <label htmlFor={priceId} className="sr-only">
-            {t("checkout:preCheckout.cutomPrice", {
+            {t("checkout.preCheckout.cutomPrice", {
               price: userPrice,
             })}
           </label>
@@ -199,7 +199,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         loading={isLoading}
         disabled={isLoading}
       >
-        {t("checkout:preCheckout.action")}
+        {t("checkout.preCheckout.action")}
       </Button>
     </form>
   );

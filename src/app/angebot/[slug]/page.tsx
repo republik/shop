@@ -4,7 +4,7 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -34,7 +34,7 @@ export default async function ProductPage({
     notFound();
   }
 
-  const { t } = useTranslation();
+  const t = useTranslations();
   const subscriptionMeta = SUBSCRIPTION_META[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;

@@ -1,6 +1,8 @@
 import { withSentryConfig } from "@sentry/nextjs";
-import nextTranslate from "next-translate-plugin";
 import { withPlausibleProxy } from "next-plausible";
+import createNextIntlPlugin from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -61,7 +63,7 @@ const withConfiguredPlausibleProxy = withPlausibleProxy({
 });
 
 export default withSentryConfig(
-  nextTranslate(withConfiguredPlausibleProxy(nextConfig)),
+  withNextIntl(withConfiguredPlausibleProxy(nextConfig)),
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options

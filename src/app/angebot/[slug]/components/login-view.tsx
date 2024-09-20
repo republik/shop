@@ -2,13 +2,11 @@
 
 import { LoginForm } from "@/app/(auth)/login/login-form";
 import { css } from "@/theme/css";
-import useTranslation from "next-translate/useTranslation";
+import { useTranslations } from "next-intl";
 import Trans from "next-translate/Trans";
 import Link from "next/link";
 import { useClient } from "urql";
-import {
-  SignOutDocument,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { StepperChangeStepButton } from "@/app/angebot/[slug]/components/stepper";
 
 const PRIVACY_POLICY_HREF = `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`;
@@ -28,11 +26,11 @@ export function StepperSignOutButton() {
 interface LoginViewProps {}
 
 export function LoginView(_: LoginViewProps) {
-  const { t } = useTranslation();
+  const t = useTranslations("checkout");
 
   return (
     <LoginForm
-      submitButtonText={t("checkout:actions.next")}
+      submitButtonText={t("actions.next")}
       loginFormHeader={
         <>
           <h1
@@ -41,9 +39,9 @@ export function LoginView(_: LoginViewProps) {
               fontWeight: "bold",
             })}
           >
-            {t("checkout:loginStep.email.title")}
+            {t("loginStep.email.title")}
           </h1>
-          <p>{t("checkout:loginStep.email.description")}</p>
+          <p>{t("loginStep.email.description")}</p>
         </>
       }
       loginFormInfo={
@@ -54,7 +52,7 @@ export function LoginView(_: LoginViewProps) {
             })}
           >
             <Trans
-              i18nKey="checkout:loginStep.privacyPolicy"
+              i18nKey="loginStep.privacyPolicy"
               components={[
                 <Link
                   key="privacyPolicyLink"
@@ -69,7 +67,7 @@ export function LoginView(_: LoginViewProps) {
       renderCodeFormHint={(email) => (
         <>
           <p>
-            {t("checkout:loginStep.code.description", {
+            {t("loginStep.code.description", {
               email,
             })}
           </p>
@@ -81,7 +79,7 @@ export function LoginView(_: LoginViewProps) {
               alignSelf: "flex-start",
             })}
           >
-            {t("checkout:loginStep.code.changeEmailAction")}
+            {t("loginStep.code.changeEmailAction")}
           </button>
         </>
       )}

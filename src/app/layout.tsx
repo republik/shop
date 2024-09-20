@@ -10,21 +10,29 @@ import getTranslation from "next-translate/useTranslation";
 import { GraphQLProvider } from "@/lib/graphql/client-browser";
 import { ReactNode } from "react";
 import { AnalyticsProvider } from "@/lib/analytics-provider";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { t } = getTranslation("common");
+  const t = await getTranslations();
 
   return {
-    title: t("common:meta.title"),
-    description: t("common:meta.descrpition"),
+    title: t("meta.title"),
+    description: t("meta.description"),
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: ReactNode;
 }>) {
+  const locale = await getLocale();
+
+  // Providing all messages to the client
+  // side is the easiest way to get started
+  const messages = await getMessages({ locale });
+
   return (
     <html lang="de">
       <head>
@@ -35,10 +43,12 @@ export default function RootLayout({
           textStyle: "body",
         })}
       >
-        <GraphQLProvider>
-          <PageLayout>{children}</PageLayout>
-          <Toaster />
-        </GraphQLProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <GraphQLProvider>
+            <PageLayout>{children}</PageLayout>
+            <Toaster />
+          </GraphQLProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

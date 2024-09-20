@@ -1,19 +1,15 @@
-import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
-import { container } from "@/theme/patterns";
-import useTranslation from "next-translate/useTranslation";
 import Link from "next/link";
-import { Footer } from "./footer";
-import { Portrait } from "./portrait";
 import { ReactNode } from "react";
+import { Footer } from "./footer";
 
 interface PageLayoutProps {
   children: ReactNode;
 }
 
 export async function PageLayout({ children }: PageLayoutProps) {
-  const me = await fetchMe();
-  const { t } = useTranslation();
+  // const me = await fetchMe();
+  // const t = await getTranslations();
 
   return (
     <div
