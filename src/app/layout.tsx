@@ -2,16 +2,15 @@ import { PageLayout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
-import "@/theme/styles.css";
-import "@/theme/fonts.css";
-import { css } from "@/theme/css";
-import "./globals.css";
-import getTranslation from "next-translate/useTranslation";
-import { GraphQLProvider } from "@/lib/graphql/client-browser";
-import { ReactNode } from "react";
 import { AnalyticsProvider } from "@/lib/analytics-provider";
+import { GraphQLProvider } from "@/lib/graphql/client-browser";
+import { css } from "@/theme/css";
+import "@/theme/fonts.css";
+import "@/theme/styles.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { ReactNode } from "react";
+import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
