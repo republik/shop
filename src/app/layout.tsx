@@ -15,7 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const { t } = getTranslation("common");
 
   return {
-    title: t("common:meta.title"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_URL),
+    title: {
+      default: t("common:meta.title"),
+      template: `%s – ${t("common:meta.title")}`,
+    },
     description: t("common:meta.description"),
   };
 }
