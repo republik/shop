@@ -1,20 +1,20 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
+import { Me } from "@/lib/auth/types";
+import { css } from "@/theme/css";
+import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
+import { createCheckout } from "../action";
 import { SubscriptionMeta, SubscriptionTypes } from "../lib/config";
 import {
-  SubscriptionConfiguration,
   StripeSubscriptionItems,
+  SubscriptionConfiguration,
 } from "../lib/stripe/types";
-import { Button } from "@/components/ui/button";
-import { createCheckout } from "../action";
-import { css } from "@/theme/css";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import { useTranslations } from "next-intl";
-import { Slider } from "@/components/ui/slider";
-import { Me } from "@/lib/auth/types";
-import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
-import { usePlausible } from "next-plausible";
+// import { usePlausible } from "next-plausible";
 
 interface PreCheckoutProps {
   me: Me;
@@ -86,24 +86,11 @@ export function PreCheckout(props: PreCheckoutProps) {
     userPrice,
   ]);
 
-  const total = useMemo(
-    () =>
-      checkoutItems.reduce((acc, item) => {
-        return acc + item.amount;
-      }, 0),
-    [checkoutItems]
-  );
-
-  const plausible = usePlausible();
-
   return (
     <form
       action={createCheckout}
       onSubmit={() => {
         setLoading(true);
-        plausible("Sales", {
-          revenue: { currency: "CHF", amount: total },
-        });
       }}
       className={css({
         display: "flex",

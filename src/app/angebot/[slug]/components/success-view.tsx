@@ -1,13 +1,14 @@
 "use client";
-import useInterval from "@/lib/hooks/use-interval";
-import { css } from "@/theme/css";
-import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import useTimeout from "@/lib/hooks/use-timeout";
-import { useQuery } from "urql";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import useInterval from "@/lib/hooks/use-interval";
+import useTimeout from "@/lib/hooks/use-timeout";
+import { css } from "@/theme/css";
 import { CheckCircleIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { usePlausible } from "next-plausible";
+import { useEffect, useState } from "react";
+import { useQuery } from "urql";
 
 export function SuccessView() {
   const t = useTranslations();
@@ -20,9 +21,12 @@ export function SuccessView() {
     setStartCheckingForActiveSubscription,
   ] = useState(false);
 
+  const plausible = usePlausible();
+
   useTimeout(() => {
     setStartCheckingForActiveSubscription(true);
-  }, 5_000);
+    plausible("Checkout Success");
+  }, 1_000);
 
   useInterval(
     () => {
@@ -30,7 +34,7 @@ export function SuccessView() {
         requestPolicy: "network-only",
       });
     },
-    startCheckingForActiveSubscription ? 2_500 : null
+    startCheckingForActiveSubscription ? 1_000 : null
   );
 
   useEffect(() => {
@@ -42,7 +46,7 @@ export function SuccessView() {
         `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`
       );
     }
-  }, [meRes.data, startCheckingForActiveSubscription]);
+  }, [meRes.data, startCheckingForActiveSubscription, plausible]);
 
   return (
     <div
