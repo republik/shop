@@ -39,13 +39,13 @@
       "code": {
         "changeEmailAction": "E-Mail-Adresse ändern",
         "title": "Code",
-        "description": "Wir haben Ihnen einen Code an {{email}} geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
+        "description": "Wir haben Ihnen einen Code an {email} geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
       }
     },
     "preCheckout": {
       "title": "Abonnement",
       "summary": {
-        "title": "{{product}} kaufen",
+        "title": "{product} kaufen",
         "table": {
           "heading": {
             "item": "Artikel",
@@ -71,11 +71,14 @@
       },
       "intervals": {
         "month": "Monat",
-        "year": "Jahr"
+        "year": "Jahr",
+        "week": "Woche",
+        "day": "Tag",
+        "undefined": ""
       },
-      "pricePerInterval": "{{price}} pro {{interval}}",
+      "pricePerInterval": "{price} pro {interval}",
       "action": "Kaufen",
-      "customPrice": "Ihr gewählter Preis ist CHF {{price}} / Jahr."
+      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr."
     },
     "checkout": {
       "title": "Bezahlen",

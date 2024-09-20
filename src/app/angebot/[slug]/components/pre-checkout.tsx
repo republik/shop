@@ -157,7 +157,7 @@ export function PreCheckout(props: PreCheckoutProps) {
           })}
         >
           <label htmlFor={priceId} className="sr-only">
-            {t("checkout.preCheckout.cutomPrice", {
+            {t("checkout.preCheckout.customPrice", {
               price: userPrice,
             })}
           </label>

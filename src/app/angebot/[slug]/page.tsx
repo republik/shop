@@ -57,7 +57,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   ]);
 
   const loginStep: Step = {
-    name: t("checkout:loginStep.title"),
+    name: t("checkout.loginStep.title"),
     detail: me ? (
       <>
         <span>{me.email}</span>
@@ -81,7 +81,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     );
 
   const productDetails: Step = {
-    name: t("checkout:preCheckout.title"),
+    name: t("checkout.preCheckout.title"),
     detail: checkoutSession ? (
       <>
         <span>
@@ -113,14 +113,14 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     ) : (
       <Alert variant="info">
         <AlertCircleIcon />
-        <AlertTitle>{t("checkout:preCheckout.unavailable.title")}</AlertTitle>
+        <AlertTitle>{t("checkout.preCheckout.unavailable.title")}</AlertTitle>
         <AlertDescription>{canUserBuy?.reason}</AlertDescription>
         <AlertDescription>
           <Link
             href={process.env.NEXT_PUBLIC_MAGAZIN_URL}
             className={css({ textDecoration: "underline", marginTop: "2" })}
           >
-            {t("checkout:preCheckout.unavailable.action")}
+            {t("checkout.preCheckout.unavailable.action")}
           </Link>
         </AlertDescription>
       </Alert>
@@ -129,7 +129,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   };
 
   const checkoutStep: Step = {
-    name: t("checkout:checkout.title"),
+    name: t("checkout.checkout.title"),
     content: checkoutSession ? (
       <Checkout
         stripeAccount={subscriptionConfig.stripeAccount}
@@ -138,7 +138,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
       />
     ) : (
       // TODO: log to sentry and render alert
-      <p>{t("error:generic")}</p>
+      <p>{t("error.generic")}</p>
     ),
     disabled: !checkoutSession || checkoutSession.status === "expired",
   };
@@ -164,7 +164,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
           marginBottom: "4",
         })}
       >
-        {t("checkout:preCheckout.summary.title", {
+        {t("checkout.preCheckout.summary.title", {
           product: subscriptionMeta.title,
         })}
       </h1>
