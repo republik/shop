@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     title: t("common:meta.title"),
-    description: t("common:meta.descrpition"),
+    description: t("common:meta.description"),
   };
 }
 
