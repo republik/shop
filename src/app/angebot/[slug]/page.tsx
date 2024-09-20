@@ -4,7 +4,8 @@ import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -16,7 +17,6 @@ import { SUBSCRIPTION_META } from "./lib/config";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
-import type { Metadata, MetadataRoute } from "next";
 
 type PageProps = {
   params: { slug: string };
@@ -44,7 +44,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     notFound();
   }
 
-  const t = useTranslations();
+  const t = await getTranslations();
   const subscriptionMeta = SUBSCRIPTION_META[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;

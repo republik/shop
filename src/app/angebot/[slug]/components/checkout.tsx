@@ -1,9 +1,8 @@
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import Stripe from "stripe";
 import { SubscriptionConfiguration } from "../lib/stripe/types";
 import { CheckoutView } from "./checkout-view";
 import { SuccessView } from "./success-view";
-import { getTranslations } from "next-intl/server";
 
 export const CHECKOUT_SESSION_ID_COOKIE = "checkoutSessionId";
 
