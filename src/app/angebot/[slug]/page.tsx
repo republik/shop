@@ -114,7 +114,12 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
       <Alert variant="info">
         <AlertCircleIcon />
         <AlertTitle>{t("checkout.preCheckout.unavailable.title")}</AlertTitle>
-        <AlertDescription>{canUserBuy?.reason}</AlertDescription>
+
+        <AlertDescription>
+          {t(
+            `checkout.preCheckout.unavailable.reasons.${canUserBuy?.reason === "hasSubscription" ? "hasSubscription" : "generic"}`
+          )}
+        </AlertDescription>
         <AlertDescription>
           <Link
             href={process.env.NEXT_PUBLIC_MAGAZIN_URL}

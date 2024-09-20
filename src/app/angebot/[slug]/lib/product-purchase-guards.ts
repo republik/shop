@@ -14,7 +14,7 @@ const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
   if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
-      // reason: t("checkout.preCheckout.unavailable.reasons.hasSubscription"),
+      reason: "hasSubscription",
     };
   }
 
@@ -31,7 +31,7 @@ const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
   if (me.activeMagazineSubscription || me.activeMembership) {
     return {
       available: false,
-      // reason: t("checkout.preCheckout.unavailable.reasons.hasSubscription"),
+      reason: "hasSubscription",
     };
   }
   return { available: true };
@@ -55,5 +55,5 @@ export function checkIfUserCanPurchase(
     return canUserBuyYearlyAbo(me);
   }
 
-  return { available: false, reason: "Unknown subscription type" };
+  return { available: false };
 }
