@@ -39,9 +39,7 @@
       "title": "Das gewählte Produkt ist nicht verfügbar.",
       "action": "Zurück zum Magazin",
       "reasons": {
-        "hasSubscription": "Sie haben schon ein aktives Abonnement.",
-        "hasMonthly": "Sie haben schon ein aktives Monatsabo.",
-        "hasYearly": "Sie haben schon ein aktives Jahresabo."
+        "hasSubscription": "Sie haben schon ein aktives Abonnement."
       }
     },
     "intervals": {

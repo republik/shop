@@ -16,14 +16,24 @@ import { SUBSCRIPTION_META } from "./lib/config";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
+import type { Metadata, MetadataRoute } from "next";
 
-export default async function ProductPage({
-  params,
-  searchParams,
-}: {
+type PageProps = {
   params: { slug: string };
   searchParams: { price: string; session_id?: string };
-}) {
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const subscriptionMeta = SUBSCRIPTION_META[params.slug];
+
+  return {
+    title: subscriptionMeta?.title,
+  };
+}
+
+export default async function ProductPage({ params, searchParams }: PageProps) {
   let subscriptionConfig;
 
   try {
