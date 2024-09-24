@@ -81,7 +81,7 @@ async function initializeCheckout(
   }
 
   if (!(me && stripeCustomer)) {
-    throw new Error(`Couldn't retrieve Stripe Customer`);
+    throw new Error(`Couldn't retrieve Stripe Customer for user '${me?.id}'`);
   }
 
   const session = await stripe.checkout.sessions.create({
