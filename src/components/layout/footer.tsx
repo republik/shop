@@ -18,7 +18,7 @@ const footerLinks: Link[] = [
   },
   {
     text: "Kontakt",
-    href: `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/kontakt`,
+    href: `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/impressum`,
   },
   {
     text: "Hilfe",
