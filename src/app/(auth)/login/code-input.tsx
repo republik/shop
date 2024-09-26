@@ -26,7 +26,15 @@ export function CodeInput({
           props.onChange?.(trimmedText);
         }
       }}
-      onComplete={() => formRef.current?.requestSubmit()}
+      onComplete={() => {
+        const form = formRef.current;
+        // Safari < 16 doesn't support requestSubmit()
+        if (form?.requestSubmit) {
+          form.requestSubmit();
+        } else {
+          form?.submit();
+        }
+      }}
       render={({ slots }) => (
         <>
           {slots.map((slot, idx) => (
