@@ -20,7 +20,7 @@ function readAnalyticsParamsFromCookie(): AnalyticsObject {
   return fromAnalyticsCookie(cookie.value);
 }
 
-export async function createCheckout(formData: FormData): Promise<{}> {
+export async function createCheckout(formData: FormData): Promise<void> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
