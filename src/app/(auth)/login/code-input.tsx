@@ -27,13 +27,8 @@ export function CodeInput({
         }
       }}
       onComplete={() => {
-        const form = formRef.current;
-        // Safari < 16 doesn't support requestSubmit()
-        if (form?.requestSubmit) {
-          form.requestSubmit();
-        } else {
-          form?.submit();
-        }
+        // Safari < 16 doesn't support requestSubmit(), user needs to press submit button manually
+        formRef.current?.requestSubmit?.();
       }}
       render={({ slots }) => (
         <>
