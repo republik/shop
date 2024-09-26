@@ -1,4 +1,4 @@
-import de from "./locales/de/common.json";
+import de from "./locales/de.json";
 
 type Messages = typeof de;
 
