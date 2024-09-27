@@ -9,6 +9,7 @@ env:
   NEXT_PUBLIC_URL: "http://localhost:3000"
   NEXT_PUBLIC_API_URL: "http://localhost:5010"
   NEXT_PUBLIC_SENTRY_DISABLED: "true"
+  NEXT_PUBLIC_MAGAZIN_URL: "https://staging.republik.love"
 
 jobs:
   test:
