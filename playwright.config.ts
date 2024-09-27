@@ -32,7 +32,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.NEXT_PUBLIC_URL,
+    baseURL: "http://localhost:3000",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
@@ -72,10 +72,20 @@ export default defineConfig({
     // },
   ],
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: "pnpm next start",
-  //   url: "http://127.0.0.1:3000",
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 10 * 1000,
-  // },
+  webServer: [
+    {
+      command: "pnpm yaproxy:staging",
+      url: "http://localhost:5010/graphiql/",
+      reuseExistingServer: !process.env.CI,
+      timeout: 10_000,
+      stdout: "pipe",
+    },
+    {
+      command: "pnpm next dev",
+      url: "http://localhost:3000/robots.txt",
+      reuseExistingServer: !process.env.CI,
+      timeout: 10_000,
+      stdout: "pipe",
+    },
+  ],
 });

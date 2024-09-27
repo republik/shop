@@ -12,9 +12,9 @@
     "lint": "next lint",
     "gql:types": "graphql-codegen --config graphql/configs/codegen-dev.ts",
     "gql:schema": "graphql-codegen --config graphql/configs/codegen-schema.ts",
-    "test": "NODE_ENV=test npx playwright test",
-    "test:generate": "npx playwright codegen ",
-    "validate-config": "npx tsx ./scripts/validate-config.ts",
+    "test": "pnpm exec playwright test --project 'Mobile Chrome'",
+    "test:generate": "pnpm exec playwright codegen ",
+    "validate-config": "pnpm exec tsx ./scripts/validate-config.ts",
     "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
