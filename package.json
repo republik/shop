@@ -52,6 +52,7 @@
     "@pandacss/dev": "^0.46.1",
     "@parcel/watcher": "^2.4.1",
     "@playwright/test": "^1.47.2",
+    "@types/imapflow": "^1.0.19",
     "@types/node": "^20.16.9",
     "@types/react": "^18.3.9",
     "@types/react-dom": "^18.3.0",
@@ -60,7 +61,9 @@
     "concurrently": "^9.0.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.13",
+    "imapflow": "^1.0.164",
     "msw": "^2.4.9",
+    "nanoid": "^5.0.7",
     "tsx": "^4.19.1",
     "typescript": "^5.6.2",
     "yaproxy": "^1.0.2"

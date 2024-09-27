@@ -1,10 +1,13 @@
 import test, { expect } from "@playwright/test";
 
-// Test API response
-test("lalala", async ({ page }) => {
+test("yearly page", async ({ page }) => {
   await page.goto("/angebot/YEARLY");
 
   expect(page).toHaveTitle(/Jahresmitgliedschaft/);
+});
 
-  console.log(process.env.TEST_EMAIL);
+test("monthly page", async ({ page }) => {
+  await page.goto("/angebot/MONTHLY");
+
+  expect(page).toHaveTitle(/Monats-Abo/);
 });
