@@ -78,14 +78,14 @@ export default defineConfig({
       url: "http://localhost:5010/graphiql/",
       reuseExistingServer: !process.env.CI,
       timeout: 10_000,
-      stdout: "pipe",
+      // stdout: "pipe",
     },
     {
       command: "pnpm next dev",
       url: "http://localhost:3000/robots.txt",
       reuseExistingServer: !process.env.CI,
-      timeout: 10_000,
-      stdout: "pipe",
+      timeout: 15_000,
+      // stdout: "pipe",
     },
   ],
 });
