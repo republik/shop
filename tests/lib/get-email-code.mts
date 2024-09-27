@@ -13,7 +13,7 @@ export const getEmailCode = async (
       user: process.env.TEST_EMAIL_USERNAME ?? "oops",
       pass: process.env.TEST_EMAIL_PASSWORD,
     },
-    emitLogs: false,
+    logger: false,
   });
   // Wait until client connects and authorizes
   await client.connect();
