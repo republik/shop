@@ -75,14 +75,14 @@ export default defineConfig({
   webServer: [
     {
       command: "pnpm yaproxy:staging",
-      url: "http://localhost:5010/graphiql/",
+      url: "http://localhost:5010/graphiql/", // this url must return an 20x/30x/<404 status code
       reuseExistingServer: !process.env.CI,
       timeout: 10_000,
       // stdout: "pipe",
     },
     {
       command: "pnpm next dev",
-      url: "http://localhost:3000/robots.txt",
+      url: "http://localhost:3000/robots.txt", // this url must return an 20x/30x/<404 status code
       reuseExistingServer: !process.env.CI,
       timeout: 15_000,
       // stdout: "pipe",
