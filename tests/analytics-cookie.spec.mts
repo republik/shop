@@ -13,7 +13,7 @@ test(`UTM and Republik query params are stored in analytics cookie`, async ({
 
   expect(JSON.parse(decodeURIComponent(analyticsCookie?.value ?? ""))).toEqual({
     utm_campaign: "hey",
-    rep_something: "1",
+    rep_1: "1",
   });
 });
 
