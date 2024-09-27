@@ -3,7 +3,9 @@ import { getEmailCode } from "./lib/get-email-code.mts";
 
 import { nanoid } from "nanoid";
 
-test("test", async ({ page }) => {
+test("Log in with a new email and buy a yearly subscription", async ({
+  page,
+}) => {
   await page.goto("/angebot/YEARLY");
 
   const testEmail = process.env.TEST_EMAIL_PATTERN?.replace(
