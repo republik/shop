@@ -12,9 +12,10 @@
     "lint": "next lint",
     "gql:types": "graphql-codegen --config graphql/configs/codegen-dev.ts",
     "gql:schema": "graphql-codegen --config graphql/configs/codegen-schema.ts",
-    "test": "npx playwright test",
+    "test": "NODE_ENV=test npx playwright test",
     "test:generate": "npx playwright codegen ",
-    "validate-config": "npx tsx ./scripts/validate-config.ts"
+    "validate-config": "npx tsx ./scripts/validate-config.ts",
+    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -61,7 +62,8 @@
     "eslint-config-next": "^14.2.13",
     "msw": "^2.4.9",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "yaproxy": "^1.0.2"
   },
   "packageManager": "pnpm@9.10.0"
 }
