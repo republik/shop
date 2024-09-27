@@ -81,7 +81,7 @@ export default defineConfig({
       // stdout: "pipe",
     },
     {
-      command: process.env.CI ? "pnpm start" : "pnpm dev",
+      command: "pnpm dev",
       url: "http://localhost:3000/robots.txt", // this url must return an 20x/30x/<404 status code
       reuseExistingServer: !process.env.CI,
       timeout: 15_000,
