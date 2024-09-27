@@ -4,6 +4,11 @@ on:
     branches: [main, master]
   pull_request:
     branches: [main, master]
+
+env:
+  NEXT_PUBLIC_URL: "http://localhost:3000"
+  NEXT_PUBLIC_API_URL: "http://localhost:5010"
+
 jobs:
   test:
     timeout-minutes: 60
@@ -20,11 +25,24 @@ jobs:
         run: pnpm install
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps chromium
+      - name: Run build
+        env:
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK }}
+        run: pnpm build
       - name: Run Playwright tests
         env:
           TEST_EMAIL_PATTERN: ${{ secrets.TEST_EMAIL_PATTERN }}
           TEST_EMAIL_USERNAME: ${{ secrets.TEST_EMAIL_USERNAME }}
           TEST_EMAIL_PASSWORD: ${{ secrets.TEST_EMAIL_PASSWORD }}
+          STRIPE_ACCOUNT_PROJECT_R: ${{ secrets.STRIPE_ACCOUNT_PROJECT_R }}
+          STRIPE_SECRET_KEY_PROJECT_R: ${{ secrets.STRIPE_SECRET_KEY_PROJECT_R }}
+          STRIPE_PAYMENT_CONFIGURATION_PROJECT_R: ${{ secrets.STRIPE_PAYMENT_CONFIGURATION_PROJECT_R }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R }}
+          STRIPE_ACCOUNT_REPUBLIK: ${{ secrets.STRIPE_ACCOUNT_REPUBLIK }}
+          STRIPE_SECRET_KEY_REPUBLIK: ${{ secrets.STRIPE_SECRET_KEY_REPUBLIK }}
+          STRIPE_PAYMENT_CONFIGURATION_REPUBLIK: ${{ secrets.STRIPE_PAYMENT_CONFIGURATION_REPUBLIK }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK }}
         run: pnpm test
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
