@@ -8,13 +8,15 @@
   "scripts": {
     "dev": "concurrently \"next dev\" \"npm run gql:types --watch\" \"panda --watch\"",
     "build": "pnpm run validate-config production && panda && pnpm run gql:types && next build",
+    "prepare": "panda codegen",
     "start": "next start",
     "lint": "next lint",
     "gql:types": "graphql-codegen --config graphql/configs/codegen-dev.ts",
     "gql:schema": "graphql-codegen --config graphql/configs/codegen-schema.ts",
-    "test": "npx playwright test",
-    "test:generate": "npx playwright codegen ",
-    "validate-config": "npx tsx ./scripts/validate-config.ts"
+    "test": "pnpm exec playwright test --project 'Mobile Chrome'",
+    "test:generate": "pnpm exec playwright codegen ",
+    "validate-config": "pnpm exec tsx ./scripts/validate-config.ts",
+    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -51,6 +53,7 @@
     "@pandacss/dev": "^0.46.1",
     "@parcel/watcher": "^2.4.1",
     "@playwright/test": "^1.47.2",
+    "@types/imapflow": "^1.0.19",
     "@types/node": "^20.16.9",
     "@types/react": "^18.3.9",
     "@types/react-dom": "^18.3.0",
@@ -59,9 +62,12 @@
     "concurrently": "^9.0.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.13",
+    "imapflow": "^1.0.164",
     "msw": "^2.4.9",
+    "nanoid": "^5.0.7",
     "tsx": "^4.19.1",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "yaproxy": "^1.0.2"
   },
   "packageManager": "pnpm@9.10.0"
 }

@@ -1,5 +1,11 @@
 import { devices } from "@playwright/test";
-import { defineConfig } from "next/experimental/testmode/playwright";
+import { defineConfig } from "@playwright/test";
+
+import { loadEnvConfig } from "@next/env";
+
+const { loadedEnvFiles } = loadEnvConfig(process.cwd(), true);
+
+console.log("Loaded env from", loadedEnvFiles.map((f) => f.path).join(", "));
 
 /**
  * Read environment variables from file.
@@ -26,17 +32,17 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: "http://localhost:3000",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-    },
+    // {
+    //   name: "chromium",
+    //   use: { ...devices["Desktop Chrome"] },
+    // },
     // {
     //   name: "firefox",
     //   use: { ...devices["Desktop Firefox"] },
@@ -46,14 +52,14 @@ export default defineConfig({
     //   use: { ...devices["Desktop Safari"] },
     // },
     /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
+    {
+      name: "Mobile Chrome",
+      use: { ...devices["Pixel 5"] },
+    },
+    {
+      name: "Mobile Safari",
+      use: { ...devices["iPhone 12"] },
+    },
 
     /* Test against branded browsers. */
     // {
@@ -66,10 +72,20 @@ export default defineConfig({
     // },
   ],
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: "pnpm next start",
-  //   url: "http://127.0.0.1:3000",
-  //   reuseExistingServer: !process.env.CI,
-  //   timeout: 10 * 1000,
-  // },
+  webServer: [
+    {
+      command: "pnpm yaproxy:staging",
+      url: "http://localhost:5010/graphiql/", // this url must return an 20x/30x/<404 status code
+      reuseExistingServer: !process.env.CI,
+      timeout: 10_000,
+      // stdout: "pipe",
+    },
+    {
+      command: "pnpm dev",
+      url: "http://localhost:3000/robots.txt", // this url must return an 20x/30x/<404 status code
+      reuseExistingServer: !process.env.CI,
+      timeout: 15_000,
+      // stdout: "pipe",
+    },
+  ],
 });
