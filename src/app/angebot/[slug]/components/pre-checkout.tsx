@@ -50,7 +50,6 @@ export function PreCheckout(props: PreCheckoutProps) {
 
   // TODO: remove as coupon is not forwarded if not eligible as checked in [slug].tsx
   const hasCoupon = useMemo(() => isEligibleForEntryCoupon(me), [me]);
-
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
     if (subscriptionConfig.customPrice) {
@@ -73,7 +72,13 @@ export function PreCheckout(props: PreCheckoutProps) {
     ) {
       items.push({
         label: stripeSubscriptionItems.coupon.name || "Rabatt",
-        amount: (-1 * (stripeSubscriptionItems.coupon.amount_off ?? 0)) / 100,
+        amount:
+          -1 *
+          (stripeSubscriptionItems.coupon.amount_off
+            ? (stripeSubscriptionItems.coupon.amount_off ?? 0) / 100
+            : (((stripeSubscriptionItems.coupon.percent_off ?? 0) / 100) *
+                (stripeSubscriptionItems.price.unit_amount ?? 0)) /
+              100),
       });
     }
     return items;
