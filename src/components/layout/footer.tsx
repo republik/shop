@@ -13,7 +13,7 @@ const footerLinks: Link[] = [
     href: `${process.env.NEXT_PUBLIC_MAGAZIN_URL}`,
   },
   {
-    text: "Datenschutzbestimmung",
+    text: "Datenschutz",
     href: `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`,
   },
   {

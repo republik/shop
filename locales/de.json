@@ -31,7 +31,7 @@
     },
     "loginStep": {
       "title": "Konto",
-      "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmung</privacyLink>.",
+      "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmungen</privacyLink>.",
       "email": {
         "title": "Login oder Konto eröffnen",
         "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik-Konto, um den Kauf abzuschliessen."
