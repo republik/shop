@@ -86,9 +86,9 @@ async function initializeCheckout(
 
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
-    ui_mode: "embedded",
+    ui_mode: "custom",
     customer: stripeCustomer,
-    custom_fields: requiredCustomFields(me),
+    // custom_fields: requiredCustomFields(me),
     line_items: [
       {
         price:
@@ -122,8 +122,8 @@ async function initializeCheckout(
     // '{CHECKOUT_SESSION_ID}' is prefilled by stripe
     return_url: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?session_id={CHECKOUT_SESSION_ID}`,
     locale: "de",
-    redirect_on_completion: "if_required",
-    billing_address_collection: "required",
+    // redirect_on_completion: "if_required",
+    // billing_address_collection: "required",
     subscription_data: {
       metadata: {
         ...options.analytics,
@@ -131,7 +131,7 @@ async function initializeCheckout(
       },
     },
     consent_collection: {
-      terms_of_service: "required",
+      // terms_of_service: "required",
     },
     payment_method_configuration: getAccountPaymentsConfiguration(
       subscriptionConfig.stripeAccount

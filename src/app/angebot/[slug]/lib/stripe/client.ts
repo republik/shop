@@ -14,11 +14,11 @@ export function getStripePublishablekey(account: StripeAccount): string {
 }
 
 export async function initStripe(
-  account: StripeAccount,
+  account: StripeAccount
 ): Promise<Stripe | null> {
   const stripePublishableKey = getStripePublishablekey(account);
 
   return await loadStripe(stripePublishableKey, {
-    betas: ["custom_checkout_beta_2"],
+    betas: ["custom_checkout_beta_3"],
   });
 }

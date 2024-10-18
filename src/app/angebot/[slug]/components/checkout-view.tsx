@@ -5,15 +5,41 @@ import { SubscriptionConfiguration } from "../lib/stripe/types";
 import { initStripe } from "../lib/stripe/client";
 import {
   EmbeddedCheckoutProvider,
-  EmbeddedCheckout,
+  // EmbeddedCheckout,
+  CustomCheckoutProvider,
+  PaymentElement,
+  useCustomCheckout,
 } from "@stripe/react-stripe-js";
 import { SuccessView } from "./success-view";
 import { ErrorMessage } from "./error-message";
+import { Button } from "@/components/ui/button";
 
 interface CheckoutViewProps {
   clientSecret: string;
   stripeAccount: SubscriptionConfiguration["stripeAccount"];
   errors: { title: string; description: string }[];
+}
+
+function CheckoutSubmit({}) {
+  const { canConfirm, confirmationRequirements, confirm } = useCustomCheckout();
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setLoading(true);
+    confirm().then((result) => {
+      if (result.error) {
+        // Confirmation failed. Display the error message.
+        console.error(result.error);
+      }
+      setLoading(false);
+    });
+  };
+  console.log(confirmationRequirements);
+  return (
+    <Button disabled={!canConfirm || loading} onClick={handleClick}>
+      KAUFEN
+    </Button>
+  );
 }
 
 export function CheckoutView({
@@ -36,17 +62,26 @@ export function CheckoutView({
           description={e.description}
         />
       ))}
-      <EmbeddedCheckoutProvider
+      <CustomCheckoutProvider
         stripe={initStripe(stripeAccount)}
         options={{
           clientSecret,
-          onComplete: () => {
-            setSuccess(true);
-          },
+          // onComplete: () => {
+          //   setSuccess(true);
+          // },
+
+          elementsOptions: { appearance: { theme: "flat" } },
         }}
       >
-        <EmbeddedCheckout />
-      </EmbeddedCheckoutProvider>
+        <form>
+          Hello custom checkout!
+          <PaymentElement
+            options={{ terms: { card: "never", paypal: "never" } }}
+          />
+          <CheckoutSubmit />
+        </form>
+        {/* <EmbeddedCheckout /> */}
+      </CustomCheckoutProvider>
     </div>
   );
 }
