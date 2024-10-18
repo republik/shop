@@ -84,6 +84,7 @@ async function initializeCheckout(
     throw new Error(`Couldn't retrieve Stripe Customer for user '${me?.id}'`);
   }
 
+  // @ts-expect-error ui_mode: "custom" not in types yet
   const session = await stripe.checkout.sessions.create({
     mode: "subscription",
     ui_mode: "custom",
