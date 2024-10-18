@@ -136,9 +136,6 @@ async function initializeCheckout(
     payment_method_configuration: getAccountPaymentsConfiguration(
       subscriptionConfig.stripeAccount
     ),
-    saved_payment_method_options: {
-      payment_method_save: "enabled",
-    },
   });
 
   return session;
