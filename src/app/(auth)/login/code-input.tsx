@@ -3,12 +3,11 @@ import { OTPInput } from "input-otp";
 import { ComponentPropsWithoutRef, RefObject } from "react";
 
 export function CodeInput({
-  formRef,
   ...props
 }: Omit<
   ComponentPropsWithoutRef<typeof OTPInput>,
   "children" | "containerClassName" | "maxLength" | "render"
-> & { formRef: RefObject<HTMLFormElement> }) {
+>) {
   return (
     <OTPInput
       {...props}
@@ -19,17 +18,7 @@ export function CodeInput({
         gap: "2",
       })}
       maxLength={6}
-      onPaste={(e) => {
-        const pastedText = e.clipboardData.getData("text/plain");
-        const trimmedText = pastedText.trim().replace(/[-.,_ ]/g, "");
-        if (trimmedText.length === 6) {
-          props.onChange?.(trimmedText);
-        }
-      }}
-      onComplete={() => {
-        // Safari < 16 doesn't support requestSubmit(), user needs to press submit button manually
-        formRef.current?.requestSubmit?.();
-      }}
+      // pushPasswordManagerStrategy="none"
       render={({ slots }) => (
         <>
           {slots.map((slot, idx) => (

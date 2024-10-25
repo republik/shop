@@ -37,9 +37,10 @@
         "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik-Konto, um den Kauf abzuschliessen."
       },
       "code": {
-        "changeEmailAction": "E-Mail-Adresse ändern",
+        "checkingCode": "Überprüfen …",
+        "noCodeReceived": "Keinen Code erhalten? Überprüfen Sie Ihren Spam-Ordner oder <changeEmailButton>ändern Sie die E-Mail-Adresse.</changeEmailButton>",
         "title": "Code",
-        "description": "Wir haben Ihnen einen Code an {email} geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
+        "description": "Wir haben Ihnen einen Code an <email></email> geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
       }
     },
     "preCheckout": {
