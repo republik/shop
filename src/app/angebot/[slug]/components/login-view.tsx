@@ -68,20 +68,10 @@ export function LoginView(_: LoginViewProps) {
       renderCodeFormHint={(email) => (
         <>
           <p>
-            {t("loginStep.code.description", {
-              email,
+            {t.rich("loginStep.code.description", {
+              email: () => <strong>{email}</strong>,
             })}
           </p>
-          <button
-            type="button" // Important, so this button isn't used to submit the form
-            onClick={() => window.location.reload()}
-            className={css({
-              textDecoration: "underline",
-              alignSelf: "flex-start",
-            })}
-          >
-            {t("loginStep.code.changeEmailAction")}
-          </button>
         </>
       )}
     />
