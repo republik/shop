@@ -140,12 +140,13 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
         stripeAccount={subscriptionConfig.stripeAccount}
         session={checkoutSession}
         afterRedirect={afterCheckoutRedirect}
+        me={me!}
       />
     ) : (
       // TODO: log to sentry and render alert
       <p>{t("error.generic")}</p>
     ),
-    disabled: !checkoutSession || checkoutSession.status === "expired",
+    disabled: !me || !checkoutSession || checkoutSession.status === "expired",
   };
 
   const steps: Step[] = [loginStep, productDetails, checkoutStep];

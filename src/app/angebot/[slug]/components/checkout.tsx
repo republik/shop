@@ -10,6 +10,7 @@ interface CheckoutProps {
   session: Stripe.Checkout.Session;
   stripeAccount: SubscriptionConfiguration["stripeAccount"];
   afterRedirect?: boolean;
+  me: { firstName?: string | null; lastName?: string | null };
 }
 
 export default async function Checkout(props: CheckoutProps) {
@@ -18,6 +19,8 @@ export default async function Checkout(props: CheckoutProps) {
   if (props.session.status === "complete") {
     return <SuccessView />;
   }
+
+  console.log(props.me);
 
   if (props.session.status === "open") {
     if (!props.session.client_secret) {
@@ -34,6 +37,7 @@ export default async function Checkout(props: CheckoutProps) {
       : [];
     return (
       <CheckoutView
+        me={props.me}
         clientSecret={props.session.client_secret}
         stripeAccount={props.stripeAccount}
         errors={errors}
