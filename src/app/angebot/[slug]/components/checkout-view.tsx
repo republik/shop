@@ -190,7 +190,49 @@ export function CheckoutView({
           //   setSuccess(true);
           // },
 
-          elementsOptions: { appearance: { theme: "flat" } },
+          elementsOptions: {
+            appearance: {
+              theme: "stripe",
+              variables: {
+                fontFamily: "GT-America-Standard",
+                fontWeightMedium: "500",
+                fontSizeSm: "14px",
+                borderRadius: "4px",
+                spacingUnit: "0.25rem",
+                focusBoxShadow: "none",
+              },
+
+              rules: {
+                ".AccordionItem": {
+                  borderColor: "transparent",
+                  boxShadow: "none",
+                  paddingLeft: "0",
+                  paddingRight: "0",
+                },
+                ".Input": {
+                  boxShadow: "none",
+                },
+              },
+            },
+            fonts: [
+              {
+                family: "GT-America-Standard",
+                src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.woff)
+      format('woff'),
+    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.ttf)
+      format('truetype')`,
+                weight: "400",
+              },
+              {
+                family: "GT-America-Standard",
+                src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.woff)
+      format('woff'),
+    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.ttf)
+      format('truetype')`,
+                weight: "500",
+              },
+            ],
+          },
         }}
       >
         <CheckoutForm me={me} />
