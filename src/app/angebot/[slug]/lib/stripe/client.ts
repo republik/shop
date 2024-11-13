@@ -19,6 +19,6 @@ export async function initStripe(
   const stripePublishableKey = getStripePublishablekey(account);
 
   return await loadStripe(stripePublishableKey, {
-    betas: ["custom_checkout_beta_3"],
+    betas: ["custom_checkout_beta_4"],
   });
 }
