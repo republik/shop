@@ -32,14 +32,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params, searchParams }: PageProps) {
+export default async function OfferPage({ params, searchParams }: PageProps) {
   const offer = await fetchOffer(params.slug);
 
   if (!offer) {
     notFound();
   }
-
-  const stripeAccount = offer.company;
 
   const t = await getTranslations();
   const sessionId =
@@ -48,7 +46,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
   const me = await fetchMe();
 
   const checkoutSession = sessionId
-    ? await getCheckoutSession(stripeAccount, sessionId)
+    ? await getCheckoutSession(offer.company, sessionId)
     : undefined;
 
   const loginStep: Step = {
@@ -118,7 +116,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     content:
       checkoutSession?.status === "open" && checkoutSession.clientSecret ? (
         <CheckoutView
-          stripeAccount={stripeAccount}
+          company={offer.company}
           clientSecret={checkoutSession.clientSecret}
           errors={[]}
         />

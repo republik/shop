@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { SubscriptionConfiguration } from "../lib/stripe/types";
-import { initStripe } from "../lib/stripe/client";
+import { loadStripe } from "../lib/stripe/client";
 import {
   EmbeddedCheckoutProvider,
   EmbeddedCheckout,
@@ -12,13 +11,13 @@ import { ErrorMessage } from "./error-message";
 
 interface CheckoutViewProps {
   clientSecret: string;
-  stripeAccount: SubscriptionConfiguration["stripeAccount"];
+  company: string;
   errors: { title: string; description: string }[];
 }
 
 export function CheckoutView({
   clientSecret,
-  stripeAccount,
+  company,
   errors,
 }: CheckoutViewProps) {
   const [success, setSuccess] = useState(false);
@@ -37,7 +36,7 @@ export function CheckoutView({
         />
       ))}
       <EmbeddedCheckoutProvider
-        stripe={initStripe(stripeAccount)}
+        stripe={loadStripe(company)}
         options={{
           clientSecret,
           onComplete: () => {
