@@ -7,7 +7,7 @@ import {
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
-import { vstack } from "@/theme/patterns";
+import { visuallyHidden, vstack } from "@/theme/patterns";
 import { useTranslations } from "next-intl";
 import { ReactNode, useEffect, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -218,15 +218,15 @@ function CodeForm({
             mt: "4",
           })}
         >
-          {/* <label
+          <label
             htmlFor={codeId}
-            className={css({
+            className={visuallyHidden({
               fontWeight: "medium",
               fontSize: "sm",
             })}
           >
             Code
-          </label> */}
+          </label>
           <CodeInput
             id={codeId}
             name="code"
