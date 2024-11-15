@@ -3,7 +3,6 @@
 import { GetOfferQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
@@ -18,8 +17,6 @@ interface PreCheckoutProps {
 export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
   const t = useTranslations();
 
-  // @ts-expect-error FIXME offer id should be known
-  const tProduct = useTranslations(`checkout.products.${offer.id}`);
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
@@ -44,8 +41,8 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
       });
     } else {
       items.push({
-        label: tProduct("title"),
-        amount: offer.price!.amount / 100,
+        label: offer.name,
+        amount: offer.price.amount / 100,
         hidden: true,
       });
     }
@@ -60,7 +57,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
       });
     }
     return items;
-  }, [offer.price, offer.customPrice, offer.discount, userPrice, tProduct]);
+  }, [offer.name, offer.price, offer.customPrice, offer.discount, userPrice]);
 
   return (
     <form
@@ -92,7 +89,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
             fontWeight: "medium",
           })}
         >
-          {tProduct("title")}
+          {offer.name}
         </h3>
         <p
           className={css({
@@ -103,11 +100,11 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
             price: renderPrice(
               offer.customPrice
                 ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                : offer.price!.amount
+                : offer.price.amount
             ),
             interval: t(
               // @ts-expect-error FIXME possibly unknown interval
-              `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price!.recurring?.interval}`
+              `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
             ),
           })}
         </p>
@@ -151,7 +148,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         </fieldset>
       )}
       <CheckoutPricingTable
-        currency={offer.price!.currency}
+        currency={offer.price.currency}
         items={checkoutItems}
       />
 

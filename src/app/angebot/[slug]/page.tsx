@@ -25,11 +25,10 @@ type PageProps = {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  // @ts-expect-error untyped slug
-  const t = await getTranslations(`checkout.products.${params.slug}`);
+  const offer = await fetchOffer(params.slug);
 
   return {
-    title: t.has("title") ? t("title") : undefined,
+    title: offer?.name,
   };
 }
 
@@ -40,11 +39,9 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     notFound();
   }
 
-  const stripeAccount = params.slug === "MONTHLY" ? "REPUBLIK" : "PROJECT_R";
+  const stripeAccount = offer.company;
 
   const t = await getTranslations();
-  // @ts-expect-error untyped slug
-  const tProduct = await getTranslations(`checkout.products.${params.slug}`);
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = typeof searchParams.session_id === "string";
@@ -75,12 +72,11 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   const productDetails: Step = {
     name: t("checkout.preCheckout.title"),
-    // FIXME: figure out a better check
-    detail: sessionId ? (
+    detail: checkoutSession ? (
       <>
         <span>
-          {offer?.price?.currency?.toUpperCase()}{" "}
-          {((offer?.price?.amount || 0) / 100).toFixed(2)}
+          {offer.price.currency.toUpperCase()}{" "}
+          {(offer.price.amount / 100).toFixed(2)}
         </span>
         <StepperChangeStepButton onChange={resetCheckoutSession} />
       </>
@@ -157,7 +153,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
         })}
       >
         {t("checkout.preCheckout.summary.title", {
-          product: tProduct("title"),
+          product: offer.name,
         })}
       </h1>
       <Stepper

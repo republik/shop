@@ -1625,11 +1625,12 @@ enum OSType {
 }
 
 type Offer {
+  company: CompanyName!
   customPrice: CustomPrice
   discount: Discount
   id: ID!
-  price: Price
-  product: Product
+  name: String!
+  price: Price!
 }
 
 input OrderBy {
