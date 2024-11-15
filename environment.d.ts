@@ -9,10 +9,10 @@ declare global {
       NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION?: string;
       NEXT_PUBLIC_PLAUSIBLE_DOMAIN: string;
 
-      // DATOCMS
-      DATO_CMS_API_URL: string;
-      DATO_CMS_API_TOKEN: string;
-      DATO_CMS_ENVIRONMENT: string | undefined;
+      // DATOCMS (currently unused)
+      // DATO_CMS_API_URL: string;
+      // DATO_CMS_API_TOKEN: string;
+      // DATO_CMS_ENVIRONMENT: string | undefined;
       // STRIPE
       STRIPE_SECRET_KEY_PROJECT_R: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;
