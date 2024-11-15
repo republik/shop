@@ -24,6 +24,10 @@
   "login": { "action": "Anmelden" },
 
   "checkout": {
+    "products": {
+      "YEARLY": { "title": "Jahresmitgliedschaft" },
+      "MONTHLY": { "title": "Monats-Abo" }
+    },
     "actions": {
       "change": "Ändern",
       "buy": "Kaufen",

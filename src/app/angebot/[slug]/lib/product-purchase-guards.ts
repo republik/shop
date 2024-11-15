@@ -46,7 +46,7 @@ const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
  */
 export function checkIfUserCanPurchase(
   me: Me,
-  subscriptionType: SubscriptionType
+  subscriptionType: string
 ): ReturnType<IsProductAvailableForUserPredicate> {
   if (subscriptionType === "MONTHLY") {
     return canUserBuyMonthlyAbo(me);

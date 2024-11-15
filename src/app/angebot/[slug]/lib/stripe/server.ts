@@ -24,3 +24,13 @@ export function initStripe(account: StripeAccount): Stripe {
     apiVersion: API_VERSION,
   });
 }
+
+export async function getCheckoutSession(
+  company: StripeAccount,
+  sessionId: string
+) {
+  const stripe = initStripe(company);
+  const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+  return { status: session.status, clientSecret: session.client_secret };
+}

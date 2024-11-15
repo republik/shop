@@ -28,8 +28,3 @@ The following environment variables are required to connect to the Stripe API fo
 - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R
 - STRIPE_SECRET_KEY_REPUBLIK
 - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK
-
-## Shop configuration
-
-The shop configuration is located in the [config.ts](./src/app/angebot/[slug]/lib/config.ts) file.
-More documentation on the configuration options can be found directly in the code.

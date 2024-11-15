@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "concurrently \"next dev\" \"npm run gql:types --watch\" \"panda --watch\"",
-    "build": "pnpm run validate-config production && panda && pnpm run gql:types && next build",
+    "build": "panda && pnpm run gql:types && next build",
     "prepare": "panda codegen",
     "start": "next start",
     "lint": "next lint",
@@ -15,7 +15,6 @@
     "gql:schema": "graphql-codegen --config graphql/configs/codegen-schema.ts",
     "test": "pnpm exec playwright test --project 'Mobile Chrome'",
     "test:generate": "pnpm exec playwright codegen ",
-    "validate-config": "pnpm exec tsx ./scripts/validate-config.ts",
     "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
