@@ -1,8 +1,13 @@
 import { Me } from "@/lib/auth/types";
-import { getTranslations } from "next-intl/server";
-import { IsProductAvailableForUserPredicate } from "./stripe/types";
 
-type SubscriptionType = "MONTHLY" | "YEARLY";
+type ProductAvailabilityResult = {
+  available: boolean;
+  reason?: string;
+};
+
+export type IsProductAvailableForUserPredicate = (
+  me: Me
+) => ProductAvailabilityResult;
 
 /**
  * Checks if the user can buy a monthly subscription based on their current
