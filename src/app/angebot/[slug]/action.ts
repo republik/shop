@@ -45,7 +45,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
     CHECKOUT_SESSION_ID_COOKIE,
     data.createCheckoutSession.sessionId,
     {
-      expires: 1000 * 60 * 30, // expire after30min
+      maxAge: 1000 * 60 * 30, // expire after30min
     }
   );
 

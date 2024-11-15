@@ -12,8 +12,13 @@ function initStripe(company: string): Stripe {
 }
 
 export async function getCheckoutSession(company: string, sessionId: string) {
-  const stripe = initStripe(company);
-  const session = await stripe.checkout.sessions.retrieve(sessionId);
+  try {
+    const stripe = initStripe(company);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-  return { status: session.status, clientSecret: session.client_secret };
+    return { status: session.status, clientSecret: session.client_secret };
+  } catch (e) {
+    // No need to log the error?
+  }
+  return undefined;
 }
