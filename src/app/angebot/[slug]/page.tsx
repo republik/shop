@@ -9,7 +9,6 @@ import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import Checkout, { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
@@ -17,6 +16,9 @@ import { SUBSCRIPTION_META } from "./lib/config";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { initStripe } from "./lib/stripe/server";
 import { StripeService } from "./lib/stripe/service";
+import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
+import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
+import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 
 type PageProps = {
   params: { slug: string };
@@ -135,16 +137,19 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   const checkoutStep: Step = {
     name: t("checkout.checkout.title"),
-    content: checkoutSession ? (
-      <Checkout
-        stripeAccount={subscriptionConfig.stripeAccount}
-        session={checkoutSession}
-        afterRedirect={afterCheckoutRedirect}
-      />
-    ) : (
-      // TODO: log to sentry and render alert
-      <p>{t("error.generic")}</p>
-    ),
+    content:
+      checkoutSession?.status === "open" && checkoutSession.client_secret ? (
+        <CheckoutView
+          stripeAccount={subscriptionConfig.stripeAccount}
+          clientSecret={checkoutSession.client_secret}
+          errors={[]}
+        />
+      ) : checkoutSession?.status === "complete" ? (
+        <SuccessView />
+      ) : (
+        // TODO: log to sentry and render alert
+        <p>{t("error.generic")}</p>
+      ),
     disabled: !checkoutSession || checkoutSession.status === "expired",
   };
 

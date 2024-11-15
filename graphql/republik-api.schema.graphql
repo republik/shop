@@ -373,6 +373,7 @@ type CheckoutSession {
 
 input CheckoutSessionOptions {
   customPrice: Int
+  metadata: JSON
   uiMode: CheckoutUIMode
 }
 

@@ -12,20 +12,14 @@ function getEnvVar(name: string): string {
   return value;
 }
 
-export function getAccountPaymentsConfiguration(
-  account: StripeAccount
-): string {
-  return getEnvVar(`STRIPE_PAYMENT_CONFIGURATION_${account}`);
-}
-
 function getStripeSecretKey(account: StripeAccount): string {
   return getEnvVar(`STRIPE_SECRET_KEY_${account}`);
 }
 
 export function initStripe(account: StripeAccount): Stripe {
-  const stripePublishableKey = getStripeSecretKey(account);
+  const stripeSecretKey = getStripeSecretKey(account);
 
-  return new Stripe(stripePublishableKey, {
+  return new Stripe(stripeSecretKey, {
     // @ts-expect-error - custom_checkout_beta is not a valid API version
     apiVersion: API_VERSION,
   });

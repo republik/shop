@@ -1,6 +1,7 @@
 "use server";
 
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import {
   ANALYTICS_COOKIE_NAME,
   AnalyticsObject,
@@ -9,7 +10,6 @@ import {
 import { getClient } from "@/lib/graphql/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 
 function readAnalyticsParamsFromCookie(): AnalyticsObject {
   const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
@@ -25,14 +25,14 @@ export async function createCheckout(formData: FormData): Promise<void> {
 
   const gqlClient = getClient();
 
-  // TODO Add back analytics params
-  // const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsParams = readAnalyticsParamsFromCookie();
 
   const { data, error } = await gqlClient.mutation(
     CreateCheckoutSessionDocument,
     {
       offerId: subscriptionType,
       customPrice: price ? Number(price) * 100 : undefined,
+      metadata: analyticsParams,
     }
   );
 
