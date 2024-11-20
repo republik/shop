@@ -9,17 +9,13 @@ declare global {
       NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION?: string;
       NEXT_PUBLIC_PLAUSIBLE_DOMAIN: string;
 
-      // DATOCMS
-      DATO_CMS_API_URL: string;
-      DATO_CMS_API_TOKEN: string;
-      DATO_CMS_ENVIRONMENT: string | undefined;
+      // DATOCMS (currently unused)
+      // DATO_CMS_API_URL: string;
+      // DATO_CMS_API_TOKEN: string;
+      // DATO_CMS_ENVIRONMENT: string | undefined;
       // STRIPE
-      STRIPE_ACCOUNT_PROJECT_R: string;
-      STRIPE_PAYMENT_CONFIGURATION_PROJECT_R: string;
       STRIPE_SECRET_KEY_PROJECT_R: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;
-      STRIPE_ACCOUNT_REPUBLIK: string;
-      STRIPE_PAYMENT_CONFIGURATION_REPUBLIK: string;
       STRIPE_SECRET_KEY_REPUBLIK: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: string;
       // CURTAIN

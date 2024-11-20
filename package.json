@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "concurrently \"next dev\" \"npm run gql:types --watch\" \"panda --watch\"",
-    "build": "pnpm run validate-config production && panda && pnpm run gql:types && next build",
+    "build": "panda && pnpm run gql:types && next build",
     "prepare": "panda codegen",
     "start": "next start",
     "lint": "next lint",
@@ -15,7 +15,6 @@
     "gql:schema": "graphql-codegen --config graphql/configs/codegen-schema.ts",
     "test": "pnpm exec playwright test --project 'Mobile Chrome'",
     "test:generate": "pnpm exec playwright codegen ",
-    "validate-config": "pnpm exec tsx ./scripts/validate-config.ts",
     "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
@@ -28,8 +27,8 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
     "@sentry/nextjs": "^8.34.0",
-    "@stripe/react-stripe-js": "^2.8.1",
-    "@stripe/stripe-js": "^4.8.0",
+    "@stripe/react-stripe-js": "^2.9.0",
+    "@stripe/stripe-js": "^4.10.0",
     "@urql/core": "^5.0.6",
     "graphql": "^16.9.0",
     "input-otp": "^1.2.4",
@@ -43,7 +42,7 @@
     "react-hook-form": "^7.53.0",
     "set-cookie-parser": "^2.7.0",
     "sonner": "^1.5.0",
-    "stripe": "^17.2.0",
+    "stripe": "^17.3.1",
     "urql": "^4.1.0",
     "uuid": "^10.0.0"
   },

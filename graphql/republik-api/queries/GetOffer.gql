@@ -1,0 +1,26 @@
+query GetOffer($offerId: ID!) {
+  offer: getOffer(offerId: $offerId) {
+    id
+    company
+    name
+
+    price {
+      amount
+      currency
+      recurring {
+        interval
+      }
+    }
+
+    customPrice {
+      min
+      max
+      step
+    }
+
+    discount {
+      name
+      amountOff
+    }
+  }
+}

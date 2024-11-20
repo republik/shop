@@ -1,0 +1,19 @@
+mutation CreateCheckoutSession(
+  $offerId: ID!
+  $customPrice: Int
+  $metadata: JSON
+) {
+  createCheckoutSession(
+    offerId: $offerId
+    options: {
+      uiMode: EMBEDDED
+      customPrice: $customPrice
+      metadata: $metadata
+    }
+  ) {
+    company
+    sessionId
+    clientSecret
+    url
+  }
+}

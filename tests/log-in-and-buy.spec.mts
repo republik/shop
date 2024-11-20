@@ -8,11 +8,13 @@ PRODUCTS.forEach(({ key, name }) => {
   test(`Log in with a new email and buy a ${key} subscription`, async ({
     page,
   }) => {
-    await page.goto(`/angebot/${key}`);
+    const testId = nanoid(5);
+
+    await page.goto(`/angebot/${key}?utm_source=test&utm_content=${testId}`);
 
     const testEmail = process.env.TEST_EMAIL_PATTERN?.replace(
       /\{suffix\}/,
-      nanoid(5)
+      testId
     );
 
     if (!testEmail) {

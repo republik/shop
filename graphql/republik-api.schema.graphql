@@ -298,6 +298,15 @@ type Campaign {
   slug: String!
 }
 
+input CancelSubscription {
+  options: CancelSubscriptionOptions
+  subscriptionId: ID!
+}
+
+input CancelSubscriptionOptions {
+  feedback: String
+}
+
 type Cancellation {
   cancelledViaSupport: Boolean!
   category: CancellationCategory!
@@ -353,6 +362,25 @@ type Candidacy {
   recommendation: String
   user: User!
   yearOfBirth: Int
+}
+
+type CheckoutSession {
+  clientSecret: String
+  company: CompanyName!
+  sessionId: String!
+  url: String
+}
+
+input CheckoutSessionOptions {
+  customPrice: Int
+  metadata: JSON
+  uiMode: CheckoutUIMode
+}
+
+enum CheckoutUIMode {
+  CUSTOM
+  EMBEDDED
+  HOSTED
 }
 
 type Collection {
@@ -496,6 +524,7 @@ enum CommentVote {
 }
 
 type Commit {
+  associatedDerivative: Derivative
   author: Author!
   canDerive(type: DerivativeType!): Boolean!
   date: DateTime!
@@ -571,6 +600,16 @@ type CrowdfundingStatus {
   people: Int!
 }
 
+type CustomPrice {
+  max: Int!
+  min: Int!
+  step: Float!
+}
+
+type CustomerPortalSession {
+  sessionUrl: String
+}
+
 """Date (format %d.%m.%Y)"""
 scalar Date
 
@@ -589,6 +628,7 @@ input DateRangeInput {
 scalar DateTime
 
 type Derivative {
+  commit: Commit!
   createdAt: DateTime!
   destroyedAt: DateTime
   failedAt: DateTime
@@ -632,6 +672,12 @@ input DeviceInformationInput {
   os: OSType!
   osVersion: StringOrNumber!
   userAgent: String
+}
+
+type Discount {
+  amountOff: Int!
+  currency: String!
+  name: String
 }
 
 type Discussion {
@@ -1039,6 +1085,8 @@ type MagazineSubscription {
   endedAt: DateTime
   id: ID!
   invoices: [Invoice!]!
+  paymentMethod: String
+  renewsAtPrice: Int
   status: MagazineSubscriptionStatus!
   stripeId: String!
   type: MagazineSubscriptionType!
@@ -1054,7 +1102,7 @@ enum MagazineSubscriptionStatus {
   overdue
   past_due
   paused
-  trailing
+  trialing
   unpaid
 }
 
@@ -1480,6 +1528,8 @@ type Meta {
   slug: String
   subject: String @deprecated(reason: "parse `Document.content` instead")
   suggestSubscription: Boolean
+  syntheticVoice: String
+  syntheticVoice2: String
   template: String
   title: String
   twitterDescription: String
@@ -1572,6 +1622,15 @@ type NotificationContent {
 enum OSType {
   android
   ios
+}
+
+type Offer {
+  company: CompanyName!
+  customPrice: CustomPrice
+  discount: Discount
+  id: ID!
+  name: String!
+  price: Price!
 }
 
 input OrderBy {
@@ -1834,6 +1893,17 @@ type Preview {
   string: String!
 }
 
+type Price {
+  amount: Int!
+  currency: String!
+  recurring: Recurring
+}
+
+type Product {
+  defaultPrice: Price
+  name: String
+}
+
 enum ProgressState {
   FINISHED
   UNFINISHED
@@ -1869,6 +1939,7 @@ input PublishSettings {
   notifyFilters: [EventObjectType!]
   prepublication: Boolean!
   scheduledAt: DateTime
+  skipSynthAudioGeneration: Boolean
   updateMailchimp: Boolean!
 }
 
@@ -2066,6 +2137,10 @@ type Questionnaire {
 type QuestionnaireTurnout {
   eligible: Int!
   submitted: Int!
+}
+
+type Recurring {
+  interval: String
 }
 
 type Redirection {
@@ -2917,6 +2992,7 @@ type mutations {
   bookCalendarSlot(id: ID!, userId: ID): CalendarSlot!
   cancelCalendarSlot(id: ID!, userId: ID): CalendarSlot!
   cancelCandidacy(slug: String!): Election!
+  cancelMagazineSubscription(args: CancelSubscription): Boolean
   cancelMembership(details: CancellationInput!, id: ID!, immediately: Boolean): Membership!
   cancelPledge(pledgeId: ID!): Pledge
 
@@ -2931,8 +3007,10 @@ type mutations {
   clearSession(sessionId: ID!, userId: ID): Boolean!
   clearSessions(userId: ID): Boolean!
   commit(document: DocumentInput!, isTemplate: Boolean, message: String!, parentId: ID, repoId: ID!): Commit!
+  createCheckoutSession(offerId: ID!, options: CheckoutSessionOptions, promoCode: String): CheckoutSession
   createDiscussion(anonymity: Permission!, maxLength: Int, minInterval: Int, tagRequired: Boolean!, tags: [String!], title: String): ID!
   createElection(electionInput: ElectionInput!): Election!
+  createStripeCustomerPortalSession(companyName: CompanyName): CustomerPortalSession
   createVoting(votingInput: VotingInput!): Voting!
   deleteRedirection(id: ID!): Boolean!
   deleteUser(unpublishComments: Boolean, userId: ID!): User
@@ -3140,6 +3218,8 @@ type queries {
   ): [Employee!]!
   events: [Event!]!
   faqs: [Faq!]!
+  getOffer(offerId: ID!, promoCode: String): Offer
+  getOffers(promoCode: String): [Offer!]!
   greeting: Greeting
   mailbox(after: String, before: String, filters: MailboxFiltersInput, first: Int, last: Int): MailboxConnection
   me(accessToken: ID): User
@@ -3152,7 +3232,6 @@ type queries {
   notifications(after: String, before: String, filter: EventObjectType, first: Int, last: Int, lastDays: Int, onlyUnread: Boolean): NotificationConnection
   payments(booleanFilter: BooleanFilter, dateRangeFilter: DateRangeFilter, limit: Int!, offset: Int, orderBy: OrderBy, search: String, stringArrayFilter: StringArrayFilter): PledgePayments!
   paymentsCSV(companyName: String!, paymentIds: [ID!]): String!
-  paymentsIsRunning: Boolean
   pendingAppSignIn: SignInNotification
   pledge(id: ID!): Pledge
   pledges: [Pledge!]!

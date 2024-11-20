@@ -1,6 +1,8 @@
-import { getSubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/get-config";
+import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
+import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
+import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
+import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
@@ -9,14 +11,11 @@ import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import Checkout, { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
-import { SUBSCRIPTION_META } from "./lib/config";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { initStripe } from "./lib/stripe/server";
-import { StripeService } from "./lib/stripe/service";
+import { getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: { slug: string };
@@ -26,35 +25,29 @@ type PageProps = {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const subscriptionMeta = SUBSCRIPTION_META[params.slug];
+  const offer = await fetchOffer(params.slug);
 
   return {
-    title: subscriptionMeta?.title,
+    title: offer?.name,
   };
 }
 
-export default async function ProductPage({ params, searchParams }: PageProps) {
-  let subscriptionConfig;
+export default async function OfferPage({ params, searchParams }: PageProps) {
+  const offer = await fetchOffer(params.slug);
 
-  try {
-    subscriptionConfig = getSubscriptionsConfiguration(params.slug);
-  } catch {}
-
-  if (!subscriptionConfig) {
+  if (!offer) {
     notFound();
   }
 
   const t = await getTranslations();
-  const subscriptionMeta = SUBSCRIPTION_META[params.slug];
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = typeof searchParams.session_id === "string";
-  const stripe = initStripe(subscriptionConfig.stripeAccount);
-  const [me, checkoutSession, subscriptionData] = await Promise.all([
-    fetchMe(),
-    sessionId ? stripe.checkout.sessions.retrieve(sessionId) : null,
-    StripeService(stripe).getStripeSubscriptionItems(subscriptionConfig),
-  ]);
+  const me = await fetchMe();
+
+  const checkoutSession = sessionId
+    ? await getCheckoutSession(offer.company, sessionId)
+    : undefined;
 
   const loginStep: Step = {
     name: t("checkout.loginStep.title"),
@@ -73,39 +66,24 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
     redirect(`/angebot/${params.slug}`);
   }
 
-  const canUserBuy =
-    me &&
-    checkIfUserCanPurchase(
-      me,
-      subscriptionConfig.stripeAccount === "REPUBLIK" ? "MONTHLY" : "YEARLY"
-    );
+  const canUserBuy = me && checkIfUserCanPurchase(me, offer.id);
 
   const productDetails: Step = {
     name: t("checkout.preCheckout.title"),
     detail: checkoutSession ? (
       <>
         <span>
-          {checkoutSession.currency?.toUpperCase()}{" "}
-          {((checkoutSession?.amount_total || 0) / 100).toFixed(2)}
+          {offer.price.currency.toUpperCase()}{" "}
+          {(offer.price.amount / 100).toFixed(2)}
         </span>
         <StepperChangeStepButton onChange={resetCheckoutSession} />
       </>
     ) : undefined,
     content: canUserBuy?.available ? (
       <PreCheckout
-        me={me!}
-        subscriptionType={params.slug}
-        subscriptionConfig={subscriptionConfig}
-        subscriptionMeta={subscriptionMeta}
-        stripeSubscriptionItems={{
-          ...subscriptionData,
-          coupon:
-            isEligibleForEntryCoupon(me) && subscriptionData.coupon
-              ? subscriptionData.coupon
-              : null,
-        }}
+        offer={offer}
         initialPrice={
-          subscriptionConfig.customPrice && searchParams.price
+          offer.customPrice && searchParams.price
             ? Number(searchParams.price)
             : undefined
         }
@@ -135,16 +113,19 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
 
   const checkoutStep: Step = {
     name: t("checkout.checkout.title"),
-    content: checkoutSession ? (
-      <Checkout
-        stripeAccount={subscriptionConfig.stripeAccount}
-        session={checkoutSession}
-        afterRedirect={afterCheckoutRedirect}
-      />
-    ) : (
-      // TODO: log to sentry and render alert
-      <p>{t("error.generic")}</p>
-    ),
+    content:
+      checkoutSession?.status === "open" && checkoutSession.clientSecret ? (
+        <CheckoutView
+          company={offer.company}
+          clientSecret={checkoutSession.clientSecret}
+          errors={[]}
+        />
+      ) : checkoutSession?.status === "complete" ? (
+        <SuccessView />
+      ) : (
+        // TODO: log to sentry and render alert
+        <p>{t("error.generic")}</p>
+      ),
     disabled: !checkoutSession || checkoutSession.status === "expired",
   };
 
@@ -170,7 +151,7 @@ export default async function ProductPage({ params, searchParams }: PageProps) {
         })}
       >
         {t("checkout.preCheckout.summary.title", {
-          product: subscriptionMeta.title,
+          product: offer.name,
         })}
       </h1>
       <Stepper

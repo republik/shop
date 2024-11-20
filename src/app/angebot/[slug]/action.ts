@@ -1,16 +1,15 @@
 "use server";
 
-import { getSubscriptionsConfiguration } from "@/app/angebot/[slug]/lib/get-config";
+import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import {
   ANALYTICS_COOKIE_NAME,
   AnalyticsObject,
   fromAnalyticsCookie,
 } from "@/lib/analytics";
+import { getClient } from "@/lib/graphql/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { CHECKOUT_SESSION_ID_COOKIE } from "./components/checkout";
-import { initStripe } from "./lib/stripe/server";
-import { StripeService } from "./lib/stripe/service";
 
 function readAnalyticsParamsFromCookie(): AnalyticsObject {
   const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
@@ -24,32 +23,31 @@ export async function createCheckout(formData: FormData): Promise<void> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
-  const subscriptionConfig = getSubscriptionsConfiguration(subscriptionType);
+  const gqlClient = getClient();
 
   const analyticsParams = readAnalyticsParamsFromCookie();
 
-  const stripe = initStripe(subscriptionConfig.stripeAccount);
-
-  const checkoutSession = await StripeService(stripe).initializeCheckoutSession(
-    subscriptionType,
+  const { data, error } = await gqlClient.mutation(
+    CreateCheckoutSessionDocument,
     {
-      userPrice: subscriptionConfig.customPrice
-        ? Math.max(
-            subscriptionConfig.customPrice.min,
-            price ? Number(price) : 0
-          ) * 100
-        : undefined,
-      analytics: analyticsParams,
+      offerId: subscriptionType,
+      customPrice: price ? Number(price) * 100 : undefined,
+      metadata: analyticsParams,
     }
   );
 
-  if (!checkoutSession.client_secret) {
-    throw new Error("No client_secret in checkout session");
+  if (!data?.createCheckoutSession || error) {
+    console.error(error);
+    throw Error("noin");
   }
 
-  cookies().set(CHECKOUT_SESSION_ID_COOKIE, checkoutSession.id, {
-    expires: 1000 * 60 * 30, // expire after30min
-  });
+  cookies().set(
+    CHECKOUT_SESSION_ID_COOKIE,
+    data.createCheckoutSession.sessionId,
+    {
+      maxAge: 1000 * 60 * 30, // expire after30min
+    }
+  );
 
   redirect(`/angebot/${subscriptionType}`);
 }

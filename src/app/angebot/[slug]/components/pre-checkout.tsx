@@ -1,39 +1,22 @@
 "use client";
 
+import { GetOfferQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { isEligibleForEntryCoupon } from "@/lib/auth/discount-eligability";
-import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
-import { SubscriptionMeta, SubscriptionTypes } from "../lib/config";
-import {
-  StripeSubscriptionItems,
-  SubscriptionConfiguration,
-} from "../lib/stripe/types";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-// import { usePlausible } from "next-plausible";
 
 interface PreCheckoutProps {
-  me: Me;
-  subscriptionType: SubscriptionTypes;
-  subscriptionConfig: SubscriptionConfiguration;
-  stripeSubscriptionItems: StripeSubscriptionItems;
-  subscriptionMeta: SubscriptionMeta;
   initialPrice?: number;
+  offer: NonNullable<GetOfferQuery["offer"]>;
 }
 
-export function PreCheckout(props: PreCheckoutProps) {
-  const {
-    stripeSubscriptionItems,
-    subscriptionType,
-    subscriptionConfig,
-    initialPrice,
-    me,
-  } = props;
+export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
   const t = useTranslations();
+
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
@@ -43,16 +26,14 @@ export function PreCheckout(props: PreCheckoutProps) {
   const renderPrice = useCallback(
     (price: number | null) =>
       price != null
-        ? `${(price / 100).toFixed(0)} ${stripeSubscriptionItems.price.currency.toUpperCase()}`
+        ? `${(price / 100).toFixed(0)} ${offer.price?.currency.toUpperCase()}`
         : null,
-    [stripeSubscriptionItems.price.currency]
+    [offer.price]
   );
 
-  // TODO: remove as coupon is not forwarded if not eligible as checked in [slug].tsx
-  const hasCoupon = useMemo(() => isEligibleForEntryCoupon(me), [me]);
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
-    if (subscriptionConfig.customPrice) {
+    if (offer.customPrice) {
       items.push({
         label: "Mitgliedschaft mit selbst gewähltem Preis",
         amount: userPrice,
@@ -60,36 +41,23 @@ export function PreCheckout(props: PreCheckoutProps) {
       });
     } else {
       items.push({
-        label: stripeSubscriptionItems.product.name,
-        amount: (stripeSubscriptionItems.price.unit_amount ?? 0) / 100,
+        label: offer.name,
+        amount: offer.price.amount / 100,
         hidden: true,
       });
     }
-    if (
-      stripeSubscriptionItems.coupon &&
-      hasCoupon &&
-      !subscriptionConfig.customPrice
-    ) {
+    if (offer.discount && !offer.customPrice) {
       items.push({
-        label: stripeSubscriptionItems.coupon.name || "Rabatt",
+        label: offer.discount.name || "Rabatt",
         amount:
-          -1 *
-          (stripeSubscriptionItems.coupon.amount_off
-            ? (stripeSubscriptionItems.coupon.amount_off ?? 0) / 100
-            : (((stripeSubscriptionItems.coupon.percent_off ?? 0) / 100) *
+          -1 * (offer.discount.amountOff ? offer.discount.amountOff / 100 : 0),
+        /*(((offer.discount.percent_off ?? 0) / 100) *
                 (stripeSubscriptionItems.price.unit_amount ?? 0)) /
-              100),
+              100)*/
       });
     }
     return items;
-  }, [
-    subscriptionConfig.customPrice,
-    stripeSubscriptionItems.coupon,
-    hasCoupon,
-    stripeSubscriptionItems.price.unit_amount,
-    stripeSubscriptionItems.product.name,
-    userPrice,
-  ]);
+  }, [offer.name, offer.price, offer.customPrice, offer.discount, userPrice]);
 
   return (
     <form
@@ -108,7 +76,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         name="subscriptionType"
         hidden
         readOnly
-        defaultValue={subscriptionType}
+        defaultValue={offer.id}
       />
       <div
         className={css({
@@ -121,7 +89,7 @@ export function PreCheckout(props: PreCheckoutProps) {
             fontWeight: "medium",
           })}
         >
-          {props.subscriptionMeta.title}
+          {offer.name}
         </h3>
         <p
           className={css({
@@ -130,17 +98,18 @@ export function PreCheckout(props: PreCheckoutProps) {
         >
           {t("checkout.preCheckout.pricePerInterval", {
             price: renderPrice(
-              subscriptionConfig.customPrice
+              offer.customPrice
                 ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                : stripeSubscriptionItems.price.unit_amount
+                : offer.price.amount
             ),
             interval: t(
-              `checkout.preCheckout.intervals.${subscriptionConfig.customPrice ? "year" : stripeSubscriptionItems.price.recurring?.interval}`
+              // @ts-expect-error FIXME possibly unknown interval
+              `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
             ),
           })}
         </p>
       </div>
-      {subscriptionConfig.customPrice && (
+      {offer.customPrice && (
         <fieldset
           className={css({
             display: "flex",
@@ -156,9 +125,9 @@ export function PreCheckout(props: PreCheckoutProps) {
           <Slider
             id={priceId}
             name="price"
-            min={subscriptionConfig.customPrice.min}
-            max={subscriptionConfig.customPrice.max}
-            step={subscriptionConfig.customPrice.step}
+            min={offer.customPrice.min}
+            max={offer.customPrice.max}
+            step={offer.customPrice.step}
             value={[userPrice]}
             onValueChange={(e) => setUserPrice(e?.[0])}
           />
@@ -179,7 +148,7 @@ export function PreCheckout(props: PreCheckoutProps) {
         </fieldset>
       )}
       <CheckoutPricingTable
-        currency={stripeSubscriptionItems.price.currency}
+        currency={offer.price.currency}
         items={checkoutItems}
       />
 
