@@ -50,6 +50,11 @@ PRODUCTS.forEach(({ key, name }) => {
 
     await stripeFrame.getByLabel("Vorname").fill("Tester");
     await stripeFrame.getByLabel("Nachname").fill("Tester");
+
+    await stripeFrame
+      .getByRole("button", { name: "Mit Karte zahlen" })
+      .dispatchEvent("click"); // <- .click() doesn't work because the button is not visible
+
     await stripeFrame
       .getByPlaceholder("1234 1234 1234")
       .fill("4242424242424242");
