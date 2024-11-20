@@ -74,7 +74,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       <>
         <span>
           {offer.price.currency.toUpperCase()}{" "}
-          {(offer.price.amount / 100).toFixed(2)}
+          {(offer.discount
+            ? (offer.price.amount - offer.discount.amountOff) / 100
+            : offer.price.amount / 100
+          ).toFixed(2)}
         </span>
         <StepperChangeStepButton onChange={resetCheckoutSession} />
       </>
