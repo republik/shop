@@ -38,7 +38,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
 
   if (!data?.createCheckoutSession || error) {
     console.error(error);
-    throw Error("noin");
+    throw Error("Checkout session could not be created");
   }
 
   cookies().set(
