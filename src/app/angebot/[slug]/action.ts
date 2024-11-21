@@ -33,6 +33,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
       offerId: subscriptionType,
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
+      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
     }
   );
 

@@ -374,6 +374,7 @@ type CheckoutSession {
 input CheckoutSessionOptions {
   customPrice: Int
   metadata: JSON
+  returnURL: String
   uiMode: CheckoutUIMode
 }
 
@@ -2140,7 +2141,8 @@ type QuestionnaireTurnout {
 }
 
 type Recurring {
-  interval: String
+  interval: String!
+  interval_count: Int!
 }
 
 type Redirection {

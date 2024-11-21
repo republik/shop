@@ -2,6 +2,7 @@ mutation CreateCheckoutSession(
   $offerId: ID!
   $customPrice: Int
   $metadata: JSON
+  $returnUrl: String
 ) {
   createCheckoutSession(
     offerId: $offerId
@@ -9,6 +10,7 @@ mutation CreateCheckoutSession(
       uiMode: EMBEDDED
       customPrice: $customPrice
       metadata: $metadata
+      returnURL: $returnUrl
     }
   ) {
     company

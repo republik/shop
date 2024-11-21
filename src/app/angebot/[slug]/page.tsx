@@ -19,7 +19,11 @@ import { getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: { slug: string };
-  searchParams: { price: string; session_id?: string };
+  searchParams: {
+    price: string;
+    session_id?: string;
+    return_from_checkout?: "true";
+  };
 };
 
 export async function generateMetadata({
@@ -42,7 +46,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
-  const afterCheckoutRedirect = typeof searchParams.session_id === "string";
+  const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe();
 
   const checkoutSession = sessionId
@@ -121,7 +125,16 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         <CheckoutView
           company={offer.company}
           clientSecret={checkoutSession.clientSecret}
-          errors={[]}
+          errors={
+            afterCheckoutRedirect
+              ? [
+                  {
+                    title: t("checkout.checkout.failed.title"),
+                    description: t("checkout.checkout.failed.description"),
+                  },
+                ]
+              : []
+          }
         />
       ) : checkoutSession?.status === "complete" ? (
         <SuccessView />
