@@ -15,7 +15,7 @@ import { LoginView, StepperSignOutButton } from "./components/login-view";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { getCheckoutSession } from "./lib/stripe/server";
+import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: { slug: string };
@@ -43,14 +43,20 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     notFound();
   }
 
+  const { company } = offer;
+
   const t = await getTranslations();
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
-  const me = await fetchMe();
+  const me = await fetchMe(company);
 
   const checkoutSession = sessionId
-    ? await getCheckoutSession(offer.company, sessionId)
+    ? await getCheckoutSession(
+        company,
+        sessionId,
+        me?.stripeCustomer?.customerId
+      )
     : undefined;
 
   const loginStep: Step = {
@@ -66,7 +72,13 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   async function resetCheckoutSession() {
     "use server";
-    cookies().delete(CHECKOUT_SESSION_ID_COOKIE);
+    if (sessionId) {
+      await expireCheckoutSession(
+        company,
+        sessionId,
+        me?.stripeCustomer?.customerId
+      );
+    }
     redirect(`/angebot/${params.slug}`);
   }
 
@@ -121,10 +133,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const checkoutStep: Step = {
     name: t("checkout.checkout.title"),
     content:
-      checkoutSession?.status === "open" && checkoutSession.clientSecret ? (
+      checkoutSession?.status === "open" && checkoutSession.client_secret ? (
         <CheckoutView
-          company={offer.company}
-          clientSecret={checkoutSession.clientSecret}
+          company={company}
+          clientSecret={checkoutSession.client_secret}
           errors={
             afterCheckoutRedirect
               ? [
@@ -142,7 +154,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         // TODO: log to sentry and render alert
         <p>{t("error.generic")}</p>
       ),
-    disabled: !checkoutSession || checkoutSession.status === "expired",
+    disabled: !me || !checkoutSession || checkoutSession.status === "expired",
   };
 
   const steps: Step[] = [loginStep, productDetails, checkoutStep];

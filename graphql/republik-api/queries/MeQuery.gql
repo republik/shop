@@ -1,4 +1,4 @@
-query Me {
+query Me($stripeCompany: CompanyName) {
   me {
     id
     username
@@ -40,10 +40,7 @@ query Me {
       currentPeriodStart
       currentPeriodEnd
     }
-    stripeCustomerRepublik: stripeCustomer(company: REPUBLIK) {
-      customerId
-    }
-    stripeCustomerProjectR: stripeCustomer(company: PROJECT_R) {
+    stripeCustomer(company: $stripeCompany) {
       customerId
     }
   }

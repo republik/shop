@@ -11,12 +11,47 @@ function initStripe(company: string): Stripe {
   });
 }
 
-export async function getCheckoutSession(company: string, sessionId: string) {
+type SessionData = Pick<
+  Stripe.Checkout.Session,
+  "id" | "status" | "client_secret"
+>;
+
+export async function expireCheckoutSession(
+  company: string,
+  sessionId: string,
+  customerId?: string | null
+) {
+  try {
+    const stripe = initStripe(company);
+    const session = await getCheckoutSession(company, sessionId, customerId);
+
+    if (session) {
+      await stripe.checkout.sessions.expire(session.id);
+      console.log("Expired session", session.id);
+    }
+  } catch (e) {
+    // No need to log the error?
+  }
+}
+
+export async function getCheckoutSession(
+  company: string,
+  sessionId: string,
+  customerId?: string | null
+): Promise<SessionData | undefined> {
   try {
     const stripe = initStripe(company);
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    return { status: session.status, clientSecret: session.client_secret };
+    if (session.customer !== customerId) {
+      return;
+    }
+
+    return {
+      id: session.id,
+      status: session.status,
+      client_secret: session.client_secret,
+    };
   } catch (e) {
     // No need to log the error?
   }
