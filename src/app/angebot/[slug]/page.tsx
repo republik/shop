@@ -43,15 +43,17 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     notFound();
   }
 
+  const { company } = offer;
+
   const t = await getTranslations();
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
-  const me = await fetchMe(offer.company);
+  const me = await fetchMe(company);
 
   const checkoutSession = sessionId
     ? await getCheckoutSession(
-        offer.company,
+        company,
         sessionId,
         me?.stripeCustomer?.customerId
       )
@@ -70,9 +72,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   async function resetCheckoutSession() {
     "use server";
-    if (offer?.company && sessionId) {
+    if (sessionId) {
       await expireCheckoutSession(
-        offer?.company,
+        company,
         sessionId,
         me?.stripeCustomer?.customerId
       );
@@ -131,10 +133,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const checkoutStep: Step = {
     name: t("checkout.checkout.title"),
     content:
-      checkoutSession?.status === "open" && checkoutSession.clientSecret ? (
+      checkoutSession?.status === "open" && checkoutSession.client_secret ? (
         <CheckoutView
-          company={offer.company}
-          clientSecret={checkoutSession.clientSecret}
+          company={company}
+          clientSecret={checkoutSession.client_secret}
           errors={
             afterCheckoutRedirect
               ? [

@@ -11,6 +11,11 @@ function initStripe(company: string): Stripe {
   });
 }
 
+type SessionData = Pick<
+  Stripe.Checkout.Session,
+  "id" | "status" | "client_secret"
+>;
+
 export async function expireCheckoutSession(
   company: string,
   sessionId: string,
@@ -33,7 +38,7 @@ export async function getCheckoutSession(
   company: string,
   sessionId: string,
   customerId?: string | null
-) {
+): Promise<SessionData | undefined> {
   try {
     const stripe = initStripe(company);
     const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -46,7 +51,7 @@ export async function getCheckoutSession(
     return {
       id: session.id,
       status: session.status,
-      clientSecret: session.client_secret,
+      client_secret: session.client_secret,
     };
   } catch (e) {
     // No need to log the error?
