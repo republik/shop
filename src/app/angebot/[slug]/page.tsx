@@ -47,10 +47,14 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const sessionId =
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
-  const me = await fetchMe();
+  const me = await fetchMe(offer.company);
 
   const checkoutSession = sessionId
-    ? await getCheckoutSession(offer.company, sessionId)
+    ? await getCheckoutSession(
+        offer.company,
+        sessionId,
+        me?.stripeCustomer?.customerId
+      )
     : undefined;
 
   const loginStep: Step = {
@@ -67,7 +71,11 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   async function resetCheckoutSession() {
     "use server";
     if (offer?.company && sessionId) {
-      await expireCheckoutSession(offer?.company, sessionId);
+      await expireCheckoutSession(
+        offer?.company,
+        sessionId,
+        me?.stripeCustomer?.customerId
+      );
     }
     redirect(`/angebot/${params.slug}`);
   }
@@ -144,7 +152,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         // TODO: log to sentry and render alert
         <p>{t("error.generic")}</p>
       ),
-    disabled: !checkoutSession || checkoutSession.status === "expired",
+    disabled: !me || !checkoutSession || checkoutSession.status === "expired",
   };
 
   const steps: Step[] = [loginStep, productDetails, checkoutStep];

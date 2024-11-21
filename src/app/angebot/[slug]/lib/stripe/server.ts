@@ -13,24 +13,41 @@ function initStripe(company: string): Stripe {
 
 export async function expireCheckoutSession(
   company: string,
-  sessionId: string
+  sessionId: string,
+  userEmail?: string | null
 ) {
   try {
     const stripe = initStripe(company);
-    const session = await stripe.checkout.sessions.expire(sessionId);
+    const session = await getCheckoutSession(company, sessionId, userEmail);
 
-    console.log("Expired?", session.status);
+    if (session) {
+      await stripe.checkout.sessions.expire(session.id);
+      console.log("Expired?", session.status);
+    }
   } catch (e) {
     // No need to log the error?
   }
 }
 
-export async function getCheckoutSession(company: string, sessionId: string) {
+export async function getCheckoutSession(
+  company: string,
+  sessionId: string,
+  customerId?: string | null
+) {
   try {
     const stripe = initStripe(company);
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    return { status: session.status, clientSecret: session.client_secret };
+    if (session.customer !== customerId) {
+      console.log("no sesh", company, sessionId, customerId, session.customer);
+      return;
+    }
+
+    return {
+      id: session.id,
+      status: session.status,
+      clientSecret: session.client_secret,
+    };
   } catch (e) {
     // No need to log the error?
   }
