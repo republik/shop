@@ -15,7 +15,7 @@ import { LoginView, StepperSignOutButton } from "./components/login-view";
 import { PreCheckout } from "./components/pre-checkout";
 import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
 import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { getCheckoutSession } from "./lib/stripe/server";
+import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: { slug: string };
@@ -66,7 +66,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   async function resetCheckoutSession() {
     "use server";
-    cookies().delete(CHECKOUT_SESSION_ID_COOKIE);
+    if (offer?.company && sessionId) {
+      await expireCheckoutSession(offer?.company, sessionId);
+    }
     redirect(`/angebot/${params.slug}`);
   }
 

@@ -11,6 +11,20 @@ function initStripe(company: string): Stripe {
   });
 }
 
+export async function expireCheckoutSession(
+  company: string,
+  sessionId: string
+) {
+  try {
+    const stripe = initStripe(company);
+    const session = await stripe.checkout.sessions.expire(sessionId);
+
+    console.log("Expired?", session.status);
+  } catch (e) {
+    // No need to log the error?
+  }
+}
+
 export async function getCheckoutSession(company: string, sessionId: string) {
   try {
     const stripe = initStripe(company);
