@@ -19,15 +19,15 @@ type SessionData = Pick<
 export async function expireCheckoutSession(
   company: string,
   sessionId: string,
-  userEmail?: string | null
+  customerId?: string | null
 ) {
   try {
     const stripe = initStripe(company);
-    const session = await getCheckoutSession(company, sessionId, userEmail);
+    const session = await getCheckoutSession(company, sessionId, customerId);
 
     if (session) {
       await stripe.checkout.sessions.expire(session.id);
-      console.log("Expired?", session.status);
+      console.log("Expired session", session.id);
     }
   } catch (e) {
     // No need to log the error?
@@ -44,7 +44,6 @@ export async function getCheckoutSession(
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.customer !== customerId) {
-      console.log("no sesh", company, sessionId, customerId, session.customer);
       return;
     }
 
