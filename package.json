@@ -6,7 +6,7 @@
     "node": "20.x"
   },
   "scripts": {
-    "dev": "concurrently \"next dev\" \"npm run gql:types --watch\" \"panda --watch\"",
+    "dev": "concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
     "build": "panda && pnpm run gql:types && next build",
     "prepare": "panda codegen",
     "start": "next start",
