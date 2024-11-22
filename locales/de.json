@@ -34,7 +34,7 @@
       },
       "MONTHLY": {
         "title": "Monatlich",
-        "interva": "pro Monat",
+        "interval": "pro Monat",
         "intervalDiscount": "im ersten Monat",
         "cta": "Abonnement lösen",
         "cancelable": "Jederzeit kündbar"
