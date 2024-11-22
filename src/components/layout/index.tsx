@@ -48,10 +48,10 @@ export async function PageLayout({ children }: PageLayoutProps) {
       <main
         className={css({
           flexGrow: 1,
-          mx: "auto",
+          // mx: "auto",
           px: "4",
           py: "8",
-          display: "flex",
+          // display: "flex",
         })}
       >
         {children}
