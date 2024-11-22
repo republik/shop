@@ -64,9 +64,12 @@ PRODUCTS.forEach(({ key, name }) => {
     await stripeFrame.getByPlaceholder("CVC").fill("123");
 
     await stripeFrame.getByPlaceholder("Vollständiger Name").fill("Test Test");
-    await stripeFrame.getByPlaceholder("Adresszeile 1").fill("Teststr. 42");
-    await stripeFrame.getByPlaceholder("Postleitzahl").fill("4242");
-    await stripeFrame.getByPlaceholder("Ort").fill("Testort");
+
+    if (key !== "MONTHLY") {
+      await stripeFrame.getByPlaceholder("Adresszeile 1").fill("Teststr. 42");
+      await stripeFrame.getByPlaceholder("Postleitzahl").fill("4242");
+      await stripeFrame.getByPlaceholder("Ort").fill("Testort");
+    }
 
     await stripeFrame.getByRole("checkbox", { name: "Ich stimme" }).check();
     await stripeFrame.getByRole("button", { name: "abonnieren" }).click();
