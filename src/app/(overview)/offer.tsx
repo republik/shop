@@ -4,19 +4,22 @@ import { getClient } from "@/lib/graphql/client";
 import { css } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
+import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ReactNode } from "react";
 
 export async function OfferCardPrimary({
   offerId,
-  colorText,
-  colorBackground,
+  color,
+  background,
 }: {
-  offerId: string;
-  colorText?: string;
-  colorBackground?: string;
+  offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
+  color?: string;
+  background?: string;
 }) {
   const gql = getClient();
+  const t = await getTranslations("overview");
+  const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
   const { data } = await gql.query(GetOfferDocument, { offerId });
 
@@ -30,8 +33,8 @@ export async function OfferCardPrimary({
     <div
       style={{
         // @ts-expect-error css vars
-        "--text": colorText ?? token("colors.text"),
-        "--bg": colorBackground ?? token("colors.amber.100"),
+        "--text": color ?? token("colors.text"),
+        "--bg": background ?? token("colors.amber.100"),
       }}
       className={css({
         textStyle: "sansSerifMedium",
@@ -42,31 +45,61 @@ export async function OfferCardPrimary({
         display: "flex",
         flexDirection: "column",
         gap: "4",
+        aspectRatio: "square",
       })}
     >
-      <div className={css({ textStyle: "sansSerifBold", fontSize: "4xl" })}>
-        <h2
-          className={css({
-            fontSize: "4xl",
-          })}
-        >
-          {offer.name}
-        </h2>
+      <div
+        className={css({
+          textStyle: "sansSerifBold",
+          fontSize: "5xl",
+          lineHeight: 1.4,
+          flexGrow: 1,
+        })}
+      >
+        <h2>{tOffer("title")}</h2>
 
         {offer.discount ? (
-          <div>
+          <>
             <div>
               <del>CHF {offer.price.amount / 100}</del>
             </div>
             <div>
               CHF {(offer.price.amount - offer.discount.amountOff) / 100}
             </div>
-            <div className={css({ fontWeight: "medium", fontSize: "md" })}>
-              im ersten JAHR/MONAT
+            <div
+              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
+            >
+              {tOffer("intervalDiscount")}
             </div>
-          </div>
+          </>
+        ) : offer.customPrice ? (
+          <>
+            <div>ab CHF {offer.customPrice.min / 100}</div>
+
+            <div
+              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
+            >
+              {tOffer("interval")}
+            </div>
+          </>
         ) : (
-          <div>CHF {offer.price.amount / 100}</div>
+          <>
+            <div>CHF {offer.price.amount / 100}</div>
+
+            <div
+              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
+            >
+              {tOffer("interval")}
+            </div>
+          </>
+        )}
+
+        {tOffer.has("info") && (
+          <div
+            className={css({ fontSize: "md", fontWeight: "normal", mt: "2" })}
+          >
+            {tOffer("info")}
+          </div>
         )}
       </div>
 
@@ -74,7 +107,7 @@ export async function OfferCardPrimary({
         href={`/angebot/${offerId}`}
         className={linkOverlay({
           borderRadius: "md",
-          fontSize: "md",
+          fontSize: "lg",
           whiteSpace: "nowrap",
           px: "6",
           py: "3",
@@ -84,10 +117,14 @@ export async function OfferCardPrimary({
           textAlign: "center",
         })}
       >
-        Abo/Mitglied werden
+        {tOffer("cta")}
       </Link>
 
-      <div className={css({ textAlign: "center" })}>Jederzeit kündbar</div>
+      {tOffer.has("cancelable") && (
+        <div className={css({ textAlign: "center", fontWeight: "normal" })}>
+          {tOffer("cancelable")}
+        </div>
+      )}
     </div>
   );
 }
@@ -98,8 +135,8 @@ export function OfferGrid({ children }: { children: ReactNode }) {
       className={grid({
         width: "full",
         gap: "4",
-        minChildWidth: "300px",
-        justifyItems: "stretch",
+        minChildWidth: "320px",
+        placeItems: "stretch",
       })}
     >
       {children}

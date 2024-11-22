@@ -9,29 +9,26 @@ export default async function Home() {
     <div
       className={css({
         width: "full",
-        maxWidth: "breakpoint-xl",
+        maxWidth: "breakpoint-lg",
+        mx: "auto",
       })}
     >
       <OfferGrid>
         <OfferCardPrimary
           offerId="MONTHLY"
-          colorText="#C2E6D6"
-          colorBackground="#386447"
+          color="#C2E6D6"
+          background="#386447"
         />
         <OfferCardPrimary
           offerId="YEARLY"
-          colorText="#9C0056"
-          colorBackground="#FFADF7"
+          color="#9C0056"
+          background="#FFADF7"
         />
       </OfferGrid>
       Blah
       <OfferGrid>
-        <OfferCardPrimary
-          offerId="BENEFACTOR"
-          // colorText="#C2E6D6"
-          colorBackground="#BBC8FF"
-        />
-        <OfferCardPrimary offerId="STUDENT" />
+        <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" />
+        <OfferCardPrimary offerId="STUDENT" background="#BBC8FF" />
       </OfferGrid>
     </div>
   );
