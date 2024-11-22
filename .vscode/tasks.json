@@ -39,6 +39,19 @@
         "showReuseMessage": false
       },
       "isBackground": true
+    },
+    {
+      "label": "proxy:staging",
+      "type": "shell",
+      "command": "pnpm yaproxy:staging",
+      "presentation": {
+        "group": "dev",
+        "panel": "dedicated",
+        "close": true,
+        "showReuseMessage": false
+      },
+      "isBackground": true,
+      "problemMatcher": []
     }
   ]
 }
