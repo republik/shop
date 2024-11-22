@@ -52,7 +52,7 @@ export async function OfferCardPrimary({
         className={css({
           textStyle: "sansSerifBold",
           fontSize: "5xl",
-          lineHeight: 1.4,
+          lineHeight: "[1.4]",
           flexGrow: 1,
         })}
       >
