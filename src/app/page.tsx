@@ -2,8 +2,11 @@ import { OfferCardPrimary, OfferGrid } from "@/app/(overview)/offer";
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import Link from "next/link";
+import {getTranslations} from "next-intl/server";
+import {OfferDescription} from "@/app/(overview)/description";
 
 export default async function Home() {
+  const t = await getTranslations("overview");
   return (
     <div>
       <div
@@ -31,12 +34,11 @@ export default async function Home() {
           <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
             <Logo />
           </Link>
-          <div className={css({ textAlign: "center" })}>
-            <p className={css({ fontWeight: "medium" })}>
-              Unabhängiger Journalismus, finanziert von seinen Leserinnen und
-              Lesern.
-            </p>
-            <p>So können Sie uns unterstützen.</p>
+          <div className={css({ textAlign: "center",  px: "6", })}>
+            <h2 className={css({ fontWeight: "medium", fontSize: "2xl" })}>
+              {t("lead")}
+            </h2>
+            <p>{t("cta")}</p>
           </div>
         </div>
 
@@ -60,23 +62,7 @@ export default async function Home() {
             />
           </OfferGrid>
         </div>
-        <div
-          className={css({
-            width: "full",
-            maxWidth: "breakpoint-sm",
-            mx: "auto",
-
-            fontSize: "lg",
-          })}
-        >
-          <h2>Was Sie erwartet:</h2>
-          <ul>
-            <li>All</li>
-            <li>die</li>
-            <li>guten</li>
-            <li>Gründe</li>
-          </ul>
-        </div>
+        <OfferDescription />
       </div>
 
       <div
@@ -94,7 +80,7 @@ export default async function Home() {
             marginBlock: "16",
           })}
         >
-          Weitere Angebote
+          {t("more")}
         </h2>
         <OfferGrid>
           <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" />

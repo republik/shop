@@ -24,11 +24,10 @@
   "login": { "action": "Anmelden" },
 
   "overview": {
-    "tagline": {
-      "mission": "Unabhängiger Journalismus, finanziert von seinen Leserinnen und Lesern.",
-      "supportUs": "So können Sie uns unterstützen.",
-    },
-    "morePlans": "Weitere Pläne",
+    "lead": "Unabhängiger Journalismus, finanziert von seinen Leserinnen und Lesern.",
+    "cta": "So können Sie uns unterstützen.",
+    "subhead": "Willommens Angebot",
+    "more": "Weitere Pläne",
     "offer": {
       "YEARLY": {
         "title": "Jährlich",
@@ -56,8 +55,7 @@
         "interval": "pro Jahr",
         "intervalDiscount": "im ersten Jahr",
         "info": "Die vergünstigte Jahresmitgliedschaft für Menschen in Ausbildung.",
-        "cta": "Mitglied werden",
-        "cancelable": "Jederzeit kündbar"
+        "cta": "Mitglied werden"
       }
     },
     "gift": {
@@ -72,7 +70,7 @@
         "cta": "Abonnement einlösen"
       }
     },
-    "included": {
+    "description": {
       "title": "Was Sie erwartet:",
       "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
       "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
