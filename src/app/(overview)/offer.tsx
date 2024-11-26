@@ -1,6 +1,6 @@
 import { GetOfferDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
-import { css } from "@/theme/css";
+import {css, cx} from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
 import { getTranslations } from "next-intl/server";
@@ -27,16 +27,22 @@ export async function OfferCardPrimary({
     return null;
   }
 
+  const titleStyle = css({
+    textStyle: "sansSerifBold",
+    fontSize: "5xl",
+    lineHeight: "[1.1]"
+  })
+
   return (
     <OfferCard color={color} background={background}>
-      <h3>{tOffer("title")}</h3>
+      <h2 className={titleStyle}>{tOffer("title")}</h2>
 
       {offer.discount ? (
         <>
-          <h2>
+          <h3 className={titleStyle}>
             <del>CHF {offer.price.amount / 100}</del>
-          </h2>
-          <h3>
+          </h3>
+          <h3 className={titleStyle}>
             CHF {(offer.price.amount - offer.discount.amountOff) / 100}
           </h3>
           <p><b>
@@ -45,7 +51,7 @@ export async function OfferCardPrimary({
         </>
       ) : offer.customPrice ? (
         <>
-          <h3>ab CHF {offer.customPrice.min / 100}</h3>
+          <h3 className={titleStyle}>ab CHF {offer.customPrice.min / 100}</h3>
 
           <p><b>
             {tOffer("interval")}
@@ -53,7 +59,7 @@ export async function OfferCardPrimary({
         </>
       ) : (
         <>
-          <h3>CHF {offer.price.amount / 100}</h3>
+          <h3 className={titleStyle}>CHF {offer.price.amount / 100}</h3>
           <p><b>
             {tOffer("interval")}
           </b></p>
@@ -79,16 +85,30 @@ export async function OfferCardPrimary({
   );
 }
 
-export function OfferGrid({ children, noGap = false }: { children: ReactNode; rowGap: boolean }) {
+export function OfferGrid({ children, noGap }: { children: ReactNode; rowGap: boolean }) {
   return (
     <div
-      className={grid({
-        width: "full",
-        rowGap: noGap ? "0" : "8",
-        columnGap: "8",
-        minChildWidth: "320px",
-        placeItems: "stretch",
-      })}
+      className={cx(
+        grid({
+          width: "full",
+          rowGap: noGap ? "0" : "4",
+          columnGap: "4",
+          md: {
+            rowGap: noGap ? "0" : "8",
+            columnGap: "8",
+          },
+          minChildWidth: "350px",
+          placeItems: "stretch"
+        }),
+        css({
+          pl: noGap ? "0" : "4",
+          pr: noGap ? "0" : "4",
+          md: {
+            pl: "8",
+            pr: "8"
+          }
+        })
+      )}
     >
       {children}
     </div>
@@ -108,20 +128,12 @@ export function OfferCard({ children, color, background, }: { children: ReactNod
       position: "relative",
       background: "var(--bg)",
       padding: "6",
+      pt: "9",
       color: "var(--text)",
       display: "flex",
       flexDirection: "column",
       gap: "4",
       aspectRatio: "square",
-      '& h2': {
-        textStyle: "sansSerifBold",
-        fontSize: "5xl",
-      },
-      '& h3': {
-        textStyle: "sansSerifBold",
-        fontSize: "5xl",
-        lineHeight: "[1.4]",
-      },
       '& p': {
         mt: "2",
         fontWeight: "normal",
