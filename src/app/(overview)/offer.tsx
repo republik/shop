@@ -132,7 +132,7 @@ export function OfferGrid({ children, noGap }: { children: ReactNode; rowGap: bo
 }
 
 
-export function OfferCard({ children, color, background, }: { children: ReactNode; color?: string; background?: string; }) {
+export function OfferCard({ children, color, background, small }: { children: ReactNode; color?: string; background?: string; small?: boolean }) {
   return <div
     style={{
       // @ts-expect-error css vars
@@ -149,7 +149,10 @@ export function OfferCard({ children, color, background, }: { children: ReactNod
       display: "flex",
       flexDirection: "column",
       gap: "4",
-      aspectRatio: "square",
+      aspectRatio: small ? "auto" : "square",
+      md: {
+        aspectRatio: "square",
+      },
       '& p': {
         mt: "2",
         fontWeight: "normal",

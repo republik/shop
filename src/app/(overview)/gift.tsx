@@ -8,12 +8,13 @@ import CouponSVG from "../../../public/static/coupon.svg"
 const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" })
 const giftBg = "#EFEFEF"
 
-function Illu({ src } : { src: StaticImageData }) {
+function Illu({ src, hide } : { src: StaticImageData, hide: boolean }) {
   return <div className={css({
     height: "120",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    hideBelow: hide && "md",
   })}>
     <Image
       src={src}
@@ -47,8 +48,8 @@ export async function RedeemCard() {
   const tGift = await getTranslations("overview.gift.redeem");
 
   return (
-    <OfferCard background={giftBg}>
-      <Illu src={CouponSVG} />
+    <OfferCard background={giftBg} small>
+      <Illu src={CouponSVG} hide />
 
       <h3 className={titleStyle}>{tGift("title")}</h3>
 
