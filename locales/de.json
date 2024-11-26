@@ -34,7 +34,8 @@
         "interval": "pro Jahr",
         "intervalDiscount": "im ersten Jahr",
         "cta": "Mitglied werden",
-        "cancelable": "Jederzeit kündbar"
+        "cancelable": "Jederzeit kündbar",
+        "recommended": "Empfehlung"
       },
       "MONTHLY": {
         "title": "Monatlich",

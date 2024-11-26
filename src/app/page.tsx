@@ -52,14 +52,14 @@ export default async function Home() {
         >
           <OfferGrid noGap>
             <OfferCardPrimary
-              offerId="MONTHLY"
-              color="#C2E6D6"
-              background="#386447"
-            />
-            <OfferCardPrimary
               offerId="YEARLY"
               color="#9C0056"
               background="#FFADF7"
+            />
+            <OfferCardPrimary
+              offerId="MONTHLY"
+              color="#C2E6D6"
+              background="#386447"
             />
           </OfferGrid>
         </div>

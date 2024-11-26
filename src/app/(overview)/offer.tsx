@@ -35,6 +35,22 @@ export async function OfferCardPrimary({
 
   return (
     <OfferCard color={color} background={background}>
+      {tOffer.has("recommended") && (
+        <div className={css({
+          width: "auto",
+          alignSelf: "center",
+          fontWeight: "medium",
+          background: "#F4FF26",
+          pr: "16px",
+          pl: "16px",
+          pt: "12px",
+          pb: "12px",
+          mt: "-60px",
+        })}>
+          {tOffer("recommended")}
+        </div>
+      )}
+
       <h2 className={titleStyle}>{tOffer("title")}</h2>
 
       {offer.discount ? (
