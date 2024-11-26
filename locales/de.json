@@ -24,6 +24,11 @@
   "login": { "action": "Anmelden" },
 
   "overview": {
+    "tagline": {
+      "mission": "Unabhängiger Journalismus, finanziert von seinen Leserinnen und Lesern.",
+      "supportUs": "So können Sie uns unterstützen.",
+    },
+    "morePlans": "Weitere Pläne",
     "offer": {
       "YEARLY": {
         "title": "Jährlich",
@@ -54,6 +59,31 @@
         "cta": "Mitglied werden",
         "cancelable": "Jederzeit kündbar"
       }
+    },
+    "gift": {
+      "buy": {
+        "title": "Geschenk-Abo",
+        "info": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen herzlich machen können: Zugang zur Republik.",
+        "cta": "Alle Optionen anzeigen"
+      },
+      "redeem": {
+        "title": "Ein Geschenk einlösen",
+        "info": "Haben Sie die Republik als Geschenk erhalten? Aktivieren Sie jetzt Ihr Abonnement.",
+        "cta": "Abonnement einlösen"
+      }
+    },
+    "included": {
+      "title": "Was Sie erwartet:",
+      "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+      "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+      "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+      "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
+      "adFree": "Und das alles <b>ohne Werbung</b>",
+      "projectR": "<b>Nur Jährlich:</b> Werden Sie Mitglied der <b>Project R Genossenschaft</b>"
+    },
+    "reducedPrice": {
+      "description": "Sie können sich keinen der genannten Beiträge leisten?",
+      "linkText": "Gemeinsam finden wir eine Lösung."
     }
   },
 
