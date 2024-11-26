@@ -1,8 +1,10 @@
 import { css } from "@/theme/css";
 import {getTranslations} from "next-intl/server";
+import Link from "next/link";
 
 export async function OfferDescription() {
   const tDescription = await getTranslations("overview.description");
+
   return (
     <div
       className={css({
@@ -10,10 +12,10 @@ export async function OfferDescription() {
         maxWidth: "breakpoint-sm",
         mx: "auto",
         px: "6",
-        fontSize: "xl"
+        fontSize: "lg"
       })}
     >
-      <h2 className={css({ fontWeight: "medium" })}>{tDescription("title")}</h2>
+      <h2 className={css({ textStyle: "h3Sans" })}>{tDescription("title")}</h2>
       <ul>
         <DescriptionItem tKey="general" />
         <DescriptionItem tKey="briefings" />
@@ -22,14 +24,17 @@ export async function OfferDescription() {
         <DescriptionItem tKey="adFree" />
         <DescriptionItem tKey="projectR" />
       </ul>
+      <p className={css({ mt: "2rem", fontSize: "md" })}>{tDescription.rich("reducedPrice", {
+        reducedLink: (chunks) => <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1`}>{chunks}</Link>
+      })}</p>
     </div>
   );
 }
 
 async function DescriptionItem({ tKey }: { tKey: string }) {
-  const tDescription = await getTranslations("overview.description");
+  const tDescriptionItems = await getTranslations("overview.description.items");
   return (<li className={css({
-    mt: "2-4",
+    mt: "1rem",
     display: "flex",
     flexDirection: "row"
   })}>
@@ -39,7 +44,7 @@ async function DescriptionItem({ tKey }: { tKey: string }) {
       mt: "0.6rem",
       mr: "4-8"
     })}><CheckMark /></div>
-    <p>{tDescription.rich(tKey, {
+    <p>{tDescriptionItems.rich(tKey, {
     b: (chunks) => <b>{chunks}</b>
   })}</p>
   </li>)

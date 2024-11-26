@@ -4,6 +4,7 @@ import { css } from "@/theme/css";
 import Link from "next/link";
 import {getTranslations} from "next-intl/server";
 import {OfferDescription} from "@/app/(overview)/description";
+import {GiftCard, RedeemCard} from "@/app/(overview)/gift";
 
 export default async function Home() {
   const t = await getTranslations("overview");
@@ -35,10 +36,10 @@ export default async function Home() {
             <Logo />
           </Link>
           <div className={css({ textAlign: "center",  px: "6", })}>
-            <h2 className={css({ fontWeight: "medium", fontSize: "2xl" })}>
+            <h2 className={css({ textStyle: "h2Sans", })}>
               {t("lead")}
             </h2>
-            <p>{t("cta")}</p>
+            <h3>{t("cta")}</h3>
           </div>
         </div>
 
@@ -49,7 +50,7 @@ export default async function Home() {
             mx: "auto",
           })}
         >
-          <OfferGrid>
+          <OfferGrid noGap>
             <OfferCardPrimary
               offerId="MONTHLY"
               color="#C2E6D6"
@@ -85,6 +86,8 @@ export default async function Home() {
         <OfferGrid>
           <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" />
           <OfferCardPrimary offerId="STUDENT" background="#BBC8FF" />
+          <GiftCard />
+          <RedeemCard />
         </OfferGrid>
       </div>
     </div>

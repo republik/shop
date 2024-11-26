@@ -29,53 +29,42 @@ export async function OfferCardPrimary({
 
   return (
     <OfferCard color={color} background={background}>
-      <OfferText>
-        <h2>{tOffer("title")}</h2>
+      <h3>{tOffer("title")}</h3>
 
-        {offer.discount ? (
-          <>
-            <div>
-              <del>CHF {offer.price.amount / 100}</del>
-            </div>
-            <div>
-              CHF {(offer.price.amount - offer.discount.amountOff) / 100}
-            </div>
-            <div
-              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
-            >
-              {tOffer("intervalDiscount")}
-            </div>
-          </>
-        ) : offer.customPrice ? (
-          <>
-            <div>ab CHF {offer.customPrice.min / 100}</div>
+      {offer.discount ? (
+        <>
+          <h2>
+            <del>CHF {offer.price.amount / 100}</del>
+          </h2>
+          <h3>
+            CHF {(offer.price.amount - offer.discount.amountOff) / 100}
+          </h3>
+          <p><b>
+            {tOffer("intervalDiscount")}
+          </b></p>
+        </>
+      ) : offer.customPrice ? (
+        <>
+          <h3>ab CHF {offer.customPrice.min / 100}</h3>
 
-            <div
-              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
-            >
-              {tOffer("interval")}
-            </div>
-          </>
-        ) : (
-          <>
-            <div>CHF {offer.price.amount / 100}</div>
+          <p><b>
+            {tOffer("interval")}
+          </b></p>
+        </>
+      ) : (
+        <>
+          <h3>CHF {offer.price.amount / 100}</h3>
+          <p><b>
+            {tOffer("interval")}
+          </b></p>
+        </>
+      )}
 
-            <div
-              className={css({ fontWeight: "medium", fontSize: "md", mt: "2" })}
-            >
-              {tOffer("interval")}
-            </div>
-          </>
-        )}
-
-        {tOffer.has("info") && (
-          <div
-            className={css({ fontSize: "md", fontWeight: "normal", mt: "2" })}
-          >
-            {tOffer("info")}
-          </div>
-        )}
-      </OfferText>
+      {tOffer.has("info") && (
+        <p>
+          {tOffer("info")}
+        </p>
+      )}
 
       <OfferLink href={`/angebot/${offerId}`}>
         {tOffer("cta")}
@@ -90,12 +79,13 @@ export async function OfferCardPrimary({
   );
 }
 
-export function OfferGrid({ children }: { children: ReactNode }) {
+export function OfferGrid({ children, noGap = false }: { children: ReactNode; rowGap: boolean }) {
   return (
     <div
       className={grid({
         width: "full",
-        gap: "8",
+        rowGap: noGap ? "0" : "8",
+        columnGap: "8",
         minChildWidth: "320px",
         placeItems: "stretch",
       })}
@@ -106,7 +96,7 @@ export function OfferGrid({ children }: { children: ReactNode }) {
 }
 
 
-function OfferCard({ children, color, background, }: { children: ReactNode; color?: string; background?: string; }) {
+export function OfferCard({ children, color, background, }: { children: ReactNode; color?: string; background?: string; }) {
   return <div
     style={{
       // @ts-expect-error css vars
@@ -123,22 +113,29 @@ function OfferCard({ children, color, background, }: { children: ReactNode; colo
       flexDirection: "column",
       gap: "4",
       aspectRatio: "square",
+      '& h2': {
+        textStyle: "sansSerifBold",
+        fontSize: "5xl",
+      },
+      '& h3': {
+        textStyle: "sansSerifBold",
+        fontSize: "5xl",
+        lineHeight: "[1.4]",
+      },
+      '& p': {
+        mt: "2",
+        fontWeight: "normal",
+        fontSize: "md",
+        flexGrow: 1,
+        '& b': {
+          fontWeight: "medium",
+        }
+      }
     })}
   >{children}</div>
 }
 
-function OfferText({ children }: { children: ReactNode }) {
-  return <div
-    className={css({
-      textStyle: "sansSerifBold",
-      fontSize: "5xl",
-      lineHeight: "[1.4]",
-      flexGrow: 1,
-    })}
-  >{children}</div>
-}
-
-function OfferLink({ children, href }: { children: ReactNode, href: string }) {
+export function OfferLink({ children, href }: { children: ReactNode, href: string }) {
   return <Link
     href={href}
     className={linkOverlay({

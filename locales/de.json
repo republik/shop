@@ -72,16 +72,15 @@
     },
     "description": {
       "title": "Was Sie erwartet:",
-      "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
-      "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
-      "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
-      "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
-      "adFree": "Und das alles <b>ohne Werbung</b>",
-      "projectR": "<b>Nur Jährlich:</b> Werden Sie Mitglied der <b>Project R Genossenschaft</b>"
-    },
-    "reducedPrice": {
-      "description": "Sie können sich keinen der genannten Beiträge leisten?",
-      "linkText": "Gemeinsam finden wir eine Lösung."
+      "items": {
+        "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+        "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+        "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+        "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
+        "adFree": "Und das alles <b>ohne Werbung</b>",
+        "projectR": "<b>Nur Jährlich:</b> Werden Sie Mitglied der <b>Project R Genossenschaft</b>"
+      },
+      "reducedPrice": "Sie können sich keinen der genannten Beiträge leisten? <reducedLink>Gemeinsam finden wir eine Lösung.</reducedLink>"
     }
   },
 
