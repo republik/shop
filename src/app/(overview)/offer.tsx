@@ -40,12 +40,12 @@ export async function OfferCardPrimary({
           width: "auto",
           alignSelf: "center",
           fontWeight: "medium",
-          background: "#F4FF26",
-          pr: "16px",
-          pl: "16px",
-          pt: "12px",
-          pb: "12px",
-          mt: "-60px",
+          // FIXME
+          //background: "#F4FF26",
+          paddingX: "5",
+          paddingY: "2",
+          // FIXME
+          //mt: "-60px"
         })}>
           {tOffer("recommended")}
         </div>
@@ -101,7 +101,7 @@ export async function OfferCardPrimary({
   );
 }
 
-export function OfferGrid({ children, noGap }: { children: ReactNode; rowGap: boolean }) {
+export function OfferGrid({ children, noGap }: { children: ReactNode; noGap?: boolean }) {
   return (
     <div
       className={cx(
@@ -149,7 +149,7 @@ export function OfferCard({ children, color, background, small }: { children: Re
       display: "flex",
       flexDirection: "column",
       gap: "4",
-      aspectRatio: small ? "auto" : "square",
+      ...(small ? {} : { aspectRatio: "square" }),
       md: {
         aspectRatio: "square",
       },
@@ -166,7 +166,7 @@ export function OfferCard({ children, color, background, small }: { children: Re
   >{children}</div>
 }
 
-export function OfferLink({ children, href }: { children: ReactNode, href: string }) {
+export function OfferLink({ children, href }: { children: ReactNode; href: string }) {
   return <Link
     href={href}
     className={linkOverlay({

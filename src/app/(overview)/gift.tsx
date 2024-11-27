@@ -6,15 +6,16 @@ import GiftSVG from "../../../public/static/gift.svg"
 import CouponSVG from "../../../public/static/coupon.svg"
 
 const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" })
+// FIXME
 const giftBg = "#EFEFEF"
 
-function Illu({ src, hide } : { src: StaticImageData, hide: boolean }) {
+function Illu({ src, hide } : { src: StaticImageData, hide?: boolean }) {
   return <div className={css({
-    height: "120",
+    height: "2/5",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    hideBelow: hide && "md",
+    ...(hide? { hideBelow : "md"} : {})
   })}>
     <Image
       src={src}
