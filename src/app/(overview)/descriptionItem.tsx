@@ -2,6 +2,7 @@
 import { css } from "@/theme/css";
 import {ReactNode, useState} from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
+import { Button } from "@/components/ui/button";
 
 export function DescriptionItem({ text, children }: { text: ReactNode; children?: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -30,13 +31,13 @@ export function DescriptionItem({ text, children }: { text: ReactNode; children?
       })}>{text}</p>
       { children && <>
       <Collapsible.Trigger asChild>
-        <button className={css({
+        <Button variant="ghost" className={css({
           flexGrow: "0",
           flexShrink: "0",
           ml: "4-8"
         })}>
             <InfoIcon/>
-          </button>
+        </Button>
         </Collapsible.Trigger>
       <Collapsible.Content className={css({ ml: "4-8", pl: "4", color: "textSoft" })}>
         {children}
