@@ -1,4 +1,4 @@
-import { OfferCardPrimary, OfferGrid } from "@/app/(overview)/offer";
+import {OfferCardPrimary, OfferGrid, OfferGridCompact} from "@/app/(overview)/offer";
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import Link from "next/link";
@@ -50,7 +50,7 @@ export default async function Home() {
             mx: "auto",
           })}
         >
-          <OfferGrid noGap>
+          <OfferGridCompact>
             <OfferCardPrimary
               offerId="YEARLY"
               color="#9C0056"
@@ -61,7 +61,7 @@ export default async function Home() {
               color="#C2E6D6"
               background="#386447"
             />
-          </OfferGrid>
+          </OfferGridCompact>
         </div>
         <OfferDescription />
       </div>

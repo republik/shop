@@ -100,27 +100,52 @@ export async function OfferCardPrimary({
   );
 }
 
-export function OfferGrid({ children, noGap }: { children: ReactNode; noGap?: boolean }) {
+export function OfferGrid({ children }: { children: ReactNode }) {
   return (
     <div
       className={cx(
         grid({
           width: "full",
-          rowGap: noGap ? "0" : "4",
+          rowGap: "4",
           columnGap: "4",
           md: {
-            rowGap: noGap ? "0" : "8",
+            rowGap: "8",
             columnGap: "8",
           },
           minChildWidth: "350px",
           placeItems: "stretch"
         }),
         css({
-          pl: noGap ? "0" : "4",
-          pr: noGap ? "0" : "4",
+          px: "4",
+          mb: "4",
           md: {
-            pl: "8",
-            pr: "8"
+            px: "8",
+            mb: "8",
+          }
+        })
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function OfferGridCompact({ children }: { children: ReactNode }) {
+  return (
+    <div
+      className={cx(
+        grid({
+          width: "full",
+          columnGap: "4",
+          md: {
+            columnGap: "8",
+          },
+          minChildWidth: "350px",
+          placeItems: "stretch"
+        }),
+        css({
+          md: {
+            px: "8"
           }
         })
       )}
