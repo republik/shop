@@ -41,11 +41,10 @@ export async function OfferCardPrimary({
           alignSelf: "center",
           fontWeight: "medium",
           // FIXME
-          //background: "#F4FF26",
+          // background: "#F4FF26",
           paddingX: "5",
           paddingY: "2",
-          // FIXME
-          //mt: "-60px"
+          mt: "-14"
         })}>
           {tOffer("recommended")}
         </div>
