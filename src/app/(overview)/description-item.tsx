@@ -5,7 +5,7 @@ import * as Collapsible from "@radix-ui/react-collapsible";
 import { Button } from "@/components/ui/button";
 import {CheckIcon, InfoIcon} from "lucide-react";
 
-export function DescriptionItem({ text, children }: { text: ReactNode; children?: ReactNode }) {
+export function DescriptionItem({ children, info }: { children: ReactNode; info?: ReactNode }) {
   const [open, setOpen] = useState(false);
 
   return (<Collapsible.Root
@@ -29,8 +29,8 @@ export function DescriptionItem({ text, children }: { text: ReactNode; children?
       </div>
       <p className={css({
         flex: "1"
-      })}>{text}</p>
-      { children && <>
+      })}>{children}</p>
+      { info && <>
       <Collapsible.Trigger asChild>
         <Button variant="ghost" className={css({
           flexGrow: "0",
@@ -40,8 +40,8 @@ export function DescriptionItem({ text, children }: { text: ReactNode; children?
             <InfoIcon/>
         </Button>
         </Collapsible.Trigger>
-      <Collapsible.Content className={css({ ml: "4-8", pl: "4", color: "textSoft" })}>
-        {children}
+      <Collapsible.Content className={css({ ml: "4-8", pl: "6" })}>
+        <div className={css({ fontSize: "md" })}>{info}</div>
       </Collapsible.Content>
       </>}
     </li>

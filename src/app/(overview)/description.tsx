@@ -8,8 +8,9 @@ export async function OfferDescription() {
   const tDescription = await getTranslations("overview.description");
   const tDescriptionItems = await getTranslations("overview.description.items");
 
-  const getText = (tKey: "dialog" | "general" | "briefings" | "podcasts" | "adFree" | "projectR") => tDescriptionItems.rich(tKey, {
-    b: (chunks) => <b>{chunks}</b>
+  const getText = (tKey: "dialog" | "general" | "briefings" | "podcasts" | "adFree" | "projectR" | "projectRDescription") => tDescriptionItems.rich(tKey, {
+    b: (chunks) => <b>{chunks}</b>,
+    p: (chunks) => <p className={css({ mt: "2"})}>{chunks}</p>
   })
 
   return (
@@ -24,13 +25,13 @@ export async function OfferDescription() {
     >
       <h2 className={css({ textStyle: "h3Sans" })}>{tDescription("title")}</h2>
       <ul>
-        <DescriptionItem text={getText("general")} />
-        <DescriptionItem text={getText("briefings")} />
-        <DescriptionItem text={getText("dialog")} />
-        <DescriptionItem text={getText("podcasts")} />
-        <DescriptionItem text={getText("adFree")} />
-        <DescriptionItem text={getText("projectR")}>
-          <p className={css({ fontSize: "md" })}>{tDescriptionItems("projectRDescription")}</p>
+        <DescriptionItem>{getText("general")}</DescriptionItem>
+        <DescriptionItem>{getText("briefings")}</DescriptionItem>
+        <DescriptionItem>{getText("dialog")}</DescriptionItem>
+        <DescriptionItem>{getText("podcasts")}</DescriptionItem>
+        <DescriptionItem>{getText("adFree")}</DescriptionItem>
+        <DescriptionItem info={getText("projectRDescription")}>
+          {getText("projectR")}
         </DescriptionItem>
       </ul>
       <p className={css({ mt: "12", fontSize: "md" })}>{tDescription.rich("reducedPrice", {
