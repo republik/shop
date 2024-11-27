@@ -107,22 +107,13 @@ export function OfferGrid({ children }: { children: ReactNode }) {
       className={cx(
         grid({
           width: "full",
-          rowGap: "4",
-          columnGap: "4",
-          md: {
-            rowGap: "8",
-            columnGap: "8",
-          },
+          gap: "4-8",
           minChildWidth: "350px",
           placeItems: "stretch"
         }),
         css({
-          px: "4",
-          mb: "4",
-          md: {
-            px: "8",
-            mb: "8",
-          }
+          px: "4-8",
+          mb: "4-8"
         })
       )}
     >
