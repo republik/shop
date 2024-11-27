@@ -13,7 +13,8 @@ export default async function Home() {
       <div
         className={css({
           background: "[#DFD6C7]",
-          py: "16",
+          pt: "16",
+          pb: "12",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

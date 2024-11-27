@@ -40,8 +40,7 @@ export async function OfferCardPrimary({
           width: "auto",
           alignSelf: "center",
           fontWeight: "medium",
-          // FIXME
-          // background: "#F4FF26",
+          background: "[#F4FF26]",
           paddingX: "5",
           paddingY: "2",
           mt: "-14"

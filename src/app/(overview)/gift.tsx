@@ -6,7 +6,6 @@ import GiftSVG from "../../../public/static/gift.svg"
 import CouponSVG from "../../../public/static/coupon.svg"
 
 const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" })
-// FIXME
 const giftBg = "#EFEFEF"
 
 function Illu({ src, hide } : { src: StaticImageData, hide?: boolean }) {
