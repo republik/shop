@@ -30,7 +30,7 @@ export async function OfferCardPrimary({
   }
 
   const titleStyle = css({
-    textStyle: "sansSerifBold",
+    textStyle: "serifBold",
     fontSize: "5xl",
     lineHeight: "[1.1]"
   })
