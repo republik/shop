@@ -154,6 +154,7 @@ export function OfferCard({ children, color, background, small }: { children: Re
       // @ts-expect-error css vars
       "--text": color ?? token("colors.text"),
       "--bg": background ?? token("colors.amber.100"),
+      "--aspect-ratio": small ? "auto" : token("aspectRatios.square"),
     }}
     className={css({
       textStyle: "sansSerifMedium",
@@ -165,7 +166,7 @@ export function OfferCard({ children, color, background, small }: { children: Re
       display: "flex",
       flexDirection: "column",
       gap: "4",
-      ...(small ? {} : { aspectRatio: "square" }),
+      aspectRatio: "var(--aspect-ratio)",
       md: {
         aspectRatio: "square",
       },
