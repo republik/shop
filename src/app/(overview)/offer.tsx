@@ -11,10 +11,12 @@ export async function OfferCardPrimary({
   offerId,
   color,
   background,
+  redirect
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
   color?: string;
   background?: string;
+  redirect?: string;
 }) {
   const gql = getClient();
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
@@ -86,7 +88,7 @@ export async function OfferCardPrimary({
         </p>
       )}
 
-      <OfferLink href={`/angebot/${offerId}`}>
+      <OfferLink href={redirect || `/angebot/${offerId}`}>
         {tOffer("cta")}
       </OfferLink>
 

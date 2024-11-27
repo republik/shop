@@ -85,8 +85,8 @@ export default async function Home() {
           {t("more")}
         </h2>
         <OfferGrid>
-          <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" />
-          <OfferCardPrimary offerId="STUDENT" background="#BBC8FF" />
+          <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`} />
+          <OfferCardPrimary offerId="STUDENT" background="#BBC8FF" redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`} />
           <GiftCard />
           <RedeemCard />
         </OfferGrid>
