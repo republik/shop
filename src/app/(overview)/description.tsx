@@ -8,7 +8,7 @@ export async function OfferDescription() {
   const tDescription = await getTranslations("overview.description");
   const tDescriptionItems = await getTranslations("overview.description.items");
 
-  const getText = tKey => tDescriptionItems.rich(tKey, {
+  const getText = (tKey: "dialog" | "general" | "briefings" | "podcasts" | "adFree" | "projectR") => tDescriptionItems.rich(tKey, {
     b: (chunks) => <b>{chunks}</b>
   })
 
