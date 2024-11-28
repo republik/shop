@@ -23,6 +23,69 @@
 
   "login": { "action": "Anmelden" },
 
+  "overview": {
+    "lead": "Unabhängiger Journalismus, finanziert von seinen Leserinnen und Lesern.",
+    "cta": "So können Sie uns unterstützen.",
+    "subhead": "Willommens Angebot",
+    "more": "Weitere Angebote",
+    "offer": {
+      "YEARLY": {
+        "title": "Jährlich",
+        "interval": "pro Jahr",
+        "intervalDiscount": "im ersten Jahr",
+        "cta": "Mitglied werden",
+        "cancelable": "Jederzeit kündbar",
+        "recommended": "Empfehlung"
+      },
+      "MONTHLY": {
+        "title": "Monatlich",
+        "interval": "pro Monat",
+        "intervalDiscount": "im ersten Monat",
+        "cta": "Abonnement lösen",
+        "cancelable": "Jederzeit kündbar"
+      },
+      "BENEFACTOR": {
+        "title": "Gönner­schaft",
+        "interval": "pro Jahr",
+        "intervalDiscount": "im ersten Jahr",
+        "info": "Sie sind für Grosszügigkeit und können sich mehr leisten? Wunderbar! So sorgen Sie dafür, dass wir langfristig planen können.",
+        "cta": "Gönner werden"
+      },
+      "STUDENT": {
+        "title": "Ausbildung",
+        "interval": "pro Jahr",
+        "intervalDiscount": "im ersten Jahr",
+        "info": "Die vergünstigte Jahresmitgliedschaft für Menschen in Ausbildung.",
+        "cta": "Mitglied werden"
+      }
+    },
+    "gift": {
+      "buy": {
+        "title": "Geschenk-Abo",
+        "info": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen herzlich machen können: Zugang zur Republik.",
+        "cta": "Alle Optionen anzeigen"
+      },
+      "redeem": {
+        "title": "Ein Geschenk einlösen",
+        "info": "Haben Sie die Republik als Geschenk erhalten? Aktivieren Sie jetzt Ihr Abonnement.",
+        "cta": "Abonnement einlösen"
+      }
+    },
+    "description": {
+      "title": "Was Sie erwartet:",
+      "items": {
+        "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+        "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+        "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+        "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
+        "adFree": "Und das alles <b>ohne Werbung</b>",
+        "projectR": "<b>Nur Jährlich:</b> Werden Sie Mitglied der <b>Project R Genossenschaft</b>",
+        "projectRDescription": "<p><b>Project R</b> ist eine Genossenschaft, die sich für unabhängigen Journalismus, freie Meinungsäusserung, öffentliche Debatten und eine funktionierende Demokratie einsetzt.</p><p>Mit 46,4% der Anteile ist sie <b>Hauptaktionärin der Republik AG</b> und garantiert damit die Unabhängigkeit des Magazins.</p><p><b>Als Mitglied haben Sie keine Verpflichtungen, können aber bei ausgewählten Fragen mitentscheiden.</b></p>"
+      },
+      "reducedPrice": "Sie können sich keinen der genannten Beiträge leisten? <reducedLink>Gemeinsam finden wir eine Lösung.</reducedLink>"
+    }
+  },
+
   "checkout": {
     "actions": {
       "change": "Ändern",
