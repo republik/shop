@@ -1,12 +1,22 @@
-import {OfferCardPrimary, OfferGrid, OfferGridCompact} from "@/app/(overview)/offer";
+import {
+  OfferCardPrimary,
+  OfferGrid,
+  OfferGridCompact,
+} from "@/app/(overview)/offer";
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import Link from "next/link";
-import {getTranslations} from "next-intl/server";
-import {OfferDescription} from "@/app/(overview)/description";
-import {GiftCard, RedeemCard} from "@/app/(overview)/gift";
+import { getTranslations } from "next-intl/server";
+import { OfferDescription } from "@/app/(overview)/description";
+import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  // TODO remove once home is launched
+  if (process.env.REDIRECT_HOME_URL) {
+    redirect(process.env.REDIRECT_HOME_URL);
+  }
+
   const t = await getTranslations("overview");
   return (
     <div>
@@ -36,10 +46,8 @@ export default async function Home() {
           <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
             <Logo />
           </Link>
-          <div className={css({ textAlign: "center",  px: "6", })}>
-            <h2 className={css({ textStyle: "h2Sans", })}>
-              {t("lead")}
-            </h2>
+          <div className={css({ textAlign: "center", px: "6" })}>
+            <h2 className={css({ textStyle: "h2Sans" })}>{t("lead")}</h2>
             <h3>{t("cta")}</h3>
           </div>
         </div>
@@ -85,8 +93,16 @@ export default async function Home() {
           {t("more")}
         </h2>
         <OfferGrid>
-          <OfferCardPrimary offerId="BENEFACTOR" background="#FFC266" redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`} />
-          <OfferCardPrimary offerId="STUDENT" background="#BBC8FF" redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`} />
+          <OfferCardPrimary
+            offerId="BENEFACTOR"
+            background="#FFC266"
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`}
+          />
+          <OfferCardPrimary
+            offerId="STUDENT"
+            background="#BBC8FF"
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`}
+          />
           <GiftCard />
           <RedeemCard />
         </OfferGrid>
