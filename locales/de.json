@@ -59,6 +59,13 @@
         "cta": "Mitglied werden"
       }
     },
+    "item": {
+      "REPUBLIKSONDEREDITION": {
+        "title": "Nur für begrenzte Zeit",
+        "info": "Hinterlassen Sie eine Adresse und erhalten Sie (oder die beschenkte Person) <b>kostenlos</b> ein kleines feines Taschenbuch aus der neuen <b>Republik-Bibliothek-Sonderedition</b>.",
+        "cta": "Ja gerne"
+      }
+    },
     "gift": {
       "buy": {
         "title": "Geschenk-Abo",

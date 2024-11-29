@@ -147,6 +147,37 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
           />
         </fieldset>
       )}
+
+      {offer.optionalItems?.map(({ id }) => {
+        return (
+          <div
+            className={css({
+              background: "teal.200",
+              p: "4",
+            })}
+          >
+            <fieldset key={id}>
+              <h3
+                className={css({
+                  textStyle: "h3Sans",
+                })}
+              >
+                {t(`overview.item.${id}.title`)}
+              </h3>
+              <p>
+                {t.rich(`overview.item.${id}.info`, {
+                  b: (chunks) => <strong>{chunks}</strong>,
+                })}
+              </p>
+              <label>
+                <input name={`amount-${id}`} type="checkbox"></input>
+                {t(`overview.item.${id}.cta`)}
+              </label>
+            </fieldset>
+          </div>
+        );
+      })}
+
       <CheckoutPricingTable
         currency={offer.price.currency}
         items={checkoutItems}
