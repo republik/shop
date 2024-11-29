@@ -13,6 +13,9 @@ export const presetRepublik = definePreset({
       WebkitFontSmoothing: "auto",
       MozOsxFontSmoothing: "auto",
     },
+    "strong,b": {
+      fontWeight: "medium",
+    },
   },
   patterns: {
     extend: {
@@ -144,8 +147,8 @@ export const presetRepublik = definePreset({
             },
           },
           pop: {
-            value: "#F4FF26"
-          }
+            value: "#F4FF26",
+          },
         },
         sizes: {
           maxContentWidth: { value: "52rem" },

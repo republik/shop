@@ -63,7 +63,8 @@
       "REPUBLIKSONDEREDITION": {
         "title": "Nur für begrenzte Zeit",
         "info": "Hinterlassen Sie eine Adresse und erhalten Sie (oder die beschenkte Person) <b>kostenlos</b> ein kleines feines Taschenbuch aus der neuen <b>Republik-Bibliothek-Sonderedition</b>.",
-        "cta": "Ja gerne"
+        "cta": "Ja, gerne ein Exemplar erhalten.",
+        "ctaNote": "Geben Sie im nächsten Schritt eine Lieferadresse an."
       }
     },
     "gift": {

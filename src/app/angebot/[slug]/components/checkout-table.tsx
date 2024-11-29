@@ -2,6 +2,7 @@
 import { css, cx } from "@/theme/css";
 import { useMemo } from "react";
 import { useTranslations } from "next-intl";
+import { useFormatCurrency } from "@/lib/hooks/use-format";
 export interface CheckoutItem {
   label: string;
   amount: number;
@@ -15,6 +16,8 @@ interface CheckoutTableProps {
 function CheckoutTable(props: CheckoutTableProps) {
   const { currency, items } = props;
   const t = useTranslations();
+  const formatPrice = useFormatCurrency(currency);
+
   const total = useMemo(
     () =>
       items.reduce((acc, item) => {
@@ -38,6 +41,7 @@ function CheckoutTable(props: CheckoutTableProps) {
         "& tr > td:last-child": {
           textAlign: "right",
           pl: "[1ch]",
+          // fontVariantNumeric: "tabular-nums",
         },
         "& tfoot > tr > td:last-child": {
           fontWeight: "medium",
@@ -49,9 +53,7 @@ function CheckoutTable(props: CheckoutTableProps) {
           <th scope="col">
             {t("checkout.preCheckout.summary.table.heading.item")}
           </th>
-          <th scope="col">
-            {t("checkout.preCheckout.summary.table.heading.currency")}
-          </th>
+
           <th scope="col">
             {t("checkout.preCheckout.summary.table.heading.price")}
           </th>
@@ -65,16 +67,14 @@ function CheckoutTable(props: CheckoutTableProps) {
             data-f={JSON.stringify(item)}
           >
             <th scope="row">{item.label}</th>
-            <td>{currency.toUpperCase()}</td>
-            <td>{item.amount.toFixed(2)}</td>
+            <td>{formatPrice(item.amount)}</td>
           </tr>
         ))}
       </tbody>
       <tfoot>
         <tr>
           <th scope="row">{t("checkout.preCheckout.summary.table.summary")}</th>
-          <td>{currency.toUpperCase()}</td>
-          <td>{total.toFixed(2)}</td>
+          <td>{formatPrice(total)}</td>
         </tr>
       </tfoot>
     </table>

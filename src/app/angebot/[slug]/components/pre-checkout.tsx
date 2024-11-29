@@ -8,6 +8,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { useFormatCurrency } from "@/lib/hooks/use-format";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -17,19 +18,13 @@ interface PreCheckoutProps {
 export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
   const t = useTranslations();
 
+  const formatPrice = useFormatCurrency(offer.price.currency);
+
   const [isLoading, setLoading] = useState(false);
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
   );
   const priceId = useId();
-
-  const renderPrice = useCallback(
-    (price: number | null) =>
-      price != null
-        ? `${(price / 100).toFixed(0)} ${offer.price?.currency.toUpperCase()}`
-        : null,
-    [offer.price]
-  );
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
@@ -96,17 +91,21 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
             textStyle: "md",
           })}
         >
-          {t("checkout.preCheckout.pricePerInterval", {
-            price: renderPrice(
-              offer.customPrice
-                ? userPrice * 100 // since all other price values from stripe are in 'Rappen'
-                : offer.price.amount
-            ),
-            interval: t(
-              // @ts-expect-error FIXME possibly unknown interval
-              `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
-            ),
-          })}
+          {offer.price.recurring
+            ? t("checkout.preCheckout.pricePerInterval", {
+                price: formatPrice(
+                  offer.customPrice
+                    ? userPrice // since all other price values from stripe are in 'Rappen'
+                    : offer.price.amount / 100
+                ),
+                interval: t(
+                  // @ts-expect-error FIXME possibly unknown interval
+                  `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
+                ),
+              })
+            : formatPrice(
+                offer.customPrice ? userPrice : offer.price.amount / 100
+              )}
         </p>
       </div>
       {offer.customPrice && (
@@ -152,7 +151,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         return (
           <div
             className={css({
-              background: "teal.200",
+              background: "#C2E6D6",
               p: "4",
             })}
           >
@@ -173,6 +172,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
                 <input name={`amount-${id}`} type="checkbox"></input>
                 {t(`overview.item.${id}.cta`)}
               </label>
+              <small>{t(`overview.item.${id}.ctaNote`)}</small>
             </fieldset>
           </div>
         );
