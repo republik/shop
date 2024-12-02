@@ -1,4 +1,3 @@
-import { CompanyName } from "#graphql/republik-api/__generated__/gql/graphql";
 import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
 import { PreCheckout } from "@/app/angebot/[slug]/components/pre-checkout";
 import {
@@ -7,7 +6,6 @@ import {
   StepperChangeStepButton,
 } from "@/app/angebot/[slug]/components/stepper";
 import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
-import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
 import {
   expireCheckoutSession,
@@ -17,7 +15,6 @@ import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 type PageProps = {
@@ -52,8 +49,7 @@ export default async function GiftOfferPage({
   const { company } = offer;
 
   const t = await getTranslations();
-  const sessionId =
-    searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+  const sessionId = searchParams.session_id;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
 
   const me = await fetchMe(company);
@@ -86,7 +82,7 @@ export default async function GiftOfferPage({
         me?.stripeCustomer?.customerId
       );
     }
-    redirect(`/angebot/${params.slug}`);
+    redirect(`${params.slug}`);
   }
 
   // const canUserBuy = me && checkIfUserCanPurchase(me, offer.id);

@@ -1,6 +1,5 @@
 import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
 import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
-import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";
@@ -8,7 +7,6 @@ import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { LoginView, StepperSignOutButton } from "./components/login-view";
@@ -46,8 +44,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const { company } = offer;
 
   const t = await getTranslations();
-  const sessionId =
-    searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+  const sessionId = searchParams.session_id;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe(company);
 
@@ -58,8 +55,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         me?.stripeCustomer?.customerId
       )
     : undefined;
-
-  console.log("CHEK", checkoutSession);
 
   const loginStep: Step = {
     name: t("checkout.loginStep.title"),

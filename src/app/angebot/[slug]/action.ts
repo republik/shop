@@ -1,7 +1,6 @@
 "use server";
 
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import {
   ANALYTICS_COOKIE_NAME,
   AnalyticsObject,
@@ -50,13 +49,5 @@ export async function createCheckout(formData: FormData): Promise<void> {
     throw Error("Checkout session could not be created");
   }
 
-  cookies().set(
-    CHECKOUT_SESSION_ID_COOKIE,
-    data.createCheckoutSession.sessionId,
-    {
-      maxAge: 1000 * 60 * 30, // expire after30min
-    }
-  );
-
-  redirect(`?ok=ok`);
+  redirect(`?session_id=${data.createCheckoutSession.sessionId}`);
 }
