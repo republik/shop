@@ -16,7 +16,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <html>
+    <html lang="de">
       <body>
         <div
           className={css({

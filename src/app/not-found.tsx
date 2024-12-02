@@ -12,9 +12,9 @@ export default function NotFound() {
       className={css({
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
+        placeItems: "center",
         gap: "4",
+        margin: "auto",
       })}
     >
       <BotIcon
