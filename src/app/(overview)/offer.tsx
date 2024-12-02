@@ -1,4 +1,4 @@
-import { GetOfferDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { OfferCardDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 import { css, cx } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
@@ -21,7 +21,7 @@ export async function OfferCardPrimary({
   const gql = getClient();
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
-  const { data } = await gql.query(GetOfferDocument, { offerId });
+  const { data } = await gql.query(OfferCardDocument, { offerId });
 
   const offer = data?.offer;
 

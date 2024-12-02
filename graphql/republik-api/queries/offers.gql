@@ -1,0 +1,58 @@
+query OfferCard($offerId: ID!) {
+  offer: getOffer(offerId: $offerId) {
+    id
+    name
+
+    price {
+      amount
+      currency
+      recurring {
+        interval
+      }
+    }
+
+    customPrice {
+      min
+    }
+
+    discount {
+      name
+      amountOff
+    }
+  }
+}
+
+query OfferCheckout($offerId: ID!) {
+  offer: getOffer(offerId: $offerId) {
+    id
+    company
+    name
+    allowPromotions
+
+    price {
+      amount
+      currency
+      recurring {
+        interval
+      }
+    }
+
+    customPrice {
+      min
+      max
+      step
+    }
+
+    discount {
+      name
+      amountOff
+    }
+
+    promotionItems {
+      id
+      name
+      description
+      maxQuantity
+    }
+  }
+}

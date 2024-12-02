@@ -1626,12 +1626,14 @@ enum OSType {
 }
 
 type Offer {
+  allowPromotions: Boolean
   company: CompanyName!
   customPrice: CustomPrice
   discount: Discount
   id: ID!
   name: String!
   price: Price!
+  promotionItems: [PromotionItem!]
 }
 
 input OrderBy {
@@ -1908,6 +1910,18 @@ type Product {
 enum ProgressState {
   FINISHED
   UNFINISHED
+}
+
+type PromotionItem {
+  description: String!
+  id: String!
+  maxQuantity: Int!
+  name: String!
+}
+
+input PromotionItemOrder {
+  id: String!
+  quantity: Int!
 }
 
 type Publication implements MilestoneInterface {
@@ -3009,7 +3023,7 @@ type mutations {
   clearSession(sessionId: ID!, userId: ID): Boolean!
   clearSessions(userId: ID): Boolean!
   commit(document: DocumentInput!, isTemplate: Boolean, message: String!, parentId: ID, repoId: ID!): Commit!
-  createCheckoutSession(offerId: ID!, options: CheckoutSessionOptions, promoCode: String): CheckoutSession
+  createCheckoutSession(offerId: ID!, options: CheckoutSessionOptions, promoCode: String, promotionItems: [PromotionItemOrder]): CheckoutSession
   createDiscussion(anonymity: Permission!, maxLength: Int, minInterval: Int, tagRequired: Boolean!, tags: [String!], title: String): ID!
   createElection(electionInput: ElectionInput!): Election!
   createStripeCustomerPortalSession(companyName: CompanyName): CustomerPortalSession
@@ -3065,6 +3079,7 @@ type mutations {
   publishMemo(commitId: ID, id: ID, parentId: ID, repoId: ID!, text: String!): Memo!
   reactivateMembership(id: ID!): Membership!
   reclaimPledge(pledgeId: ID!): Boolean!
+  redeemGiftVoucher(voucherCode: String): Boolean
   refreshQuestionnaireResult(slug: String!): Questionnaire
   rematchPayments: String!
 
