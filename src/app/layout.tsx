@@ -1,4 +1,3 @@
-import { PageLayout } from "@/components/layout";
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
@@ -44,6 +43,9 @@ export default async function RootLayout({
       <body
         className={css({
           textStyle: "body",
+          minHeight: "[100dvh]",
+          display: "flex",
+          flexDirection: "column",
         })}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>

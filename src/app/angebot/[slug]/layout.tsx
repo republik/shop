@@ -1,6 +1,24 @@
-import { PageLayout } from "@/components/layout";
+import { Footer } from "@/components/layout/footer";
+import { Header } from "@/components/layout/header";
+import { css } from "@/theme/css";
 import { ReactNode } from "react";
 
 export default function CheckoutLayout({ children }: { children: ReactNode }) {
-  return <PageLayout>{children}</PageLayout>;
+  return (
+    <>
+      <Header />
+      <main
+        className={css({
+          flexGrow: 1,
+          // mx: "auto",
+          px: "4",
+          py: "8",
+          // display: "flex",
+        })}
+      >
+        {children}
+      </main>
+      <Footer />
+    </>
+  );
 }

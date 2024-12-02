@@ -10,6 +10,7 @@ import { getTranslations } from "next-intl/server";
 import { OfferDescription } from "@/app/(overview)/description";
 import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import { redirect } from "next/navigation";
+import { Footer } from "@/components/layout/footer";
 
 export default async function Home() {
   // TODO remove once home is launched
@@ -107,6 +108,7 @@ export default async function Home() {
           <RedeemCard />
         </OfferGrid>
       </div>
+      <Footer />
     </div>
   );
 }
