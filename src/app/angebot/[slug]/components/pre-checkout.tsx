@@ -3,14 +3,13 @@
 import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
+import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { useCallback, useId, useMemo, useState } from "react";
+import Image from "next/image";
+import { useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import { useFormatCurrency } from "@/lib/hooks/use-format";
-import Image from "next/image";
-import { flex, vstack } from "@/theme/patterns";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -184,19 +183,38 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
                   textStyle: "h3Sans",
                 })}
               >
-                {t(`checkout.promoItem.${id}.title`)}
+                {
+                  // @ts-expect-error potentially undefined id
+                  t(`checkout.promoItem.${id}.title`)
+                }
               </h3>
               <p>
-                {t.rich(`checkout.promoItem.${id}.info`, {
-                  b: (chunks) => <strong>{chunks}</strong>,
-                })}
+                {
+                  // @ts-expect-error potentially undefined id
+                  t.rich(`checkout.promoItem.${id}.info`, {
+                    b: (chunks) => <strong>{chunks}</strong>,
+                  })
+                }
               </p>
               <label>
-                <input name={`promoItem`} value={id} type="checkbox"></input>{" "}
-                {t(`checkout.promoItem.${id}.cta`)}
+                <input
+                  name={`promoItem`}
+                  value={id}
+                  type="checkbox"
+                  defaultChecked
+                ></input>{" "}
+                {
+                  // @ts-expect-error potentially undefined id
+                  t(`checkout.promoItem.${id}.cta`)
+                }
               </label>
               <p>
-                <small>{t(`checkout.promoItem.${id}.ctaNote`)}</small>
+                <small>
+                  {
+                    // @ts-expect-error potentially undefined id
+                    t(`checkout.promoItem.${id}.ctaNote`)
+                  }
+                </small>
               </p>
             </div>
           </fieldset>
