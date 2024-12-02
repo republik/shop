@@ -46,17 +46,17 @@ const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
  * Checks if the user can buy a subscription based on their current
  * subscriptions and memberships.
  * @param me The user object
- * @param subscriptionType The type of subscription to check
+ * @param offerId The type of subscription to check
  * @returns An object with the availability status and a reason if not available
  */
 export function checkIfUserCanPurchase(
   me: Me,
-  subscriptionType: string
+  offerId: string
 ): ReturnType<IsProductAvailableForUserPredicate> {
-  if (subscriptionType === "MONTHLY") {
+  if (offerId === "MONTHLY") {
     return canUserBuyMonthlyAbo(me);
   }
-  if (subscriptionType === "YEARLY") {
+  if (offerId === "YEARLY") {
     return canUserBuyYearlyAbo(me);
   }
 

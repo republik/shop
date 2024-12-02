@@ -69,7 +69,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
     >
       <input
         type="text"
-        name="subscriptionType"
+        name="offerId"
         hidden
         readOnly
         defaultValue={offer.id}

@@ -19,7 +19,7 @@ function readAnalyticsParamsFromCookie(): AnalyticsObject {
 }
 
 export async function createCheckout(formData: FormData): Promise<void> {
-  const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
+  const offerId = formData.get("offerId")?.toString() ?? "";
   const price = formData.get("price");
 
   const promoItems = formData.getAll("promoItem");
@@ -31,10 +31,10 @@ export async function createCheckout(formData: FormData): Promise<void> {
   const { data, error } = await gqlClient.mutation(
     CreateCheckoutSessionDocument,
     {
-      offerId: subscriptionType,
+      offerId: offerId,
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
-      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
+      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
       promotionItems: promoItems.map((item) => {
         return {
           id: item.toString(),
