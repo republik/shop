@@ -11,7 +11,7 @@ function initStripe(company: string): Stripe {
   });
 }
 
-type SessionData = Pick<
+type SessionData = { email: string | null | undefined } & Pick<
   Stripe.Checkout.Session,
   "id" | "status" | "client_secret"
 >;
@@ -51,6 +51,7 @@ export async function getCheckoutSession(
       id: session.id,
       status: session.status,
       client_secret: session.client_secret,
+      email: session.customer_email ?? session.customer_details?.email,
     };
   } catch (e) {
     // No need to log the error?

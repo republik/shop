@@ -9,6 +9,8 @@ import {
 import { SuccessView } from "./success-view";
 import { ErrorMessage } from "./error-message";
 
+import { redirect } from "next/navigation";
+
 interface CheckoutViewProps {
   clientSecret: string;
   company: string;
@@ -20,11 +22,11 @@ export function CheckoutView({
   company,
   errors,
 }: CheckoutViewProps) {
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
 
-  if (success) {
-    return <SuccessView />;
-  }
+  // if (success) {
+  //   return <SuccessView />;
+  // }
 
   return (
     <div id="checkout">
@@ -40,7 +42,7 @@ export function CheckoutView({
         options={{
           clientSecret,
           onComplete: () => {
-            setSuccess(true);
+            window.location.reload();
           },
         }}
       >

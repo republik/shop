@@ -59,6 +59,8 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       )
     : undefined;
 
+  console.log("CHEK", checkoutSession);
+
   const loginStep: Step = {
     name: t("checkout.loginStep.title"),
     detail: me ? (

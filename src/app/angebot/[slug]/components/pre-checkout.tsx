@@ -9,6 +9,8 @@ import { useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
+import Image from "next/image";
+import { flex, vstack } from "@/theme/patterns";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -147,15 +149,35 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         </fieldset>
       )}
 
+      <CheckoutPricingTable
+        currency={offer.price.currency}
+        items={checkoutItems}
+      />
+
       {offer.optionalItems?.map(({ id }) => {
         return (
-          <div
-            className={css({
-              background: "#C2E6D6",
-              p: "4",
-            })}
-          >
-            <fieldset key={id}>
+          <fieldset key={id}>
+            <div
+              className={css({
+                background: "#C2E6D6",
+                p: "4",
+                display: "flex",
+                flexDirection: "column",
+                gap: "4",
+              })}
+            >
+              <Image
+                className={css({
+                  width: "[10rem]",
+                  maxWidth: "full",
+                  // alignSelf: "center",
+                  mixBlendMode: "multiply",
+                })}
+                src="/assets/promo-book.jpg"
+                width={320}
+                height={320}
+              />
+
               <h3
                 className={css({
                   textStyle: "h3Sans",
@@ -172,16 +194,13 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
                 <input name={`amount-${id}`} type="checkbox"></input>
                 {t(`overview.item.${id}.cta`)}
               </label>
-              <small>{t(`overview.item.${id}.ctaNote`)}</small>
-            </fieldset>
-          </div>
+              <p>
+                <small>{t(`overview.item.${id}.ctaNote`)}</small>
+              </p>
+            </div>
+          </fieldset>
         );
       })}
-
-      <CheckoutPricingTable
-        currency={offer.price.currency}
-        items={checkoutItems}
-      />
 
       <Button
         className={css({
