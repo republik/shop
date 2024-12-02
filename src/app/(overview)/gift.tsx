@@ -35,7 +35,7 @@ export async function GiftCard() {
 
       <p>{tGift("info")}</p>
 
-      <OfferLink href={`/schenken/GIFT_YEARLY`}>{tGift("cta")}</OfferLink>
+      <OfferLink href={`/angebot/GIFT_YEARLY`}>{tGift("cta")}</OfferLink>
     </OfferCard>
   );
 }

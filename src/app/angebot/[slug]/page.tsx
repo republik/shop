@@ -48,6 +48,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe(company);
 
+  // TODO determine based on future offer field
+  const needsLogin = !offer.id.startsWith("GIFT_");
+
   const checkoutSession = sessionId
     ? await getCheckoutSession(
         company,
@@ -55,6 +58,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         me?.stripeCustomer?.customerId
       )
     : undefined;
+
+  if (checkoutSession?.status === "expired") {
+    redirect(params.slug);
+  }
 
   const loginStep: Step = {
     name: t("checkout.loginStep.title"),
@@ -79,7 +86,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     redirect(`/angebot/${params.slug}`);
   }
 
-  const canUserBuy = me && checkIfUserCanPurchase(me, offer.id);
+  const canUserBuy = needsLogin
+    ? me && checkIfUserCanPurchase(me, offer.id)
+    : { available: true };
 
   const productDetails: Step = {
     name: t("checkout.preCheckout.title"),
@@ -124,7 +133,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         </AlertDescription>
       </Alert>
     ),
-    disabled: !me,
+    disabled: (needsLogin && !me) || checkoutSession?.status === "open",
   };
 
   const checkoutStep: Step = {
@@ -151,10 +160,12 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         // TODO: log to sentry and render alert
         <p>{t("error.generic")}</p>
       ),
-    disabled: !me || !checkoutSession || checkoutSession.status === "expired",
+    disabled: (needsLogin && !me) || !checkoutSession,
   };
 
-  const steps: Step[] = [loginStep, productDetails, checkoutStep];
+  const steps: Step[] = needsLogin
+    ? [loginStep, productDetails, checkoutStep]
+    : [productDetails, checkoutStep];
 
   return (
     <div
