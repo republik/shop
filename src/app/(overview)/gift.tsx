@@ -35,11 +35,7 @@ export async function GiftCard() {
 
       <p>{tGift("info")}</p>
 
-      <OfferLink
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO_GIVE`}
-      >
-        {tGift("cta")}
-      </OfferLink>
+      <OfferLink href={`/schenken/GIFT_YEARLY`}>{tGift("cta")}</OfferLink>
     </OfferCard>
   );
 }

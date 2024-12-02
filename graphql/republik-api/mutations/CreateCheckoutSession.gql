@@ -3,6 +3,7 @@ mutation CreateCheckoutSession(
   $customPrice: Int
   $metadata: JSON
   $returnUrl: String
+  $promotionItems: [PromotionItemOrder]
 ) {
   createCheckoutSession(
     offerId: $offerId
@@ -12,6 +13,7 @@ mutation CreateCheckoutSession(
       metadata: $metadata
       returnURL: $returnUrl
     }
+    promotionItems: $promotionItems
   ) {
     company
     sessionId

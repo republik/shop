@@ -1,6 +1,6 @@
 "use client";
 
-import { GetOfferQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { css } from "@/theme/css";
@@ -14,7 +14,7 @@ import { flex, vstack } from "@/theme/patterns";
 
 interface PreCheckoutProps {
   initialPrice?: number;
-  offer: NonNullable<GetOfferQuery["offer"]>;
+  offer: NonNullable<OfferCheckoutQuery["offer"]>;
 }
 
 export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
@@ -154,12 +154,12 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         items={checkoutItems}
       />
 
-      {offer.optionalItems?.map(({ id }) => {
+      {offer.promotionItems?.map(({ id, name, description, maxQuantity }) => {
         return (
           <fieldset key={id}>
             <div
               className={css({
-                background: "#C2E6D6",
+                background: "[#C2E6D6]",
                 p: "4",
                 display: "flex",
                 flexDirection: "column",
@@ -176,6 +176,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
                 src="/assets/promo-book.jpg"
                 width={320}
                 height={320}
+                alt=""
               />
 
               <h3
@@ -183,19 +184,19 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
                   textStyle: "h3Sans",
                 })}
               >
-                {t(`overview.item.${id}.title`)}
+                {t(`checkout.promoItem.${id}.title`)}
               </h3>
               <p>
-                {t.rich(`overview.item.${id}.info`, {
+                {t.rich(`checkout.promoItem.${id}.info`, {
                   b: (chunks) => <strong>{chunks}</strong>,
                 })}
               </p>
               <label>
-                <input name={`amount-${id}`} type="checkbox"></input>
-                {t(`overview.item.${id}.cta`)}
+                <input name={`promoItem`} value={id} type="checkbox"></input>{" "}
+                {t(`checkout.promoItem.${id}.cta`)}
               </label>
               <p>
-                <small>{t(`overview.item.${id}.ctaNote`)}</small>
+                <small>{t(`checkout.promoItem.${id}.ctaNote`)}</small>
               </p>
             </div>
           </fieldset>

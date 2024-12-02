@@ -1,9 +1,5 @@
 import { CompanyName } from "#graphql/republik-api/__generated__/gql/graphql";
 import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
-import {
-  LoginView,
-  StepperSignOutButton,
-} from "@/app/angebot/[slug]/components/login-view";
 import { PreCheckout } from "@/app/angebot/[slug]/components/pre-checkout";
 import {
   Step,
@@ -13,19 +9,15 @@ import {
 import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
 import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
 import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
-import { checkIfUserCanPurchase } from "@/app/angebot/[slug]/lib/product-purchase-guards";
 import {
   expireCheckoutSession,
   getCheckoutSession,
 } from "@/app/angebot/[slug]/lib/stripe/server";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
-import { AlertCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 
 type PageProps = {
@@ -51,19 +43,7 @@ export default async function GiftOfferPage({
   params,
   searchParams,
 }: PageProps) {
-  // const offer = await fetchOffer(params.slug);
-
-  const offer = {
-    id: params.slug,
-    name: "Geschenk",
-    company: CompanyName.ProjectR,
-    price: {
-      amount: 24000,
-      currency: "chf",
-    },
-    discount: null,
-    optionalItems: [{ id: "REPUBLIKSONDEREDITION" }],
-  };
+  const offer = await fetchOffer(params.slug);
 
   if (!offer) {
     notFound();
@@ -76,8 +56,7 @@ export default async function GiftOfferPage({
     searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
 
-  // const me = await fetchMe(company);
-  const me = undefined;
+  const me = await fetchMe(company);
 
   const checkoutSession = sessionId
     ? await getCheckoutSession(

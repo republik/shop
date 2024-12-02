@@ -23,6 +23,8 @@ export async function createCheckout(formData: FormData): Promise<void> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
+  const promoItems = formData.getAll("promoItem");
+
   const gqlClient = getClient();
 
   const analyticsParams = readAnalyticsParamsFromCookie();
@@ -34,7 +36,12 @@ export async function createCheckout(formData: FormData): Promise<void> {
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${subscriptionType}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
-      additionalItems: [{ id: "buch", amount: 1 }],
+      promotionItems: promoItems.map((item) => {
+        return {
+          id: item.toString(),
+          quantity: 1, // hard-coded to 1
+        };
+      }),
     }
   );
 
@@ -51,5 +58,5 @@ export async function createCheckout(formData: FormData): Promise<void> {
     }
   );
 
-  redirect(`/angebot/${subscriptionType}`);
+  redirect(`?ok=ok`);
 }
