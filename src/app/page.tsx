@@ -48,28 +48,29 @@ export default async function Home() {
             <Logo />
           </Link>
           <div className={css({ textAlign: "center", px: "6" })}>
-            <h2 className={css({ textStyle: "h2Sans" })}>{t("lead")}</h2>
-            <h3>{t("cta")}</h3>
+            <h2 className={css({ textStyle: "leadBold" })}>{t("lead")}</h2>
+            <h3 className={css({ textStyle: "lead", mt: "2" })}>{t("cta")}</h3>
           </div>
         </div>
 
         <div
           className={css({
             width: "full",
-            maxWidth: "breakpoint-lg",
+            maxWidth: "[846px]",
             mx: "auto",
           })}
         >
           <OfferGridCompact>
             <OfferCardPrimary
               offerId="YEARLY"
-              color="#9C0056"
-              background="#FFADF7"
+              color="#324442"
+              background="#9CC5B5"
             />
             <OfferCardPrimary
               offerId="MONTHLY"
-              color="#C2E6D6"
-              background="#386447"
+              color="#D1CDD8"
+              background="#383654"
+              ctaColor="black"
             />
           </OfferGridCompact>
         </div>
@@ -79,7 +80,7 @@ export default async function Home() {
       <div
         className={css({
           width: "full",
-          maxWidth: "breakpoint-lg",
+          maxWidth: "[846px]",
           mx: "auto",
           mt: "16",
         })}
@@ -96,12 +97,12 @@ export default async function Home() {
         <OfferGrid>
           <OfferCardPrimary
             offerId="BENEFACTOR"
-            background="#FFC266"
+            background="#EFC07A"
             redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`}
           />
           <OfferCardPrimary
             offerId="STUDENT"
-            background="#BBC8FF"
+            background="#BCC9E9"
             redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`}
           />
           <GiftCard />

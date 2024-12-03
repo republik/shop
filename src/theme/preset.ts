@@ -143,9 +143,6 @@ export const presetRepublik = definePreset({
               _dark: "#A9A9A9",
             },
           },
-          pop: {
-            value: "#F4FF26"
-          }
         },
         sizes: {
           maxContentWidth: { value: "52rem" },
@@ -265,6 +262,24 @@ export const presetRepublik = definePreset({
             fontWeight: "medium",
             fontStyle: "normal",
             fontSize: "2xl",
+            lineHeight: 1.16667,
+          },
+        },
+        leadBold: {
+          value: {
+            fontFamily: "gtAmericaStandard",
+            fontWeight: "medium",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
+            lineHeight: 1.16667,
+          },
+        },
+        lead: {
+          value: {
+            fontFamily: "gtAmericaStandard",
+            fontWeight: "regular",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
             lineHeight: 1.16667,
           },
         },

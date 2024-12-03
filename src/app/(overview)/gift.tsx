@@ -1,9 +1,10 @@
 import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
-import { OfferCard, OfferLink } from "@/app/(overview)/offer";
+import {cta, OfferCard} from "@/app/(overview)/offer";
 import Image, { StaticImageData } from "next/image";
 import GiftSVG from "../../../public/static/gift.svg";
 import CouponSVG from "../../../public/static/coupon.svg";
+import Link from "next/link";
 
 const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" });
 const giftBg = "#EFEFEF";
@@ -35,11 +36,12 @@ export async function GiftCard() {
 
       <p>{tGift("info")}</p>
 
-      <OfferLink
+      <Link
         href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO_GIVE`}
+        className={cta({visual: "outline"})}
       >
         {tGift("cta")}
-      </OfferLink>
+      </Link>
     </OfferCard>
   );
 }
@@ -55,9 +57,12 @@ export async function RedeemCard() {
 
       <p>{tGift("info")}</p>
 
-      <OfferLink href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}>
+      <Link
+        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
+        className={cta({visual: "outline"})}
+      >
         {tGift("cta")}
-      </OfferLink>
+      </Link>
     </OfferCard>
   );
 }

@@ -1,6 +1,6 @@
 import { GetOfferDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
-import { css, cx } from "@/theme/css";
+import {css, cva, cx} from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
 import { getTranslations } from "next-intl/server";
@@ -11,11 +11,13 @@ export async function OfferCardPrimary({
   offerId,
   color,
   background,
+  ctaColor,
   redirect,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
   color?: string;
   background?: string;
+  ctaColor?: string;
   redirect?: string;
 }) {
   const gql = getClient();
@@ -32,21 +34,22 @@ export async function OfferCardPrimary({
   const titleStyle = css({
     textStyle: "serifBold",
     fontSize: "5xl",
-    lineHeight: "[1.1]",
+    lineHeight: "[0.9]",
   });
 
   return (
-    <OfferCard id={offerId} color={color} background={background}>
+    <OfferCard id={offerId} color={color} background={background} ctaColor={ctaColor}>
       {tOffer.has("recommended") && (
         <div
           className={css({
+            position: "absolute",
+            top: "-5",
             width: "auto",
             alignSelf: "center",
             fontWeight: "medium",
-            background: "pop",
+            background: "background",
             paddingX: "5",
             paddingY: "2",
-            mt: "-14",
           })}
         >
           {tOffer("recommended")}
@@ -58,7 +61,7 @@ export async function OfferCardPrimary({
       {offer.discount ? (
         <>
           <h3 className={titleStyle}>
-            <del>CHF {offer.price.amount / 100}</del>
+            CHF <del>{offer.price.amount / 100}</del>
           </h3>
           <h3 className={titleStyle}>
             CHF {(offer.price.amount - offer.discount.amountOff) / 100}
@@ -85,10 +88,12 @@ export async function OfferCardPrimary({
       )}
 
       {tOffer.has("info") && <p>{tOffer("info")}</p>}
-
-      <OfferLink href={redirect || `/angebot/${offerId}`}>
+      <Link
+        href={redirect || `/angebot/${offerId}`}
+        className={cta()}
+      >
         {tOffer("cta")}
-      </OfferLink>
+      </Link>
 
       {tOffer.has("cancelable") && (
         <div className={css({ textAlign: "center", fontWeight: "normal" })}>
@@ -150,12 +155,14 @@ export function OfferCard({
   children,
   color,
   background,
+  ctaColor,
   small,
 }: {
   id: string;
   children: ReactNode;
   color?: string;
   background?: string;
+  ctaColor?: string;
   small?: boolean;
 }) {
   return (
@@ -166,6 +173,7 @@ export function OfferCard({
         "--text": color ?? token("colors.text"),
         "--bg": background ?? token("colors.amber.100"),
         "--aspect-ratio": small ? "auto" : token("aspectRatios.square"),
+        "--cta": ctaColor || "white",
       }}
       className={css({
         textStyle: "sansSerifMedium",
@@ -182,7 +190,6 @@ export function OfferCard({
           aspectRatio: "square",
         },
         "& p": {
-          mt: "2",
           fontWeight: "normal",
           fontSize: "md",
           flexGrow: 1,
@@ -197,29 +204,23 @@ export function OfferCard({
   );
 }
 
-export function OfferLink({
-  children,
-  href,
-}: {
-  children: ReactNode;
-  href: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={linkOverlay({
-        borderRadius: "md",
-        fontSize: "lg",
-        whiteSpace: "nowrap",
-        px: "6",
-        py: "3",
-        background: "var(--text)",
-        color: "var(--bg)",
-        display: "block",
-        textAlign: "center",
-      })}
-    >
-      {children}
-    </Link>
-  );
-}
+export const cta = cva({
+  base: {
+    borderRadius: "sm",
+    fontSize: "lg",
+    whiteSpace: "nowrap",
+    px: "6",
+    py: "3",
+    display: "block",
+    textAlign: "center",
+  },
+  variants: {
+    visual: {
+      solid: { background: "var(--text)", color: "var(--cta)" },
+      outline: { borderWidth: "1px", borderColor: "black", color: "black" }
+    }
+  },
+  defaultVariants: {
+    visual: "solid"
+  }
+})

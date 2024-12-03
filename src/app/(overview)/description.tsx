@@ -23,7 +23,7 @@ export async function OfferDescription() {
         fontSize: "lg"
       })}
     >
-      <h2 className={css({ textStyle: "h3Sans" })}>{tDescription("title")}</h2>
+      <h2 className={css({ textStyle: "h3Sans", mb: "6" })}>{tDescription("title")}</h2>
       <ul>
         <DescriptionItem>{getText("general")}</DescriptionItem>
         <DescriptionItem>{getText("briefings")}</DescriptionItem>
