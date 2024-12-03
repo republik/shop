@@ -28,6 +28,10 @@
     "cta": "So können Sie uns unterstützen.",
     "subhead": "Willommens Angebot",
     "more": "Weitere Angebote",
+    "banner": {
+      "status": "Sieht so aus, als wären Sie Abonnentin.",
+      "link": "Besuchen Sie die Startseite von der Republik"
+    },
     "offer": {
       "YEARLY": {
         "title": "Jährlich",

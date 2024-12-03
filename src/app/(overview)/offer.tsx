@@ -213,6 +213,7 @@ export const cta = cva({
     px: "6",
     py: "3",
     display: "block",
+    fontWeight: "medium",
     textAlign: "center",
   },
   variants: {

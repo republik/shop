@@ -11,6 +11,8 @@ import { OfferDescription } from "@/app/(overview)/description";
 import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import { redirect } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
+import {AboBanner} from "@/components/layout/abo-banner";
+
 
 export default async function Home() {
   // TODO remove once home is launched
@@ -21,6 +23,7 @@ export default async function Home() {
   const t = await getTranslations("overview");
   return (
     <div>
+      <AboBanner />
       <div
         className={css({
           background: "[#DFD6C7]",
