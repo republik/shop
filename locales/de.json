@@ -24,7 +24,7 @@
   "login": { "action": "Anmelden" },
 
   "overview": {
-    "lead": "Unabhängiger Journalismus, finanziert von seinen Leserinnen und Lesern.",
+    "lead": "Unabhängiger Journalismus,<br></br>finanziert von seinen Leserinnen und Lesern.",
     "cta": "So können Sie uns unterstützen.",
     "subhead": "Willommens Angebot",
     "more": "Weitere Angebote",

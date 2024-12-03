@@ -47,9 +47,13 @@ export default async function Home() {
           <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
             <Logo />
           </Link>
-          <div className={css({ textAlign: "center", px: "6" })}>
-            <h2 className={css({ textStyle: "leadBold" })}>{t("lead")}</h2>
-            <h3 className={css({ textStyle: "lead", mt: "2" })}>{t("cta")}</h3>
+          <div className={css({ textAlign: "center" })}>
+            <h2 className={css({ textStyle: "leadBold" })}>
+              {t.rich("lead", {
+                br: () => <br/>,
+            })}
+            </h2>
+            <h3 className={css({ textStyle: "lead" })}>{t("cta")}</h3>
           </div>
         </div>
 

@@ -34,7 +34,12 @@ export async function OfferCardPrimary({
   const titleStyle = css({
     textStyle: "serifBold",
     fontSize: "5xl",
-    lineHeight: "[0.9]",
+    lineHeight: "[0.8]",
+  });
+
+  const intervalStyle = css({
+    fontWeight: "medium",
+    lineHeight: "[0.6]",
   });
 
   return (
@@ -66,40 +71,42 @@ export async function OfferCardPrimary({
           <h3 className={titleStyle}>
             CHF {(offer.price.amount - offer.discount.amountOff) / 100}
           </h3>
-          <p>
-            <b>{tOffer("intervalDiscount")}</b>
+          <p className={intervalStyle}>
+            {tOffer("intervalDiscount")}
           </p>
         </>
       ) : offer.customPrice ? (
         <>
           <h3 className={titleStyle}>ab CHF {offer.customPrice.min / 100}</h3>
-
-          <p>
-            <b>{tOffer("interval")}</b>
+          <p className={intervalStyle}>
+            {tOffer("interval")}
           </p>
         </>
       ) : (
         <>
           <h3 className={titleStyle}>CHF {offer.price.amount / 100}</h3>
-          <p>
-            <b>{tOffer("interval")}</b>
+          <p className={intervalStyle}>
+            {tOffer("interval")}
           </p>
         </>
       )}
 
-      {tOffer.has("info") && <p>{tOffer("info")}</p>}
-      <Link
-        href={redirect || `/angebot/${offerId}`}
-        className={cta()}
-      >
-        {tOffer("cta")}
-      </Link>
+      {tOffer.has("info") && <p className={css({flexGrow: 1})}>{tOffer("info")}</p>}
 
-      {tOffer.has("cancelable") && (
-        <div className={css({ textAlign: "center", fontWeight: "normal" })}>
-          {tOffer("cancelable")}
-        </div>
-      )}
+      <div className={css({mt: "auto"})}>
+        <Link
+          href={redirect || `/angebot/${offerId}`}
+          className={cta()}
+        >
+          {tOffer("cta")}
+        </Link>
+
+        {tOffer.has("cancelable") && (
+          <div className={css({ textAlign: "center", fontWeight: "normal", mt: "4" })}>
+            {tOffer("cancelable")}
+          </div>
+        )}
+      </div>
     </OfferCard>
   );
 }
@@ -186,16 +193,10 @@ export function OfferCard({
         flexDirection: "column",
         gap: "4",
         aspectRatio: "var(--aspect-ratio)",
+        fontWeight: "normal",
+        fontSize: "md",
         md: {
           aspectRatio: "square",
-        },
-        "& p": {
-          fontWeight: "normal",
-          fontSize: "md",
-          flexGrow: 1,
-          "& b": {
-            fontWeight: "medium",
-          },
         },
       })}
     >

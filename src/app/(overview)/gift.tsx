@@ -13,14 +13,15 @@ function Illu({ src, hide }: { src: StaticImageData; hide?: boolean }) {
   return (
     <div
       className={css({
-        height: "2/5",
+        height: "[80px]",
+        py: "4",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         ...(hide ? { hideBelow: "md" } : {}),
       })}
     >
-      <Image src={src} alt="gift image" width={100} />
+      <Image src={src} alt="gift image" />
     </div>
   );
 }
@@ -34,14 +35,16 @@ export async function GiftCard() {
 
       <h3 className={titleStyle}>{tGift("title")}</h3>
 
-      <p>{tGift("info")}</p>
+      <p className={css({ flexGrow: 1 })}>{tGift("info")}</p>
 
-      <Link
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO_GIVE`}
-        className={cta({visual: "outline"})}
-      >
-        {tGift("cta")}
-      </Link>
+      <div className={css({mt: "auto"})}>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO_GIVE`}
+          className={cta({visual: "outline"})}
+        >
+          {tGift("cta")}
+        </Link>
+      </div>
     </OfferCard>
   );
 }
@@ -57,12 +60,14 @@ export async function RedeemCard() {
 
       <p>{tGift("info")}</p>
 
-      <Link
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
-        className={cta({visual: "outline"})}
-      >
-        {tGift("cta")}
-      </Link>
+      <div className={css({mt: "auto"})}>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
+          className={cta({visual: "outline"})}
+        >
+          {tGift("cta")}
+        </Link>
+      </div>
     </OfferCard>
   );
 }
