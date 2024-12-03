@@ -27,7 +27,7 @@ export async function AboBanner() {
         <span>
           {t("status")}
         </span>
-        <Link href={''}>
+        <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL}>
           {t("link")}
           <span className={css({ display: "inline-block", ml: "1", height: "[1rem]" })}><ArrowRight height="140%"/></span>
         </Link>
