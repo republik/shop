@@ -8,6 +8,9 @@ export async function AboBanner() {
   const me = await fetchMe();
   if (!me) return null
 
+  const { activeMembership, activeMagazineSubscription } = me
+  if (!activeMembership && !activeMagazineSubscription ) return null
+
   const t = await getTranslations("overview.banner");
 
   return (
