@@ -1,10 +1,11 @@
-import { css } from "@/theme/css";
+import { cardButton, OfferCard } from "@/app/(overview)/offer";
+import { css, cx } from "@/theme/css";
+import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import {cta, OfferCard} from "@/app/(overview)/offer";
 import Image, { StaticImageData } from "next/image";
-import GiftSVG from "../../../public/static/gift.svg";
-import CouponSVG from "../../../public/static/coupon.svg";
 import Link from "next/link";
+import CouponSVG from "../../../public/static/coupon.svg";
+import GiftSVG from "../../../public/static/gift.svg";
 
 const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" });
 const giftBg = "#EFEFEF";
@@ -37,10 +38,10 @@ export async function GiftCard() {
 
       <p className={css({ flexGrow: 1 })}>{tGift("info")}</p>
 
-      <div className={css({mt: "auto"})}>
+      <div className={css({ mt: "auto" })}>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?group=GIVE`}
-          className={cta({visual: "outline"})}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tGift("cta")}
         </Link>
@@ -60,10 +61,10 @@ export async function RedeemCard() {
 
       <p>{tGift("info")}</p>
 
-      <div className={css({mt: "auto"})}>
+      <div className={css({ mt: "auto" })}>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
-          className={cta({visual: "outline"})}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tGift("cta")}
         </Link>

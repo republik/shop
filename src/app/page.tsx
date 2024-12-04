@@ -11,8 +11,7 @@ import { OfferDescription } from "@/app/(overview)/description";
 import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import { redirect } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
-import {AboBanner} from "@/components/layout/abo-banner";
-
+import { AboBanner } from "@/components/layout/abo-banner";
 
 export default async function Home() {
   // TODO remove once home is launched
@@ -53,8 +52,8 @@ export default async function Home() {
           <div className={css({ textAlign: "center" })}>
             <h2 className={css({ textStyle: "leadBold" })}>
               {t.rich("lead", {
-                br: () => <br/>,
-            })}
+                br: () => <br />,
+              })}
             </h2>
             <h3 className={css({ textStyle: "lead" })}>{t("cta")}</h3>
           </div>
