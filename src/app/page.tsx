@@ -1,25 +1,19 @@
+import { OfferDescription } from "@/app/(overview)/description";
+import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import {
   OfferCardPrimary,
   OfferGrid,
   OfferGridCompact,
 } from "@/app/(overview)/offer";
+import { AboBanner } from "@/components/layout/abo-banner";
+import { Footer } from "@/components/layout/footer";
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
-import Link from "next/link";
-import { getTranslations } from "next-intl/server";
-import { OfferDescription } from "@/app/(overview)/description";
-import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
-import { redirect } from "next/navigation";
-import { Footer } from "@/components/layout/footer";
-import { AboBanner } from "@/components/layout/abo-banner";
 import { visuallyHidden } from "@/theme/patterns";
+import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 
 export default async function Home() {
-  // TODO remove once home is launched
-  if (process.env.REDIRECT_HOME_URL) {
-    redirect(process.env.REDIRECT_HOME_URL);
-  }
-
   const t = await getTranslations("overview");
   return (
     <div>
