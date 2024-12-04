@@ -29,8 +29,8 @@
     "subhead": "Willommens Angebot",
     "more": "Weitere Angebote",
     "banner": {
-      "status": "Sieht so aus, als wären Sie Abonnentin.",
-      "link": "Besuchen Sie die Startseite von der Republik"
+      "status": "Sieht so aus, als wären Sie Abonnent.",
+      "link": "Besuchen Sie die Startseite der Republik"
     },
     "offer": {
       "YEARLY": {
@@ -56,7 +56,7 @@
         "cta": "Gönner werden"
       },
       "STUDENT": {
-        "title": "Ausbildung",
+        "title": "In Ausbildung",
         "interval": "pro Jahr",
         "intervalDiscount": "im ersten Jahr",
         "info": "Die vergünstigte Jahresmitgliedschaft für Menschen in Ausbildung.",
