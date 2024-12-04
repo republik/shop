@@ -168,14 +168,7 @@ export const presetRepublik = definePreset({
             logoMargin: { value: { base: "12px 0", md: "15px 0" } },
           },
         },
-        fontSizes: {
-          "l-xl": {
-            value: {
-              base: "{fontSizes.l}",
-              md: "{fontSizes.xl}",
-            },
-          },
-        },
+        fontSizes: {},
       },
 
       textStyles: {
@@ -207,7 +200,7 @@ export const presetRepublik = definePreset({
             fontFamily: "rubis",
             fontWeight: "regular",
             fontStyle: "normal",
-            fontSize: { base: "l", md: "xl" },
+            fontSize: { base: "lg", md: "xl" },
             lineHeight: 1.375,
           },
         },
@@ -216,7 +209,7 @@ export const presetRepublik = definePreset({
             fontFamily: "gtAmericaStandard",
             fontWeight: "regular",
             fontStyle: "normal",
-            fontSize: { base: "l", md: "xl" },
+            fontSize: { base: "lg", md: "xl" },
             lineHeight: 1.375,
           },
         },
