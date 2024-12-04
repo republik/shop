@@ -63,7 +63,7 @@ export default async function Home() {
         <div
           className={css({
             width: "full",
-            maxWidth: "maxCardGridWidth",
+            maxWidth: "maxContentWidth",
             mx: "auto",
           })}
         >
@@ -87,7 +87,7 @@ export default async function Home() {
       <div
         className={css({
           width: "full",
-          maxWidth: "maxCardGridWidth",
+          maxWidth: "maxContentWidth",
           mx: "auto",
           mt: "16",
         })}
