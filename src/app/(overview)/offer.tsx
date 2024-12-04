@@ -34,12 +34,12 @@ export async function OfferCardPrimary({
   const titleStyle = css({
     textStyle: "serifBold",
     fontSize: "5xl",
-    lineHeight: "[0.8]",
+    lineHeight: "tight",
   });
 
   const intervalStyle = css({
     fontWeight: "medium",
-    lineHeight: "[0.6]",
+    lineHeight: "normal",
   });
 
   return (
@@ -58,43 +58,45 @@ export async function OfferCardPrimary({
             alignSelf: "center",
             fontWeight: "medium",
             background: "background",
-            paddingX: "5",
-            paddingY: "2",
+            px: "4",
+            py: "2",
           })}
         >
           {tOffer("recommended")}
         </div>
       )}
 
-      <h2 className={titleStyle}>{tOffer("title")}</h2>
+      <div>
+        <h2 className={titleStyle}>{tOffer("title")}</h2>
 
-      {offer.discount ? (
-        <>
-          <p className={titleStyle}>
-            CHF <del>{offer.price.amount / 100}</del>
-          </p>
-          <p className={titleStyle}>
-            CHF {(offer.price.amount - offer.discount.amountOff) / 100}
-          </p>
-          <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
-        </>
-      ) : offer.customPrice ? (
-        <>
-          <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
-          <p className={intervalStyle}>{tOffer("interval")}</p>
-        </>
-      ) : (
-        <>
-          <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
-          <p className={intervalStyle}>{tOffer("interval")}</p>
-        </>
-      )}
+        {offer.discount ? (
+          <>
+            <p className={titleStyle}>
+              CHF <del>{offer.price.amount / 100}</del>
+            </p>
+            <p className={titleStyle}>
+              CHF {(offer.price.amount - offer.discount.amountOff) / 100}
+            </p>
+            <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
+          </>
+        ) : offer.customPrice ? (
+          <>
+            <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
+            <p className={intervalStyle}>{tOffer("interval")}</p>
+          </>
+        ) : (
+          <>
+            <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
+            <p className={intervalStyle}>{tOffer("interval")}</p>
+          </>
+        )}
+      </div>
 
-      {tOffer.has("info") && (
-        <p className={css({ flexGrow: 1 })}>{tOffer("info")}</p>
-      )}
+      <div className={css({ flexGrow: 1 })}>
+        {tOffer.has("info") && <p>{tOffer("info")}</p>}
+      </div>
 
-      <div className={css({ mt: "auto" })}>
+      <div className={css({})}>
         <Link
           href={redirect || `/angebot/${offerId}`}
           className={cx(cardButton(), linkOverlay())}
@@ -193,8 +195,7 @@ export function OfferCard({
         textStyle: "sansSerifMedium",
         position: "relative",
         background: "var(--bg)",
-        padding: "6",
-        pt: "9",
+        p: "6",
         color: "var(--text)",
         display: "flex",
         flexDirection: "column",

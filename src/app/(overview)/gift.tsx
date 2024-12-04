@@ -7,7 +7,11 @@ import Link from "next/link";
 import CouponSVG from "../../../public/static/coupon.svg";
 import GiftSVG from "../../../public/static/gift.svg";
 
-const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" });
+const titleStyle = css({
+  fontSize: "3xl",
+  lineHeight: "tight",
+  textStyle: "sansSerifBold",
+});
 const giftBg = "#EFEFEF";
 
 function Illu({ src, hide }: { src: StaticImageData; hide?: boolean }) {
