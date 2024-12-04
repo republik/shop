@@ -24,6 +24,7 @@
   "login": { "action": "Anmelden" },
 
   "overview": {
+    "title": "Die Republik-Angebote",
     "lead": "Unabhängiger Journalismus,<br></br>finanziert von seinen Leserinnen und Lesern.",
     "cta": "So können Sie uns unterstützen.",
     "subhead": "Willommens Angebot",

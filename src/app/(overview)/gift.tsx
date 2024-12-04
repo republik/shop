@@ -34,7 +34,7 @@ export async function GiftCard() {
     <OfferCard id="gift-buy" background={giftBg}>
       <Illu src={GiftSVG} />
 
-      <h3 className={titleStyle}>{tGift("title")}</h3>
+      <h2 className={titleStyle}>{tGift("title")}</h2>
 
       <p className={css({ flexGrow: 1 })}>{tGift("info")}</p>
 
@@ -57,7 +57,7 @@ export async function RedeemCard() {
     <OfferCard id="gift-redeem" background={giftBg} small>
       <Illu src={CouponSVG} hide />
 
-      <h3 className={titleStyle}>{tGift("title")}</h3>
+      <h2 className={titleStyle}>{tGift("title")}</h2>
 
       <p>{tGift("info")}</p>
 

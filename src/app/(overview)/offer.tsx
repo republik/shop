@@ -70,22 +70,22 @@ export async function OfferCardPrimary({
 
       {offer.discount ? (
         <>
-          <h3 className={titleStyle}>
+          <p className={titleStyle}>
             CHF <del>{offer.price.amount / 100}</del>
-          </h3>
-          <h3 className={titleStyle}>
+          </p>
+          <p className={titleStyle}>
             CHF {(offer.price.amount - offer.discount.amountOff) / 100}
-          </h3>
+          </p>
           <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
         </>
       ) : offer.customPrice ? (
         <>
-          <h3 className={titleStyle}>ab CHF {offer.customPrice.min / 100}</h3>
+          <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
           <p className={intervalStyle}>{tOffer("interval")}</p>
         </>
       ) : (
         <>
-          <h3 className={titleStyle}>CHF {offer.price.amount / 100}</h3>
+          <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
           <p className={intervalStyle}>{tOffer("interval")}</p>
         </>
       )}

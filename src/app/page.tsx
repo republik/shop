@@ -12,6 +12,7 @@ import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import { redirect } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
 import { AboBanner } from "@/components/layout/abo-banner";
+import { visuallyHidden } from "@/theme/patterns";
 
 export default async function Home() {
   // TODO remove once home is launched
@@ -50,12 +51,13 @@ export default async function Home() {
             <Logo />
           </Link>
           <div className={css({ textAlign: "center" })}>
-            <h2 className={css({ textStyle: "leadBold" })}>
+            <h1 className={visuallyHidden()}>{t("title")}</h1>
+            <p className={css({ textStyle: "leadBold" })}>
               {t.rich("lead", {
                 br: () => <br />,
               })}
-            </h2>
-            <h3 className={css({ textStyle: "lead" })}>{t("cta")}</h3>
+            </p>
+            <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
           </div>
         </div>
 
