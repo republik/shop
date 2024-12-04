@@ -90,7 +90,7 @@ export default async function Home() {
           width: "full",
           maxWidth: "maxContentWidth",
           mx: "auto",
-          mt: "16",
+          my: "16",
         })}
       >
         <h2

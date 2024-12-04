@@ -123,18 +123,13 @@ export async function OfferCardPrimary({
 export function OfferGrid({ children }: { children: ReactNode }) {
   return (
     <div
-      className={cx(
-        grid({
-          width: "full",
-          gap: "4-8",
-          minChildWidth: "350px",
-          placeItems: "stretch",
-        }),
-        css({
-          px: "4-8",
-          mb: "4-8",
-        })
-      )}
+      className={grid({
+        width: "full",
+        gap: "4-8",
+        minChildWidth: "350px",
+        placeItems: "stretch",
+        px: "4-8",
+      })}
     >
       {children}
     </div>
@@ -144,22 +139,12 @@ export function OfferGrid({ children }: { children: ReactNode }) {
 export function OfferGridCompact({ children }: { children: ReactNode }) {
   return (
     <div
-      className={cx(
-        grid({
-          width: "full",
-          columnGap: "4",
-          md: {
-            columnGap: "8",
-          },
-          minChildWidth: "350px",
-          placeItems: "stretch",
-        }),
-        css({
-          md: {
-            px: "8",
-          },
-        })
-      )}
+      className={grid({
+        width: "full",
+        gap: "4-8",
+        minChildWidth: "350px",
+        placeItems: "stretch",
+      })}
     >
       {children}
     </div>
