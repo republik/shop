@@ -11,6 +11,8 @@ import { OfferDescription } from "@/app/(overview)/description";
 import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
 import { redirect } from "next/navigation";
 import { Footer } from "@/components/layout/footer";
+import { AboBanner } from "@/components/layout/abo-banner";
+import { visuallyHidden } from "@/theme/patterns";
 
 export default async function Home() {
   // TODO remove once home is launched
@@ -21,6 +23,7 @@ export default async function Home() {
   const t = await getTranslations("overview");
   return (
     <div>
+      <AboBanner />
       <div
         className={css({
           background: "[#DFD6C7]",
@@ -47,29 +50,35 @@ export default async function Home() {
           <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
             <Logo />
           </Link>
-          <div className={css({ textAlign: "center", px: "6" })}>
-            <h2 className={css({ textStyle: "h2Sans" })}>{t("lead")}</h2>
-            <h3>{t("cta")}</h3>
+          <div className={css({ textAlign: "center" })}>
+            <h1 className={visuallyHidden()}>{t("title")}</h1>
+            <p className={css({ textStyle: "leadBold" })}>
+              {t.rich("lead", {
+                br: () => <br />,
+              })}
+            </p>
+            <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
           </div>
         </div>
 
         <div
           className={css({
             width: "full",
-            maxWidth: "breakpoint-lg",
+            maxWidth: "maxContentWidth",
             mx: "auto",
           })}
         >
           <OfferGridCompact>
             <OfferCardPrimary
               offerId="YEARLY"
-              color="#9C0056"
-              background="#FFADF7"
+              color="#324442"
+              background="#9CC5B5"
             />
             <OfferCardPrimary
               offerId="MONTHLY"
-              color="#C2E6D6"
-              background="#386447"
+              color="#D1CDD8"
+              background="#383654"
+              ctaColor="black"
             />
           </OfferGridCompact>
         </div>
@@ -79,9 +88,9 @@ export default async function Home() {
       <div
         className={css({
           width: "full",
-          maxWidth: "breakpoint-lg",
+          maxWidth: "maxContentWidth",
           mx: "auto",
-          mt: "16",
+          my: "16",
         })}
       >
         <h2
@@ -96,12 +105,12 @@ export default async function Home() {
         <OfferGrid>
           <OfferCardPrimary
             offerId="BENEFACTOR"
-            background="#FFC266"
+            background="#EFC07A"
             redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`}
           />
           <OfferCardPrimary
             offerId="STUDENT"
-            background="#BBC8FF"
+            background="#BCC9E9"
             redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`}
           />
           <GiftCard />
