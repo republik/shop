@@ -1,5 +1,6 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { CheckoutSessionData } from "@/app/angebot/[slug]/lib/stripe/server";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
@@ -10,11 +11,16 @@ import { usePlausible } from "next-plausible";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
 
-export function SuccessView() {
-  const t = useTranslations();
+type SuccessProps = {
+  offer: { id: string; name: string };
+  session: CheckoutSessionData;
+};
+
+export function SubscriptionSuccess({ offer, session }: SuccessProps) {
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
   });
+  const t = useTranslations("checkout.checkout.success.subscription");
 
   const [
     startCheckingForActiveSubscription,
@@ -49,26 +55,35 @@ export function SuccessView() {
   }, [meRes.data, startCheckingForActiveSubscription, plausible]);
 
   return (
-    <div
-      className={css({
-        display: "flex",
-        flexDirection: "column",
-        gap: "4",
-        p: "3",
-      })}
-    >
-      <Alert variant="success">
-        <CheckCircleIcon
-          className={css({
-            height: "8",
-            width: "8",
-          })}
-        />
-        <AlertTitle>{t("checkout.checkout.success.title")}</AlertTitle>
-        <AlertDescription>
-          {t("checkout.checkout.success.description")}
-        </AlertDescription>
-      </Alert>
-    </div>
+    <Alert variant="success">
+      <CheckCircleIcon
+        className={css({
+          height: "8",
+          width: "8",
+        })}
+      />
+      <AlertTitle>{t("title")}</AlertTitle>
+      <AlertDescription>{t("description")}</AlertDescription>
+    </Alert>
+  );
+}
+
+export function GiftSuccess({ offer, session }: SuccessProps) {
+  const t = useTranslations("checkout.checkout.success.gift");
+  return (
+    <Alert variant="success">
+      <CheckCircleIcon
+        className={css({
+          height: "8",
+          width: "8",
+        })}
+      />
+      <AlertTitle>{t("title")}</AlertTitle>
+      <AlertDescription>
+        {t.rich("description", {
+          email: (chunks) => <strong>{session.email}</strong>,
+        })}
+      </AlertDescription>
+    </Alert>
   );
 }

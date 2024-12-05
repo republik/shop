@@ -14,6 +14,10 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
           px: "4",
           py: "8",
           // display: "flex",
+
+          maxWidth: "[calc(100vw - (2 * 1rem))]",
+          width: "[510px]",
+          mx: "auto",
         })}
       >
         {children}

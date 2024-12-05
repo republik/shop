@@ -11,7 +11,7 @@ function initStripe(company: string): Stripe {
   });
 }
 
-type SessionData = { email: string | null | undefined } & Pick<
+export type CheckoutSessionData = { email: string | null | undefined } & Pick<
   Stripe.Checkout.Session,
   "id" | "status" | "client_secret"
 >;
@@ -38,7 +38,7 @@ export async function getCheckoutSession(
   company: string,
   sessionId: string,
   customerId?: string | null
-): Promise<SessionData | undefined> {
+): Promise<CheckoutSessionData | undefined> {
   try {
     const stripe = initStripe(company);
     const session = await stripe.checkout.sessions.retrieve(sessionId);

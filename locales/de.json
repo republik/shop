@@ -159,9 +159,16 @@
     "checkout": {
       "title": "Bezahlen",
       "success": {
-        "title": "Vielen Dank für Ihren Kauf",
-        "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
-        "action": "Zum Magazin"
+        "subscription": {
+          "title": "Vielen Dank für Ihren Kauf",
+          "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
+          "action": "Zum Magazin"
+        },
+        "gift": {
+          "title": "Vielen Dank für Ihren Kauf",
+          "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zum Magazin"
+        }
       },
       "failed": {
         "title": "Der Bezahlvorgang ist fehlgeschlagen",

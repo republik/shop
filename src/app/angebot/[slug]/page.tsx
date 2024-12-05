@@ -1,5 +1,8 @@
 import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
-import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
+import {
+  GiftSuccess,
+  SubscriptionSuccess,
+} from "@/app/angebot/[slug]/components/success-view";
 import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";
@@ -48,8 +51,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe(company);
 
-  // TODO determine based on future offer field
-  const needsLogin = !offer.id.startsWith("GIFT_");
+  // TODO determine based on future offer fields
+  const isGift = offer.id.startsWith("GIFT_");
+  const needsLogin = !isGift;
 
   const checkoutSession = sessionId
     ? await getCheckoutSession(
@@ -61,6 +65,14 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   if (checkoutSession?.status === "expired") {
     redirect(params.slug);
+  }
+
+  if (checkoutSession?.status === "complete") {
+    return isGift ? (
+      <GiftSuccess offer={offer} session={checkoutSession} />
+    ) : (
+      <SubscriptionSuccess offer={offer} session={checkoutSession} />
+    );
   }
 
   const loginStep: Step = {
@@ -154,8 +166,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
               : []
           }
         />
-      ) : checkoutSession?.status === "complete" ? (
-        <SuccessView />
       ) : (
         // TODO: log to sentry and render alert
         <p>{t("error.generic")}</p>
@@ -168,13 +178,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     : [productDetails, checkoutStep];
 
   return (
-    <div
-      className={css({
-        maxWidth: "[calc(100vw - (2 * 1rem))]",
-        width: "[510px]",
-        mx: "auto",
-      })}
-    >
+    <>
       <h1
         className={css({
           textStyle: "lg",
@@ -197,6 +201,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         )}
         steps={steps}
       />
-    </div>
+    </>
   );
 }
