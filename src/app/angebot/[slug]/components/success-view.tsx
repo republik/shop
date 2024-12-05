@@ -133,7 +133,11 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
       </h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
-          email: (chunks) => <strong>{session.email}</strong>,
+          email: () => (
+            <strong data-testid="success-recipient-email">
+              {session.email}
+            </strong>
+          ),
         })}
       </p>
       <Link

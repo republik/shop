@@ -19,6 +19,7 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
           width: "[510px]",
           mx: "auto",
           display: "flex",
+          flexDirection: "column",
         })}
       >
         {children}
