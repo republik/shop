@@ -146,12 +146,9 @@ export const presetRepublik = definePreset({
               _dark: "#A9A9A9",
             },
           },
-          pop: {
-            value: "#F4FF26",
-          },
         },
         sizes: {
-          maxContentWidth: { value: "52rem" },
+          maxContentWidth: { value: "54rem" },
           header: {
             height: { value: { base: "48px", md: "60px" } },
             avatar: { value: { base: "26px", md: "32px" } },
@@ -174,14 +171,7 @@ export const presetRepublik = definePreset({
             logoMargin: { value: { base: "12px 0", md: "15px 0" } },
           },
         },
-        fontSizes: {
-          "l-xl": {
-            value: {
-              base: "{fontSizes.l}",
-              md: "{fontSizes.xl}",
-            },
-          },
-        },
+        fontSizes: {},
       },
 
       textStyles: {
@@ -213,7 +203,7 @@ export const presetRepublik = definePreset({
             fontFamily: "rubis",
             fontWeight: "regular",
             fontStyle: "normal",
-            fontSize: { base: "l", md: "xl" },
+            fontSize: { base: "lg", md: "xl" },
             lineHeight: 1.375,
           },
         },
@@ -222,7 +212,7 @@ export const presetRepublik = definePreset({
             fontFamily: "gtAmericaStandard",
             fontWeight: "regular",
             fontStyle: "normal",
-            fontSize: { base: "l", md: "xl" },
+            fontSize: { base: "lg", md: "xl" },
             lineHeight: 1.375,
           },
         },
@@ -268,6 +258,24 @@ export const presetRepublik = definePreset({
             fontWeight: "medium",
             fontStyle: "normal",
             fontSize: "2xl",
+            lineHeight: 1.16667,
+          },
+        },
+        leadBold: {
+          value: {
+            fontFamily: "gtAmericaStandard",
+            fontWeight: "medium",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
+            lineHeight: 1.16667,
+          },
+        },
+        lead: {
+          value: {
+            fontFamily: "gtAmericaStandard",
+            fontWeight: "regular",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
             lineHeight: 1.16667,
           },
         },

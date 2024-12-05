@@ -1,25 +1,32 @@
-import { css } from "@/theme/css";
+import { cardButton, OfferCard } from "@/app/(overview)/offer";
+import { css, cx } from "@/theme/css";
+import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import { OfferCard, OfferLink } from "@/app/(overview)/offer";
 import Image, { StaticImageData } from "next/image";
-import GiftSVG from "../../../public/static/gift.svg";
+import Link from "next/link";
 import CouponSVG from "../../../public/static/coupon.svg";
+import GiftSVG from "../../../public/static/gift.svg";
 
-const titleStyle = css({ fontSize: "3xl", textStyle: "sansSerifBold" });
+const titleStyle = css({
+  fontSize: "3xl",
+  lineHeight: "tight",
+  textStyle: "sansSerifBold",
+});
 const giftBg = "#EFEFEF";
 
 function Illu({ src, hide }: { src: StaticImageData; hide?: boolean }) {
   return (
     <div
       className={css({
-        height: "2/5",
+        height: "[80px]",
+        py: "4",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         ...(hide ? { hideBelow: "md" } : {}),
       })}
     >
-      <Image src={src} alt="gift image" width={100} />
+      <Image src={src} alt="gift image" />
     </div>
   );
 }
@@ -31,11 +38,18 @@ export async function GiftCard() {
     <OfferCard id="gift-buy" background={giftBg}>
       <Illu src={GiftSVG} />
 
-      <h3 className={titleStyle}>{tGift("title")}</h3>
+      <h2 className={titleStyle}>{tGift("title")}</h2>
 
-      <p>{tGift("info")}</p>
+      <p className={css({ flexGrow: 1 })}>{tGift("info")}</p>
 
-      <OfferLink href={`/angebot/GIFT_YEARLY`}>{tGift("cta")}</OfferLink>
+      <div className={css({ mt: "auto" })}>
+        <Link
+          href={`/angebot/GIFT_YEARLY`}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
+        >
+          {tGift("cta")}
+        </Link>
+      </div>
     </OfferCard>
   );
 }
@@ -47,13 +61,18 @@ export async function RedeemCard() {
     <OfferCard id="gift-redeem" background={giftBg} small>
       <Illu src={CouponSVG} hide />
 
-      <h3 className={titleStyle}>{tGift("title")}</h3>
+      <h2 className={titleStyle}>{tGift("title")}</h2>
 
       <p>{tGift("info")}</p>
 
-      <OfferLink href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}>
-        {tGift("cta")}
-      </OfferLink>
+      <div className={css({ mt: "auto" })}>
+        <Link
+          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
+        >
+          {tGift("cta")}
+        </Link>
+      </div>
     </OfferCard>
   );
 }

@@ -1,6 +1,6 @@
 import { OfferCardDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
-import { css, cx } from "@/theme/css";
+import { css, cva, cx } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
 import { getTranslations } from "next-intl/server";
@@ -11,11 +11,13 @@ export async function OfferCardPrimary({
   offerId,
   color,
   background,
+  ctaColor,
   redirect,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
   color?: string;
   background?: string;
+  ctaColor?: string;
   redirect?: string;
 }) {
   const gql = getClient();
@@ -32,69 +34,88 @@ export async function OfferCardPrimary({
   const titleStyle = css({
     textStyle: "serifBold",
     fontSize: "5xl",
-    lineHeight: "[1.1]",
+    lineHeight: "tight",
+  });
+
+  const intervalStyle = css({
+    fontWeight: "medium",
+    lineHeight: "normal",
   });
 
   return (
-    <OfferCard id={offerId} color={color} background={background}>
+    <OfferCard
+      id={offerId}
+      color={color}
+      background={background}
+      ctaColor={ctaColor}
+    >
       {tOffer.has("recommended") && (
         <div
           className={css({
+            position: "absolute",
+            top: "-5",
             width: "auto",
             alignSelf: "center",
             fontWeight: "medium",
-            background: "pop",
-            paddingX: "5",
-            paddingY: "2",
-            mt: "-14",
+            background: "background",
+            px: "4",
+            py: "2",
           })}
         >
           {tOffer("recommended")}
         </div>
       )}
 
-      <h2 className={titleStyle}>{tOffer("title")}</h2>
+      <div>
+        <h2 className={titleStyle}>{tOffer("title")}</h2>
 
-      {offer.discount ? (
-        <>
-          <h3 className={titleStyle}>
-            <del>CHF {offer.price.amount / 100}</del>
-          </h3>
-          <h3 className={titleStyle}>
-            CHF {(offer.price.amount - offer.discount.amountOff) / 100}
-          </h3>
-          <p>
-            <b>{tOffer("intervalDiscount")}</b>
-          </p>
-        </>
-      ) : offer.customPrice ? (
-        <>
-          <h3 className={titleStyle}>ab CHF {offer.customPrice.min / 100}</h3>
+        {offer.discount ? (
+          <>
+            <p className={titleStyle}>
+              CHF <del>{offer.price.amount / 100}</del>
+            </p>
+            <p className={titleStyle}>
+              CHF {(offer.price.amount - offer.discount.amountOff) / 100}
+            </p>
+            <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
+          </>
+        ) : offer.customPrice ? (
+          <>
+            <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
+            <p className={intervalStyle}>{tOffer("interval")}</p>
+          </>
+        ) : (
+          <>
+            <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
+            <p className={intervalStyle}>{tOffer("interval")}</p>
+          </>
+        )}
+      </div>
 
-          <p>
-            <b>{tOffer("interval")}</b>
-          </p>
-        </>
-      ) : (
-        <>
-          <h3 className={titleStyle}>CHF {offer.price.amount / 100}</h3>
-          <p>
-            <b>{tOffer("interval")}</b>
-          </p>
-        </>
-      )}
+      <div className={css({ flexGrow: 1 })}>
+        {tOffer.has("info") && <p>{tOffer("info")}</p>}
+      </div>
 
-      {tOffer.has("info") && <p>{tOffer("info")}</p>}
+      <div className={css({})}>
+        <Link
+          href={redirect || `/angebot/${offerId}`}
+          className={cx(cardButton(), linkOverlay())}
+        >
+          {tOffer("cta")}
+        </Link>
 
-      <OfferLink href={redirect || `/angebot/${offerId}`}>
-        {tOffer("cta")}
-      </OfferLink>
-
-      {tOffer.has("cancelable") && (
-        <div className={css({ textAlign: "center", fontWeight: "normal" })}>
-          {tOffer("cancelable")}
-        </div>
-      )}
+        {tOffer.has("cancelable") && (
+          <div
+            className={css({
+              textAlign: "center",
+              fontWeight: "normal",
+              mt: "4",
+            })}
+          >
+            {tOffer("cancelable")}
+          </div>
+        )}
+      </div>
     </OfferCard>
   );
 }
@@ -102,18 +123,13 @@ export async function OfferCardPrimary({
 export function OfferGrid({ children }: { children: ReactNode }) {
   return (
     <div
-      className={cx(
-        grid({
-          width: "full",
-          gap: "4-8",
-          minChildWidth: "350px",
-          placeItems: "stretch",
-        }),
-        css({
-          px: "4-8",
-          mb: "4-8",
-        })
-      )}
+      className={grid({
+        width: "full",
+        gap: "4-8",
+        minChildWidth: "350px",
+        placeItems: "stretch",
+        px: "4-8",
+      })}
     >
       {children}
     </div>
@@ -123,22 +139,12 @@ export function OfferGrid({ children }: { children: ReactNode }) {
 export function OfferGridCompact({ children }: { children: ReactNode }) {
   return (
     <div
-      className={cx(
-        grid({
-          width: "full",
-          columnGap: "4",
-          md: {
-            columnGap: "8",
-          },
-          minChildWidth: "350px",
-          placeItems: "stretch",
-        }),
-        css({
-          md: {
-            px: "8",
-          },
-        })
-      )}
+      className={grid({
+        width: "full",
+        gap: "4-8",
+        minChildWidth: "350px",
+        placeItems: "stretch",
+      })}
     >
       {children}
     </div>
@@ -150,12 +156,14 @@ export function OfferCard({
   children,
   color,
   background,
+  ctaColor,
   small,
 }: {
   id: string;
   children: ReactNode;
   color?: string;
   background?: string;
+  ctaColor?: string;
   small?: boolean;
 }) {
   return (
@@ -166,29 +174,22 @@ export function OfferCard({
         "--text": color ?? token("colors.text"),
         "--bg": background ?? token("colors.amber.100"),
         "--aspect-ratio": small ? "auto" : token("aspectRatios.square"),
+        "--cta": ctaColor || "white",
       }}
       className={css({
         textStyle: "sansSerifMedium",
         position: "relative",
         background: "var(--bg)",
-        padding: "6",
-        pt: "9",
+        p: "6",
         color: "var(--text)",
         display: "flex",
         flexDirection: "column",
         gap: "4",
         aspectRatio: "var(--aspect-ratio)",
+        fontWeight: "normal",
+        fontSize: "md",
         md: {
           aspectRatio: "square",
-        },
-        "& p": {
-          mt: "2",
-          fontWeight: "normal",
-          fontSize: "md",
-          flexGrow: 1,
-          "& b": {
-            fontWeight: "medium",
-          },
         },
       })}
     >
@@ -197,29 +198,24 @@ export function OfferCard({
   );
 }
 
-export function OfferLink({
-  children,
-  href,
-}: {
-  children: ReactNode;
-  href: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className={linkOverlay({
-        borderRadius: "md",
-        fontSize: "lg",
-        whiteSpace: "nowrap",
-        px: "6",
-        py: "3",
-        background: "var(--text)",
-        color: "var(--bg)",
-        display: "block",
-        textAlign: "center",
-      })}
-    >
-      {children}
-    </Link>
-  );
-}
+export const cardButton = cva({
+  base: {
+    borderRadius: "sm",
+    fontSize: "lg",
+    whiteSpace: "nowrap",
+    px: "6",
+    py: "3",
+    display: "block",
+    fontWeight: "medium",
+    textAlign: "center",
+  },
+  variants: {
+    visual: {
+      solid: { background: "var(--text)", color: "var(--cta)" },
+      outline: { borderWidth: "1px", borderColor: "black", color: "black" },
+    },
+  },
+  defaultVariants: {
+    visual: "solid",
+  },
+});
