@@ -1,7 +1,6 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import type { CheckoutSessionData } from "@/app/angebot/[slug]/lib/stripe/server";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
 import { css } from "@/theme/css";
@@ -28,6 +27,16 @@ const linkStyle = css({
   textAlign: "center",
   background: "text",
   color: "text.inverted",
+});
+
+const containerStyle = css({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+  gap: "4",
+  textAlign: "center",
+  margin: "auto",
 });
 
 export function SubscriptionSuccess({ offer, session }: SuccessProps) {
@@ -75,30 +84,30 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
   // }, [meRes.data, startCheckingForActiveSubscription]);
 
   return (
-    <Alert variant="success">
+    <div className={containerStyle}>
       <CheckCircleIcon
         className={css({
-          height: "8",
-          width: "8",
+          height: "10",
+          width: "10",
         })}
       />
-      <AlertTitle>{t("title")}</AlertTitle>
-      <AlertDescription>
-        {ready ? (
-          <>
-            <p className={css({ mb: "4" })}>{t("ready")}</p>
-            <Link
-              className={linkStyle}
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-            >
-              {t("action")}
-            </Link>
-          </>
-        ) : (
-          t("waiting")
-        )}
-      </AlertDescription>
-    </Alert>
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      {ready ? (
+        <>
+          <p className={css({ mb: "4" })}>{t("ready")}</p>
+          <Link
+            className={linkStyle}
+            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
+          >
+            {t("action")}
+          </Link>
+        </>
+      ) : (
+        <p>{t("waiting")}</p>
+      )}
+    </div>
   );
 }
 
@@ -112,27 +121,27 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
   }, [plausible, offer.id]);
 
   return (
-    <Alert variant="success">
+    <div className={containerStyle}>
       <CheckCircleIcon
         className={css({
-          height: "8",
-          width: "8",
+          height: "10",
+          width: "10",
         })}
       />
-      <AlertTitle>{t("title")}</AlertTitle>
-      <AlertDescription>
-        <p className={css({ mb: "4" })}>
-          {t.rich("description", {
-            email: (chunks) => <strong>{session.email}</strong>,
-          })}
-        </p>
-        <Link
-          className={linkStyle}
-          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
-        >
-          {t("action")}
-        </Link>
-      </AlertDescription>
-    </Alert>
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      <p className={css({ mb: "4" })}>
+        {t.rich("description", {
+          email: (chunks) => <strong>{session.email}</strong>,
+        })}
+      </p>
+      <Link
+        className={linkStyle}
+        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
+      >
+        {t("action")}
+      </Link>
+    </div>
   );
 }
