@@ -29,9 +29,12 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
 
   const plausible = usePlausible();
 
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
+
   useTimeout(() => {
     setStartCheckingForActiveSubscription(true);
-    plausible("Checkout Success");
   }, 1_000);
 
   useInterval(
@@ -52,7 +55,7 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
         `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`
       );
     }
-  }, [meRes.data, startCheckingForActiveSubscription, plausible]);
+  }, [meRes.data, startCheckingForActiveSubscription]);
 
   return (
     <Alert variant="success">
@@ -70,6 +73,13 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
 
 export function GiftSuccess({ offer, session }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.gift");
+
+  const plausible = usePlausible();
+
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
+
   return (
     <Alert variant="success">
       <CheckCircleIcon
