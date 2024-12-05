@@ -161,7 +161,8 @@
       "success": {
         "subscription": {
           "title": "Vielen Dank für Ihren Kauf",
-          "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
+          "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
+          "ready": "Ihr Zugang ist bereit!",
           "action": "Zum Magazin"
         },
         "gift": {
