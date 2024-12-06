@@ -7,8 +7,8 @@
     "pnpm": "9"
   },
   "scripts": {
-    "dev": "concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
-    "build": "panda && pnpm run gql:types && next build",
+    "dev": "pnpm run gql:schema && concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
+    "build": "panda && pnpm run gql:schema && pnpm run gql:types && next build",
     "prepare": "panda codegen",
     "start": "next start",
     "lint": "next lint",
