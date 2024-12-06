@@ -48,7 +48,7 @@ query OfferCheckout($offerId: ID!) {
       amountOff
     }
 
-    promotionItems {
+    complimentaryItems {
       id
       name
       description

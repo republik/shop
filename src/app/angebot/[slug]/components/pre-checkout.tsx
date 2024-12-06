@@ -153,73 +153,75 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         items={checkoutItems}
       />
 
-      {offer.promotionItems?.map(({ id, name, description, maxQuantity }) => {
-        return (
-          <fieldset key={id}>
-            <div
-              className={css({
-                background: "[#C2E6D6]",
-                p: "4",
-                display: "flex",
-                flexDirection: "column",
-                gap: "4",
-              })}
-            >
-              <Image
+      {offer.complimentaryItems?.map(
+        ({ id, name, description, maxQuantity }) => {
+          return (
+            <fieldset key={id}>
+              <div
                 className={css({
-                  width: "[10rem]",
-                  maxWidth: "full",
-                  // alignSelf: "center",
-                  mixBlendMode: "multiply",
-                })}
-                src="/assets/promo-book.jpg"
-                width={320}
-                height={320}
-                alt=""
-              />
-
-              <h3
-                className={css({
-                  textStyle: "h3Sans",
+                  background: "[#C2E6D6]",
+                  p: "4",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "4",
                 })}
               >
-                {
-                  // @ts-expect-error potentially undefined id
-                  t(`checkout.promoItem.${id}.title`)
-                }
-              </h3>
-              <p>
-                {
-                  // @ts-expect-error potentially undefined id
-                  t.rich(`checkout.promoItem.${id}.info`, {
-                    b: (chunks) => <strong>{chunks}</strong>,
-                  })
-                }
-              </p>
-              <label>
-                <input
-                  name={`promoItem`}
-                  value={id}
-                  type="checkbox"
-                  defaultChecked
-                ></input>{" "}
-                {
-                  // @ts-expect-error potentially undefined id
-                  t(`checkout.promoItem.${id}.cta`)
-                }
-              </label>
-              <p>
-                <small>
+                <Image
+                  className={css({
+                    width: "[10rem]",
+                    maxWidth: "full",
+                    // alignSelf: "center",
+                    mixBlendMode: "multiply",
+                  })}
+                  src="/assets/promo-book.jpg"
+                  width={320}
+                  height={320}
+                  alt=""
+                />
+
+                <h3
+                  className={css({
+                    textStyle: "h3Sans",
+                  })}
+                >
                   {
                     // @ts-expect-error potentially undefined id
-                    t(`checkout.promoItem.${id}.ctaNote`)
+                    t(`checkout.promoItem.${id}.title`)
                   }
-                </small>
-              </p>
-            </div>
-          </fieldset>
-        );
-      })}
+                </h3>
+                <p>
+                  {
+                    // @ts-expect-error potentially undefined id
+                    t.rich(`checkout.promoItem.${id}.info`, {
+                      b: (chunks) => <strong>{chunks}</strong>,
+                    })
+                  }
+                </p>
+                <label>
+                  <input
+                    name={`promoItem`}
+                    value={id}
+                    type="checkbox"
+                    defaultChecked
+                  ></input>{" "}
+                  {
+                    // @ts-expect-error potentially undefined id
+                    t(`checkout.promoItem.${id}.cta`)
+                  }
+                </label>
+                <p>
+                  <small>
+                    {
+                      // @ts-expect-error potentially undefined id
+                      t(`checkout.promoItem.${id}.ctaNote`)
+                    }
+                  </small>
+                </p>
+              </div>
+            </fieldset>
+          );
+        }
+      )}
 
       <Button
         className={css({

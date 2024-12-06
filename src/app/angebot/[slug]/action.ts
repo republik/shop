@@ -35,7 +35,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
-      promotionItems: promoItems.map((item) => {
+      complimentaryItems: promoItems.map((item) => {
         return {
           id: item.toString(),
           quantity: 1, // hard-coded to 1
