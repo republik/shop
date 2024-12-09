@@ -1,15 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { loadStripe } from "../lib/stripe/client";
 import {
-  EmbeddedCheckoutProvider,
   EmbeddedCheckout,
+  EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
-import { SuccessView } from "./success-view";
+import { loadStripe } from "../lib/stripe/client";
 import { ErrorMessage } from "./error-message";
-
-import { redirect } from "next/navigation";
 
 interface CheckoutViewProps {
   clientSecret: string;
@@ -22,12 +18,6 @@ export function CheckoutView({
   company,
   errors,
 }: CheckoutViewProps) {
-  // const [success, setSuccess] = useState(false);
-
-  // if (success) {
-  //   return <SuccessView />;
-  // }
-
   return (
     <div id="checkout">
       {errors.map((e) => (
