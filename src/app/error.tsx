@@ -27,6 +27,7 @@ export default function Error({
         alignItems: "center",
         gap: "4",
         textAlign: "center",
+        margin: "auto",
       })}
     >
       <CircleXIcon
