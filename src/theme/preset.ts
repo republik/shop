@@ -264,7 +264,7 @@ export const presetRepublik = definePreset({
             fontWeight: "medium",
             fontStyle: "normal",
             fontSize: { base: "xl", md: "2xl" },
-            lineHeight: 1.16667,
+            lineHeight: 1.4,
           },
         },
         lead: {
@@ -273,7 +273,7 @@ export const presetRepublik = definePreset({
             fontWeight: "regular",
             fontStyle: "normal",
             fontSize: { base: "xl", md: "2xl" },
-            lineHeight: 1.16667,
+            lineHeight: 1.4,
           },
         },
         h3Sans: {

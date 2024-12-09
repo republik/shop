@@ -1,4 +1,4 @@
-import { cardButton, OfferCard } from "@/app/(overview)/offer";
+import { OfferCard } from "@/app/(overview)/offer";
 import { css, cx } from "@/theme/css";
 import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
@@ -6,6 +6,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import CouponSVG from "../../../public/static/coupon.svg";
 import GiftSVG from "../../../public/static/gift.svg";
+import { cardButton } from "@/app/(overview)/card-button";
 
 const titleStyle = css({
   fontSize: "3xl",

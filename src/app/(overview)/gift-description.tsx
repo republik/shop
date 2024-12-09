@@ -26,16 +26,19 @@ export async function GiftDescription() {
     <div
       className={css({
         width: "full",
-        maxWidth: "breakpoint-sm",
-        mx: "auto",
-        px: "6",
-        fontSize: "lg",
       })}
     >
       {/* <h2 className={css({ textStyle: "h3Sans", mb: "6" })}>
         {tDescription("title")}
       </h2> */}
-      <ul>
+      <ul
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "2",
+          fontSize: "lg",
+        })}
+      >
         <DescriptionItem>{getText("general")}</DescriptionItem>
         <DescriptionItem>
           {tDescriptionItems.rich("allTheContent", {
@@ -47,7 +50,7 @@ export async function GiftDescription() {
         <DescriptionItem>{getText("dialog")}</DescriptionItem>
         <DescriptionItem>{getText("goodie")}</DescriptionItem>
       </ul>
-      <p className={css({ mt: "12", fontSize: "md" })}>
+      <p className={css({ mt: "8", fontSize: "md" })}>
         {tDescription.rich("reducedPrice", {
           reducedLink: (chunks) => (
             <Link

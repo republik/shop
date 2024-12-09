@@ -5,10 +5,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
 import { GiftDescription } from "@/app/(overview)/gift-description";
-import Image from "next/image";
-import GiftSVG from "../../../public/static/gift.svg";
-import { cardButton } from "@/app/(overview)/offer";
-import { token } from "@/theme/tokens";
+import { GiftChooser } from "@/app/geschenke/gift-chooser";
 
 export async function generateMetadata() {
   const t = await getTranslations("giftOverview");
@@ -47,40 +44,11 @@ export default async function GiftOverview() {
         {/* <p className={css({ textStyle: "lead" })}>{t("cta")}</p> */}
       </div>
 
-      <Image src={GiftSVG} alt="gift image" width={80} height={80} />
-
-      <form
-        action={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote`}
-        className={css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "4",
-          width: "full",
-        })}
-      >
-        <label className={css({ display: "block" })}>
-          <input type="radio" name="package" value="ABO_GIVE" defaultChecked />{" "}
-          {t("options.yearly")}
-        </label>
-        <label className={css({ display: "block" })}>
-          <input type="radio" name="package" value="ABO_GIVE_MONTHS" />{" "}
-          {t("options.monthly")}
-        </label>
-
-        <button
-          type="submit"
-          className={cardButton({ visual: "solid" })}
-          style={{
-            // @ts-expect-error custom css vars
-            "--text": token("colors.text"),
-            "--cta": token("colors.white"),
-          }}
-        >
-          {t("cta")}
-        </button>
-      </form>
+      <GiftChooser />
 
       <GiftDescription />
+
+      <Link href={"/"}>{t("goBack")}</Link>
     </div>
   );
 }

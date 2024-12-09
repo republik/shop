@@ -22,28 +22,32 @@ export function DescriptionItem({
     >
       <li
         className={css({
-          mt: "3",
           display: "flex",
           flexDirection: "row",
-          flexWrap: "wrap",
+          alignItems: "flex-start",
+          gap: "4",
         })}
       >
         <div
           className={css({
             flexGrow: "0",
             flexShrink: "0",
-            mr: "4",
           })}
         >
           <CheckIcon />
         </div>
-        <p
+        <div
           className={css({
-            flex: "1",
+            flexGrow: "1",
           })}
         >
           {children}
-        </p>
+          {info && (
+            <Collapsible.Content className={css({})}>
+              <div className={css({ fontSize: "md" })}>{info}</div>
+            </Collapsible.Content>
+          )}
+        </div>
         {info && (
           <>
             <Collapsible.Trigger asChild>
@@ -52,15 +56,12 @@ export function DescriptionItem({
                 className={css({
                   flexGrow: "0",
                   flexShrink: "0",
-                  ml: "4",
+                  p: "0",
                 })}
               >
                 <InfoIcon />
               </Button>
             </Collapsible.Trigger>
-            <Collapsible.Content className={css({ ml: "4", pl: "6" })}>
-              <div className={css({ fontSize: "md" })}>{info}</div>
-            </Collapsible.Content>
           </>
         )}
       </li>
