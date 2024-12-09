@@ -111,7 +111,7 @@ function Option({
       <input
         id={id}
         value={value}
-        name="product"
+        name="package"
         type="radio"
         checked={selected}
         onChange={onChange}
