@@ -44,7 +44,7 @@ export async function GiftCard() {
 
       <div className={css({ mt: "auto" })}>
         <Link
-          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?group=GIVE`}
+          href={`/geschenke`}
           className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tGift("cta")}

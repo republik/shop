@@ -91,6 +91,26 @@
     }
   },
 
+  "giftOverview": {
+    "title": "Die Republik zum Verschenken",
+    "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
+    "cta": "Jetzt verschenken",
+    "options": {
+      "yearly": "Jahresmitgliedschaft",
+      "monthly": "3-Monats-Abo"
+    },
+    "description": {
+      "items": {
+        "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+        "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+        "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+        "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
+        "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
+      },
+      "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+    }
+  },
+
   "checkout": {
     "actions": {
       "change": "Ändern",
