@@ -7,6 +7,8 @@ import Image from "next/image";
 import GiftSVG from "../../../public/static/gift.svg";
 import { cardButton } from "@/app/(overview)/card-button";
 import { ChangeEventHandler, ReactNode, useId, useState } from "react";
+import { GiftIcon } from "@/app/geschenke/gift-icon";
+import { GiftDescription } from "@/app/(overview)/gift-description";
 
 export function GiftChooser() {
   const t = useTranslations("giftOverview");
@@ -18,22 +20,25 @@ export function GiftChooser() {
 
   return (
     <>
-      <Image
-        src={GiftSVG}
-        alt=""
-        width={120}
-        height={120}
+      <GiftIcon
         className={css({
           display: "block",
-          transition: "transform",
+          transition: "all",
         })}
+        // transform={option === "ABO_GIVE_MONTHS" ? "scale(1)" : "scale(3)"}
         style={{
           transform: option === "ABO_GIVE_MONTHS" ? "scale(0.5)" : "scale(1)",
+          strokeWidth: option === "ABO_GIVE_MONTHS" ? "2" : "1",
+
+          // width: option === "ABO_GIVE_MONTHS" ? 80 : 240,
+          // height: option === "ABO_GIVE_MONTHS" ? 80 : 240,
+          color: option === "ABO_GIVE_MONTHS" ? "#BEA1F7" : "#FD9F68",
         }}
       />
 
       <form
         action={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote`}
+        method="GET"
         className={css({
           display: "flex",
           flexDirection: "column",
@@ -53,14 +58,18 @@ export function GiftChooser() {
             selected={option === "ABO_GIVE"}
             onChange={handleOption}
           >
-            {t("options.yearly")}
+            {t.rich("options.yearly", {
+              b: (chunks) => <strong>{chunks}</strong>,
+            })}
           </Option>
           <Option
             value="ABO_GIVE_MONTHS"
             selected={option === "ABO_GIVE_MONTHS"}
             onChange={handleOption}
           >
-            {t("options.monthly")}
+            {t.rich("options.monthly", {
+              b: (chunks) => <strong>{chunks}</strong>,
+            })}
           </Option>
         </div>
 
@@ -76,6 +85,10 @@ export function GiftChooser() {
           {t("cta")}
         </button>
       </form>
+
+      <GiftDescription
+        interval={option === "ABO_GIVE_MONTHS" ? "monthly" : "yearly"}
+      />
     </>
   );
 }
@@ -106,6 +119,7 @@ function Option({
         "&:has(:checked)": {
           borderColor: "text",
         },
+        fontSize: "xl",
       })}
     >
       <input

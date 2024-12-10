@@ -142,7 +142,7 @@ export function OfferGridCompact({ children }: { children: ReactNode }) {
     <div
       className={grid({
         width: "full",
-        gap: "4-8",
+        columnGap: "4-8",
         minChildWidth: "350px",
         placeItems: "stretch",
       })}

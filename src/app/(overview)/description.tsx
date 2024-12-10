@@ -26,9 +26,9 @@ export async function OfferDescription() {
     <div
       className={css({
         width: "full",
-        maxWidth: "breakpoint-sm",
+        maxWidth: "content.narrow",
         mx: "auto",
-        px: "6",
+        px: "4",
         fontSize: "lg",
       })}
     >

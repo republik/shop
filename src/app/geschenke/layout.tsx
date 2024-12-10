@@ -9,12 +9,14 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
       {/* <Header /> */}
       <main
         className={css({
-          bg: "[#C9B7FF]",
           flexGrow: 1,
-          // mx: "auto",
           px: "4",
-          py: "8",
-          // display: "flex",
+          py: "16",
+          background: "[#C9B7FF]",
+          "&:has([value='ABO_GIVE_MONTHS']:checked)": {
+            background: "[#FD9F68]",
+          },
+          transition: "background",
         })}
       >
         {children}

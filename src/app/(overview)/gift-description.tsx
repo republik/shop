@@ -1,13 +1,16 @@
-import { css } from "@/theme/css";
-import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+"use client";
 import { DescriptionItem } from "@/app/(overview)/description-item";
+import { css } from "@/theme/css";
+import { useTranslations } from "next-intl";
+import Link from "next/link";
 
-export async function GiftDescription() {
-  const tDescription = await getTranslations("giftOverview.description");
-  const tDescriptionItems = await getTranslations(
-    "giftOverview.description.items"
-  );
+export function GiftDescription({
+  interval,
+}: {
+  interval: "yearly" | "monthly";
+}) {
+  const tDescription = useTranslations("giftOverview.description");
+  const tDescriptionItems = useTranslations("giftOverview.description.items");
 
   const getText = (
     tKey: "dialog" | "general" | "briefings" | "goodie"
@@ -42,7 +45,7 @@ export async function GiftDescription() {
         <DescriptionItem>{getText("general")}</DescriptionItem>
         <DescriptionItem>
           {tDescriptionItems.rich("allTheContent", {
-            interval: "yearly",
+            interval,
             b: (chunks) => <b>{chunks}</b>,
           })}
         </DescriptionItem>

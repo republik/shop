@@ -4,8 +4,9 @@ import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
-import { GiftDescription } from "@/app/(overview)/gift-description";
 import { GiftChooser } from "@/app/geschenke/gift-chooser";
+import { Hero } from "@/components/layout/hero";
+import { BackLink } from "@/components/ui/links";
 
 export async function generateMetadata() {
   const t = await getTranslations("giftOverview");
@@ -22,19 +23,15 @@ export default async function GiftOverview() {
     <div
       className={css({
         width: "full",
-        maxWidth: "breakpoint-sm",
+        maxWidth: "content.narrow",
         mx: "auto",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "8",
-        fontSize: "xl",
+        gap: "16",
       })}
     >
-      <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
-        <Logo />
-      </Link>
-      <div className={css({ textAlign: "center" })}>
+      <Hero>
         <h1 className={visuallyHidden()}>{t("title")}</h1>
         <p className={css({ textStyle: "lead" })}>
           {t.rich("lead", {
@@ -42,13 +39,11 @@ export default async function GiftOverview() {
           })}
         </p>
         {/* <p className={css({ textStyle: "lead" })}>{t("cta")}</p> */}
-      </div>
+      </Hero>
 
       <GiftChooser />
 
-      <GiftDescription />
-
-      <Link href={"/"}>{t("goBack")}</Link>
+      <BackLink href={"/"}>{t("goBack")}</BackLink>
     </div>
   );
 }
