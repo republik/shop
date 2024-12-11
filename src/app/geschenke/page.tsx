@@ -1,8 +1,6 @@
-import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 
 import { GiftChooser } from "@/app/geschenke/gift-chooser";
 import { Hero } from "@/components/layout/hero";
@@ -38,7 +36,6 @@ export default async function GiftOverview() {
             br: () => <br />,
           })}
         </p>
-        {/* <p className={css({ textStyle: "lead" })}>{t("cta")}</p> */}
       </Hero>
 
       <GiftChooser />

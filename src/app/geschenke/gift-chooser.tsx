@@ -20,22 +20,6 @@ export function GiftChooser() {
 
   return (
     <>
-      {/* <GiftIcon
-        className={css({
-          display: "block",
-          transition: "all",
-        })}
-        // transform={option === "ABO_GIVE_MONTHS" ? "scale(1)" : "scale(3)"}
-        style={{
-          transform: option === "ABO_GIVE_MONTHS" ? "scale(0.5)" : "scale(1)",
-          strokeWidth: option === "ABO_GIVE_MONTHS" ? "2" : "1",
-
-          // width: option === "ABO_GIVE_MONTHS" ? 80 : 240,
-          // height: option === "ABO_GIVE_MONTHS" ? 80 : 240,
-          color: option === "ABO_GIVE_MONTHS" ? "#BEA1F7" : "#FD9F68",
-        }}
-      /> */}
-
       <Image
         src={giftBigSrc}
         width={327}
