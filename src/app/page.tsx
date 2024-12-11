@@ -7,6 +7,7 @@ import {
 } from "@/app/(overview)/offer";
 import { AboBanner } from "@/components/layout/abo-banner";
 import { Footer } from "@/components/layout/footer";
+import { Hero } from "@/components/layout/hero";
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
@@ -21,44 +22,27 @@ export default async function Home() {
       <div
         className={css({
           background: "[#DFD6C7]",
-          pt: "16",
-          pb: "12",
+          py: "16",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           gap: "16",
         })}
       >
-        <div
-          className={css({
-            width: "full",
-            maxWidth: "breakpoint-sm",
-            mx: "auto",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "8",
-            fontSize: "xl",
-          })}
-        >
-          <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
-            <Logo />
-          </Link>
-          <div className={css({ textAlign: "center" })}>
-            <h1 className={visuallyHidden()}>{t("title")}</h1>
-            <p className={css({ textStyle: "leadBold" })}>
-              {t.rich("lead", {
-                br: () => <br />,
-              })}
-            </p>
-            <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
-          </div>
-        </div>
+        <Hero>
+          <h1 className={visuallyHidden()}>{t("title")}</h1>
+          <p className={css({ textStyle: "leadBold" })}>
+            {t.rich("lead", {
+              br: () => <br />,
+            })}
+          </p>
+          <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
+        </Hero>
 
         <div
           className={css({
             width: "full",
-            maxWidth: "maxContentWidth",
+            maxWidth: "content.wide",
             mx: "auto",
           })}
         >
@@ -82,7 +66,7 @@ export default async function Home() {
       <div
         className={css({
           width: "full",
-          maxWidth: "maxContentWidth",
+          maxWidth: "content.wide",
           mx: "auto",
           my: "16",
         })}
