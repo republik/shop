@@ -1,5 +1,5 @@
-query GetOffer($offerId: ID!) {
-  offer: getOffer(offerId: $offerId) {
+query GetOffer($offerId: ID!, $promoCode: String) {
+  offer: getOffer(offerId: $offerId, promoCode: $promoCode) {
     id
     company
     name
