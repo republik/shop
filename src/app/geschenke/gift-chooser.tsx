@@ -1,14 +1,14 @@
 "use client";
 
+import { cardButton } from "@/app/(overview)/card-button";
+import { GiftDescription } from "@/app/(overview)/gift-description";
 import { css } from "@/theme/css";
 import { token } from "@/theme/tokens";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import GiftSVG from "../../../public/static/gift.svg";
-import { cardButton } from "@/app/(overview)/card-button";
 import { ChangeEventHandler, ReactNode, useId, useState } from "react";
-import { GiftIcon } from "@/app/geschenke/gift-icon";
-import { GiftDescription } from "@/app/(overview)/gift-description";
+import giftBigSrc from "../../../public/static/Gift-Big.svg";
+import giftSmallSrc from "../../../public/static/Gift-Small.svg";
 
 export function GiftChooser() {
   const t = useTranslations("giftOverview");
@@ -20,7 +20,7 @@ export function GiftChooser() {
 
   return (
     <>
-      <GiftIcon
+      {/* <GiftIcon
         className={css({
           display: "block",
           transition: "all",
@@ -34,6 +34,21 @@ export function GiftChooser() {
           // height: option === "ABO_GIVE_MONTHS" ? 80 : 240,
           color: option === "ABO_GIVE_MONTHS" ? "#BEA1F7" : "#FD9F68",
         }}
+      /> */}
+
+      <Image
+        src={giftBigSrc}
+        width={327}
+        height={200}
+        hidden={option === "ABO_GIVE_MONTHS"}
+        alt="Illustration grosses Paket"
+      />
+      <Image
+        src={giftSmallSrc}
+        width={327}
+        height={200}
+        hidden={option === "ABO_GIVE"}
+        alt="Illustration kleines Paket"
       />
 
       <form
@@ -58,18 +73,14 @@ export function GiftChooser() {
             selected={option === "ABO_GIVE"}
             onChange={handleOption}
           >
-            {t.rich("options.yearly", {
-              b: (chunks) => <strong>{chunks}</strong>,
-            })}
+            <strong>{t("options.yearly")}</strong> CHF 222
           </Option>
           <Option
             value="ABO_GIVE_MONTHS"
             selected={option === "ABO_GIVE_MONTHS"}
             onChange={handleOption}
           >
-            {t.rich("options.monthly", {
-              b: (chunks) => <strong>{chunks}</strong>,
-            })}
+            <strong>{t("options.monthly")}</strong> CHF 48
           </Option>
         </div>
 
@@ -162,7 +173,7 @@ function Option({
         })}
       />
 
-      {children}
+      <span>{children}</span>
     </label>
   );
 }

@@ -12,9 +12,9 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
           flexGrow: 1,
           px: "4",
           py: "16",
-          background: "[#C9B7FF]",
+          background: "[#B7A5EC]",
           "&:has([value='ABO_GIVE_MONTHS']:checked)": {
-            background: "[#FD9F68]",
+            background: "[#EFAC9D]",
           },
           transition: "background",
         })}

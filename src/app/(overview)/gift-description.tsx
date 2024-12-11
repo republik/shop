@@ -1,6 +1,7 @@
 "use client";
 import { DescriptionItem } from "@/app/(overview)/description-item";
 import { css } from "@/theme/css";
+import { SparklesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 
@@ -51,7 +52,9 @@ export function GiftDescription({
         </DescriptionItem>
         <DescriptionItem>{getText("briefings")}</DescriptionItem>
         <DescriptionItem>{getText("dialog")}</DescriptionItem>
-        <DescriptionItem>{getText("goodie")}</DescriptionItem>
+        <DescriptionItem icon={<SparklesIcon />}>
+          {getText("goodie")}
+        </DescriptionItem>
       </ul>
       <p className={css({ mt: "8", fontSize: "md" })}>
         {tDescription.rich("reducedPrice", {

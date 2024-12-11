@@ -47,7 +47,7 @@ export async function OfferDescription() {
           {getText("projectR")}
         </DescriptionItem>
       </ul>
-      <p className={css({ mt: "12", fontSize: "md" })}>
+      <p className={css({ mt: "8", fontSize: "md" })}>
         {tDescription.rich("reducedPrice", {
           reducedLink: (chunks) => (
             <Link

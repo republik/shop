@@ -28,7 +28,7 @@ export default async function GiftOverview() {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "16",
+        gap: "8",
       })}
     >
       <Hero>

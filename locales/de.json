@@ -96,8 +96,8 @@
     "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
     "cta": "Jetzt verschenken",
     "options": {
-      "yearly": "<b>Jahresmitgliedschaft</b> CHF 222",
-      "monthly": "<b>3-Monats-Abo</b> CHF 48"
+      "yearly": "Jahresmitgliedschaft",
+      "monthly": "3-Monats-Abo"
     },
     "goBack": "Zurück zu allen Angeboten",
     "description": {

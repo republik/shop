@@ -6,9 +6,11 @@ import { Button } from "@/components/ui/button";
 import { CheckIcon, InfoIcon } from "lucide-react";
 
 export function DescriptionItem({
+  icon = <CheckIcon />,
   children,
   info,
 }: {
+  icon?: ReactNode;
   children: ReactNode;
   info?: ReactNode;
 }) {
@@ -34,7 +36,7 @@ export function DescriptionItem({
             flexShrink: "0",
           })}
         >
-          <CheckIcon />
+          {icon}
         </div>
         <div
           className={css({
