@@ -6,7 +6,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import CouponSVG from "../../../public/static/coupon.svg";
 import GiftSVG from "../../../public/static/gift.svg";
-import { cardButton } from "@/app/(overview)/card-button";
+import { cardButton } from "@/components/ui/card-button";
 
 const titleStyle = css({
   fontSize: "3xl",

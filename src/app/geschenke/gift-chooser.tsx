@@ -1,6 +1,6 @@
 "use client";
 
-import { cardButton } from "@/app/(overview)/card-button";
+import { cardButton } from "@/components/ui/card-button";
 import { GiftDescription } from "@/app/(overview)/gift-description";
 import { css } from "@/theme/css";
 import { token } from "@/theme/tokens";

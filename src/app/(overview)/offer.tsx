@@ -1,5 +1,5 @@
 import { GetOfferDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { cardButton } from "@/app/(overview)/card-button";
+import { cardButton } from "@/components/ui/card-button";
 import { getClient } from "@/lib/graphql/client";
 import { css, cx } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
