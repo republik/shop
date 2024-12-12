@@ -18,18 +18,17 @@ import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
-  params: { slug: string };
-  searchParams: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{
     price: string;
     session_id?: string;
     promo_code?: string;
     return_from_checkout?: "true";
-  };
+  }>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const offer = await fetchOffer(params.slug);
 
   return {
@@ -37,7 +36,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function OfferPage({ params, searchParams }: PageProps) {
+export default async function OfferPage(props: PageProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const offer = await fetchOffer(params.slug, searchParams.promo_code);
 
   if (!offer) {
@@ -48,7 +49,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   const t = await getTranslations();
   const sessionId =
-    searchParams.session_id || cookies().get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+    searchParams.session_id || (await cookies()).get(CHECKOUT_SESSION_ID_COOKIE)?.value;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe(company);
 
@@ -153,7 +154,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         <SuccessView />
       ) : (
         // TODO: log to sentry and render alert
-        <p>{t("error.generic")}</p>
+        (<p>{t("error.generic")}</p>)
       ),
     disabled: !me || !checkoutSession || checkoutSession.status === "expired",
   };

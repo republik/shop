@@ -12,15 +12,17 @@ interface GetClientOptions {
  * @param {GetClientOptions} options
  * @returns {Client} urql-client
  */
-export function getClient(
+export async function getClient(
   options: GetClientOptions = {
     setReceivedCookies: false,
   }
-): Client {
+): Promise<Client> {
+  const _headers = await headers();
+  const _cookies = await cookies();
   const reqHeaders = {
-    cookie: headers().get("cookie") ?? "",
-    accept: headers().get("accept") ?? "",
-    Authorization: headers().get("Authorization") ?? "",
+    cookie: _headers.get("cookie") ?? "",
+    accept: _headers.get("accept") ?? "",
+    Authorization: _headers.get("Authorization") ?? "",
   };
 
   const client = new Client({
@@ -38,7 +40,7 @@ export function getClient(
       if (options.setReceivedCookies) {
         const setCookies = parse(res.headers.getSetCookie());
         for (const cookie of setCookies) {
-          cookies().set(cookie as any);
+          _cookies.set(cookie as any);
         }
       }
       return res;

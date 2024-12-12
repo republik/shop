@@ -28,8 +28,8 @@ function fromAnalyticsCookie(cookie: string): AnalyticsObject {
   }
 }
 
-export function readAnalyticsParamsFromCookie(): AnalyticsObject {
-  const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
+export async function readAnalyticsParamsFromCookie(): Promise<AnalyticsObject> {
+  const cookie = (await cookies()).get(ANALYTICS_COOKIE_NAME);
   if (!cookie) {
     return {};
   }

@@ -11,7 +11,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
 
-  const gqlClient = getClient();
+  const gqlClient = await getClient();
 
   const analyticsParams = readAnalyticsParamsFromCookie();
 
@@ -30,7 +30,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
     throw Error("Checkout session could not be created");
   }
 
-  cookies().set(
+  (await cookies()).set(
     CHECKOUT_SESSION_ID_COOKIE,
     data.createCheckoutSession.sessionId,
     {

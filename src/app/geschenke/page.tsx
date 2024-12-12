@@ -19,7 +19,7 @@ export default async function GiftOverview() {
   const t = await getTranslations("giftOverview");
 
   // TODO remove this again when we don't redirect to legacy /angebote
-  const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsParams = await readAnalyticsParamsFromCookie();
 
   return (
     <div
