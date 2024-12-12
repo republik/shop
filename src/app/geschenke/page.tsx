@@ -5,6 +5,8 @@ import { getTranslations } from "next-intl/server";
 import { GiftChooser } from "@/app/geschenke/gift-chooser";
 import { Hero } from "@/components/layout/hero";
 import { BackLink } from "@/components/ui/links";
+import { cookies } from "next/headers";
+import { ANALYTICS_COOKIE_NAME, fromAnalyticsCookie } from "@/lib/analytics";
 
 export async function generateMetadata() {
   const t = await getTranslations("giftOverview");
@@ -16,6 +18,12 @@ export async function generateMetadata() {
 
 export default async function GiftOverview() {
   const t = await getTranslations("giftOverview");
+
+  // TODO remove this again when we don't redirect to legacy /angebote
+  const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
+  const analyticsParams = cookie
+    ? fromAnalyticsCookie(cookie.value)
+    : undefined;
 
   return (
     <div
@@ -38,7 +46,7 @@ export default async function GiftOverview() {
         </p>
       </Hero>
 
-      <GiftChooser />
+      <GiftChooser analyticsParams={analyticsParams} />
 
       <BackLink href={"/"}>{t("goBack")}</BackLink>
     </div>

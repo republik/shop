@@ -9,8 +9,14 @@ import Image from "next/image";
 import { ChangeEventHandler, ReactNode, useId, useState } from "react";
 import giftBigSrc from "../../../public/static/Gift-Big.svg";
 import giftSmallSrc from "../../../public/static/Gift-Small.svg";
+import { AnalyticsObject } from "@/lib/analytics";
 
-export function GiftChooser() {
+export function GiftChooser({
+  analyticsParams,
+}: {
+  // TODO remove this again when we don't redirect to legacy /angebote
+  analyticsParams?: AnalyticsObject;
+}) {
   const t = useTranslations("giftOverview");
   const [option, setOption] = useState<string>("ABO_GIVE");
 
@@ -45,6 +51,14 @@ export function GiftChooser() {
           width: "full",
         })}
       >
+        {
+          // TODO remove this again when we don't redirect to legacy /angebote
+          analyticsParams
+            ? Object.entries(analyticsParams).map(([k, v]) => {
+                return <input key={k} name={k} value={v} hidden readOnly />;
+              })
+            : null
+        }
         <div
           className={css({
             display: "flex",
