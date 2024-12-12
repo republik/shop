@@ -8,14 +8,18 @@ import {
 import { AboBanner } from "@/components/layout/abo-banner";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/layout/hero";
-import { Logo } from "@/components/logo";
+import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 
 export default async function Home() {
   const t = await getTranslations("overview");
+
+  // TODO remove this again when we don't redirect to legacy /angebote
+  const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsSearchParams = new URLSearchParams(analyticsParams).toString();
+
   return (
     <div>
       <AboBanner />
@@ -84,12 +88,12 @@ export default async function Home() {
           <OfferCardPrimary
             offerId="BENEFACTOR"
             background="#EFC07A"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`}
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR&${analyticsSearchParams}`}
           />
           <OfferCardPrimary
             offerId="STUDENT"
             background="#BCC9E9"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`}
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung&${analyticsSearchParams}`}
           />
           <GiftCard />
           <RedeemCard />
