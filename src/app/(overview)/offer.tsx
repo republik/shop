@@ -1,6 +1,7 @@
 import { OfferCardDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { cardButton } from "@/components/ui/card-button";
 import { getClient } from "@/lib/graphql/client";
-import { css, cva, cx } from "@/theme/css";
+import { css, cx } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
 import { getTranslations } from "next-intl/server";
@@ -141,7 +142,7 @@ export function OfferGridCompact({ children }: { children: ReactNode }) {
     <div
       className={grid({
         width: "full",
-        gap: "4-8",
+        columnGap: "4-8",
         minChildWidth: "350px",
         placeItems: "stretch",
       })}
@@ -197,25 +198,3 @@ export function OfferCard({
     </div>
   );
 }
-
-export const cardButton = cva({
-  base: {
-    borderRadius: "sm",
-    fontSize: "lg",
-    whiteSpace: "nowrap",
-    px: "6",
-    py: "3",
-    display: "block",
-    fontWeight: "medium",
-    textAlign: "center",
-  },
-  variants: {
-    visual: {
-      solid: { background: "var(--text)", color: "var(--cta)" },
-      outline: { borderWidth: "1px", borderColor: "black", color: "black" },
-    },
-  },
-  defaultVariants: {
-    visual: "solid",
-  },
-});

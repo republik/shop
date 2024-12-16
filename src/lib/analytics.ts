@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 const allowedParamsRe = /^(utm_|rep_|referrer|source)/;
 
 export type AnalyticsObject = Record<string, string>;
@@ -17,7 +19,19 @@ export function toAnalyticsCookie(object: AnalyticsObject): string {
   return JSON.stringify(object);
 }
 
-export function fromAnalyticsCookie(cookie: string): AnalyticsObject {
-  const object = JSON.parse(cookie);
-  return collectAnalyticsParams(object);
+function fromAnalyticsCookie(cookie: string): AnalyticsObject {
+  try {
+    const object = JSON.parse(cookie);
+    return collectAnalyticsParams(object);
+  } catch {
+    return {};
+  }
+}
+
+export function readAnalyticsParamsFromCookie(): AnalyticsObject {
+  const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
+  if (!cookie) {
+    return {};
+  }
+  return fromAnalyticsCookie(cookie.value);
 }

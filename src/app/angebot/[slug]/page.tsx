@@ -23,6 +23,7 @@ type PageProps = {
   searchParams: {
     price: string;
     session_id?: string;
+    promo_code?: string;
     return_from_checkout?: "true";
   };
 };
@@ -38,7 +39,7 @@ export async function generateMetadata({
 }
 
 export default async function OfferPage({ params, searchParams }: PageProps) {
-  const offer = await fetchOffer(params.slug);
+  const offer = await fetchOffer(params.slug, searchParams.promo_code);
 
   if (!offer) {
     notFound();

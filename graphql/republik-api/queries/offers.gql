@@ -22,8 +22,8 @@ query OfferCard($offerId: ID!) {
   }
 }
 
-query OfferCheckout($offerId: ID!) {
-  offer: getOffer(offerId: $offerId) {
+query OfferCheckout($offerId: ID!, $promoCode: String) {
+  offer: getOffer(offerId: $offerId, promoCode: $promoCode) {
     id
     company
     name

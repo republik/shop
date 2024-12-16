@@ -7,58 +7,46 @@ import {
 } from "@/app/(overview)/offer";
 import { AboBanner } from "@/components/layout/abo-banner";
 import { Footer } from "@/components/layout/footer";
-import { Logo } from "@/components/logo";
+import { Hero } from "@/components/layout/hero";
+import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 
 export default async function Home() {
   const t = await getTranslations("overview");
+
+  // TODO remove this again when we don't redirect to legacy /angebote
+  const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsSearchParams = new URLSearchParams(analyticsParams).toString();
+
   return (
     <div>
       <AboBanner />
       <div
         className={css({
           background: "[#DFD6C7]",
-          pt: "16",
-          pb: "12",
+          py: "16",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           gap: "16",
         })}
       >
-        <div
-          className={css({
-            width: "full",
-            maxWidth: "breakpoint-sm",
-            mx: "auto",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "8",
-            fontSize: "xl",
-          })}
-        >
-          <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
-            <Logo />
-          </Link>
-          <div className={css({ textAlign: "center" })}>
-            <h1 className={visuallyHidden()}>{t("title")}</h1>
-            <p className={css({ textStyle: "leadBold" })}>
-              {t.rich("lead", {
-                br: () => <br />,
-              })}
-            </p>
-            <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
-          </div>
-        </div>
+        <Hero>
+          <h1 className={visuallyHidden()}>{t("title")}</h1>
+          <p className={css({ textStyle: "leadBold" })}>
+            {t.rich("lead", {
+              br: () => <br />,
+            })}
+          </p>
+          <p className={css({ textStyle: "lead" })}>{t("cta")}</p>
+        </Hero>
 
         <div
           className={css({
             width: "full",
-            maxWidth: "maxContentWidth",
+            maxWidth: "content.wide",
             mx: "auto",
           })}
         >
@@ -82,7 +70,7 @@ export default async function Home() {
       <div
         className={css({
           width: "full",
-          maxWidth: "maxContentWidth",
+          maxWidth: "content.wide",
           mx: "auto",
           my: "16",
         })}
@@ -100,12 +88,12 @@ export default async function Home() {
           <OfferCardPrimary
             offerId="BENEFACTOR"
             background="#EFC07A"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR`}
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR&${analyticsSearchParams}`}
           />
           <OfferCardPrimary
             offerId="STUDENT"
             background="#BCC9E9"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung`}
+            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung&${analyticsSearchParams}`}
           />
           <GiftCard />
           <RedeemCard />

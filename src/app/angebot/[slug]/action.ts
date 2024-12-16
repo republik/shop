@@ -1,22 +1,9 @@
 "use server";
 
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import {
-  ANALYTICS_COOKIE_NAME,
-  AnalyticsObject,
-  fromAnalyticsCookie,
-} from "@/lib/analytics";
+import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-
-function readAnalyticsParamsFromCookie(): AnalyticsObject {
-  const cookie = cookies().get(ANALYTICS_COOKIE_NAME);
-  if (!cookie) {
-    return {};
-  }
-  return fromAnalyticsCookie(cookie.value);
-}
 
 export async function createCheckout(formData: FormData): Promise<void> {
   const offerId = formData.get("offerId")?.toString() ?? "";

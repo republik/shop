@@ -148,7 +148,7 @@ export const presetRepublik = definePreset({
           },
         },
         sizes: {
-          maxContentWidth: { value: "54rem" },
+          content: { narrow: { value: "30rem" }, wide: { value: "54rem" } },
           header: {
             height: { value: { base: "48px", md: "60px" } },
             avatar: { value: { base: "26px", md: "32px" } },
@@ -267,7 +267,7 @@ export const presetRepublik = definePreset({
             fontWeight: "medium",
             fontStyle: "normal",
             fontSize: { base: "xl", md: "2xl" },
-            lineHeight: 1.16667,
+            lineHeight: 1.4,
           },
         },
         lead: {
@@ -276,7 +276,7 @@ export const presetRepublik = definePreset({
             fontWeight: "regular",
             fontStyle: "normal",
             fontSize: { base: "xl", md: "2xl" },
-            lineHeight: 1.16667,
+            lineHeight: 1.4,
           },
         },
         h3Sans: {
