@@ -35,6 +35,10 @@ export default defineConfig({
     baseURL: "http://localhost:3000",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
+    extraHTTPHeaders: {
+      // Set this, so Next.js Server Actions don't get a 'null' Origin header
+      Origin: "http://localhost:3000",
+    },
   },
 
   /* Configure projects for major browsers */
