@@ -159,8 +159,8 @@
         }
       },
       "invalidPromoCode": {
-        "title": "Ungültiger Gutschein",
-        "description": "Der Gutschein «{promoCode}» ist ungültig oder abgelaufen."
+        "title": "Ungültiges Sonderangebot",
+        "description": "Das Sonderangebot ist ungültig oder abgelaufen."
       },
       "intervals": {
         "month": "Monat",

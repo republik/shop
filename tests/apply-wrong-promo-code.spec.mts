@@ -50,7 +50,9 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
     })
   ).toBeVisible();
 
-  await expect(page.getByRole("alert")).toContainText("Ungültiger Gutschein");
+  await expect(page.getByRole("alert")).toContainText(
+    "Ungültiges Sonderangebot"
+  );
 
   await page.getByRole("button", { name: "Kaufen" }).click();
 
