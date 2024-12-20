@@ -55,4 +55,14 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
       name: "Sonderangebot",
     })
   ).toBeVisible();
+
+  await page.getByRole("button", { name: "Kaufen" }).click();
+
+  const stripeFrame = page.frameLocator('[name="embedded-checkout"]');
+
+  await expect(page.getByTestId("precheckout-summary")).toContainText("199");
+
+  await expect(
+    stripeFrame.getByTestId("product-summary-total-amount")
+  ).toContainText("199");
 });

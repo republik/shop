@@ -12,9 +12,14 @@ import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 interface PreCheckoutProps {
   initialPrice?: number;
   offer: NonNullable<GetOfferQuery["offer"]>;
+  promoCode?: string;
 }
 
-export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
+export function PreCheckout({
+  initialPrice,
+  offer,
+  promoCode,
+}: PreCheckoutProps) {
   const t = useTranslations();
 
   const [isLoading, setLoading] = useState(false);
@@ -77,6 +82,13 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         hidden
         readOnly
         defaultValue={offer.id}
+      />
+      <input
+        type="text"
+        name="promoCode"
+        hidden
+        readOnly
+        defaultValue={promoCode}
       />
       <div
         className={css({
