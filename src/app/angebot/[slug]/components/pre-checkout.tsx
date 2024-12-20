@@ -8,6 +8,8 @@ import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -35,6 +37,8 @@ export function PreCheckout({
         : null,
     [offer.price]
   );
+
+  const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
@@ -103,6 +107,7 @@ export function PreCheckout({
         >
           {offer.name}
         </h3>
+
         <p
           className={css({
             textStyle: "md",
@@ -159,6 +164,21 @@ export function PreCheckout({
           />
         </fieldset>
       )}
+
+      {invalidPromoCode && (
+        <Alert>
+          <AlertCircleIcon />
+          <AlertTitle>
+            {t("checkout.preCheckout.invalidPromoCode.title")}
+          </AlertTitle>
+          <AlertDescription>
+            {t("checkout.preCheckout.invalidPromoCode.description", {
+              promoCode,
+            })}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <CheckoutPricingTable
         currency={offer.price.currency}
         items={checkoutItems}
