@@ -89,7 +89,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     name: t("checkout.preCheckout.title"),
     detail: checkoutSession ? (
       <>
-        <span>
+        <span data-testid="precheckout-summary">
           {offer.price.currency.toUpperCase()}{" "}
           {(offer.discount
             ? (offer.price.amount - offer.discount.amountOff) / 100
@@ -107,6 +107,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
             ? Number(searchParams.price)
             : undefined
         }
+        promoCode={searchParams.promo_code}
       />
     ) : (
       <Alert variant="info">
