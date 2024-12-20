@@ -158,6 +158,10 @@
           "generic": ""
         }
       },
+      "invalidPromoCode": {
+        "title": "Ungültiger Gutschein",
+        "description": "Der Gutschein «{promoCode}» ist ungültig oder abgelaufen."
+      },
       "intervals": {
         "month": "Monat",
         "year": "Jahr",
