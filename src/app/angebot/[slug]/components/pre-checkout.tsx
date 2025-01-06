@@ -10,13 +10,20 @@ import Image from "next/image";
 import { useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 interface PreCheckoutProps {
   initialPrice?: number;
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
+  promoCode?: string;
 }
 
-export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
+export function PreCheckout({
+  initialPrice,
+  offer,
+  promoCode,
+}: PreCheckoutProps) {
   const t = useTranslations();
 
   const formatPrice = useFormatCurrency(offer.price.currency);
@@ -26,6 +33,8 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
     Math.max(240, initialPrice || 240)
   );
   const priceId = useId();
+
+  const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
@@ -74,6 +83,13 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         readOnly
         defaultValue={offer.id}
       />
+      <input
+        type="text"
+        name="promoCode"
+        hidden
+        readOnly
+        defaultValue={promoCode}
+      />
       <div
         className={css({
           spaceY: "[6px]",
@@ -87,6 +103,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         >
           {offer.name}
         </h3>
+
         <p
           className={css({
             textStyle: "md",
@@ -146,6 +163,20 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
             onChange={(e) => setUserPrice(Number(e.target.value))}
           />
         </fieldset>
+      )}
+
+      {invalidPromoCode && (
+        <Alert>
+          <AlertCircleIcon />
+          <AlertTitle>
+            {t("checkout.preCheckout.invalidPromoCode.title")}
+          </AlertTitle>
+          <AlertDescription>
+            {t("checkout.preCheckout.invalidPromoCode.description", {
+              promoCode,
+            })}
+          </AlertDescription>
+        </Alert>
       )}
 
       <CheckoutPricingTable

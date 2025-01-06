@@ -10,6 +10,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
   const price = formData.get("price");
 
   const promoItems = formData.getAll("promoItem");
+  const promoCode = formData.get("promoCode");
 
   const gqlClient = getClient();
 
@@ -21,6 +22,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
       offerId: offerId,
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
+      promoCode: promoCode ? String(promoCode) : undefined,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
       complimentaryItems: promoItems.map((item) => {
         return {
@@ -36,5 +38,7 @@ export async function createCheckout(formData: FormData): Promise<void> {
     throw Error("Checkout session could not be created");
   }
 
-  redirect(`?session_id=${data.createCheckoutSession.sessionId}`);
+  redirect(
+    `?session_id=${data.createCheckoutSession.sessionId}&promo_code=${promoCode}`
+  );
 }
