@@ -1,6 +1,8 @@
 import { LoginView } from "@/app/angebot/[slug]/components/login-view";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
@@ -25,9 +27,18 @@ export default async function RedeemGiftPage({
   if (!code) {
     return (
       <form>
-        <input type="text" name="code" />
+        <input
+          type="text"
+          name="code"
+          className={css({
+            borderWidth: "1px",
+            borderColor: "text",
+            borderRadius: "sm",
+            p: "2",
+          })}
+        />
 
-        <button type="submit">GO</button>
+        <Button type="submit">GO</Button>
       </form>
     );
   }
@@ -60,7 +71,7 @@ export default async function RedeemGiftPage({
         <p>[Hier zusätzliche Infos abfragen]</p>
 
         <input name="code" type="text" hidden readOnly value={code} />
-        <button type="submit">JETZT EINLÖSEN</button>
+        <Button type="submit">JETZT EINLÖSEN</Button>
       </form>
     </div>
   );
