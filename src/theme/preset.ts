@@ -279,6 +279,15 @@ export const presetRepublik = definePreset({
             lineHeight: 1.4,
           },
         },
+        leadSerif: {
+          value: {
+            fontFamily: "rubis",
+            fontWeight: "regular",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
+            lineHeight: 1.4,
+          },
+        },
         h3Sans: {
           value: {
             fontFamily: "gtAmericaStandard",
