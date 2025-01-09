@@ -13,7 +13,7 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
   const testId = nanoid(5);
 
   await page.goto(
-    `/angebot/${key}?utm_source=test&utm_content=${testId}&promo_code=E2ETEST`
+    `/angebot/${key}?utm_source=test&utm_content=${testId}&promo_code=THISDOESNOTWORK`
   );
 
   const testEmail = process.env.TEST_EMAIL_PATTERN?.replace(
@@ -50,21 +50,17 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
     })
   ).toBeVisible();
 
-  await expect(
-    page.getByRole("rowheader", {
-      name: "Sonderangebot",
-    })
-  ).toBeVisible();
-
-  await expect(page.getByRole("alert")).not.toBeAttached();
+  await expect(page.getByRole("alert")).toContainText(
+    "Ungültiges Sonderangebot"
+  );
 
   await page.getByRole("button", { name: "Kaufen" }).click();
 
   const stripeFrame = page.frameLocator('[name="embedded-checkout"]');
 
-  await expect(page.getByTestId("precheckout-summary")).toContainText("199");
+  await expect(page.getByTestId("precheckout-summary")).toContainText("240");
 
   await expect(
     stripeFrame.getByTestId("product-summary-total-amount")
-  ).toContainText("199");
+  ).toContainText("240");
 });

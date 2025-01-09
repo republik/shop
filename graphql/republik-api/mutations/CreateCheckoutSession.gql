@@ -3,9 +3,11 @@ mutation CreateCheckoutSession(
   $customPrice: Int
   $metadata: JSON
   $returnUrl: String
+  $promoCode: String
 ) {
   createCheckoutSession(
     offerId: $offerId
+    promoCode: $promoCode
     options: {
       uiMode: EMBEDDED
       customPrice: $customPrice

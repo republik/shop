@@ -8,13 +8,20 @@ import { useTranslations } from "next-intl";
 import { useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircleIcon } from "lucide-react";
 
 interface PreCheckoutProps {
   initialPrice?: number;
   offer: NonNullable<GetOfferQuery["offer"]>;
+  promoCode?: string;
 }
 
-export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
+export function PreCheckout({
+  initialPrice,
+  offer,
+  promoCode,
+}: PreCheckoutProps) {
   const t = useTranslations();
 
   const [isLoading, setLoading] = useState(false);
@@ -30,6 +37,8 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         : null,
     [offer.price]
   );
+
+  const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
@@ -78,6 +87,13 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         readOnly
         defaultValue={offer.id}
       />
+      <input
+        type="text"
+        name="promoCode"
+        hidden
+        readOnly
+        defaultValue={promoCode}
+      />
       <div
         className={css({
           spaceY: "[6px]",
@@ -91,6 +107,7 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
         >
           {offer.name}
         </h3>
+
         <p
           className={css({
             textStyle: "md",
@@ -147,6 +164,21 @@ export function PreCheckout({ initialPrice, offer }: PreCheckoutProps) {
           />
         </fieldset>
       )}
+
+      {invalidPromoCode && (
+        <Alert>
+          <AlertCircleIcon />
+          <AlertTitle>
+            {t("checkout.preCheckout.invalidPromoCode.title")}
+          </AlertTitle>
+          <AlertDescription>
+            {t("checkout.preCheckout.invalidPromoCode.description", {
+              promoCode,
+            })}
+          </AlertDescription>
+        </Alert>
+      )}
+
       <CheckoutPricingTable
         currency={offer.price.currency}
         items={checkoutItems}
