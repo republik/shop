@@ -1,13 +1,20 @@
+import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginView } from "@/app/angebot/[slug]/components/login-view";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/auth/fetch-me";
+import { getClient } from "@/lib/graphql/client";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
 
-async function validateCode(code: string) {
-  return code.length === 8;
+async function validateCode(voucher: string) {
+  const { data } = await getClient().query(ValidateGiftVoucherDocument, {
+    voucher,
+  });
+
+  return data?.validateGiftVoucher ?? { valid: false, isLegacyVoucher: false };
 }
 
 export default async function RedeemGiftPage({
@@ -44,13 +51,19 @@ export default async function RedeemGiftPage({
   }
 
   // Validate Code
-  const isCodeValid = await validateCode(code);
+  const { valid, isLegacyVoucher } = await validateCode(code);
 
   // TODO What if it's a legacy code? Redirect to republik.ch/abholen?code=XYZXYZ
 
+  if (isLegacyVoucher) {
+    return redirect(
+      `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen?code=${code}`
+    );
+  }
+
   // TODO Do we show additional info about the code?
 
-  if (!isCodeValid) {
+  if (!valid) {
     return (
       <Alert variant="info">
         <AlertCircleIcon />

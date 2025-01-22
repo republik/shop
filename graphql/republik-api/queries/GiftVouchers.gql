@@ -1,0 +1,6 @@
+query ValidateGiftVoucher($voucher: String!) {
+  validateGiftVoucher(voucher: $voucher) {
+    valid
+    isLegacyVoucher
+  }
+}
