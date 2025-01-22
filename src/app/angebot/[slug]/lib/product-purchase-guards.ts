@@ -16,13 +16,28 @@ export type IsProductAvailableForUserPredicate = (
  * @returns An object with the availability status and a reason if not available
  */
 const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
-  if (me.activeMagazineSubscription || me.activeMembership) {
+  // Subscriptions
+  if (me.activeMagazineSubscription) {
     return {
       available: false,
       reason: "hasSubscription",
     };
   }
 
+  // Legacy memberships
+  // Check if membership has ended, i.e. membership is in grace period. In this case we allow buying a new subscription.
+  const legacyMembershipHasEnded =
+    me.activeMembership?.endDate &&
+    new Date(me.activeMembership?.endDate).getTime() < Date.now();
+
+  if (me.activeMembership && !legacyMembershipHasEnded) {
+    return {
+      available: false,
+      reason: "hasSubscription",
+    };
+  }
+
+  // Go!
   return { available: true };
 };
 
@@ -33,12 +48,28 @@ const canUserBuyMonthlyAbo: IsProductAvailableForUserPredicate = (me) => {
  * @returns An object with the availability status and a reason if not available
  */
 const canUserBuyYearlyAbo: IsProductAvailableForUserPredicate = (me) => {
-  if (me.activeMagazineSubscription || me.activeMembership) {
+  // Subscriptions
+  if (me.activeMagazineSubscription) {
     return {
       available: false,
       reason: "hasSubscription",
     };
   }
+
+  // Legacy memberships
+  // Check if membership has ended, i.e. membership is in grace period. In this case we allow buying a new subscription.
+  const legacyMembershipHasEnded =
+    me.activeMembership?.endDate &&
+    new Date(me.activeMembership?.endDate).getTime() < Date.now();
+
+  if (me.activeMembership && !legacyMembershipHasEnded) {
+    return {
+      available: false,
+      reason: "hasSubscription",
+    };
+  }
+
+  // Go!
   return { available: true };
 };
 
