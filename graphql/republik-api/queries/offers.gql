@@ -50,8 +50,6 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
 
     complimentaryItems {
       id
-      name
-      description
       maxQuantity
     }
   }

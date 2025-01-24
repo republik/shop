@@ -10,6 +10,16 @@ query Me($stripeCompany: CompanyName) {
     email
     initials
     roles
+
+    address {
+      name
+      line1
+      line2
+      postalCode
+      city
+      country
+    }
+
     activeMembership {
       id
       type {

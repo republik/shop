@@ -1,5 +1,6 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginView } from "@/app/angebot/[slug]/components/login-view";
+import { PersonalInfoForm } from "@/app/angebot/abholen/components/personal-info-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/auth/fetch-me";
@@ -80,12 +81,7 @@ export default async function RedeemGiftPage({
       <p>Hallo {me.name}</p>
       <p>CODE {code}</p>
 
-      <form>
-        <p>[Hier zusätzliche Infos abfragen]</p>
-
-        <input name="code" type="text" hidden readOnly value={code} />
-        <Button type="submit">JETZT EINLÖSEN</Button>
-      </form>
+      <PersonalInfoForm code={code} me={me} />
     </div>
   );
 }
