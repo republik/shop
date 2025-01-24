@@ -2,11 +2,14 @@
 import { updateMe } from "@/app/angebot/abholen/components/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
+import { useTranslations } from "next-intl";
 import { useFormState } from "react-dom";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
   console.log(me);
-  const [state, action] = useFormState(updateMe, {});
+  const [state, action] = useFormState(updateMe, { ok: true });
+
+  const t = useTranslations("formValidation");
 
   console.log(state);
 
@@ -14,14 +17,14 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
     <form action={action}>
       <p>[Hier zusätzliche Infos abfragen]</p>
 
+      {!state.ok &&
+        state.errors.map((e) => {
+          return <p key={e}>{t(e)}</p>;
+        })}
+
       <label>
         Vorname
-        <input
-          name="firstName"
-          type="text"
-          defaultValue={me.firstName ?? ""}
-          required
-        />
+        <input name="firstName" type="text" defaultValue={me.firstName ?? ""} />
       </label>
       <label>
         Nachname

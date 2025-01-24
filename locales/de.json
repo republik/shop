@@ -212,5 +212,9 @@
         "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
       }
     }
+  },
+  "formValidation": {
+    "firstName": "Vorname darf nicht leer sein",
+    "lastName": "Nach darf nicht leer sein"
   }
 }
