@@ -1,4 +1,5 @@
 "use client";
+import { FormField } from "@/app/angebot/abholen/components/form";
 import { updateMe } from "@/app/angebot/abholen/components/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
@@ -7,7 +8,7 @@ import { useFormState } from "react-dom";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
   console.log(me);
-  const [state, action] = useFormState(updateMe, { ok: true });
+  const [state, action] = useFormState(updateMe, { ok: true, errors: null });
 
   const t = useTranslations("formValidation");
 
@@ -17,82 +18,76 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
     <form action={action}>
       <p>[Hier zusätzliche Infos abfragen]</p>
 
-      {!state.ok &&
-        state.errors.map((e) => {
-          return <p key={e}>{t(e)}</p>;
-        })}
-
-      <label>
-        Vorname
-        <input name="firstName" type="text" defaultValue={me.firstName ?? ""} />
-      </label>
-      <label>
-        Nachname
-        <input
-          name="lastName"
-          type="text"
-          defaultValue={me.lastName ?? ""}
-          required
-        />
-      </label>
-
+      <FormField
+        type="text"
+        label="Vorname"
+        name="firstName"
+        error={state.errors?.firstName}
+        defaultValue={me.firstName ?? ""}
+        required
+      />
+      <FormField
+        type="text"
+        label="Nachname"
+        name="lastName"
+        error={state.errors?.lastName}
+        defaultValue={me.lastName ?? ""}
+        required
+      />
       <p>Vielleicht die Adresse hier so</p>
-
-      <label>
-        Name
-        <input
-          name="name"
-          type="text"
-          defaultValue={me.address?.name ?? ""}
-          required
-        />
-      </label>
-
-      <label>
-        Strasse
-        <input
-          name="line1"
-          type="text"
-          defaultValue={me.address?.line1 ?? ""}
-          required
-        />
-      </label>
-      <label>
-        Strasse 2
-        <input
-          name="line2"
-          type="text"
-          defaultValue={me.address?.line2 ?? ""}
-        />
-      </label>
-      <label>
-        PLZ
-        <input
-          name="postalCode"
-          type="text"
-          defaultValue={me.address?.postalCode ?? ""}
-          required
-        />
-      </label>
-      <label>
-        Ort
-        <input
-          name="city"
-          type="text"
-          defaultValue={me.address?.city ?? ""}
-          required
-        />
-      </label>
-      <label>
-        Land
-        <input
-          name="country"
-          type="text"
-          defaultValue={me.address?.country ?? ""}
-          required
-        />
-      </label>
-
+      <FormField
+        type="text"
+        label="Name"
+        name="name"
+        error={state.errors?.name}
+        autoComplete="name"
+        defaultValue={me.address?.name ?? ""}
+        required
+      />
+      <FormField
+        type="text"
+        label="Strasse"
+        name="line1"
+        error={state.errors?.line1}
+        autoComplete="address-line1"
+        defaultValue={me.address?.line1 ?? ""}
+        required
+      />
+      <FormField
+        type="text"
+        label="Strasse 2"
+        name="line2"
+        error={state.errors?.line2}
+        autoComplete="address-line2"
+        defaultValue={me.address?.line2 ?? ""}
+      />
+      <FormField
+        type="text"
+        label="PLZ"
+        name="postalCode"
+        error={state.errors?.postalCode}
+        autoComplete="postal-code"
+        defaultValue={me.address?.postalCode ?? ""}
+        required
+      />
+      <FormField
+        type="text"
+        label="Ort"
+        name="city"
+        error={state.errors?.city}
+        autoComplete="address-level2"
+        defaultValue={me.address?.city ?? ""}
+        required
+      />
+      <FormField
+        type="text"
+        label="Land"
+        name="country"
+        error={state.errors?.country}
+        autoComplete="country-name"
+        defaultValue={me.address?.country ?? ""}
+        required
+      />
       <input name="code" type="text" hidden readOnly value={code} />
       <Button type="submit">JETZT EINLÖSEN</Button>
     </form>

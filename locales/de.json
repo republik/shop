@@ -214,7 +214,7 @@
     }
   },
   "formValidation": {
-    "firstName": "Vorname darf nicht leer sein",
-    "lastName": "Nach darf nicht leer sein"
+    "generic": "Dieses Feld ist ungültig",
+    "valueMissing": "{label} darf nicht leer sein"
   }
 }

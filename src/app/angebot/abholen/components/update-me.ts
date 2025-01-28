@@ -2,7 +2,6 @@
 
 import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
-import { getTranslations } from "next-intl/server";
 
 import * as z from "zod";
 
@@ -20,25 +19,17 @@ const MeInput = z.object({
 export async function updateMe(
   previousState: any,
   formData: FormData
-): Promise<{ ok: false; errors: string[] } | { ok: true }> {
-  const t = getTranslations("formValidation");
-
-  const input = MeInput.safeParse({
-    firstName: formData.get("firstName"),
-    lastName: formData.get("lastName"),
-    name: formData.get("name"),
-    line1: formData.get("line1"),
-    line2: formData.get("line2"),
-    postalCode: formData.get("postalCode"),
-    city: formData.get("city"),
-    country: formData.get("country"),
-  });
+): Promise<
+  { ok: false; errors: Record<string, string> } | { ok: true; errors: null }
+> {
+  const input = MeInput.safeParse(Object.fromEntries(formData));
 
   if (input.error) {
-    console.dir(input.error, { depth: 99 });
     return {
       ok: false,
-      errors: input.error.errors.map((e) => e.path[0]),
+      errors: Object.fromEntries(
+        input.error.errors.map((e) => [e.path[0], "valueMissing"])
+      ),
     };
   }
 
@@ -57,10 +48,11 @@ export async function updateMe(
     });
 
     if (error) {
-      console.log(error);
-      return { ok: false, error: { message: error.message } };
+      // TODO: figure out which errors are actually happening
+
+      return { ok: false, errors: {} };
     }
   }
 
-  return { ok: true };
+  return { ok: true, errors: null };
 }
