@@ -45,15 +45,17 @@ export function FormField({ label, error, ...props }: FormFieldProps) {
           p: "2",
         })}
       />
-      <span
-        aria-live="polite"
-        className={css({
-          color: "error",
-          fontSize: "sm",
-        })}
-      >
-        {error && errorMessage}
-      </span>
+      {error && (
+        <span
+          aria-live="polite"
+          className={css({
+            color: "error",
+            fontSize: "sm",
+          })}
+        >
+          {errorMessage}
+        </span>
+      )}
     </div>
   );
 }

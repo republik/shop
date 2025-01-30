@@ -1,5 +1,7 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { LoginStatus } from "@/app/angebot/[slug]/components/login-status";
 import { LoginView } from "@/app/angebot/[slug]/components/login-view";
+import { FormField } from "@/app/angebot/abholen/components/form";
 import { PersonalInfoForm } from "@/app/angebot/abholen/components/personal-info-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -28,26 +30,11 @@ export default async function RedeemGiftPage({
   const me = await fetchMe();
 
   if (!me) {
-    return <LoginView />;
-  }
-
-  // Code Input Form
-  if (!code) {
     return (
-      <form>
-        <input
-          type="text"
-          name="code"
-          className={css({
-            borderWidth: "1px",
-            borderColor: "text",
-            borderRadius: "sm",
-            p: "2",
-          })}
-        />
-
-        <Button type="submit">GO</Button>
-      </form>
+      <LoginView
+        title="Hallooo"
+        description="Melden Sie sich mit Ihrer E-Mail-Adresse an, um Ihr Geschenk einzulösen"
+      />
     );
   }
 
@@ -64,14 +51,58 @@ export default async function RedeemGiftPage({
 
   // TODO Do we show additional info about the code?
 
+  // Code Input Form
+  if (!code) {
+    return (
+      <>
+        <form>
+          <FormField
+            label="Gutschein-Code"
+            type="text"
+            name="code"
+            className={css({
+              borderWidth: "1px",
+              borderColor: "text",
+              borderRadius: "sm",
+              p: "2",
+            })}
+          />
+
+          <Button type="submit">Einlösen</Button>
+        </form>
+      </>
+    );
+  }
+
   if (!valid) {
     return (
-      <Alert variant="info">
-        <AlertCircleIcon />
-        <AlertTitle>{t("invalidGiftCode.title")}</AlertTitle>
+      <>
+        <LoginStatus />
+        <Alert variant="info">
+          <AlertCircleIcon />
+          <AlertTitle>{t("invalidGiftCode.title")}</AlertTitle>
 
-        <AlertDescription>{t("invalidGiftCode.description")}</AlertDescription>
-      </Alert>
+          <AlertDescription>
+            {t("invalidGiftCode.description")}
+          </AlertDescription>
+        </Alert>
+        <form>
+          <FormField
+            label="Gutschein-Code"
+            type="text"
+            name="code"
+            className={css({
+              borderWidth: "1px",
+              borderColor: "text",
+              borderRadius: "sm",
+              p: "2",
+            })}
+            autoFocus
+          />
+
+          <Button type="submit">Einlösen</Button>
+        </form>
+      </>
     );
   }
 

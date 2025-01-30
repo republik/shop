@@ -213,6 +213,21 @@
       }
     }
   },
+  "form": {
+    "name": "Name",
+    "address": "Adresse",
+
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "name": "Name",
+      "line1": "Strasse und Hausnummer",
+      "line2": "Zusatz (optional)",
+      "postalCode": "Postleitzahl",
+      "city": "Ort",
+      "country": "Land"
+    }
+  },
   "formValidation": {
     "generic": "Dieses Feld ist ungültig",
     "valueMissing": "{label} darf nicht leer sein"

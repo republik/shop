@@ -49,7 +49,8 @@ export async function updateMe(
 
     if (error) {
       // TODO: figure out which errors are actually happening
-
+      console.dir(error.graphQLErrors, { depth: 3 });
+      console.dir(data, { depth: 3 });
       return { ok: false, errors: {} };
     }
   }

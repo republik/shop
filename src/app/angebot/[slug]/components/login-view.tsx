@@ -22,9 +22,12 @@ export function StepperSignOutButton() {
   );
 }
 
-interface LoginViewProps {}
+interface LoginViewProps {
+  title?: string;
+  description?: string;
+}
 
-export function LoginView(_: LoginViewProps) {
+export function LoginView({ title, description }: LoginViewProps) {
   const t = useTranslations("checkout");
 
   return (
@@ -38,9 +41,9 @@ export function LoginView(_: LoginViewProps) {
               fontWeight: "bold",
             })}
           >
-            {t("loginStep.email.title")}
+            {title ?? t("loginStep.email.title")}
           </h1>
-          <p>{t("loginStep.email.description")}</p>
+          <p>{description ?? t("loginStep.email.description")}</p>
         </>
       }
       loginFormInfo={

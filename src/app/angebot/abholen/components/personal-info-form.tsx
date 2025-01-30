@@ -3,41 +3,61 @@ import { FormField } from "@/app/angebot/abholen/components/form";
 import { updateMe } from "@/app/angebot/abholen/components/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
+import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { useFormState } from "react-dom";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
-  console.log(me);
   const [state, action] = useFormState(updateMe, { ok: true, errors: null });
 
-  const t = useTranslations("formValidation");
-
-  console.log(state);
+  const t = useTranslations("form");
+  const tField = useTranslations("form.fields");
 
   return (
-    <form action={action}>
-      <p>[Hier zusätzliche Infos abfragen]</p>
+    <form
+      action={action}
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "4",
+      })}
+    >
+      <h2
+        className={css({
+          textStyle: "h3Sans",
+        })}
+      >
+        {t("name")}
+      </h2>
 
       <FormField
         type="text"
-        label="Vorname"
+        label={tField("firstName")}
         name="firstName"
         error={state.errors?.firstName}
+        autoComplete="given-name"
         defaultValue={me.firstName ?? ""}
         required
       />
       <FormField
         type="text"
-        label="Nachname"
+        label={tField("lastName")}
         name="lastName"
         error={state.errors?.lastName}
+        autoComplete="family-name"
         defaultValue={me.lastName ?? ""}
         required
       />
-      <p>Vielleicht die Adresse hier so</p>
+      <h2
+        className={css({
+          textStyle: "h3Sans",
+        })}
+      >
+        {t("address")}
+      </h2>
       <FormField
         type="text"
-        label="Name"
+        label={tField("name")}
         name="name"
         error={state.errors?.name}
         autoComplete="name"
@@ -46,42 +66,54 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
       />
       <FormField
         type="text"
-        label="Strasse"
+        label={tField("line1")}
         name="line1"
         error={state.errors?.line1}
         autoComplete="address-line1"
         defaultValue={me.address?.line1 ?? ""}
         required
+        maxLength={70}
       />
       <FormField
         type="text"
-        label="Strasse 2"
+        label={tField("line2")}
         name="line2"
         error={state.errors?.line2}
         autoComplete="address-line2"
         defaultValue={me.address?.line2 ?? ""}
       />
+
+      <div
+        className={css({
+          width: "full",
+          display: "grid",
+          gap: "4",
+          gridTemplateColumns: "20% 1fr",
+        })}
+      >
+        <FormField
+          type="text"
+          label={tField("postalCode")}
+          name="postalCode"
+          error={state.errors?.postalCode}
+          autoComplete="postal-code"
+          defaultValue={me.address?.postalCode ?? ""}
+          required
+        />
+        <FormField
+          type="text"
+          label={tField("city")}
+          name="city"
+          error={state.errors?.city}
+          autoComplete="address-level2"
+          defaultValue={me.address?.city ?? ""}
+          required
+          maxLength={35}
+        />
+      </div>
       <FormField
         type="text"
-        label="PLZ"
-        name="postalCode"
-        error={state.errors?.postalCode}
-        autoComplete="postal-code"
-        defaultValue={me.address?.postalCode ?? ""}
-        required
-      />
-      <FormField
-        type="text"
-        label="Ort"
-        name="city"
-        error={state.errors?.city}
-        autoComplete="address-level2"
-        defaultValue={me.address?.city ?? ""}
-        required
-      />
-      <FormField
-        type="text"
-        label="Land"
+        label={tField("country")}
         name="country"
         error={state.errors?.country}
         autoComplete="country-name"
