@@ -4,3 +4,10 @@ query ValidateGiftVoucher($voucher: String!) {
     isLegacyVoucher
   }
 }
+
+mutation RedeemGiftVoucher($voucher: String!) {
+  redeemGiftVoucher(voucherCode: $voucher) {
+    aboType
+    starting
+  }
+}

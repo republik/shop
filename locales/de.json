@@ -205,6 +205,11 @@
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
           "action": "Zum Magazin"
+        },
+        "redeem": {
+          "title": "Herzlichen Glückwunsch",
+          "description": "Ihr Geschenk wurde eingelöst, Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zum Magazin"
         }
       },
       "failed": {

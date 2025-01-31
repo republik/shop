@@ -4,7 +4,7 @@ import type { CheckoutSessionData } from "@/app/angebot/[slug]/lib/stripe/server
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
 import { css } from "@/theme/css";
-import { CheckCircleIcon } from "lucide-react";
+import { CheckCircleIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
@@ -137,6 +137,52 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
             <strong data-testid="success-recipient-email">
               {session.email}
             </strong>
+          ),
+        })}
+      </p>
+      <Link
+        className={linkStyle}
+        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
+      >
+        {t("action")}
+      </Link>
+    </div>
+  );
+}
+
+export function RedeemSuccess({
+  email,
+  // aboType
+  // starting
+}: {
+  email: string;
+  // aboType: string;
+  // starting: string;
+}) {
+  const t = useTranslations("checkout.checkout.success.redeem");
+
+  const plausible = usePlausible();
+
+  // useEffect(() => {
+  //   plausible("Redeem Success", { props: { offer: aboType } });
+  // }, [plausible, aboType]);
+
+  return (
+    <div className={containerStyle}>
+      <HeartIcon
+        className={css({
+          height: "10",
+          width: "10",
+          fill: "[#B7A5EC]",
+        })}
+      />
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      <p className={css({ mb: "4" })}>
+        {t.rich("description", {
+          email: () => (
+            <strong data-testid="success-recipient-email">{email}</strong>
           ),
         })}
       </p>

@@ -1,7 +1,11 @@
 "use server";
 
-import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  RedeemGiftVoucherDocument,
+  UpdateMeDocument,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
+import { redirect } from "next/navigation";
 
 import * as z from "zod";
 
@@ -16,13 +20,18 @@ const MeInput = z.object({
   country: z.string(),
 });
 
+const CodeInput = z.string();
+
 export async function updateMe(
   previousState: any,
   formData: FormData
 ): Promise<
   { ok: false; errors: Record<string, string> } | { ok: true; errors: null }
 > {
-  const input = MeInput.safeParse(Object.fromEntries(formData));
+  const gql = getClient();
+  const data = Object.fromEntries(formData);
+  const input = MeInput.safeParse(data);
+  const code = CodeInput.safeParse(data.code);
 
   if (input.error) {
     return {
@@ -34,7 +43,7 @@ export async function updateMe(
   }
 
   if (input.data) {
-    const { error, data } = await getClient().mutation(UpdateMeDocument, {
+    const { error, data } = await gql.mutation(UpdateMeDocument, {
       firstName: input.data.firstName,
       lastName: input.data.lastName,
       address: {
@@ -50,10 +59,29 @@ export async function updateMe(
     if (error) {
       // TODO: figure out which errors are actually happening
       console.dir(error.graphQLErrors, { depth: 3 });
-      console.dir(data, { depth: 3 });
       return { ok: false, errors: {} };
     }
   }
+
+  if (code.error) {
+    return {
+      ok: false,
+      errors: { code: "valueMissing" },
+    };
+  }
+
+  const { data: redeemData, error: redeemError } = await gql.mutation(
+    RedeemGiftVoucherDocument,
+    { voucher: code.data }
+  );
+
+  if (redeemError) {
+    return { ok: false, errors: {} };
+  }
+
+  redirect(
+    `/angebot/abholen?success=true&aboType=${redeemData?.redeemGiftVoucher?.aboType}&starting=${redeemData?.redeemGiftVoucher?.starting}`
+  );
 
   return { ok: true, errors: null };
 }

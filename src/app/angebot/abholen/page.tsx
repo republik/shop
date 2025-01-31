@@ -1,6 +1,7 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginStatus } from "@/app/angebot/[slug]/components/login-status";
 import { LoginView } from "@/app/angebot/[slug]/components/login-view";
+import { RedeemSuccess } from "@/app/angebot/[slug]/components/success-view";
 import { FormField } from "@/app/angebot/abholen/components/form";
 import { PersonalInfoForm } from "@/app/angebot/abholen/components/personal-info-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -21,9 +22,14 @@ async function validateCode(voucher: string) {
 }
 
 export default async function RedeemGiftPage({
-  searchParams: { code },
+  searchParams: { code, success, aboType, starting },
 }: {
-  searchParams: { code?: string };
+  searchParams: {
+    code?: string;
+    success?: string;
+    aboType?: string;
+    starting?: string;
+  };
 }) {
   const t = await getTranslations("giftRedeem");
 
@@ -38,18 +44,18 @@ export default async function RedeemGiftPage({
     );
   }
 
-  // Validate Code
-  const { valid, isLegacyVoucher } = await validateCode(code);
+  if (success === "true") {
+    // TODO: decide what to do with aboType and starting
+    return (
+      <RedeemSuccess
+        // aboType={aboType}
+        // starting={starting}
 
-  // TODO What if it's a legacy code? Redirect to republik.ch/abholen?code=XYZXYZ
-
-  if (isLegacyVoucher) {
-    return redirect(
-      `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen?code=${code}`
+        // @ts-expect-error Email should exist here because how can it not?
+        email={me.email}
+      />
     );
   }
-
-  // TODO Do we show additional info about the code?
 
   // Code Input Form
   if (!code) {
@@ -73,6 +79,19 @@ export default async function RedeemGiftPage({
       </>
     );
   }
+
+  // Validate Code
+  const { valid, isLegacyVoucher } = await validateCode(code);
+
+  // TODO What if it's a legacy code? Redirect to republik.ch/abholen?code=XYZXYZ
+
+  if (isLegacyVoucher) {
+    return redirect(
+      `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen?code=${code}`
+    );
+  }
+
+  // TODO Do we show additional info about the code?
 
   if (!valid) {
     return (
