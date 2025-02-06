@@ -72,17 +72,6 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
     startCheckingForActiveSubscription ? 1_000 : null
   );
 
-  // useEffect(() => {
-  //   if (
-  //     startCheckingForActiveSubscription &&
-  //     meRes.data?.me?.activeMagazineSubscription
-  //   ) {
-  //     window.location.assign(
-  //       `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`
-  //     );
-  //   }
-  // }, [meRes.data, startCheckingForActiveSubscription]);
-
   return (
     <div className={containerStyle}>
       <CheckCircleIcon
