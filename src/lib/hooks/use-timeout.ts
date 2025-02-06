@@ -8,7 +8,7 @@ import { useEffect, useRef } from "react";
  * @param timeout in ms, if null or a negative number is passed, the timeout will be cleared
  */
 function useTimeout(callback: () => void, timeout: number | null) {
-  const savedCallback = useRef<() => void>();
+  const savedCallback = useRef<() => void>(undefined);
 
   useEffect(() => {
     savedCallback.current = callback;

@@ -6,7 +6,8 @@ import { getClient } from "../graphql/client";
 import { Me } from "./types";
 
 export async function fetchMe(stripeCompany?: CompanyName): Promise<Me | null> {
-  const { data, error } = await getClient().query(MeDocument, {
+  const gql = await getClient();
+  const { data, error } = await gql.query(MeDocument, {
     stripeCompany: stripeCompany ?? null,
   });
   if (error) {

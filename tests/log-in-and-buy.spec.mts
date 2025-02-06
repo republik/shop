@@ -46,6 +46,9 @@ PRODUCTS.forEach(({ key, name }) => {
       })
     ).toBeVisible();
 
+    // For some reason we need to wait here for some Next.js BS
+    await page.waitForTimeout(5000);
+
     await page.getByRole("button", { name: "Kaufen" }).click();
 
     const stripeFrame = page.frameLocator('[name="embedded-checkout"]');

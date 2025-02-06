@@ -4,8 +4,8 @@
 
 ### Prerequisites
 
-- [Node.js v20](https://nodejs.org/en/)
-- [PNPM v9](https://pnpm.io/)
+- [Node.js v22](https://nodejs.org/en/)
+- [PNPM v10](https://pnpm.io/)
 
 ### Environment variables
 

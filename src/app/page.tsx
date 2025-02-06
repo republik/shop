@@ -17,7 +17,7 @@ export default async function Home() {
   const t = await getTranslations("overview");
 
   // TODO remove this again when we don't redirect to legacy /angebote
-  const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsParams = await readAnalyticsParamsFromCookie();
   const analyticsSearchParams = new URLSearchParams(analyticsParams).toString();
 
   return (
