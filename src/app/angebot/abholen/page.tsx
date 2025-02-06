@@ -14,7 +14,8 @@ import { getTranslations } from "next-intl/server";
 import { redirect } from "next/navigation";
 
 async function validateCode(voucher: string) {
-  const { data } = await getClient().query(ValidateGiftVoucherDocument, {
+  const gql = await getClient();
+  const { data } = await gql.query(ValidateGiftVoucherDocument, {
     voucher,
   });
 
@@ -22,15 +23,16 @@ async function validateCode(voucher: string) {
 }
 
 export default async function RedeemGiftPage({
-  searchParams: { code, success, aboType, starting },
+  searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     code?: string;
     success?: string;
     aboType?: string;
     starting?: string;
-  };
+  }>;
 }) {
+  const { code, success, aboType, starting } = await searchParams;
   const t = await getTranslations("giftRedeem");
 
   const me = await fetchMe();

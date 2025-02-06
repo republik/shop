@@ -5,7 +5,8 @@ import { getClient } from "@/lib/graphql/client";
 import { css } from "@/theme/css";
 
 export async function LoginStatus() {
-  const { data } = await getClient().query(MeDocument, {});
+  const gql = await getClient();
+  const { data } = await gql.query(MeDocument, {});
 
   if (!data?.me) {
     return null;

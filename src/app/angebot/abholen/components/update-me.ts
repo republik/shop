@@ -28,7 +28,7 @@ export async function updateMe(
 ): Promise<
   { ok: false; errors: Record<string, string> } | { ok: true; errors: null }
 > {
-  const gql = getClient();
+  const gql = await getClient();
   const data = Object.fromEntries(formData);
   const input = MeInput.safeParse(data);
   const code = CodeInput.safeParse(data.code);

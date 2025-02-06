@@ -171,7 +171,7 @@ export default async function OfferPage(props: PageProps) {
         />
       ) : (
         // TODO: log to sentry and render alert
-        <p>{t("error.generic")}</p>
+        <p>{t("error.generic.title")}</p>
       ),
     disabled: (needsLogin && !me) || !checkoutSession,
   };

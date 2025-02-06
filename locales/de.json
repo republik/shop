@@ -5,16 +5,19 @@
   },
 
   "imprint": "Impressum",
-  "notFound": {
-    "title": "Diese Seite existiert nicht.",
-    "buttonLabel": "Zur Startseite"
-  },
 
   "error": {
-    "generic": "Es ist ein Fehler aufgetreten.",
-    "globalError": {
+    "generic": {
+      "title": "Es ist ein Fehler aufgetreten."
+    },
+    "global": {
+      "title": "Es ist ein Fehler aufgetreten.",
       "message": "Sollte dieser Fehler zum wiederholten Male aufgetreten sein, wenden Sie sich bitte an",
-      "reloadPage": "Seite neu laden"
+      "buttonLabel": "Seite neu laden"
+    },
+    "notFound": {
+      "title": "Diese Seite existiert nicht.",
+      "buttonLabel": "Zur Startseite"
     },
     "graphql": {
       "networkError": "Die Verbindung zur Republik schlug fehl."
@@ -27,7 +30,6 @@
     "title": "Die Republik-Angebote",
     "lead": "Unabhängiger Journalismus,<br></br>finanziert von seinen Leserinnen und Lesern.",
     "cta": "So können Sie uns unterstützen.",
-    "subhead": "Willommens Angebot",
     "more": "Weitere Angebote",
     "banner": {
       "status": "Sieht so aus, als wären Sie Abonnent.",

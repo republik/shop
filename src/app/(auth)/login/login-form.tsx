@@ -32,7 +32,7 @@ const ErrorMessage = ({
 
   return (
     <Alert variant="error">
-      <AlertTitle>{t("generic")}</AlertTitle>
+      <AlertTitle>{t("generic.title")}</AlertTitle>
       {message && <AlertDescription>{message}</AlertDescription>}
     </Alert>
   );
