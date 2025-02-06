@@ -3,10 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "22",
-    "pnpm": "10"
+    "node": "22"
   },
-  "packageManager": "pnpm@10.2.0",
   "scripts": {
     "dev": "concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
     "build": "panda && pnpm run gql:types && next build",
