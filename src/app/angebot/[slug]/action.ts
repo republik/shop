@@ -7,7 +7,12 @@ import { getClient } from "@/lib/graphql/client";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export async function createCheckout(formData: FormData): Promise<void> {
+type CreateCheckoutState = {};
+
+export async function createCheckout(
+  previousState: CreateCheckoutState,
+  formData: FormData
+): Promise<CreateCheckoutState> {
   const subscriptionType = formData.get("subscriptionType")?.toString() ?? "";
   const price = formData.get("price");
   const promoCode = formData.get("promoCode");

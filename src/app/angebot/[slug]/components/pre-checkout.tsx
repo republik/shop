@@ -1,15 +1,15 @@
 "use client";
 
 import { GetOfferQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { css } from "@/theme/css";
+import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useCallback, useId, useMemo, useState } from "react";
+import { useActionState, useCallback, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircleIcon } from "lucide-react";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -24,7 +24,11 @@ export function PreCheckout({
 }: PreCheckoutProps) {
   const t = useTranslations();
 
-  const [isLoading, setLoading] = useState(false);
+  const [_, createCheckoutAction, createCheckoutPending] = useActionState(
+    createCheckout,
+    {}
+  );
+
   const [userPrice, setUserPrice] = useState(
     Math.max(240, initialPrice || 240)
   );
@@ -70,10 +74,7 @@ export function PreCheckout({
 
   return (
     <form
-      action={createCheckout}
-      onSubmit={() => {
-        setLoading(true);
-      }}
+      action={createCheckoutAction}
       className={css({
         display: "flex",
         flexDirection: "column",
@@ -189,8 +190,8 @@ export function PreCheckout({
           width: "max",
         })}
         type="submit"
-        loading={isLoading}
-        disabled={isLoading}
+        loading={createCheckoutPending}
+        disabled={createCheckoutPending}
       >
         {t("checkout.preCheckout.action")}
       </Button>
