@@ -4,7 +4,7 @@ import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "../lib/stripe/client";
+import { loadStripe } from "@/checkout/lib/stripe/client";
 import { ErrorMessage } from "./error-message";
 
 interface CheckoutViewProps {

@@ -1,6 +1,5 @@
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { LogoutButton } from "@/app/angebot/[slug]/components/logout-button";
-import { Button } from "@/components/ui/button";
+import { LogoutButton } from "@/components/login/logout-button";
 import { getClient } from "@/lib/graphql/client";
 import { css } from "@/theme/css";
 

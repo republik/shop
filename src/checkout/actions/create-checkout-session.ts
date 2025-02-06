@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 
 type CreateCheckoutState = {};
 
-export async function createCheckout(
+export async function createCheckoutSession(
   previousState: CreateCheckoutState,
   formData: FormData
 ): Promise<CreateCheckoutState> {

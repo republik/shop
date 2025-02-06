@@ -2,40 +2,25 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 
-import { GiftChooser } from "@/app/geschenke/gift-chooser";
+import { LandingPageLayout } from "@/layouts/landing-page";
 import { Hero } from "@/components/layout/hero";
-import { BackLink } from "@/components/ui/links";
-import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { cardButton } from "@/components/ui/card-button";
 import { token } from "@/theme/tokens";
 import Link from "next/link";
 
 export async function generateMetadata() {
-  const t = await getTranslations("giftRedeem");
+  const t = await getTranslations("landing.redeem");
 
   return {
     title: t("title"),
   };
 }
 
-export default async function GiftOverview() {
-  const t = await getTranslations("giftRedeem");
-
-  // TODO remove this again when we don't redirect to legacy /angebote
-  const analyticsParams = readAnalyticsParamsFromCookie();
+export default async function GiftRedeemPage() {
+  const t = await getTranslations("landing.redeem");
 
   return (
-    <div
-      className={css({
-        width: "full",
-        maxWidth: "content.narrow",
-        mx: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "8",
-      })}
-    >
+    <LandingPageLayout className={css({ background: "[#B0B265]" })}>
       <Hero>
         <h1 className={visuallyHidden()}>{t("title")}</h1>
         <p className={css({ textStyle: "lead" })}>
@@ -59,8 +44,6 @@ export default async function GiftOverview() {
       </Link>
 
       <p>FAQ …</p>
-
-      <BackLink href={"/"}>{t("goBack")}</BackLink>
-    </div>
+    </LandingPageLayout>
   );
 }

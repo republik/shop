@@ -2,7 +2,7 @@ import {
   CompanyName,
   MeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "../graphql/client";
+import { getClient } from "@/lib/graphql/client";
 import { Me } from "./types";
 
 export async function fetchMe(stripeCompany?: CompanyName): Promise<Me | null> {

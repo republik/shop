@@ -1,11 +1,11 @@
-import { OfferCard } from "@/app/(overview)/offer";
+import { OfferCard } from "@/overview/components/offer-cards";
 import { css, cx } from "@/theme/css";
 import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import CouponSVG from "../../../public/static/coupon.svg";
-import GiftSVG from "../../../public/static/gift.svg";
+import couponSrc from "../assets/coupon.svg";
+import giftSrc from "../assets/gift.svg";
 import { cardButton } from "@/components/ui/card-button";
 
 const titleStyle = css({
@@ -37,7 +37,7 @@ export async function GiftCard() {
 
   return (
     <OfferCard id="gift-buy" background={giftBg}>
-      <Illu src={GiftSVG} />
+      <Illu src={giftSrc} />
 
       <h2 className={titleStyle}>{tGift("title")}</h2>
 
@@ -60,7 +60,7 @@ export async function RedeemCard() {
 
   return (
     <OfferCard id="gift-redeem" background={giftBg} small>
-      <Illu src={CouponSVG} hide />
+      <Illu src={couponSrc} hide />
 
       <h2 className={titleStyle}>{tGift("title")}</h2>
 

@@ -1,6 +1,6 @@
 "use client";
-import { FormField } from "@/app/angebot/abholen/components/form";
-import { updateMe } from "@/app/angebot/abholen/components/update-me";
+import { FormField } from "@/components/ui/form";
+import { updateMe } from "@/checkout/actions/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { useFormState } from "react-dom";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
-  const [state, action] = useFormState(updateMe, { ok: true, errors: null });
+  const [state, action] = useFormState(updateMe, { ok: true, errors: {} });
 
   const t = useTranslations("form");
   const tField = useTranslations("form.fields");

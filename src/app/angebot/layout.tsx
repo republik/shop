@@ -1,4 +1,4 @@
-import { LoginStatus } from "@/app/angebot/[slug]/components/login-status";
+import { LoginStatus } from "@/components/login/login-status";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { css } from "@/theme/css";
@@ -11,10 +11,8 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
       <main
         className={css({
           flexGrow: 1,
-          // mx: "auto",
           px: "4",
           py: "8",
-          // display: "flex",
 
           maxWidth: "[calc(100vw - (2 * 1rem))]",
           width: "[510px]",

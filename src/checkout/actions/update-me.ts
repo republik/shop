@@ -22,12 +22,14 @@ const MeInput = z.object({
 
 const CodeInput = z.string();
 
+type UpdateMeState =
+  | { ok: false; errors: Record<string, string> }
+  | { ok: true; errors: Record<string, string> };
+
 export async function updateMe(
-  previousState: any,
+  previousState: UpdateMeState,
   formData: FormData
-): Promise<
-  { ok: false; errors: Record<string, string> } | { ok: true; errors: null }
-> {
+): Promise<UpdateMeState> {
   const gql = await getClient();
   const data = Object.fromEntries(formData);
   const input = MeInput.safeParse(data);
@@ -83,5 +85,5 @@ export async function updateMe(
     `/angebot/abholen?success=true&aboType=${redeemData?.redeemGiftVoucher?.aboType}&starting=${redeemData?.redeemGiftVoucher?.starting}`
   );
 
-  return { ok: true, errors: null };
+  return { ok: true, errors: {} };
 }

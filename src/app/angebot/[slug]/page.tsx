@@ -1,9 +1,21 @@
-import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
+import { CheckoutView } from "@/checkout/components/checkout-view";
+import { PreCheckout } from "@/checkout/components/pre-checkout";
+import {
+  Step,
+  Stepper,
+  StepperChangeStepButton,
+} from "@/checkout/components/stepper";
 import {
   GiftSuccess,
   SubscriptionSuccess,
-} from "@/app/angebot/[slug]/components/success-view";
-import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
+} from "@/checkout/components/success-view";
+import { fetchOffer } from "@/checkout/lib/offers";
+import { checkIfUserCanPurchase } from "@/checkout/lib/product-purchase-guards";
+import {
+  expireCheckoutSession,
+  getCheckoutSession,
+} from "@/checkout/lib/stripe/server";
+import { LoginView, StepperSignOutButton } from "@/components/login/login-view";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
@@ -12,11 +24,6 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { LoginView, StepperSignOutButton } from "./components/login-view";
-import { PreCheckout } from "./components/pre-checkout";
-import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
-import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: Promise<{ slug: string }>;

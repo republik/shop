@@ -1,5 +1,5 @@
 "use client";
-import { DescriptionItem } from "@/app/(overview)/description-item";
+import { DescriptionItem } from "@/overview/components/description-item";
 import { css } from "@/theme/css";
 import { SparklesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -10,8 +10,8 @@ export function GiftDescription({
 }: {
   interval: "yearly" | "monthly";
 }) {
-  const tDescription = useTranslations("giftOverview.description");
-  const tDescriptionItems = useTranslations("giftOverview.description.items");
+  const tDescription = useTranslations("landing.gifts.description");
+  const tDescriptionItems = useTranslations("landing.gifts.description.items");
 
   const getText = (
     tKey: "dialog" | "general" | "briefings" | "goodie"

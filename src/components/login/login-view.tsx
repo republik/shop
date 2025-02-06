@@ -1,8 +1,8 @@
 "use client";
 
 import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { LoginForm } from "@/app/(auth)/login/login-form";
-import { StepperChangeStepButton } from "@/app/angebot/[slug]/components/stepper";
+import { LoginForm } from "@/components/login/login-form";
+import { StepperChangeStepButton } from "@/checkout/components/stepper";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

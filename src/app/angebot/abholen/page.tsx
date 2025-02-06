@@ -1,9 +1,9 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { LoginStatus } from "@/app/angebot/[slug]/components/login-status";
-import { LoginView } from "@/app/angebot/[slug]/components/login-view";
-import { RedeemSuccess } from "@/app/angebot/[slug]/components/success-view";
-import { FormField } from "@/app/angebot/abholen/components/form";
-import { PersonalInfoForm } from "@/app/angebot/abholen/components/personal-info-form";
+import { LoginStatus } from "@/components/login/login-status";
+import { LoginView } from "@/components/login/login-view";
+import { RedeemSuccess } from "@/checkout/components/success-view";
+import { FormField } from "@/components/ui/form";
+import { PersonalInfoForm } from "@/checkout/components/personal-info-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/auth/fetch-me";
@@ -33,7 +33,7 @@ export default async function RedeemGiftPage({
   }>;
 }) {
   const { code, success, aboType, starting } = await searchParams;
-  const t = await getTranslations("giftRedeem");
+  const t = await getTranslations("checkout.redeem");
 
   const me = await fetchMe();
 

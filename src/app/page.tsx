@@ -1,10 +1,10 @@
-import { OfferDescription } from "@/app/(overview)/description";
-import { GiftCard, RedeemCard } from "@/app/(overview)/gift";
+import { OfferDescription } from "@/overview/components/description";
+import { GiftCard, RedeemCard } from "@/overview/components/gift-cards";
 import {
   OfferCardPrimary,
   OfferGrid,
   OfferGridCompact,
-} from "@/app/(overview)/offer";
+} from "@/overview/components/offer-cards";
 import { AboBanner } from "@/components/layout/abo-banner";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/layout/hero";

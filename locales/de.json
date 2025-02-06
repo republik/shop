@@ -93,35 +93,32 @@
     }
   },
 
-  "giftOverview": {
-    "title": "Die Republik zum Verschenken",
-    "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
-    "cta": "Jetzt verschenken",
-    "options": {
-      "yearly": "Jahresmitgliedschaft",
-      "monthly": "3-Monats-Abo"
-    },
+  "landing": {
     "goBack": "Zurück zu allen Angeboten",
-    "description": {
-      "items": {
-        "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
-        "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
-        "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
-        "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
-        "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
-      },
-      "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
-    }
-  },
 
-  "giftRedeem": {
-    "title": "Ein Geschenk wartet auf Sie",
-    "lead": "Halten Sie Ihren Geschenk-Code bereit und die E-Mail-Adresse, mit der Sie sich früher bei der Republik eingeloggt haben. Neu hier? Dann können Sie sich gleich registrieren. Eine Kreditkarte ist nicht erforderlich.",
-    "cta": "Jetzt Geschenk einlösen",
-    "goBack": "Zurück zu allen Angeboten",
-    "invalidGiftCode": {
-      "title": "Ungültiger Geschenkgutschein",
-      "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."
+    "gifts": {
+      "title": "Die Republik zum Verschenken",
+      "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
+      "cta": "Jetzt verschenken",
+      "options": {
+        "yearly": "Jahresmitgliedschaft",
+        "monthly": "3-Monats-Abo"
+      },
+      "description": {
+        "items": {
+          "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+          "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+          "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+          "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
+          "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
+        },
+        "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+      }
+    },
+    "redeem": {
+      "title": "Ein Geschenk wartet auf Sie",
+      "lead": "Halten Sie Ihren Geschenk-Code bereit und die E-Mail-Adresse, mit der Sie sich früher bei der Republik eingeloggt haben. Neu hier? Dann können Sie sich gleich registrieren. Eine Kreditkarte ist nicht erforderlich.",
+      "cta": "Jetzt Geschenk einlösen"
     }
   },
 
@@ -209,6 +206,12 @@
       "failed": {
         "title": "Der Bezahlvorgang ist fehlgeschlagen",
         "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
+      }
+    },
+    "redeem": {
+      "invalidGiftCode": {
+        "title": "Ungültiger Geschenkgutschein",
+        "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."
       }
     }
   },

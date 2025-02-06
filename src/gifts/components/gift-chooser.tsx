@@ -1,15 +1,15 @@
 "use client";
 
+import { GiftDescription } from "@/gifts/components/gift-description";
 import { cardButton } from "@/components/ui/card-button";
-import { GiftDescription } from "@/app/(overview)/gift-description";
+import { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { token } from "@/theme/tokens";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ChangeEventHandler, ReactNode, useId, useState } from "react";
-import giftBigSrc from "../../../public/static/Gift-Big.svg";
-import giftSmallSrc from "../../../public/static/Gift-Small.svg";
-import { AnalyticsObject } from "@/lib/analytics";
+import giftBigSrc from "../assets/gift-big.svg";
+import giftSmallSrc from "../assets/gift-small.svg";
 
 export function GiftChooser({
   analyticsParams,
@@ -17,7 +17,7 @@ export function GiftChooser({
   // TODO remove this again when we don't redirect to legacy /angebote
   analyticsParams?: AnalyticsObject;
 }) {
-  const t = useTranslations("giftOverview");
+  const t = useTranslations("landing.gifts");
   const [option, setOption] = useState<string>("ABO_GIVE");
 
   const handleOption: ChangeEventHandler<HTMLInputElement> = (e) => {

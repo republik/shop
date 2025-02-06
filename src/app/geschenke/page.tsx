@@ -2,35 +2,32 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 
-import { GiftChooser } from "@/app/geschenke/gift-chooser";
+import { GiftChooser } from "@/gifts/components/gift-chooser";
+import { LandingPageLayout } from "@/layouts/landing-page";
 import { Hero } from "@/components/layout/hero";
-import { BackLink } from "@/components/ui/links";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 
 export async function generateMetadata() {
-  const t = await getTranslations("giftOverview");
+  const t = await getTranslations("landing.gifts");
 
   return {
     title: t("title"),
   };
 }
 
-export default async function GiftOverview() {
-  const t = await getTranslations("giftOverview");
+export default async function GiftsPage() {
+  const t = await getTranslations("landing.gifts");
 
   // TODO remove this again when we don't redirect to legacy /angebote
   const analyticsParams = await readAnalyticsParamsFromCookie();
 
   return (
-    <div
+    <LandingPageLayout
       className={css({
-        width: "full",
-        maxWidth: "content.narrow",
-        mx: "auto",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: "8",
+        background: "[#B7A5EC]",
+        "&:has([value='ABO_GIVE_MONTHS']:checked)": {
+          background: "[#EFAC9D]",
+        },
       })}
     >
       <Hero>
@@ -43,8 +40,6 @@ export default async function GiftOverview() {
       </Hero>
 
       <GiftChooser analyticsParams={analyticsParams} />
-
-      <BackLink href={"/"}>{t("goBack")}</BackLink>
-    </div>
+    </LandingPageLayout>
   );
 }
