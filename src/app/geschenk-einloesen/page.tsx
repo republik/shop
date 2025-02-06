@@ -7,6 +7,8 @@ import { Hero } from "@/components/layout/hero";
 import { cardButton } from "@/components/ui/card-button";
 import { token } from "@/theme/tokens";
 import Link from "next/link";
+import { featureFlagEnabled } from "@/lib/env";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata() {
   const t = await getTranslations("landing.redeem");
@@ -17,6 +19,10 @@ export async function generateMetadata() {
 }
 
 export default async function GiftRedeemPage() {
+  if (!(await featureFlagEnabled("gift-redeem"))) {
+    return notFound();
+  }
+
   const t = await getTranslations("landing.redeem");
 
   return (

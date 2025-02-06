@@ -11,7 +11,8 @@ import { getClient } from "@/lib/graphql/client";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import { featureFlagEnabled } from "@/lib/env";
 
 async function validateCode(voucher: string) {
   const gql = await getClient();
@@ -32,6 +33,10 @@ export default async function RedeemGiftPage({
     starting?: string;
   }>;
 }) {
+  if (!(await featureFlagEnabled("gift-redeem"))) {
+    return notFound();
+  }
+
   const { code, success, aboType, starting } = await searchParams;
   const t = await getTranslations("checkout.redeem");
 
