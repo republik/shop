@@ -140,7 +140,7 @@ export default async function OfferPage(props: PageProps) {
         </AlertDescription>
         <AlertDescription>
           <Link
-            href={process.env.NEXT_PUBLIC_MAGAZIN_URL}
+            href="/"
             className={css({ textDecoration: "underline", marginTop: "2" })}
           >
             {t("checkout.preCheckout.unavailable.action")}

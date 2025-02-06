@@ -163,7 +163,7 @@
       },
       "unavailable": {
         "title": "Das gewählte Produkt ist nicht verfügbar.",
-        "action": "Zurück zum Magazin",
+        "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
           "generic": ""
