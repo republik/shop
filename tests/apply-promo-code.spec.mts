@@ -1,8 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { getEmailCode } from "./lib/get-email-code.mts";
 
 import { nanoid } from "nanoid";
-import { PRODUCTS } from "./lib/products.mts";
 
 const key = "YEARLY";
 const name = "Jahresmitgliedschaft";
