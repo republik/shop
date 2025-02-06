@@ -50,9 +50,12 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
     })
   ).toBeVisible();
 
-  await expect(page.getByRole("alert")).toContainText(
-    "Ungültiges Sonderangebot"
-  );
+  await expect(
+    page.getByRole("heading", { name: "Ungültiges Sonderangebot" })
+  ).toBeVisible();
+
+  // For some reason we need to wait here for some Next.js BS
+  await page.waitForTimeout(5000);
 
   await page.getByRole("button", { name: "Kaufen" }).click();
 

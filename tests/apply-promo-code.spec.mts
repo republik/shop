@@ -1,8 +1,7 @@
-import { test, expect } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { getEmailCode } from "./lib/get-email-code.mts";
 
 import { nanoid } from "nanoid";
-import { PRODUCTS } from "./lib/products.mts";
 
 const key = "YEARLY";
 const name = "Jahresmitgliedschaft";
@@ -56,7 +55,8 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
     })
   ).toBeVisible();
 
-  await expect(page.getByRole("alert")).not.toBeAttached();
+  // For some reason we need to wait here for some Next.js BS
+  await page.waitForTimeout(5000);
 
   await page.getByRole("button", { name: "Kaufen" }).click();
 

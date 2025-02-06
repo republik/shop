@@ -2,7 +2,7 @@ import { OfferCheckoutDocument } from "#graphql/republik-api/__generated__/gql/g
 import { getClient } from "@/lib/graphql/client";
 
 export async function fetchOffer(offerId: string, promoCode?: string) {
-  const gql = getClient();
+  const gql = await getClient();
 
   const { data } = await gql.query(OfferCheckoutDocument, {
     offerId,

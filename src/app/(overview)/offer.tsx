@@ -21,7 +21,7 @@ export async function OfferCardPrimary({
   ctaColor?: string;
   redirect?: string;
 }) {
-  const gql = getClient();
+  const gql = await getClient();
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
   const { data } = await gql.query(OfferCardDocument, { offerId });

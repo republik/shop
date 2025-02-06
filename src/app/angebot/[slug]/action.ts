@@ -5,14 +5,19 @@ import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
 import { redirect } from "next/navigation";
 
-export async function createCheckout(formData: FormData): Promise<void> {
+type CreateCheckoutState = {};
+
+export async function createCheckout(
+  previousState: CreateCheckoutState,
+  formData: FormData
+): Promise<CreateCheckoutState> {
   const offerId = formData.get("offerId")?.toString() ?? "";
   const price = formData.get("price");
 
   const promoItems = formData.getAll("promoItem");
   const promoCode = formData.get("promoCode");
 
-  const gqlClient = getClient();
+  const gqlClient = await getClient();
 
   const analyticsParams = readAnalyticsParamsFromCookie();
 

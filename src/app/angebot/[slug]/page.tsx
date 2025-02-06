@@ -19,18 +19,17 @@ import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
 import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
-  params: { slug: string };
-  searchParams: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{
     price: string;
     session_id?: string;
     promo_code?: string;
     return_from_checkout?: "true";
-  };
+  }>;
 };
 
-export async function generateMetadata({
-  params,
-}: PageProps): Promise<Metadata> {
+export async function generateMetadata(props: PageProps): Promise<Metadata> {
+  const params = await props.params;
   const offer = await fetchOffer(params.slug);
 
   return {
@@ -38,7 +37,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function OfferPage({ params, searchParams }: PageProps) {
+export default async function OfferPage(props: PageProps) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const offer = await fetchOffer(params.slug, searchParams.promo_code);
 
   if (!offer) {
