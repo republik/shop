@@ -14,7 +14,6 @@ export async function createCheckout(
   const offerId = formData.get("offerId")?.toString() ?? "";
   const price = formData.get("price");
 
-  const promoItems = formData.getAll("promoItem");
   const promoCode = formData.get("promoCode");
 
   const gqlClient = await getClient();
@@ -29,12 +28,6 @@ export async function createCheckout(
       metadata: analyticsParams,
       promoCode: promoCode ? String(promoCode) : undefined,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
-      complimentaryItems: promoItems.map((item) => {
-        return {
-          id: item.toString(),
-          quantity: 1, // hard-coded to 1
-        };
-      }),
     }
   );
 

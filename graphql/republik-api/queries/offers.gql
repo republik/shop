@@ -27,7 +27,6 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     id
     company
     name
-    allowPromotions
 
     price {
       amount
@@ -46,11 +45,6 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     discount {
       name
       amountOff
-    }
-
-    complimentaryItems {
-      id
-      maxQuantity
     }
   }
 }

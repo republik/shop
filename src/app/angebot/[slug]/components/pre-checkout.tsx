@@ -8,9 +8,7 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import Image from "next/image";
-
-import { useActionState, useCallback, useId, useMemo, useState } from "react";
+import { useActionState, useId, useMemo, useState } from "react";
 import { createCheckout } from "../action";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
 
@@ -185,76 +183,6 @@ export function PreCheckout({
         currency={offer.price.currency}
         items={checkoutItems}
       />
-
-      {offer.complimentaryItems?.map(
-        ({ id, name, description, maxQuantity }) => {
-          return (
-            <fieldset key={id}>
-              <div
-                className={css({
-                  background: "[#C2E6D6]",
-                  p: "4",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "4",
-                })}
-              >
-                <Image
-                  className={css({
-                    width: "[10rem]",
-                    maxWidth: "full",
-                    // alignSelf: "center",
-                    mixBlendMode: "multiply",
-                  })}
-                  src="/assets/promo-book.jpg"
-                  width={320}
-                  height={320}
-                  alt=""
-                />
-
-                <h3
-                  className={css({
-                    textStyle: "h3Sans",
-                  })}
-                >
-                  {
-                    // @ts-expect-error potentially undefined id
-                    t(`checkout.promoItem.${id}.title`)
-                  }
-                </h3>
-                <p>
-                  {
-                    // @ts-expect-error potentially undefined id
-                    t.rich(`checkout.promoItem.${id}.info`, {
-                      b: (chunks) => <strong>{chunks}</strong>,
-                    })
-                  }
-                </p>
-                <label>
-                  <input
-                    name={`promoItem`}
-                    value={id}
-                    type="checkbox"
-                    defaultChecked
-                  ></input>{" "}
-                  {
-                    // @ts-expect-error potentially undefined id
-                    t(`checkout.promoItem.${id}.cta`)
-                  }
-                </label>
-                <p>
-                  <small>
-                    {
-                      // @ts-expect-error potentially undefined id
-                      t(`checkout.promoItem.${id}.ctaNote`)
-                    }
-                  </small>
-                </p>
-              </div>
-            </fieldset>
-          );
-        }
-      )}
 
       <Button
         className={css({
