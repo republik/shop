@@ -1,24 +1,14 @@
 "use server";
 import { Client, fetchExchange } from "@urql/core";
-import { cookies, headers } from "next/headers";
-
-interface GetClientOptions {
-  // In case of actions or route-handlers, the received cookies can be set via nextjs' `cookies` accessor.
-  setReceivedCookies?: boolean;
-}
+import { headers } from "next/headers";
 
 /**
  * Get a pre-configured urql-client instance.
  * @param {GetClientOptions} options
  * @returns {Client} urql-client
  */
-export async function getClient(
-  options: GetClientOptions = {
-    setReceivedCookies: false,
-  }
-): Promise<Client> {
+export async function getClient(): Promise<Client> {
   const _headers = await headers();
-  const _cookies = await cookies();
   const reqHeaders = {
     cookie: _headers.get("cookie") ?? "",
     accept: _headers.get("accept") ?? "",
