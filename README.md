@@ -5,7 +5,7 @@
 ### Prerequisites
 
 - [Node.js v22](https://nodejs.org/en/)
-- [PNPM v9](https://pnpm.io/)
+- [PNPM v10](https://pnpm.io/)
 
 ### Environment variables
 
