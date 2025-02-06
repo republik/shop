@@ -1,6 +1,6 @@
+"use server";
 import { Client, fetchExchange } from "@urql/core";
 import { cookies, headers } from "next/headers";
-import { parse } from "set-cookie-parser";
 
 interface GetClientOptions {
   // In case of actions or route-handlers, the received cookies can be set via nextjs' `cookies` accessor.
@@ -33,17 +33,6 @@ export async function getClient(
       headers: reqHeaders,
       credentials: "include",
       cache: "no-store",
-    },
-    // Intercept fetch response from API to re-send cookies to the client
-    async fetch(...args) {
-      const res = await fetch(...args);
-      if (options.setReceivedCookies) {
-        const setCookies = parse(res.headers.getSetCookie());
-        for (const cookie of setCookies) {
-          _cookies.set(cookie as any);
-        }
-      }
-      return res;
     },
   });
 
