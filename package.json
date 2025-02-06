@@ -6,6 +6,7 @@
     "node": "22",
     "pnpm": "10"
   },
+  "packageManager": "pnpm@10.2.0",
   "scripts": {
     "dev": "concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
     "build": "panda && pnpm run gql:types && next build",
@@ -51,7 +52,7 @@
     "@next/env": "^15.1.6",
     "@pandacss/dev": "^0.48.1",
     "@parcel/watcher": "^2.5.1",
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.50.1",
     "@types/imapflow": "^1.0.19",
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
@@ -60,7 +61,7 @@
     "concurrently": "^9.1.2",
     "eslint": "^9.19.0",
     "eslint-config-next": "^15.1.6",
-    "imapflow": "^1.0.174",
+    "imapflow": "^1.0.181",
     "nanoid": "^5.0.9",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
