@@ -69,17 +69,7 @@ export default async function RedeemGiftPage({
     return (
       <>
         <form>
-          <FormField
-            label="Gutschein-Code"
-            type="text"
-            name="code"
-            className={css({
-              borderWidth: "1px",
-              borderColor: "text",
-              borderRadius: "sm",
-              p: "2",
-            })}
-          />
+          <FormField label="Gutschein-Code" type="text" name="code" />
 
           <Button type="submit">Einlösen</Button>
         </form>
@@ -113,18 +103,7 @@ export default async function RedeemGiftPage({
           </AlertDescription>
         </Alert>
         <form>
-          <FormField
-            label="Gutschein-Code"
-            type="text"
-            name="code"
-            className={css({
-              borderWidth: "1px",
-              borderColor: "text",
-              borderRadius: "sm",
-              p: "2",
-            })}
-            autoFocus
-          />
+          <FormField label="Gutschein-Code" type="text" name="code" autoFocus />
 
           <Button type="submit">Einlösen</Button>
         </form>

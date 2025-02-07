@@ -37,7 +37,7 @@ export default async function GiftRedeemPage() {
       </Hero>
 
       <Link
-        href="/geschenk-aktivieren/flow"
+        href="/angebot/abholen/"
         type="submit"
         className={cardButton({ visual: "solid" })}
         style={{

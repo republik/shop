@@ -1,14 +1,21 @@
 "use client";
-import { css } from "@/theme/css";
+import { css, cx } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { InputHTMLAttributes, useId } from "react";
 
 type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
+  name: string;
 };
 
-export function FormField({ label, error, ...props }: FormFieldProps) {
+export function FormField({
+  label,
+  error,
+  name,
+  type = "text",
+  ...inputProps
+}: FormFieldProps) {
   const id = useId();
   const t = useTranslations("formValidation");
 
@@ -36,14 +43,19 @@ export function FormField({ label, error, ...props }: FormFieldProps) {
         {label}
       </label>
       <input
-        {...props}
+        {...inputProps}
         id={id}
-        className={css({
-          borderWidth: "1px",
-          borderColor: "text",
-          borderRadius: "sm",
-          p: "2",
-        })}
+        name={name}
+        type={type}
+        className={cx(
+          css({
+            borderWidth: "1px",
+            borderColor: "text",
+            borderRadius: "sm",
+            p: "2",
+          }),
+          inputProps?.className
+        )}
       />
       {error && (
         <span

@@ -19,12 +19,6 @@ GIFTS.forEach(({ key, name }) => {
 
     await page.goto(`/angebot/${key}?utm_source=test&utm_content=${testId}`);
 
-    // await expect(
-    //   page.getByRole("heading", {
-    //     name,
-    //   })
-    // ).toBeVisible();
-
     await page.getByRole("button", { name: "Kaufen" }).click();
 
     const stripeFrame = page.frameLocator('[name="embedded-checkout"]');

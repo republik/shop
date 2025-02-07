@@ -1,4 +1,4 @@
-mutation updateMe(
+mutation UpdateMe(
   $birthday: Date
   $firstName: String
   $lastName: String
