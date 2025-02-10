@@ -4,6 +4,6 @@ export const PRODUCTS = [
 ];
 
 export const GIFTS = [
-  { key: "GIFT_MONTHLY", name: "Monats-Abo Geschenk" },
+  // { key: "GIFT_MONTHLY", name: "Monats-Abo Geschenk" },
   { key: "GIFT_YEARLY", name: "Jahresmitgliedschaft Geschenk" },
 ];

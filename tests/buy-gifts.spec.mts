@@ -22,14 +22,6 @@ GIFTS.forEach(({ key, name }) => {
     await page.getByRole("button", { name: "Kaufen" }).click();
 
     const stripeFrame = page.frameLocator('[name="embedded-checkout"]');
-
-    // Shipping address
-    await stripeFrame.getByLabel("E-Mail").fill(testEmail);
-    await stripeFrame.getByPlaceholder("Vollständiger Name").fill("Test Test");
-    await stripeFrame.getByPlaceholder("Adresszeile 1").fill("Teststr. 42");
-    await stripeFrame.getByPlaceholder("Postleitzahl").fill("4242");
-    await stripeFrame.getByPlaceholder("Ort").fill("Testort");
-
     // Payment info
     await stripeFrame
       .getByRole("button", { name: "Mit Karte zahlen" })
@@ -40,6 +32,13 @@ GIFTS.forEach(({ key, name }) => {
       .fill("4242424242424242");
     await stripeFrame.getByPlaceholder("MM / JJ").fill("1227");
     await stripeFrame.getByPlaceholder("CVC").fill("123");
+
+    // Shipping address
+    await stripeFrame.getByLabel("E-Mail").fill(testEmail);
+    await stripeFrame.getByPlaceholder("Vollständiger Name").fill("Test Test");
+    await stripeFrame.getByPlaceholder("Adresszeile 1").fill("Teststr. 42");
+    await stripeFrame.getByPlaceholder("Postleitzahl").fill("4242");
+    await stripeFrame.getByPlaceholder("Ort").fill("Testort");
 
     await stripeFrame.getByRole("checkbox", { name: "Ich stimme" }).check();
     await stripeFrame.getByTestId("hosted-payment-submit-button").click();
