@@ -19,7 +19,7 @@ export async function createCheckout(
 
   const gqlClient = await getClient();
 
-  const analyticsParams = readAnalyticsParamsFromCookie();
+  const analyticsParams = await readAnalyticsParamsFromCookie();
 
   const { data, error } = await gqlClient.mutation(
     CreateCheckoutSessionDocument,
