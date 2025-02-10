@@ -2,7 +2,7 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 
-import { GiftChooser } from "@/gifts/components/gift-chooser";
+import { GiftChooser } from "@/components/gifts/gift-chooser";
 import { LandingPageLayout } from "@/layouts/landing-page";
 import { Hero } from "@/components/layout/hero";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";

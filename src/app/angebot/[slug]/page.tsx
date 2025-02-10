@@ -1,20 +1,17 @@
-import { CheckoutView } from "@/checkout/components/checkout-view";
-import { PreCheckout } from "@/checkout/components/pre-checkout";
+import { CheckoutView } from "@/components/checkout/checkout-view";
+import { PreCheckout } from "@/components/checkout/pre-checkout";
 import {
   Step,
   Stepper,
   StepperChangeStepButton,
-} from "@/checkout/components/stepper";
+} from "@/components/checkout/stepper";
 import {
   GiftSuccess,
   SubscriptionSuccess,
-} from "@/checkout/components/success-view";
-import { fetchOffer } from "@/checkout/lib/offers";
-import { checkIfUserCanPurchase } from "@/checkout/lib/product-purchase-guards";
-import {
-  expireCheckoutSession,
-  getCheckoutSession,
-} from "@/checkout/lib/stripe/server";
+} from "@/components/checkout/success-view";
+import { fetchOffer } from "@/lib/offers";
+import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
+import { expireCheckoutSession, getCheckoutSession } from "@/lib/stripe/server";
 import { LoginView, StepperSignOutButton } from "@/components/login/login-view";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";

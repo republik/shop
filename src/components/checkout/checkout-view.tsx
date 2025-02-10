@@ -4,8 +4,8 @@ import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@/checkout/lib/stripe/client";
-import { ErrorMessage } from "./error-message";
+import { loadStripe } from "@/lib/stripe/client";
+import { ErrorMessage } from "@/components/checkout/error-message";
 
 interface CheckoutViewProps {
   clientSecret: string;

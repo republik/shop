@@ -1,5 +1,5 @@
 "use client";
-import { DescriptionItem } from "@/overview/components/description-item";
+import { DescriptionItem } from "@/components/overview/description-item";
 import { css } from "@/theme/css";
 import { SparklesIcon } from "lucide-react";
 import { useTranslations } from "next-intl";

@@ -2,7 +2,7 @@
 
 import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginForm } from "@/components/login/login-form";
-import { StepperChangeStepButton } from "@/checkout/components/stepper";
+import { StepperChangeStepButton } from "@/components/checkout/stepper";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import Link from "next/link";

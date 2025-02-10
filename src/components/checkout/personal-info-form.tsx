@@ -1,6 +1,6 @@
 "use client";
 import { FormField } from "@/components/ui/form";
-import { updateMe } from "@/checkout/actions/update-me";
+import { updateMe } from "@/actions/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";

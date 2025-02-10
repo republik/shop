@@ -1,7 +1,7 @@
 "use client";
 
 import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
-import { createCheckoutSession } from "@/checkout/actions/create-checkout-session";
+import { createCheckoutSession } from "@/actions/create-checkout-session";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";

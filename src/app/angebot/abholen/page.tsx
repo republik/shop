@@ -1,9 +1,9 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginStatus } from "@/components/login/login-status";
 import { LoginView } from "@/components/login/login-view";
-import { RedeemSuccess } from "@/checkout/components/success-view";
+import { RedeemSuccess } from "@/components/checkout/success-view";
 import { FormField } from "@/components/ui/form";
-import { PersonalInfoForm } from "@/checkout/components/personal-info-form";
+import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { fetchMe } from "@/lib/auth/fetch-me";

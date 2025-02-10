@@ -1,6 +1,6 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import type { CheckoutSessionData } from "@/checkout/lib/stripe/server";
+import type { CheckoutSessionData } from "@/lib/stripe/server";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
 import { css } from "@/theme/css";
