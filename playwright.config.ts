@@ -3,7 +3,7 @@ import { defineConfig } from "@playwright/test";
 
 import { loadEnvConfig } from "@next/env";
 
-const { loadedEnvFiles } = loadEnvConfig(process.cwd(), true);
+const { loadedEnvFiles } = loadEnvConfig(process.cwd());
 
 console.log("Loaded env from", loadedEnvFiles.map((f) => f.path).join(", "));
 
@@ -32,13 +32,13 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.TEST_BASE_URL,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
-    extraHTTPHeaders: {
-      // Set this, so Next.js Server Actions don't get a 'null' Origin header
-      Origin: "http://localhost:3000",
-    },
+    // extraHTTPHeaders: {
+    //   // Set this, so Next.js Server Actions don't get a 'null' Origin header
+    //   Origin: process.env.TEST_BASE_URL,
+    // },
   },
 
   /* Configure projects for major browsers */

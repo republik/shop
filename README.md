@@ -29,3 +29,17 @@ The following environment variables are required to connect to the Stripe API fo
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R`
 - `STRIPE_SECRET_KEY_REPUBLIK`
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK`
+
+#### Testing
+
+The test suite uses [Playwright Test](https://playwright.dev).
+
+Make sure that `NODE_ENV` is set to `test` for the Playwright script to load the correct environment variables from `.env.test` and `.env.test.local`.
+
+- `TEST_BASE_URL`: The URL that is used for testing. By default the local dev server is used but you can run the tests locally against a remote URL like a preview deployment. Note that payments use the Stripe test credit card, so this won't work on a production deployment.
+
+Since creating accounts or logging in a user requires an email code, you need to configure an email account to make the tests work.
+
+- `TEST_EMAIL_PATTERN`: Generate unique email addresses for each test run. Use `{suffix}` as a placeholder, e.g. `blah+{suffix}@example.com`
+- `TEST_EMAIL_USERNAME`: Username to authenticate on the IMAP server
+- `TEST_EMAIL_PASSWORD`: Password to authenticate on the IMAP server
