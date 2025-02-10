@@ -37,6 +37,6 @@ export async function createCheckoutSession(
   }
 
   redirect(
-    `?session_id=${data.createCheckoutSession.sessionId}&promo_code=${promoCode}`
+    `/angebot/${offerId}?session_id=${data.createCheckoutSession.sessionId}&promo_code=${promoCode}`
   );
 }
