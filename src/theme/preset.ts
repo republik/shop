@@ -13,6 +13,9 @@ export const presetRepublik = definePreset({
       WebkitFontSmoothing: "auto",
       MozOsxFontSmoothing: "auto",
     },
+    "strong,b": {
+      fontWeight: "medium",
+    },
   },
   patterns: {
     extend: {
@@ -270,6 +273,15 @@ export const presetRepublik = definePreset({
         lead: {
           value: {
             fontFamily: "gtAmericaStandard",
+            fontWeight: "regular",
+            fontStyle: "normal",
+            fontSize: { base: "xl", md: "2xl" },
+            lineHeight: 1.4,
+          },
+        },
+        leadSerif: {
+          value: {
+            fontFamily: "rubis",
             fontWeight: "regular",
             fontStyle: "normal",
             fontSize: { base: "xl", md: "2xl" },

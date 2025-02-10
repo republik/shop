@@ -1,21 +1,26 @@
-import { CheckoutView } from "@/app/angebot/[slug]/components/checkout-view";
-import { SuccessView } from "@/app/angebot/[slug]/components/success-view";
-import { CHECKOUT_SESSION_ID_COOKIE } from "@/app/angebot/[slug]/constants";
-import { fetchOffer } from "@/app/angebot/[slug]/lib/offers";
+import { CheckoutView } from "@/components/checkout/checkout-view";
+import { PreCheckout } from "@/components/checkout/pre-checkout";
+import {
+  Step,
+  Stepper,
+  StepperChangeStepButton,
+} from "@/components/checkout/stepper";
+import {
+  GiftSuccess,
+  SubscriptionSuccess,
+} from "@/components/checkout/success-view";
+import { fetchOffer } from "@/lib/offers";
+import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
+import { expireCheckoutSession, getCheckoutSession } from "@/lib/stripe/server";
+import { LoginView, StepperSignOutButton } from "@/components/login/login-view";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { cookies } from "next/headers";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { LoginView, StepperSignOutButton } from "./components/login-view";
-import { PreCheckout } from "./components/pre-checkout";
-import { Step, Stepper, StepperChangeStepButton } from "./components/stepper";
-import { checkIfUserCanPurchase } from "./lib/product-purchase-guards";
-import { expireCheckoutSession, getCheckoutSession } from "./lib/stripe/server";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -48,10 +53,13 @@ export default async function OfferPage(props: PageProps) {
   const { company } = offer;
 
   const t = await getTranslations();
-  const sessionId =
-    searchParams.session_id || (await cookies()).get(CHECKOUT_SESSION_ID_COOKIE)?.value;
+  const sessionId = searchParams.session_id;
   const afterCheckoutRedirect = searchParams.return_from_checkout === "true";
   const me = await fetchMe(company);
+
+  // TODO determine based on future offer fields
+  const isGift = offer.id.startsWith("GIFT_");
+  const needsLogin = !isGift;
 
   const checkoutSession = sessionId
     ? await getCheckoutSession(
@@ -60,6 +68,18 @@ export default async function OfferPage(props: PageProps) {
         me?.stripeCustomer?.customerId
       )
     : undefined;
+
+  if (checkoutSession?.status === "expired") {
+    redirect(params.slug);
+  }
+
+  if (checkoutSession?.status === "complete") {
+    return isGift ? (
+      <GiftSuccess offer={offer} session={checkoutSession} />
+    ) : (
+      <SubscriptionSuccess offer={offer} session={checkoutSession} />
+    );
+  }
 
   const loginStep: Step = {
     name: t("checkout.loginStep.title"),
@@ -84,7 +104,9 @@ export default async function OfferPage(props: PageProps) {
     redirect(`/angebot/${params.slug}`);
   }
 
-  const canUserBuy = me && checkIfUserCanPurchase(me, offer.id);
+  const canUserBuy = needsLogin
+    ? me && checkIfUserCanPurchase(me, offer.id)
+    : { available: true };
 
   const productDetails: Step = {
     name: t("checkout.preCheckout.title"),
@@ -122,7 +144,7 @@ export default async function OfferPage(props: PageProps) {
         </AlertDescription>
         <AlertDescription>
           <Link
-            href={process.env.NEXT_PUBLIC_MAGAZIN_URL}
+            href="/"
             className={css({ textDecoration: "underline", marginTop: "2" })}
           >
             {t("checkout.preCheckout.unavailable.action")}
@@ -130,7 +152,7 @@ export default async function OfferPage(props: PageProps) {
         </AlertDescription>
       </Alert>
     ),
-    disabled: !me,
+    disabled: (needsLogin && !me) || checkoutSession?.status === "open",
   };
 
   const checkoutStep: Step = {
@@ -151,25 +173,19 @@ export default async function OfferPage(props: PageProps) {
               : []
           }
         />
-      ) : checkoutSession?.status === "complete" ? (
-        <SuccessView />
       ) : (
         // TODO: log to sentry and render alert
-        (<p>{t("error.generic")}</p>)
+        <p>{t("error.generic.title")}</p>
       ),
-    disabled: !me || !checkoutSession || checkoutSession.status === "expired",
+    disabled: (needsLogin && !me) || !checkoutSession,
   };
 
-  const steps: Step[] = [loginStep, productDetails, checkoutStep];
+  const steps: Step[] = needsLogin
+    ? [loginStep, productDetails, checkoutStep]
+    : [productDetails, checkoutStep];
 
   return (
-    <div
-      className={css({
-        maxWidth: "[calc(100vw - (2 * 1rem))]",
-        width: "[510px]",
-        mx: "auto",
-      })}
-    >
+    <>
       <h1
         className={css({
           textStyle: "lg",
@@ -192,6 +208,6 @@ export default async function OfferPage(props: PageProps) {
         )}
         steps={steps}
       />
-    </div>
+    </>
   );
 }

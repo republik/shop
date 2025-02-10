@@ -5,7 +5,7 @@ import { BotIcon } from "lucide-react";
 import { css } from "@/theme/css";
 
 export default function NotFound() {
-  const t = useTranslations();
+  const t = useTranslations("error.notFound");
 
   return (
     <div
@@ -20,9 +20,9 @@ export default function NotFound() {
       <BotIcon
         className={css({ color: "zinc.800", width: "10", height: "10" })}
       />
-      <h1 className={css({ fontSize: "lg" })}>{t("notFound.title")}</h1>
+      <h1 className={css({ fontSize: "lg" })}>{t("title")}</h1>
       <Button asChild>
-        <Link href="/">{t("notFound.buttonLabel")}</Link>
+        <Link href="/">{t("buttonLabel")}</Link>
       </Button>
     </div>
   );

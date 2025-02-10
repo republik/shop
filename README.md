@@ -15,16 +15,17 @@ The following environment variables are required to run the application in devel
 
 The following environment variables are required for the application to correctly link to it's self, the API and the magazine:
 
-- NEXT_PUBLIC_URL: The URL of the website.
-- NEXT_PUBLIC_API_URL: The URL of the API.
-- NEXT_PUBLIC_MAGAZIN_URL: Used for linking to the magazine front, account page and the imprint.
-- NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION: which configuration is used (`test` or `production`)
+- `NEXT_PUBLIC_URL`: The URL of the website.
+- `NEXT_PUBLIC_API_URL`: The URL of the API.
+- `NEXT_PUBLIC_MAGAZIN_URL`: Used for linking to the magazine front, account page and the imprint.
+- `NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION`: which configuration is used (`test` or `production`)
+- `FEATURE_FLAGS`: which features are enabled, in a comma-separated list
 
 #### Stripe
 
 The following environment variables are required to connect to the Stripe API for both organizations:
 
-- STRIPE_SECRET_KEY_PROJECT_R
-- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R
-- STRIPE_SECRET_KEY_REPUBLIK
-- NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK
+- `STRIPE_SECRET_KEY_PROJECT_R`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R`
+- `STRIPE_SECRET_KEY_REPUBLIK`
+- `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK`

@@ -1,0 +1,13 @@
+query ValidateGiftVoucher($voucher: String!) {
+  validateGiftVoucher(voucherCode: $voucher) {
+    valid
+    isLegacyVoucher
+  }
+}
+
+mutation RedeemGiftVoucher($voucher: String!) {
+  redeemGiftVoucher(voucherCode: $voucher) {
+    aboType
+    starting
+  }
+}

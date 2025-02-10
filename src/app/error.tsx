@@ -16,7 +16,7 @@ export default function Error({
     Sentry.captureException(error);
   }, [error]);
 
-  const t = useTranslations("error");
+  const t = useTranslations("error.global");
 
   return (
     <div
@@ -33,9 +33,9 @@ export default function Error({
       <CircleXIcon
         className={css({ color: "zinc.800", width: "10", height: "10" })}
       />
-      <h1 className={css({ fontSize: "lg" })}>{t("generic")}</h1>
+      <h1 className={css({ fontSize: "lg" })}>{t("title")}</h1>
       <p>
-        {t("globalError.message")}{" "}
+        {t("message")}{" "}
         <a
           href={
             "mailto:kontakt@republik.ch?subject=Fehlermeldung%20auf%20" +
@@ -52,7 +52,7 @@ export default function Error({
           window.location.reload();
         }}
       >
-        {t("globalError.reloadPage")}
+        {t("buttonLabel")}
       </Button>
     </div>
   );

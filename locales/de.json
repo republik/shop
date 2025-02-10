@@ -5,16 +5,19 @@
   },
 
   "imprint": "Impressum",
-  "notFound": {
-    "title": "Diese Seite existiert nicht.",
-    "buttonLabel": "Zur Startseite"
-  },
 
   "error": {
-    "generic": "Es ist ein Fehler aufgetreten.",
-    "globalError": {
+    "generic": {
+      "title": "Es ist ein Fehler aufgetreten."
+    },
+    "global": {
+      "title": "Es ist ein Fehler aufgetreten.",
       "message": "Sollte dieser Fehler zum wiederholten Male aufgetreten sein, wenden Sie sich bitte an",
-      "reloadPage": "Seite neu laden"
+      "buttonLabel": "Seite neu laden"
+    },
+    "notFound": {
+      "title": "Diese Seite existiert nicht.",
+      "buttonLabel": "Zur Startseite"
     },
     "graphql": {
       "networkError": "Die Verbindung zur Republik schlug fehl."
@@ -27,7 +30,6 @@
     "title": "Die Republik-Angebote",
     "lead": "Unabhängiger Journalismus,<br></br>finanziert von seinen Leserinnen und Lesern.",
     "cta": "So können Sie uns unterstützen.",
-    "subhead": "Willommens Angebot",
     "more": "Weitere Angebote",
     "banner": {
       "status": "Sieht so aus, als wären Sie Abonnent.",
@@ -91,24 +93,32 @@
     }
   },
 
-  "giftOverview": {
-    "title": "Die Republik zum Verschenken",
-    "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
-    "cta": "Jetzt verschenken",
-    "options": {
-      "yearly": "Jahresmitgliedschaft",
-      "monthly": "3-Monats-Abo"
-    },
+  "landing": {
     "goBack": "Zurück zu allen Angeboten",
-    "description": {
-      "items": {
-        "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
-        "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
-        "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
-        "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
-        "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
+
+    "gifts": {
+      "title": "Die Republik zum Verschenken",
+      "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
+      "cta": "Jetzt verschenken",
+      "options": {
+        "yearly": "Jahresmitgliedschaft",
+        "monthly": "3-Monats-Abo"
       },
-      "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+      "description": {
+        "items": {
+          "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+          "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+          "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+          "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
+          "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
+        },
+        "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+      }
+    },
+    "redeem": {
+      "title": "Ein Geschenk wartet auf Sie",
+      "lead": "Halten Sie Ihren Geschenk-Code bereit und die E-Mail-Adresse, mit der Sie sich früher bei der Republik eingeloggt haben. Neu hier? Dann können Sie sich gleich registrieren. Eine Kreditkarte ist nicht erforderlich.",
+      "cta": "Jetzt Geschenk einlösen"
     }
   },
 
@@ -152,7 +162,7 @@
       },
       "unavailable": {
         "title": "Das gewählte Produkt ist nicht verfügbar.",
-        "action": "Zurück zum Magazin",
+        "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
           "generic": ""
@@ -176,14 +186,52 @@
     "checkout": {
       "title": "Bezahlen",
       "success": {
-        "title": "Vielen Dank für Ihren Kauf",
-        "description": "Ihr Zugang wird vorbereitet. Sie werden in Kürze weitergeleitet.",
-        "action": "Zum Magazin"
+        "subscription": {
+          "title": "Vielen Dank für Ihren Kauf",
+          "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
+          "ready": "Ihr Zugang ist bereit!",
+          "action": "Zum Magazin"
+        },
+        "gift": {
+          "title": "Vielen Dank für Ihren Geschenk-Kauf",
+          "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zum Magazin"
+        },
+        "redeem": {
+          "title": "Herzlichen Glückwunsch",
+          "description": "Ihr Geschenk wurde eingelöst, Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zum Magazin"
+        }
       },
       "failed": {
         "title": "Der Bezahlvorgang ist fehlgeschlagen",
         "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
       }
+    },
+    "redeem": {
+      "invalidGiftCode": {
+        "title": "Ungültiger Geschenkgutschein",
+        "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."
+      }
     }
+  },
+  "form": {
+    "name": "Name",
+    "address": "Adresse",
+
+    "fields": {
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "name": "Name",
+      "line1": "Strasse und Hausnummer",
+      "line2": "Zusatz (optional)",
+      "postalCode": "Postleitzahl",
+      "city": "Ort",
+      "country": "Land"
+    }
+  },
+  "formValidation": {
+    "generic": "Dieses Feld ist ungültig",
+    "valueMissing": "{label} darf nicht leer sein"
   }
 }

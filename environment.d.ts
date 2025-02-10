@@ -24,6 +24,8 @@ declare global {
       SENTRY_ORG?: string;
       SENTRY_PROJECT?: string;
       NEXT_PUBLIC_SENTRY_DSN?: string;
+
+      FEATURE_FLAGS?: string;
     }
   }
 }
