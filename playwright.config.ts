@@ -7,6 +7,8 @@ const { loadedEnvFiles } = loadEnvConfig(process.cwd());
 
 console.log("Loaded env from", loadedEnvFiles.map((f) => f.path).join(", "));
 
+console.log("Running tests on", process.env.TEST_BASE_URL);
+
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
