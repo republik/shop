@@ -35,9 +35,9 @@ export function FormField({
       <label
         htmlFor={id}
         className={css({
-          fontWeight: "medium",
           fontSize: "sm",
           display: "block",
+          color: "text.secondary",
         })}
       >
         {label}
@@ -50,7 +50,7 @@ export function FormField({
         className={cx(
           css({
             borderWidth: "1px",
-            borderColor: "text",
+            borderColor: "divider",
             borderRadius: "sm",
             p: "2",
           }),

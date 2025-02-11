@@ -32,7 +32,7 @@ export function CodeInput({
                   justifyContent: "center",
                   alignItems: "center",
                   borderWidth: "1px",
-                  borderColor: "text",
+                  borderColor: "divider",
                   borderRadius: "md",
                   padding: "2",
                   height: "12",
@@ -43,7 +43,9 @@ export function CodeInput({
                 !props.disabled &&
                   slot.isActive &&
                   css({
-                    outline: "[solid]",
+                    outlineStyle: "solid",
+                    outlineColor: "text",
+                    outlineWidth: "2px",
                   })
               )}
             >

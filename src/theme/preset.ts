@@ -70,6 +70,12 @@ export const presetRepublik = definePreset({
                 _dark: "{colors.neutral.50}",
               },
             },
+            secondary: {
+              value: {
+                base: "#757575",
+                _dark: "#A9A9A9",
+              },
+            },
             inverted: {
               value: {
                 base: "{colors.neutral.50}",
@@ -138,12 +144,6 @@ export const presetRepublik = definePreset({
             value: {
               base: "#B8BDC1",
               _dark: "#949494",
-            },
-          },
-          textSoft: {
-            value: {
-              base: "#757575",
-              _dark: "#A9A9A9",
             },
           },
         },

@@ -28,16 +28,17 @@ export function LoginView({ title, description }: LoginViewProps) {
     <LoginForm
       submitButtonText={t("actions.next")}
       loginFormHeader={
-        <>
+        <div className={css({ textAlign: "center" })}>
           <h1
             className={css({
               textStyle: "h2Sans",
+              mb: "4",
             })}
           >
             {title ?? t("loginStep.email.title")}
           </h1>
           <p>{description ?? t("loginStep.email.description")}</p>
-        </>
+        </div>
       }
       loginFormInfo={
         <>

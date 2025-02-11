@@ -13,7 +13,7 @@ const buttonVariants = cva({
     borderRadius: "md",
     fontSize: "md",
     lineHeight: "1",
-    fontWeight: "bold",
+    fontWeight: "medium",
     whiteSpace: "nowrap",
     transitionProperty:
       "color, background-color, border-color, text-decoration-color, fill, stroke",

@@ -15,6 +15,7 @@ import { CombinedError, useClient, useMutation } from "urql";
 import { CodeInput } from "./code-input";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Spinner } from "@/components/ui/spinner";
+import { FormField } from "@/components/ui/form";
 
 const ErrorMessage = ({
   error,
@@ -51,7 +52,7 @@ export function Submit({ children }: SubmitProps) {
       disabled={pending}
       loading={pending}
       className={css({
-        w: "max",
+        w: "full",
       })}
     >
       {children ?? t("action")}
@@ -104,27 +105,9 @@ export function LoginForm(props: LoginFormProps) {
       >
         {props.loginFormHeader}
         {error && <ErrorMessage error={error} />}
-        <label
-          htmlFor={emailId}
-          className={css({
-            fontWeight: "medium",
-            fontSize: "sm",
-          })}
-        >
-          E-Mail
-        </label>
-        <input
-          id={emailId}
-          name="email"
-          type="email"
-          autoFocus
-          className={css({
-            borderWidth: "1px",
-            borderColor: "text",
-            borderRadius: "sm",
-            p: "2",
-          })}
-        ></input>
+
+        <FormField label="E-Mail" name="email" type="email" autoFocus />
+
         {props.loginFormInfo}
         <Submit>{props.submitButtonText}</Submit>
       </div>
@@ -218,13 +201,7 @@ function CodeForm({
             mt: "4",
           })}
         >
-          <label
-            htmlFor={codeId}
-            className={visuallyHidden({
-              fontWeight: "medium",
-              fontSize: "sm",
-            })}
-          >
+          <label htmlFor={codeId} className={visuallyHidden()}>
             Code
           </label>
           <CodeInput
@@ -246,7 +223,7 @@ function CodeForm({
             className={css({
               display: "flex",
               alignItems: "center",
-              color: "textSoft",
+              color: "text.secondary",
               fontSize: "sm",
               textAlign: "center",
             })}

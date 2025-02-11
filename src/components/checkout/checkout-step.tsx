@@ -65,6 +65,9 @@ export function Step({
           onClick={goBack}
           className={css({
             cursor: "pointer",
+            _hover: {
+              background: "overlay",
+            },
           })}
         >
           <ChevronLeftIcon onClick={goBack} />
