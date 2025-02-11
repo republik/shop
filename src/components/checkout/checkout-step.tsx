@@ -46,7 +46,7 @@ export function Step({
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "2",
+        gap: "4",
       })}
     >
       <ProgressBar value={currentStep} max={maxStep} />
@@ -57,6 +57,8 @@ export function Step({
           flexDirection: "row",
           gap: "2",
           alignItems: "center",
+          pl: "4",
+          pr: "6",
         })}
       >
         <button
@@ -71,9 +73,9 @@ export function Step({
 
         <div
           className={css({
-            display: "flex",
-            flexDirection: "column",
-            gap: "2",
+            // display: "flex",
+            // flexDirection: "column",
+            // gap: "2",
             flexGrow: 1,
           })}
         >
@@ -89,7 +91,7 @@ export function Step({
         </div>
       </div>
 
-      <div>{children}</div>
+      <div className={css({ px: "6" })}>{children}</div>
     </div>
   );
 }

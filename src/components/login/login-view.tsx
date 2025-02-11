@@ -2,7 +2,6 @@
 
 import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginForm } from "@/components/login/login-form";
-import { StepperChangeStepButton } from "@/components/checkout/stepper";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -10,16 +9,11 @@ import { useClient } from "urql";
 
 const PRIVACY_POLICY_HREF = `${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`;
 
-export function StepperSignOutButton() {
+export function useSignOut() {
   const gql = useClient();
 
-  return (
-    <StepperChangeStepButton
-      onChange={() => {
-        gql.mutation(SignOutDocument, {}).then(() => window.location.reload());
-      }}
-    />
-  );
+  return () =>
+    gql.mutation(SignOutDocument, {}).then(() => window.location.reload());
 }
 
 interface LoginViewProps {
@@ -37,8 +31,7 @@ export function LoginView({ title, description }: LoginViewProps) {
         <>
           <h1
             className={css({
-              fontSize: "lg",
-              fontWeight: "bold",
+              textStyle: "h2Sans",
             })}
           >
             {title ?? t("loginStep.email.title")}
