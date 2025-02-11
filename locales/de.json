@@ -233,5 +233,9 @@
   "formValidation": {
     "generic": "Dieses Feld ist ungültig",
     "valueMissing": "{label} darf nicht leer sein"
+  },
+  "step": {
+    "progressTitle": "Schritt {value} von {max}",
+    "back": "Zurück"
   }
 }

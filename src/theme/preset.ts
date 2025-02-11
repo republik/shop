@@ -130,7 +130,7 @@ export const presetRepublik = definePreset({
           },
           divider: {
             value: {
-              base: "#DBDCDD",
+              base: "#BCBCBC",
               _dark: "#4C4C4C",
             },
           },
