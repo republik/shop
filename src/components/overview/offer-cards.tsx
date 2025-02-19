@@ -8,6 +8,13 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import { ReactNode } from "react";
 
+const currencyPrefix = "CHF ";
+
+const formatCurrencyShort = (amountInRappen: number) => {
+  const inFrancs = amountInRappen / 100;
+  return inFrancs.toFixed(0);
+};
+
 export async function OfferCardPrimary({
   offerId,
   color,
@@ -73,21 +80,31 @@ export async function OfferCardPrimary({
         {offer.discount ? (
           <>
             <p className={titleStyle}>
-              CHF <del>{offer.price.amount / 100}</del>
+              {currencyPrefix}
+              <del>{offer.price.amount / 100}</del>
             </p>
             <p className={titleStyle}>
-              CHF {(offer.price.amount - offer.discount.amountOff) / 100}
+              {currencyPrefix}
+              {formatCurrencyShort(
+                offer.price.amount - offer.discount.amountOff
+              )}
             </p>
             <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
           </>
         ) : offer.customPrice ? (
           <>
-            <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
+            <p className={titleStyle}>
+              ab {currencyPrefix}
+              {formatCurrencyShort(offer.customPrice.min)}
+            </p>
             <p className={intervalStyle}>{tOffer("interval")}</p>
           </>
         ) : (
           <>
-            <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
+            <p className={titleStyle}>
+              {currencyPrefix}
+              {formatCurrencyShort(offer.price.amount)}
+            </p>
             <p className={intervalStyle}>{tOffer("interval")}</p>
           </>
         )}

@@ -1,8 +1,8 @@
 "use client";
-import { css, cx } from "@/theme/css";
-import { useMemo } from "react";
-import { useTranslations } from "next-intl";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
+import { css, cx } from "@/theme/css";
+import { useTranslations } from "next-intl";
+import { ReactNode, useMemo } from "react";
 export interface CheckoutItem {
   label: string;
   amount: number;
@@ -11,10 +11,10 @@ export interface CheckoutItem {
 interface CheckoutTableProps {
   currency: string;
   items: CheckoutItem[];
+  extraItem?: ReactNode;
 }
 
-function CheckoutTable(props: CheckoutTableProps) {
-  const { currency, items } = props;
+function CheckoutTable({ currency, items, extraItem }: CheckoutTableProps) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
 
@@ -29,22 +29,32 @@ function CheckoutTable(props: CheckoutTableProps) {
   return (
     <table
       className={css({
+        borderCollapse: "collapse",
         "& th, td": {
-          py: "3",
+          pb: "4",
           fontSize: "md",
           fontWeight: "normal",
           whiteSpace: "nowrap",
         },
         "& tr > th:first-child": {
           width: "full",
+          textAlign: "left",
+          fontWeight: "medium",
         },
-        "& tr > td:last-child": {
+        "& tr > th + td:last-child": {
           textAlign: "right",
           pl: "[1ch]",
           // fontVariantNumeric: "tabular-nums",
         },
         "& tfoot > tr > td:last-child": {
           fontWeight: "medium",
+        },
+        "& tfoot > tr > td,& tfoot > tr > th": {
+          borderTopStyle: "solid",
+          borderTopWidth: "1px",
+          borderColor: "current",
+          fontSize: "lg",
+          pt: "4",
         },
       })}
     >
@@ -70,6 +80,19 @@ function CheckoutTable(props: CheckoutTableProps) {
             <td>{formatPrice(item.amount)}</td>
           </tr>
         ))}
+
+        {extraItem && (
+          <tr>
+            <td
+              colSpan={2}
+              className={css({
+                pl: "0",
+              })}
+            >
+              {extraItem}
+            </td>
+          </tr>
+        )}
       </tbody>
       <tfoot>
         <tr>

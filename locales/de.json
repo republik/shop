@@ -132,18 +132,18 @@
       "title": "Konto",
       "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmungen</privacyLink>.",
       "email": {
-        "title": "Login oder Konto eröffnen",
-        "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik-Konto, um den Kauf abzuschliessen."
+        "title": "Anmeldung",
+        "description": "Melden Sie sich mit der E-Mail-Adresse Ihres Republik-Kontos an oder registrieren Sie sich für ein neues Konto."
       },
       "code": {
         "checkingCode": "Überprüfen …",
         "noCodeReceived": "Keinen Code erhalten? Überprüfen Sie Ihren Spam-Ordner oder <changeEmailButton>ändern Sie die E-Mail-Adresse.</changeEmailButton>",
         "title": "Code",
-        "description": "Wir haben Ihnen einen Code an <email></email> geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
+        "description": "Wir haben Ihnen einen Bestätigungs-Code an <email></email> geschickt. Geben Sie ihn ein, um Ihre E-Mail-Adresse zu bestätigen."
       }
     },
     "preCheckout": {
-      "title": "Abonnement",
+      "title": "Preisübersicht",
       "summary": {
         "title": "{product} kaufen",
         "table": {
@@ -152,7 +152,7 @@
             "currency": "Währung",
             "price": "Preis"
           },
-          "summary": "Total, jetzt zu bezahlen"
+          "summary": "Jetzt zu bezahlen"
         },
         "success": {
           "title": "Vielen Dank für Ihren Kauf",
@@ -180,8 +180,15 @@
         "undefined": ""
       },
       "pricePerInterval": "{price} pro {interval}",
+      "priceDescription": "Sie bezahlen <b>{price} pro {interval}</b>, bis Sie kündigen.",
+      "priceDescriptionWithDiscount": "Sie bezahlen <b>im ersten {interval} {discountPrice}</b> und danach <b>{price} pro {interval}</b>, bis Sie kündigen.",
+      "priceDescriptionOnce": "Sie bezahlen <b>{price}</b>.",
       "action": "Kaufen",
-      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr."
+      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr.",
+      "donate": {
+        "title": "Für Grosszügige",
+        "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind."
+      }
     },
     "checkout": {
       "title": "Bezahlen",

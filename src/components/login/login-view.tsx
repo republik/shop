@@ -63,13 +63,21 @@ export function LoginView({ title, description }: LoginViewProps) {
         </>
       }
       renderCodeFormHint={(email) => (
-        <>
+        <div className={css({ textAlign: "center" })}>
+          <h1
+            className={css({
+              textStyle: "h2Sans",
+              mb: "4",
+            })}
+          >
+            {title ?? t("loginStep.email.title")}
+          </h1>
           <p>
             {t.rich("loginStep.code.description", {
               email: () => <strong>{email}</strong>,
             })}
           </p>
-        </>
+        </div>
       )}
     />
   );

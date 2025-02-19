@@ -65,6 +65,7 @@ export function Step({
           onClick={goBack}
           className={css({
             cursor: "pointer",
+            borderRadius: "sm",
             _hover: {
               background: "overlay",
             },

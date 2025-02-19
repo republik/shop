@@ -44,6 +44,12 @@ const buttonVariants = cva({
           textDecoration: "underline",
         },
       },
+      outline: {
+        bg: "transparent",
+        borderColor: "current",
+        borderStyle: "solid",
+        borderWidth: "1px",
+      },
       //         destructive:
       //           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
       //         outline:
@@ -57,6 +63,12 @@ const buttonVariants = cva({
       default: {
         px: "6",
         py: "3",
+      },
+      large: {
+        px: "6",
+        py: "3",
+        fontSize: "lg",
+        width: "full",
       },
       // default: "h-10 px-4 py-2",
       // sm: "h-9 rounded-md px-3",

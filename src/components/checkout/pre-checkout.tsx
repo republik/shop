@@ -11,6 +11,7 @@ import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useId, useMemo, useState } from "react";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { DonateOptions } from "@/components/checkout/donate-options";
 
 interface PreCheckoutProps {
   initialPrice?: number;
@@ -32,40 +33,62 @@ export function PreCheckout({
     {}
   );
 
-  const [userPrice, setUserPrice] = useState(
-    Math.max(240, initialPrice || 240)
-  );
-  const priceId = useId();
+  // TODO: get these from API
+  const donationOptions =
+    offer.id === "YEARLY"
+      ? [
+          {
+            id: "DONATE_50",
+            price: { amount: 5000, recurring: { interval: "year" } },
+          },
+          {
+            id: "DONATE_100",
+            price: { amount: 10000, recurring: { interval: "year" } },
+          },
+          {
+            id: "DONATE_150",
+            price: { amount: 15000, recurring: { interval: "year" } },
+          },
+        ]
+      : null;
+
+  const [donationOption, setDonationOption] = useState("NONE");
 
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
   const checkoutItems: CheckoutItem[] = useMemo(() => {
     const items: CheckoutItem[] = [];
-    if (offer.customPrice) {
-      items.push({
-        label: "Mitgliedschaft mit selbst gewähltem Preis",
-        amount: userPrice,
-        hidden: true,
-      });
-    } else {
-      items.push({
-        label: offer.name,
-        amount: offer.price.amount / 100,
-        hidden: true,
-      });
-    }
+
+    items.push({
+      label: offer.name,
+      amount: offer.price.amount,
+    });
+
     if (offer.discount && !offer.customPrice) {
       items.push({
         label: offer.discount.name || "Rabatt",
-        amount:
-          -1 * (offer.discount.amountOff ? offer.discount.amountOff / 100 : 0),
-        /*(((offer.discount.percent_off ?? 0) / 100) *
-                (stripeSubscriptionItems.price.unit_amount ?? 0)) /
-              100)*/
+        amount: -1 * (offer.discount.amountOff ? offer.discount.amountOff : 0),
       });
     }
+
+    const donation = donationOptions?.find(({ id }) => id === donationOption);
+    if (donation) {
+      items.push({
+        label: "Spende",
+        amount: donation.price.amount,
+        hidden: true,
+      });
+    }
+
     return items;
-  }, [offer.name, offer.price, offer.customPrice, offer.discount, userPrice]);
+  }, [
+    offer.name,
+    offer.price,
+    offer.customPrice,
+    offer.discount,
+    donationOptions,
+    donationOption,
+  ]);
 
   return (
     <form
@@ -92,78 +115,57 @@ export function PreCheckout({
       />
       <div
         className={css({
-          spaceY: "[6px]",
+          spaceY: "2",
         })}
       >
-        <h3
-          className={css({
-            textStyle: "2xl",
-            fontWeight: "medium",
-          })}
-        >
-          {offer.name}
-        </h3>
+        <CheckoutPricingTable
+          currency={offer.price.currency}
+          items={checkoutItems}
+          extraItem={
+            donationOptions ? (
+              <DonateOptions
+                options={donationOptions}
+                onChange={(id) => {
+                  setDonationOption(id);
+                }}
+                value={donationOption}
+              />
+            ) : null
+          }
+        />
 
-        <p
-          className={css({
-            textStyle: "md",
-          })}
-        >
+        {/* TODO: this contains too many assumptions about discounts */}
+        {/* <p>
           {offer.price.recurring
-            ? t("checkout.preCheckout.pricePerInterval", {
-                price: formatPrice(
-                  offer.customPrice
-                    ? userPrice // since all other price values from stripe are in 'Rappen'
-                    : offer.price.amount / 100
-                ),
-                interval: t(
-                  // @ts-expect-error FIXME possibly unknown interval
-                  `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
-                ),
-              })
-            : formatPrice(
-                offer.customPrice ? userPrice : offer.price.amount / 100
-              )}
-        </p>
+            ? offer.discount
+              ? t.rich(
+                  "checkout.preCheckout.priceDescriptionWithDiscount",
+                  {
+                    discountPrice: formatPrice(total),
+                    price: formatPrice(offer.price.amount),
+                    interval: t(
+                      // @ts-expect-error FIXME possibly unknown interval
+                      `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
+                    ),
+                    b: (chunks) => <b>{chunks}</b>,
+                  },
+                  {}
+                )
+              : t.rich(
+                  "checkout.preCheckout.priceDescription",
+                  {
+                    price: formatPrice(offer.price.amount),
+                    interval: t(
+                      // @ts-expect-error FIXME possibly unknown interval
+                      `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
+                    ),
+                    b: (chunks) => <b>{chunks}</b>,
+                  },
+                  {}
+                )
+            : formatPrice(offer.price.amount)}
+        </p> */}
       </div>
-      {offer.customPrice && (
-        <fieldset
-          className={css({
-            display: "flex",
-            flexDirection: "column",
-            gap: "2",
-          })}
-        >
-          <label htmlFor={priceId} className="sr-only">
-            {t("checkout.preCheckout.customPrice", {
-              price: userPrice,
-            })}
-          </label>
-          <Slider
-            id={priceId}
-            name="price"
-            min={offer.customPrice.min}
-            max={offer.customPrice.max}
-            step={offer.customPrice.step}
-            value={[userPrice]}
-            onValueChange={(e) => setUserPrice(e?.[0])}
-          />
-          <input
-            id={priceId}
-            className={css({
-              visibility: "hidden",
-            })}
-            readOnly
-            type="range"
-            name="price"
-            min={240}
-            max={1000}
-            step={5}
-            value={userPrice}
-            onChange={(e) => setUserPrice(Number(e.target.value))}
-          />
-        </fieldset>
-      )}
 
       {invalidPromoCode && (
         <Alert>
@@ -179,15 +181,8 @@ export function PreCheckout({
         </Alert>
       )}
 
-      <CheckoutPricingTable
-        currency={offer.price.currency}
-        items={checkoutItems}
-      />
-
       <Button
-        className={css({
-          width: "max",
-        })}
+        size="large"
         type="submit"
         loading={createCheckoutPending}
         disabled={createCheckoutPending}
