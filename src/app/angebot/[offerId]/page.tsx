@@ -1,6 +1,6 @@
+import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/checkout-view";
 import { PreCheckout } from "@/components/checkout/pre-checkout";
-import { Step } from "@/components/checkout/checkout-step";
 import {
   GiftSuccess,
   SubscriptionSuccess,
@@ -21,7 +21,6 @@ import { notFound, redirect } from "next/navigation";
 type PageProps = {
   params: Promise<{ offerId: string }>;
   searchParams: Promise<{
-    price: string;
     session_id?: string;
     promo_code?: string;
     return_from_checkout?: "true";
@@ -40,8 +39,7 @@ export async function generateMetadata({
 }
 
 export default async function OfferPage({ params, searchParams }: PageProps) {
-  const { session_id, promo_code, return_from_checkout, price } =
-    await searchParams;
+  const { session_id, promo_code, return_from_checkout } = await searchParams;
   const { offerId } = await params;
   const offer = await fetchOffer(offerId, promo_code);
 
@@ -98,13 +96,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         goBack={goToOverview}
       >
         {canUserBuy?.available ? (
-          <PreCheckout
-            offer={offer}
-            initialPrice={
-              offer.customPrice && price ? Number(price) : undefined
-            }
-            promoCode={promo_code}
-          />
+          <PreCheckout offer={offer} promoCode={promo_code} />
         ) : (
           <Alert variant="info">
             <AlertCircleIcon />

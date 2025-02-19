@@ -2,31 +2,22 @@
 
 import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
+import { DonateOptions } from "@/components/checkout/donate-options";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
-import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useActionState, useId, useMemo, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
-import { DonateOptions } from "@/components/checkout/donate-options";
 
 interface PreCheckoutProps {
-  initialPrice?: number;
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
 }
 
-export function PreCheckout({
-  initialPrice,
-  offer,
-  promoCode,
-}: PreCheckoutProps) {
+export function PreCheckout({ offer, promoCode }: PreCheckoutProps) {
   const t = useTranslations();
-
-  const formatPrice = useFormatCurrency(offer.price.currency);
 
   const [_, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
