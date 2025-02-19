@@ -2,21 +2,21 @@
 
 import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
-import { DonateOptions } from "@/components/checkout/donate-options";
+import { DonationChooser } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useMemo, useState } from "react";
-import CheckoutPricingTable, { CheckoutItem } from "./checkout-table";
+import { PricingTable, LineItem } from "./pricing-table";
 
-interface PreCheckoutProps {
+interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
 }
 
-export function PreCheckout({ offer, promoCode }: PreCheckoutProps) {
+export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
   const t = useTranslations();
 
   const [_, createCheckoutAction, createCheckoutPending] = useActionState(
@@ -47,8 +47,8 @@ export function PreCheckout({ offer, promoCode }: PreCheckoutProps) {
 
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
-  const checkoutItems: CheckoutItem[] = useMemo(() => {
-    const items: CheckoutItem[] = [];
+  const lineItems: LineItem[] = useMemo(() => {
+    const items: LineItem[] = [];
 
     items.push({
       label: offer.name,
@@ -109,12 +109,12 @@ export function PreCheckout({ offer, promoCode }: PreCheckoutProps) {
           spaceY: "2",
         })}
       >
-        <CheckoutPricingTable
+        <PricingTable
           currency={offer.price.currency}
-          items={checkoutItems}
+          lineItems={lineItems}
           extraItem={
             donationOptions ? (
-              <DonateOptions
+              <DonationChooser
                 options={donationOptions}
                 onChange={(id) => {
                   setDonationOption(id);

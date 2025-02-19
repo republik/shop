@@ -1,6 +1,6 @@
 import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/checkout-view";
-import { PreCheckout } from "@/components/checkout/pre-checkout";
+import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
 import {
   GiftSuccess,
   SubscriptionSuccess,
@@ -96,7 +96,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         goBack={goToOverview}
       >
         {canUserBuy?.available ? (
-          <PreCheckout offer={offer} promoCode={promo_code} />
+          <CustomizeOfferView offer={offer} promoCode={promo_code} />
         ) : (
           <Alert variant="info">
             <AlertCircleIcon />

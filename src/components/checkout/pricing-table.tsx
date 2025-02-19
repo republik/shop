@@ -3,27 +3,31 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { ReactNode, useMemo } from "react";
-export interface CheckoutItem {
+export interface LineItem {
   label: string;
   amount: number;
   hidden?: boolean;
 }
-interface CheckoutTableProps {
+interface PricingTableProps {
   currency: string;
-  items: CheckoutItem[];
+  lineItems: LineItem[];
   extraItem?: ReactNode;
 }
 
-function CheckoutTable({ currency, items, extraItem }: CheckoutTableProps) {
+export function PricingTable({
+  currency,
+  lineItems,
+  extraItem,
+}: PricingTableProps) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
 
   const total = useMemo(
     () =>
-      items.reduce((acc, item) => {
+      lineItems.reduce((acc, item) => {
         return acc + item.amount;
       }, 0),
-    [items]
+    [lineItems]
   );
 
   return (
@@ -70,7 +74,7 @@ function CheckoutTable({ currency, items, extraItem }: CheckoutTableProps) {
         </tr>
       </thead>
       <tbody>
-        {items.map((item) => (
+        {lineItems.map((item) => (
           <tr
             key={item.label}
             className={cx(item.hidden && "sr-only")}
@@ -103,5 +107,3 @@ function CheckoutTable({ currency, items, extraItem }: CheckoutTableProps) {
     </table>
   );
 }
-
-export default CheckoutTable;

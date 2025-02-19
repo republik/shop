@@ -5,7 +5,7 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 
-export function DonateOptions({
+export function DonationChooser({
   options,
   value,
   onChange,
