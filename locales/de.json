@@ -168,6 +168,7 @@
           "generic": ""
         }
       },
+
       "invalidPromoCode": {
         "title": "Ungültiges Sonderangebot",
         "description": "Das Sonderangebot ist ungültig oder abgelaufen."
@@ -189,6 +190,9 @@
         "title": "Für Grosszügige",
         "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind."
       }
+    },
+    "personalInfo": {
+      "title": "Persönliche Angaben"
     },
     "checkout": {
       "title": "Bezahlen",

@@ -1,7 +1,9 @@
 "use server";
 
 import {
+  RedeemGiftResult,
   RedeemGiftVoucherDocument,
+  RedeemGiftVoucherMutation,
   UpdateMeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
@@ -22,18 +24,15 @@ const MeInput = z.object({
 
 const CodeInput = z.string();
 
-type UpdateMeState =
+type UpdateMeResult =
   | { ok: false; errors: Record<string, string> }
   | { ok: true; errors: Record<string, string> };
 
-export async function updateMe(
-  previousState: UpdateMeState,
-  formData: FormData
-): Promise<UpdateMeState> {
+async function updateMe(
+  data: Record<string, FormDataEntryValue>
+): Promise<UpdateMeResult> {
   const gql = await getClient();
-  const data = Object.fromEntries(formData);
   const input = MeInput.safeParse(data);
-  const code = CodeInput.safeParse(data.code);
 
   if (input.error) {
     return {
@@ -65,6 +64,20 @@ export async function updateMe(
     }
   }
 
+  return { ok: true, errors: {} };
+}
+
+type RedeemGiftVoucherState =
+  | { ok: false; errors: Record<string, string> }
+  | { ok: true; data: RedeemGiftResult; errors: Record<string, string> };
+
+async function redeemGiftVoucher(
+  data: Record<string, FormDataEntryValue>
+): Promise<RedeemGiftVoucherState> {
+  const gql = await getClient();
+
+  const code = CodeInput.safeParse(data.code);
+
   if (code.error) {
     return {
       ok: false,
@@ -77,13 +90,43 @@ export async function updateMe(
     { voucher: code.data }
   );
 
-  if (redeemError) {
+  if (redeemError || !redeemData?.redeemGiftVoucher) {
     return { ok: false, errors: {} };
   }
 
-  redirect(
-    `/angebot/abholen?success=true&aboType=${redeemData?.redeemGiftVoucher?.aboType}&starting=${redeemData?.redeemGiftVoucher?.starting}`
-  );
+  return { ok: true, data: redeemData.redeemGiftVoucher, errors: {} };
+}
 
-  return { ok: true, errors: {} };
+export async function updateMeCheckout(
+  previousState: UpdateMeResult,
+  formData: FormData
+): Promise<UpdateMeResult> {
+  const data = Object.fromEntries(formData);
+
+  const updateMeResult = await updateMe(data);
+
+  return updateMeResult;
+}
+
+export async function updateMeRedeemGiftVoucher(
+  previousState: UpdateMeResult,
+  formData: FormData
+): Promise<UpdateMeResult> {
+  const data = Object.fromEntries(formData);
+
+  const updateMeResult = await updateMe(data);
+
+  if (!updateMeResult.ok) {
+    return updateMeResult;
+  }
+
+  const redeemGiftVoucherResult = await redeemGiftVoucher(data);
+
+  if (!redeemGiftVoucherResult.ok) {
+    return redeemGiftVoucherResult;
+  }
+
+  redirect(
+    `/angebot/abholen?success=true&aboType=${redeemGiftVoucherResult.data.aboType}&starting=${redeemGiftVoucherResult.data.starting}`
+  );
 }

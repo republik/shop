@@ -1,6 +1,6 @@
 "use client";
 import { FormField } from "@/components/ui/form";
-import { updateMe } from "@/actions/update-me";
+import { updateMeRedeemGiftVoucher } from "@/actions/update-me";
 import { Button } from "@/components/ui/button";
 import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
@@ -8,7 +8,10 @@ import { useTranslations } from "next-intl";
 import { useFormState } from "react-dom";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
-  const [state, action] = useFormState(updateMe, { ok: true, errors: {} });
+  const [state, action] = useFormState(updateMeRedeemGiftVoucher, {
+    ok: true,
+    errors: {},
+  });
 
   const t = useTranslations("form");
   const tField = useTranslations("form.fields");

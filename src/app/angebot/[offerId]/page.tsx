@@ -1,6 +1,7 @@
 import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
+import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import {
   GiftSuccess,
   SubscriptionSuccess,
@@ -68,7 +69,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   }
 
   // Max steps are hard-coded until we collect personal info in a separate step from checkout
-  const maxStep = 2;
+  const maxStep = 3;
 
   const checkoutSession = sessionId
     ? await getCheckoutSession(
@@ -81,6 +82,8 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const canUserBuy = needsLogin
     ? me && checkIfUserCanPurchase(me, offer.id)
     : { available: true };
+
+  const needsPersonalInfo = true;
 
   async function goToOverview() {
     "use server";
@@ -133,6 +136,23 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       );
     }
     redirect(`/angebot/${offerId}`);
+  }
+
+  if (
+    checkoutSession?.status === "open" &&
+    checkoutSession.client_secret &&
+    needsPersonalInfo
+  ) {
+    return (
+      <Step
+        currentStep={2}
+        maxStep={maxStep}
+        goBack={resetCheckoutSession}
+        title={t("checkout.personalInfo.title")}
+      >
+        <PersonalInfoForm me={me} />
+      </Step>
+    );
   }
 
   if (checkoutSession?.status === "open" && checkoutSession.client_secret) {
