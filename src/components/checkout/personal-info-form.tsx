@@ -1,20 +1,22 @@
 "use client";
-import { FormField } from "@/components/ui/form";
 import { updateMeRedeemGiftVoucher } from "@/actions/update-me";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form";
 import { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
-  const [state, action] = useFormState(updateMeRedeemGiftVoucher, {
+  const [state, action, isPending] = useActionState(updateMeRedeemGiftVoucher, {
     ok: true,
     errors: {},
   });
 
   const t = useTranslations("form");
   const tField = useTranslations("form.fields");
+
+  console.log(me);
 
   return (
     <form
@@ -124,7 +126,9 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         required
       />
       <input name="code" type="text" hidden readOnly value={code} />
-      <Button type="submit">JETZT EINLÖSEN</Button>
+      <Button type="submit" loading={isPending}>
+        JETZT EINLÖSEN
+      </Button>
     </form>
   );
 }

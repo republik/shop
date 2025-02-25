@@ -1,6 +1,6 @@
 import { Step } from "@/components/checkout/checkout-step";
-import { CheckoutView } from "@/components/checkout/checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
+import { EmbeddedCheckoutView } from "@/components/checkout/embedded-checkout-view";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import {
   GiftSuccess,
@@ -163,7 +163,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         goBack={resetCheckoutSession}
         title={t("checkout.checkout.title")}
       >
-        <CheckoutView
+        <EmbeddedCheckoutView
           company={company}
           clientSecret={checkoutSession.client_secret}
           errors={

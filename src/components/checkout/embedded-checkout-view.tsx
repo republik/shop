@@ -1,11 +1,11 @@
 "use client";
 
+import { ErrorMessage } from "@/components/checkout/error-message";
+import { loadStripe } from "@/lib/stripe/client";
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@/lib/stripe/client";
-import { ErrorMessage } from "@/components/checkout/error-message";
 
 interface CheckoutViewProps {
   clientSecret: string;
@@ -13,7 +13,7 @@ interface CheckoutViewProps {
   errors: { title: string; description: string }[];
 }
 
-export function CheckoutView({
+export function EmbeddedCheckoutView({
   clientSecret,
   company,
   errors,
@@ -31,9 +31,6 @@ export function CheckoutView({
         stripe={loadStripe(company)}
         options={{
           clientSecret,
-          onComplete: () => {
-            window.location.reload();
-          },
         }}
       >
         <EmbeddedCheckout />
