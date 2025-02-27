@@ -178,7 +178,7 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
         loading={createCheckoutPending}
         disabled={createCheckoutPending}
       >
-        {t("checkout.preCheckout.action")}
+        {t("checkout.actions.next")}
       </Button>
     </form>
   );

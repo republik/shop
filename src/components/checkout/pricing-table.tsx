@@ -57,7 +57,7 @@ export function PricingTable({
           borderTopStyle: "solid",
           borderTopWidth: "1px",
           borderColor: "current",
-          fontSize: "lg",
+          // fontSize: "lg",
           pt: "4",
         },
       })}

@@ -30,7 +30,8 @@ export function PersonalInfoForm({
     },
   });
 
-  const t = useTranslations("form");
+  const t = useTranslations();
+  const tForm = useTranslations("form");
   const tField = useTranslations("form.fields");
 
   if (state.type === "success") {
@@ -51,7 +52,7 @@ export function PersonalInfoForm({
           textStyle: "h3Sans",
         })}
       >
-        {t("name")}
+        {tForm("name")}
       </h2>
 
       <FormField
@@ -77,7 +78,7 @@ export function PersonalInfoForm({
           textStyle: "h3Sans",
         })}
       >
-        {t("address")}
+        {tForm("address")}
       </h2>
       <FormField
         type="text"
@@ -146,7 +147,7 @@ export function PersonalInfoForm({
       />
       {code && <input name="code" type="text" hidden readOnly value={code} />}
       <Button type="submit" loading={isPending}>
-        JETZT EINLÖSEN
+        {t("checkout.actions.next")}
       </Button>
     </form>
   );
