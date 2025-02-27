@@ -1,5 +1,5 @@
 "use client";
-import { updateMeRedeemGiftVoucher } from "@/actions/update-me";
+import { updateMe } from "@/actions/update-me";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import { Me } from "@/lib/auth/types";
@@ -7,16 +7,35 @@ import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";
 
-export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
-  const [state, action, isPending] = useActionState(updateMeRedeemGiftVoucher, {
-    ok: true,
-    errors: {},
+export function PersonalInfoForm({
+  code,
+  me,
+  onComplete,
+}: {
+  code?: string;
+  me: Me;
+  onComplete: () => void;
+}) {
+  const [state, action, isPending] = useActionState(updateMe, {
+    type: "initial",
+    data: {
+      firstName: me.firstName,
+      lastName: me.lastName,
+      name: me.address?.name,
+      line1: me.address?.line1,
+      line2: me.address?.line2,
+      postalCode: me.address?.postalCode,
+      city: me.address?.city,
+      country: me.address?.country,
+    },
   });
 
   const t = useTranslations("form");
   const tField = useTranslations("form.fields");
 
-  console.log(me);
+  if (state.type === "success") {
+    onComplete();
+  }
 
   return (
     <form
@@ -41,7 +60,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="firstName"
         error={state.errors?.firstName}
         autoComplete="given-name"
-        defaultValue={me.firstName ?? ""}
+        defaultValue={state.data.firstName ?? undefined}
         required
       />
       <FormField
@@ -50,7 +69,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="lastName"
         error={state.errors?.lastName}
         autoComplete="family-name"
-        defaultValue={me.lastName ?? ""}
+        defaultValue={state.data.lastName ?? undefined}
         required
       />
       <h2
@@ -66,7 +85,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="name"
         error={state.errors?.name}
         autoComplete="name"
-        defaultValue={me.address?.name ?? ""}
+        defaultValue={state.data.name ?? undefined}
         required
       />
       <FormField
@@ -75,7 +94,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="line1"
         error={state.errors?.line1}
         autoComplete="address-line1"
-        defaultValue={me.address?.line1 ?? ""}
+        defaultValue={state.data.line1 ?? undefined}
         required
         maxLength={70}
       />
@@ -85,7 +104,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="line2"
         error={state.errors?.line2}
         autoComplete="address-line2"
-        defaultValue={me.address?.line2 ?? ""}
+        defaultValue={state.data.line2 ?? undefined}
       />
 
       <div
@@ -102,7 +121,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
           name="postalCode"
           error={state.errors?.postalCode}
           autoComplete="postal-code"
-          defaultValue={me.address?.postalCode ?? ""}
+          defaultValue={state.data.postalCode ?? undefined}
           required
         />
         <FormField
@@ -111,7 +130,7 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
           name="city"
           error={state.errors?.city}
           autoComplete="address-level2"
-          defaultValue={me.address?.city ?? ""}
+          defaultValue={state.data.city ?? undefined}
           required
           maxLength={35}
         />
@@ -122,10 +141,10 @@ export function PersonalInfoForm({ code, me }: { code: string; me: Me }) {
         name="country"
         error={state.errors?.country}
         autoComplete="country-name"
-        defaultValue={me.address?.country ?? ""}
+        defaultValue={state.data.country ?? undefined}
         required
       />
-      <input name="code" type="text" hidden readOnly value={code} />
+      {code && <input name="code" type="text" hidden readOnly value={code} />}
       <Button type="submit" loading={isPending}>
         JETZT EINLÖSEN
       </Button>

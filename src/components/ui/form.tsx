@@ -59,6 +59,7 @@ export function FormField({
             borderRadius: "sm",
             p: "2",
           }),
+          error && css({ borderColor: "error" }),
           inputProps?.className
         )}
       />

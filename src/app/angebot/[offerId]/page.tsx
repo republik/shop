@@ -25,6 +25,7 @@ type PageProps = {
     session_id?: string;
     promo_code?: string;
     return_from_checkout?: "true";
+    step?: string;
   }>;
 };
 
@@ -40,7 +41,8 @@ export async function generateMetadata({
 }
 
 export default async function OfferPage({ params, searchParams }: PageProps) {
-  const { session_id, promo_code, return_from_checkout } = await searchParams;
+  const { session_id, promo_code, return_from_checkout, step } =
+    await searchParams;
   const { offerId } = await params;
   const offer = await fetchOffer(offerId, promo_code);
 
@@ -82,8 +84,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const canUserBuy = needsLogin
     ? me && checkIfUserCanPurchase(me, offer.id)
     : { available: true };
-
-  const needsPersonalInfo = true;
 
   async function goToOverview() {
     "use server";
@@ -138,10 +138,16 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     redirect(`/angebot/${offerId}`);
   }
 
+  async function goToCheckout() {
+    "use server";
+    redirect(`/angebot/${offerId}?session_id=${session_id}`);
+  }
+
   if (
     checkoutSession?.status === "open" &&
     checkoutSession.client_secret &&
-    needsPersonalInfo
+    me &&
+    step === "info"
   ) {
     return (
       <Step
@@ -150,17 +156,22 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         goBack={resetCheckoutSession}
         title={t("checkout.personalInfo.title")}
       >
-        <PersonalInfoForm me={me} />
+        <PersonalInfoForm me={me} onComplete={goToCheckout} />
       </Step>
     );
+  }
+
+  async function goToInfo() {
+    "use server";
+    redirect(`/angebot/${offerId}?step=info&session_id=${session_id}`);
   }
 
   if (checkoutSession?.status === "open" && checkoutSession.client_secret) {
     return (
       <Step
-        currentStep={2}
+        currentStep={3}
         maxStep={maxStep}
-        goBack={resetCheckoutSession}
+        goBack={goToInfo}
         title={t("checkout.checkout.title")}
       >
         <EmbeddedCheckoutView
