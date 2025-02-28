@@ -55,7 +55,8 @@ export function DonationChooser({
             >
               + {f(price.amount)}
               {price.recurring
-                ? `, ${tInterval(price.recurring.interval)}`
+                ? // @ts-expect-error interval
+                  `, ${tInterval(price.recurring.interval)}`
                 : ""}
             </RadioOption>
           );
