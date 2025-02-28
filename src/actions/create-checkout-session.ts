@@ -13,6 +13,7 @@ export async function createCheckoutSession(
 ): Promise<CreateCheckoutState> {
   const offerId = formData.get("offerId")?.toString() ?? "";
   const price = formData.get("price");
+  const donationOption = formData.get("donationOption");
 
   const promoCode = formData.get("promoCode");
 
@@ -27,6 +28,7 @@ export async function createCheckoutSession(
       customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
       promoCode: promoCode ? String(promoCode) : undefined,
+      donationOption: donationOption ? String(donationOption) : undefined,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
     }
   );

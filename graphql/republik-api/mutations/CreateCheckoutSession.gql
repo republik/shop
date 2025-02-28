@@ -4,10 +4,12 @@ mutation CreateCheckoutSession(
   $metadata: JSON
   $returnUrl: String
   $promoCode: String
+  $donationOption: ID
 ) {
   createCheckoutSession(
     offerId: $offerId
     promoCode: $promoCode
+    withDonation: $donationOption
     options: {
       uiMode: EMBEDDED
       customPrice: $customPrice

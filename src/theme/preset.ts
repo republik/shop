@@ -76,6 +76,12 @@ export const presetRepublik = definePreset({
                 _dark: "#A9A9A9",
               },
             },
+            tertiary: {
+              value: {
+                base: "#909090",
+                _dark: "#909090",
+              },
+            },
             inverted: {
               value: {
                 base: "{colors.neutral.50}",

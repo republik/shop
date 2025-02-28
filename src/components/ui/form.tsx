@@ -12,6 +12,7 @@ type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
   error?: string;
   name: string;
+  description?: ReactNode;
 };
 
 export function FormField({
@@ -19,6 +20,7 @@ export function FormField({
   error,
   name,
   type = "text",
+  description,
   ...inputProps
 }: FormFieldProps) {
   const id = useId();
@@ -33,7 +35,7 @@ export function FormField({
       className={css({
         display: "flex",
         flexDirection: "column",
-        gap: "2",
+        gap: "1.5",
       })}
       data-invalid={error ? "true" : undefined}
     >
@@ -58,13 +60,17 @@ export function FormField({
             borderColor: "divider",
             borderRadius: "sm",
             p: "2",
+            _disabled: {
+              color: "text.secondary",
+              background: "[rgba(0,0,0,0.03)]",
+            },
           }),
           error && css({ borderColor: "error" }),
           inputProps?.className
         )}
       />
       {error && (
-        <span
+        <div
           aria-live="polite"
           className={css({
             color: "error",
@@ -72,7 +78,17 @@ export function FormField({
           })}
         >
           {errorMessage}
-        </span>
+        </div>
+      )}
+      {description && (
+        <div
+          className={css({
+            color: "text.tertiary",
+            fontSize: "xs",
+          })}
+        >
+          {description}
+        </div>
       )}
     </div>
   );

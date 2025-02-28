@@ -1,5 +1,6 @@
 "use client";
 import { updateMe } from "@/actions/update-me";
+import { useSignOut } from "@/components/login/login-view";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import { Me } from "@/lib/auth/types";
@@ -30,6 +31,8 @@ export function PersonalInfoForm({
     },
   });
 
+  const signOut = useSignOut();
+
   const t = useTranslations();
   const tForm = useTranslations("form");
   const tField = useTranslations("form.fields");
@@ -47,14 +50,29 @@ export function PersonalInfoForm({
         gap: "4",
       })}
     >
-      <h2
-        className={css({
-          textStyle: "h3Sans",
+      <p>{tForm("infoFormNote")}</p>
+      <FormField
+        type="text"
+        label={tField("email")}
+        name="email"
+        disabled
+        readOnly
+        defaultValue={me.email ?? undefined}
+        description={tForm.rich("changeEmailNote", {
+          signOutButton: (chunks) => (
+            <button
+              type="button"
+              className={css({
+                textDecoration: "underline",
+                cursor: "pointer",
+              })}
+              onClick={() => signOut()}
+            >
+              {chunks}
+            </button>
+          ),
         })}
-      >
-        {tForm("name")}
-      </h2>
-
+      />
       <FormField
         type="text"
         label={tField("firstName")}
@@ -76,10 +94,13 @@ export function PersonalInfoForm({
       <h2
         className={css({
           textStyle: "h3Sans",
+          mt: "4",
         })}
       >
         {tForm("address")}
       </h2>
+
+      <p>{tForm("addressNote")}</p>
       <FormField
         type="text"
         label={tField("name")}
@@ -113,7 +134,7 @@ export function PersonalInfoForm({
           width: "full",
           display: "grid",
           gap: "4",
-          gridTemplateColumns: "20% 1fr",
+          gridTemplateColumns: "25% 1fr",
         })}
       >
         <FormField
@@ -146,9 +167,11 @@ export function PersonalInfoForm({
         required
       />
       {code && <input name="code" type="text" hidden readOnly value={code} />}
-      <Button type="submit" loading={isPending}>
-        {t("checkout.actions.next")}
-      </Button>
+      <div className={css({ mt: "4" })}>
+        <Button type="submit" size="large" loading={isPending}>
+          {t("checkout.actions.next")}
+        </Button>
+      </div>
     </form>
   );
 }

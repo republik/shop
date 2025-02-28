@@ -2,14 +2,17 @@
 
 import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
-import { DonationChooser } from "@/components/checkout/donation-chooser";
+import {
+  DonationChooser,
+  OPTION_NONE,
+} from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useMemo, useState } from "react";
-import { PricingTable, LineItem } from "./pricing-table";
+import { LineItem, PricingTable } from "./pricing-table";
 
 interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
@@ -24,26 +27,9 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
     {}
   );
 
-  // TODO: get these from API
-  const donationOptions =
-    offer.id === "YEARLY"
-      ? [
-          {
-            id: "DONATE_50",
-            price: { amount: 5000, recurring: { interval: "year" } },
-          },
-          {
-            id: "DONATE_100",
-            price: { amount: 10000, recurring: { interval: "year" } },
-          },
-          {
-            id: "DONATE_150",
-            price: { amount: 15000, recurring: { interval: "year" } },
-          },
-        ]
-      : null;
+  const donationOptions = offer.donationOptions;
 
-  const [donationOption, setDonationOption] = useState("NONE");
+  const [donationOption, setDonationOption] = useState(OPTION_NONE);
 
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
@@ -55,9 +41,10 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
       amount: offer.price.amount,
     });
 
-    if (offer.discount && !offer.customPrice) {
+    if (offer.discount /*&& !offer.customPrice*/) {
       items.push({
-        label: offer.discount.name || "Rabatt",
+        label:
+          offer.discount.name || t("checkout.preCheckout.discount.itemName"),
         amount: -1 * (offer.discount.amountOff ? offer.discount.amountOff : 0),
       });
     }
@@ -65,7 +52,7 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
     const donation = donationOptions?.find(({ id }) => id === donationOption);
     if (donation) {
       items.push({
-        label: "Spende",
+        label: t("checkout.preCheckout.donate.itemName"),
         amount: donation.price.amount,
         hidden: true,
       });
@@ -75,7 +62,7 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
   }, [
     offer.name,
     offer.price,
-    offer.customPrice,
+    /* offer.customPrice, */
     offer.discount,
     donationOptions,
     donationOption,

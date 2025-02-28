@@ -27,24 +27,40 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     id
     company
     name
+    requiresLogin
+
+    donationOptions {
+      id
+      price {
+        amount
+        currency
+        recurring {
+          interval
+          intervalCount
+        }
+      }
+    }
 
     price {
       amount
       currency
       recurring {
         interval
+        intervalCount
       }
     }
 
-    customPrice {
-      min
-      max
-      step
-    }
+    # customPrice {
+    #   min
+    #   max
+    #   step
+    # }
 
     discount {
       name
       amountOff
+      duration # forever | repeating | once
+      # durationInMonths # only relevant when duration is "repeating"
     }
   }
 }

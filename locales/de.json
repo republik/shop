@@ -180,15 +180,27 @@
         "day": "Tag",
         "undefined": ""
       },
+      "intervalsAdjective": {
+        "month": "monatlich",
+        "year": "jährlich",
+        "week": "wöchentlich",
+        "day": "täglich",
+        "undefined": ""
+      },
       "pricePerInterval": "{price} pro {interval}",
       "priceDescription": "Sie bezahlen <b>{price} pro {interval}</b>, bis Sie kündigen.",
       "priceDescriptionWithDiscount": "Sie bezahlen <b>im ersten {interval} {discountPrice}</b> und danach <b>{price} pro {interval}</b>, bis Sie kündigen.",
       "priceDescriptionOnce": "Sie bezahlen <b>{price}</b>.",
       "action": "Kaufen",
       "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr.",
+      "discount": {
+        "itemName": "Rabatt"
+      },
       "donate": {
         "title": "Für Grosszügige",
-        "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind."
+        "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind.",
+        "itemName": "Spende",
+        "optionNone": "Nein danke"
       }
     },
     "personalInfo": {
@@ -230,7 +242,13 @@
     "name": "Name",
     "address": "Adresse",
 
+    "changeEmailNote": "Um die E-Mail-Adresse zu ändern, <signOutButton>melden Sie sich neu an</signOutButton>.",
+
+    "infoFormNote": "Bald geschafft! Bitte überprüfen und vervollständigen Sie noch Ihre Angaben.",
+    "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
+
     "fields": {
+      "email": "E-Mail-Adresse",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "name": "Name",

@@ -5,6 +5,8 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 
+export const OPTION_NONE = "_NONE";
+
 export function DonationChooser({
   options,
   value,
@@ -12,12 +14,13 @@ export function DonationChooser({
 }: {
   options: {
     id: string;
-    price: { amount: number; recurring?: { interval: string } };
+    price: { amount: number; recurring?: { interval: string } | null };
   }[];
   value?: string;
   onChange: (id: string) => void;
 }) {
   const t = useTranslations();
+  const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
 
   return (
@@ -50,19 +53,22 @@ export function DonationChooser({
               value={id}
               onChange={() => onChange(id)}
             >
-              {f(price.amount)}
+              + {f(price.amount)}
+              {price.recurring
+                ? `, ${tInterval(price.recurring.interval)}`
+                : ""}
             </RadioOption>
           );
         })}
 
         <RadioOption
-          key={"NONE"}
+          key={OPTION_NONE}
           name="donationOption"
-          selected={value === "NONE"}
-          value={"NONE"}
-          onChange={() => onChange("NONE")}
+          selected={value === OPTION_NONE}
+          value={OPTION_NONE}
+          onChange={() => onChange(OPTION_NONE)}
         >
-          Nein danke
+          {t("checkout.preCheckout.donate.optionNone")}
         </RadioOption>
       </div>
     </div>

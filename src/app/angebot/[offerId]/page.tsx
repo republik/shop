@@ -57,12 +57,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const afterCheckoutRedirect = return_from_checkout === "true";
   const me = await fetchMe(company);
 
-  // TODO determine based on future offer fields
   const isGift = offer.id.startsWith("GIFT_");
-  const needsLogin = !isGift;
 
   // Early return in case login is needed
-  if (needsLogin && !me) {
+  if (offer.requiresLogin && !me) {
     return (
       <div className={css({ px: "6", py: "4" })}>
         <LoginView />
@@ -81,7 +79,17 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       )
     : undefined;
 
-  const canUserBuy = needsLogin
+  // Session ID is invalid, redirect to initial step
+  if (sessionId && !checkoutSession) {
+    if (promo_code) {
+      redirect(`/angebot/${offerId}?promo_code=${promo_code}`);
+    } else {
+      redirect(`/angebot/${offerId}`);
+    }
+  }
+
+  // TODO: rework
+  const productAvailability = offer.requiresLogin
     ? me && checkIfUserCanPurchase(me, offer.id)
     : { available: true };
 
@@ -98,7 +106,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         title={t("checkout.preCheckout.title")}
         goBack={goToOverview}
       >
-        {canUserBuy?.available ? (
+        {productAvailability?.available ? (
           <CustomizeOfferView offer={offer} promoCode={promo_code} />
         ) : (
           <Alert variant="info">
@@ -109,7 +117,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
             <AlertDescription>
               {t(
-                `checkout.preCheckout.unavailable.reasons.${canUserBuy?.reason === "hasSubscription" ? "hasSubscription" : "generic"}`
+                `checkout.preCheckout.unavailable.reasons.${productAvailability?.reason === "hasSubscription" ? "hasSubscription" : "generic"}`
               )}
             </AlertDescription>
             <AlertDescription>

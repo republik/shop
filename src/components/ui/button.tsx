@@ -66,7 +66,7 @@ const buttonVariants = cva({
       },
       large: {
         px: "6",
-        py: "3",
+        py: "4",
         width: "full",
       },
       // default: "h-10 px-4 py-2",
