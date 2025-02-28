@@ -11,10 +11,12 @@ import { useActionState } from "react";
 export function PersonalInfoForm({
   code,
   me,
+  addressRequired,
   onComplete,
 }: {
   code?: string;
   me: Me;
+  addressRequired: boolean;
   onComplete: () => void;
 }) {
   const [state, action, isPending] = useActionState(updateMe, {
@@ -84,82 +86,97 @@ export function PersonalInfoForm({
         defaultValue={state.data.lastName ?? undefined}
         required
       />
-      <h2
-        className={css({
-          textStyle: "h3Sans",
-          mt: "4",
-        })}
-      >
-        {tForm("address")}
-      </h2>
 
-      <p>{tForm("addressNote")}</p>
-      <FormField
-        type="text"
-        label={tField("name")}
-        name="name"
-        error={state.errors?.name}
-        autoComplete="name"
-        defaultValue={state.data.name ?? undefined}
-        required
-      />
-      <FormField
-        type="text"
-        label={tField("line1")}
-        name="line1"
-        error={state.errors?.line1}
-        autoComplete="address-line1"
-        defaultValue={state.data.line1 ?? undefined}
-        required
-        maxLength={70}
-      />
-      <FormField
-        type="text"
-        label={tField("line2")}
-        name="line2"
-        error={state.errors?.line2}
-        autoComplete="address-line2"
-        defaultValue={state.data.line2 ?? undefined}
-      />
+      {addressRequired && (
+        <>
+          <h2
+            className={css({
+              textStyle: "h3Sans",
+              mt: "4",
+            })}
+          >
+            {tForm("address")}
+          </h2>
 
-      <div
-        className={css({
-          width: "full",
-          display: "grid",
-          gap: "4",
-          gridTemplateColumns: "25% 1fr",
-        })}
-      >
-        <FormField
-          type="text"
-          label={tField("postalCode")}
-          name="postalCode"
-          error={state.errors?.postalCode}
-          autoComplete="postal-code"
-          defaultValue={state.data.postalCode ?? undefined}
-          required
-        />
-        <FormField
-          type="text"
-          label={tField("city")}
-          name="city"
-          error={state.errors?.city}
-          autoComplete="address-level2"
-          defaultValue={state.data.city ?? undefined}
-          required
-          maxLength={35}
-        />
-      </div>
-      <FormField
-        type="text"
-        label={tField("country")}
-        name="country"
-        error={state.errors?.country}
-        autoComplete="country-name"
-        defaultValue={state.data.country ?? undefined}
-        required
-      />
+          <p>{tForm("addressNote")}</p>
+          <FormField
+            type="text"
+            label={tField("name")}
+            name="name"
+            error={state.errors?.name}
+            autoComplete="name"
+            defaultValue={state.data.name ?? undefined}
+            required
+          />
+          <FormField
+            type="text"
+            label={tField("line1")}
+            name="line1"
+            error={state.errors?.line1}
+            autoComplete="address-line1"
+            defaultValue={state.data.line1 ?? undefined}
+            required
+            maxLength={70}
+          />
+          <FormField
+            type="text"
+            label={tField("line2")}
+            name="line2"
+            error={state.errors?.line2}
+            autoComplete="address-line2"
+            defaultValue={state.data.line2 ?? undefined}
+          />
+
+          <div
+            className={css({
+              width: "full",
+              display: "grid",
+              gap: "4",
+              gridTemplateColumns: "25% 1fr",
+            })}
+          >
+            <FormField
+              type="text"
+              label={tField("postalCode")}
+              name="postalCode"
+              error={state.errors?.postalCode}
+              autoComplete="postal-code"
+              defaultValue={state.data.postalCode ?? undefined}
+              required
+            />
+            <FormField
+              type="text"
+              label={tField("city")}
+              name="city"
+              error={state.errors?.city}
+              autoComplete="address-level2"
+              defaultValue={state.data.city ?? undefined}
+              required
+              maxLength={35}
+            />
+          </div>
+          <FormField
+            type="text"
+            label={tField("country")}
+            name="country"
+            error={state.errors?.country}
+            autoComplete="country-name"
+            defaultValue={state.data.country ?? undefined}
+            required
+          />
+        </>
+      )}
+
       {code && <input name="code" type="text" hidden readOnly value={code} />}
+
+      <input
+        name="addressRequired"
+        type="text"
+        hidden
+        readOnly
+        value={addressRequired ? "required" : "notRequired"}
+      />
+
       <div className={css({ mt: "4" })}>
         <Button type="submit" size="large" loading={isPending}>
           {t("checkout.actions.next")}

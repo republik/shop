@@ -9,16 +9,24 @@ import { getClient } from "@/lib/graphql/client";
 
 import * as z from "zod";
 
-const MeInput = z.object({
-  firstName: z.string().nonempty(),
-  lastName: z.string().nonempty(),
-  name: z.string().nonempty(),
-  line1: z.string().nonempty(),
-  line2: z.string().optional(),
-  postalCode: z.string().nonempty(),
-  city: z.string().nonempty(),
-  country: z.string().nonempty(),
-});
+const MeInput = z.discriminatedUnion("addressRequired", [
+  z.object({
+    addressRequired: z.literal("required"),
+    firstName: z.string().nonempty(),
+    lastName: z.string().nonempty(),
+    name: z.string().nonempty(),
+    line1: z.string().nonempty(),
+    line2: z.string().optional(),
+    postalCode: z.string().nonempty(),
+    city: z.string().nonempty(),
+    country: z.string().nonempty(),
+  }),
+  z.object({
+    addressRequired: z.literal("notRequired"),
+    firstName: z.string().nonempty(),
+    lastName: z.string().nonempty(),
+  }),
+]);
 
 const CodeInput = z.string();
 
@@ -58,17 +66,18 @@ export async function updateMe(
   }
 
   if (input.data) {
+    const {
+      data: { addressRequired, firstName, lastName, ...address },
+    } = input;
+
+    console.log(input.data);
+
+    const maybeAddress = "name" in address ? address : undefined;
+
     const res = await gql.mutation(UpdateMeDocument, {
-      firstName: input.data.firstName,
-      lastName: input.data.lastName,
-      address: {
-        name: input.data.name,
-        line1: input.data.line1,
-        line2: input.data.line2,
-        postalCode: input.data.postalCode,
-        city: input.data.city,
-        country: input.data.country,
-      },
+      firstName,
+      lastName,
+      address: maybeAddress,
     });
 
     if (res.data?.updateMe) {

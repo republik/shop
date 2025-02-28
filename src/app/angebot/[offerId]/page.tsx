@@ -164,7 +164,11 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         goBack={resetCheckoutSession}
         title={t("checkout.personalInfo.title")}
       >
-        <PersonalInfoForm me={me} onComplete={goToCheckout} />
+        <PersonalInfoForm
+          me={me}
+          addressRequired={company === "PROJECT_R"}
+          onComplete={goToCheckout}
+        />
       </Step>
     );
   }
