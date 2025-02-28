@@ -42,19 +42,41 @@ PRODUCTS.forEach(({ key, name }) => {
 
     await expect(
       page.getByRole("heading", {
-        name,
+        name: "Preisübersicht",
       })
     ).toBeVisible();
 
     // For some reason we need to wait here for some Next.js BS
     await page.waitForTimeout(5000);
 
-    await page.getByRole("button", { name: "Kaufen" }).click();
+    await page.getByRole("button", { name: "Weiter" }).click();
+
+    await expect(
+      page.getByRole("heading", {
+        name: "Persönliche Angaben",
+      })
+    ).toBeVisible();
+
+    await page.getByLabel("Vorname").fill("Tester");
+    await page.getByLabel("Nachname").fill("Tester");
+
+    if (key !== "MONTHLY") {
+      await page.getByLabel("Name").fill("Tester Tester");
+      await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
+      await page.getByLabel("Postleitzahl").fill("4242");
+      await page.getByLabel("Ort").fill("Testort");
+      await page.getByLabel("Land").fill("Testland");
+    }
+
+    await page.getByRole("button", { name: "Weiter" }).click();
+
+    await expect(
+      page.getByRole("heading", {
+        name: "Bezahlen",
+      })
+    ).toBeVisible();
 
     const stripeFrame = page.frameLocator('[name="embedded-checkout"]');
-
-    await stripeFrame.getByLabel("Vorname").fill("Tester");
-    await stripeFrame.getByLabel("Nachname").fill("Tester");
 
     await stripeFrame
       .getByRole("button", { name: "Mit Karte zahlen" })
@@ -67,12 +89,6 @@ PRODUCTS.forEach(({ key, name }) => {
     await stripeFrame.getByPlaceholder("CVC").fill("123");
 
     await stripeFrame.getByPlaceholder("Vollständiger Name").fill("Test Test");
-
-    if (key !== "MONTHLY") {
-      await stripeFrame.getByPlaceholder("Adresszeile 1").fill("Teststr. 42");
-      await stripeFrame.getByPlaceholder("Postleitzahl").fill("4242");
-      await stripeFrame.getByPlaceholder("Ort").fill("Testort");
-    }
 
     await stripeFrame.getByRole("checkbox", { name: "Ich stimme" }).check();
     await stripeFrame.getByRole("button", { name: "abonnieren" }).click();

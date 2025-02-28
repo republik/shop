@@ -6,6 +6,7 @@ import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
+import { useState } from "react";
 
 interface CheckoutViewProps {
   clientSecret: string;
@@ -18,6 +19,7 @@ export function EmbeddedCheckoutView({
   company,
   errors,
 }: CheckoutViewProps) {
+  const [complete, setComplete] = useState(false);
   return (
     <div id="checkout">
       {errors.map((e) => (
@@ -31,9 +33,13 @@ export function EmbeddedCheckoutView({
         stripe={loadStripe(company)}
         options={{
           clientSecret,
+          onComplete: () => {
+            setComplete(true);
+            window.location.reload();
+          },
         }}
       >
-        <EmbeddedCheckout />
+        {!complete && <EmbeddedCheckout />}
       </EmbeddedCheckoutProvider>
     </div>
   );

@@ -178,7 +178,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     redirect(`/angebot/${offerId}?step=info&session_id=${session_id}`);
   }
 
-  if (checkoutSession?.status === "open" && checkoutSession.client_secret) {
+  if (checkoutSession.status === "open" && checkoutSession.client_secret) {
     return (
       <Step
         currentStep={3}
