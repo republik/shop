@@ -111,13 +111,23 @@ export default async function RedeemGiftPage({
     );
   }
 
+  async function done() {
+    "use server";
+    redirect("/");
+  }
+
   // Final form to get Info and submit
   return (
     <div>
       <p>Hallo {me.name}</p>
       <p>CODE {code}</p>
 
-      <PersonalInfoForm code={code} me={me} />
+      <PersonalInfoForm
+        code={code}
+        me={me}
+        addressRequired={true}
+        onComplete={done}
+      />
     </div>
   );
 }
