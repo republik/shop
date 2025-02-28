@@ -1,3 +1,4 @@
+import { buttonRecipe } from "@/theme/src/recipes/button";
 import { definePreset } from "@pandacss/dev";
 
 export const presetRepublik = definePreset({
@@ -32,6 +33,7 @@ export const presetRepublik = definePreset({
       },
     },
   },
+
   // Useful for theme customization
   theme: {
     extend: {
@@ -416,6 +418,9 @@ export const presetRepublik = definePreset({
             fontStyle: "normal",
           },
         },
+      },
+      recipes: {
+        button: buttonRecipe,
       },
     },
     keyframes: {

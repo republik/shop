@@ -60,16 +60,9 @@ export function PersonalInfoForm({
         defaultValue={me.email ?? undefined}
         description={tForm.rich("changeEmailNote", {
           signOutButton: (chunks) => (
-            <button
-              type="button"
-              className={css({
-                textDecoration: "underline",
-                cursor: "pointer",
-              })}
-              onClick={() => signOut()}
-            >
+            <Button type="button" variant="link" onClick={() => signOut()}>
               {chunks}
-            </button>
+            </Button>
           ),
         })}
       />
