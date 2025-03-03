@@ -4,8 +4,8 @@ import { getEmailCode } from "./lib/get-email-code.mts";
 import { nanoid } from "nanoid";
 import { GIFTS } from "./lib/products.mts";
 
-GIFTS.forEach(({ key, name }) => {
-  test(`Buy a ${key} gift`, async ({ page }) => {
+GIFTS.forEach(({ offerId }) => {
+  test(`Buy a ${offerId} gift`, async ({ page }) => {
     const testId = nanoid(5);
 
     const testEmail = process.env.TEST_EMAIL_PATTERN?.replace(
@@ -17,7 +17,9 @@ GIFTS.forEach(({ key, name }) => {
       throw new Error("Forget to set TEST_EMAIL_PATTERN");
     }
 
-    await page.goto(`/angebot/${key}?utm_source=test&utm_content=${testId}`);
+    await page.goto(
+      `/angebot/${offerId}?utm_source=test&utm_content=${testId}`
+    );
 
     await page.getByRole("button", { name: "Kaufen" }).click();
 
