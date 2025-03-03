@@ -99,15 +99,7 @@ export function PersonalInfoForm({
           </h2>
 
           <p>{tForm("addressNote")}</p>
-          <FormField
-            type="text"
-            label={tField("name")}
-            name="name"
-            error={state.errors?.name}
-            autoComplete="name"
-            defaultValue={state.data.name ?? undefined}
-            required
-          />
+
           <FormField
             type="text"
             label={tField("line1")}

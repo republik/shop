@@ -70,7 +70,6 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
   await page.getByLabel("Vorname").fill("Tester");
   await page.getByLabel("Nachname").fill("Tester");
 
-  await page.getByLabel("Name", { exact: true }).fill("Tester Tester");
   await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
   await page.getByLabel("Postleitzahl").fill("4242");
   await page.getByLabel("Ort").fill("Testort");

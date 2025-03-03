@@ -9,18 +9,24 @@ import { getClient } from "@/lib/graphql/client";
 
 import * as z from "zod";
 
+const Address = z.object({
+  // name is required for the mutation but if not present, we assemble it from firstName and lastName
+  name: z.string().optional(),
+  line1: z.string().nonempty(),
+  line2: z.string().optional(),
+  postalCode: z.string().nonempty(),
+  city: z.string().nonempty(),
+  country: z.string().nonempty(),
+});
+
 const MeInput = z.discriminatedUnion("addressRequired", [
-  z.object({
-    addressRequired: z.literal("required"),
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
-    name: z.string().nonempty(),
-    line1: z.string().nonempty(),
-    line2: z.string().optional(),
-    postalCode: z.string().nonempty(),
-    city: z.string().nonempty(),
-    country: z.string().nonempty(),
-  }),
+  z
+    .object({
+      addressRequired: z.literal("required"),
+      firstName: z.string().nonempty(),
+      lastName: z.string().nonempty(),
+    })
+    .merge(Address),
   z.object({
     addressRequired: z.literal("notRequired"),
     firstName: z.string().nonempty(),
@@ -66,18 +72,18 @@ export async function updateMe(
   }
 
   if (input.data) {
-    const {
-      data: { addressRequired, firstName, lastName, ...address },
-    } = input;
-
-    console.log(input.data);
-
-    const maybeAddress = "name" in address ? address : undefined;
+    const { firstName, lastName } = input.data;
+    const address = Address.safeParse(input.data);
 
     const res = await gql.mutation(UpdateMeDocument, {
       firstName,
       lastName,
-      address: maybeAddress,
+      address: address.data
+        ? {
+            name: `${firstName} ${lastName}`,
+            ...address.data,
+          }
+        : undefined,
     });
 
     if (res.data?.updateMe) {
