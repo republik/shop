@@ -25,7 +25,7 @@ export async function createCheckoutSession(
     CreateCheckoutSessionDocument,
     {
       offerId: offerId,
-      customPrice: price ? Number(price) * 100 : undefined,
+      // customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
       promoCode: promoCode ? String(promoCode) : undefined,
       donationOption: donationOption ? String(donationOption) : undefined,
