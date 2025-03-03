@@ -101,7 +101,7 @@ export function PricingTable({
       <tfoot>
         <tr>
           <th scope="row">{t("checkout.preCheckout.summary.table.summary")}</th>
-          <td>{formatPrice(total)}</td>
+          <td data-testid="price-overview-total">{formatPrice(total)}</td>
         </tr>
       </tfoot>
     </table>

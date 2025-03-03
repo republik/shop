@@ -46,9 +46,11 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
 
   await expect(
     page.getByRole("heading", {
-      name,
+      name: "Preisübersicht",
     })
   ).toBeVisible();
+
+  await expect(page.getByTestId("price-overview-total")).toContainText("240");
 
   await expect(
     page.getByRole("heading", { name: "Ungültiges Sonderangebot" })
@@ -57,11 +59,32 @@ test(`Log in with a new email and apply a promo code to ${key} subscription`, as
   // For some reason we need to wait here for some Next.js BS
   await page.waitForTimeout(5000);
 
-  await page.getByRole("button", { name: "Kaufen" }).click();
+  await page.getByRole("button", { name: "Weiter" }).click();
+
+  await expect(
+    page.getByRole("heading", {
+      name: "Persönliche Angaben",
+    })
+  ).toBeVisible();
+
+  await page.getByLabel("Vorname").fill("Tester");
+  await page.getByLabel("Nachname").fill("Tester");
+
+  await page.getByLabel("Name", { exact: true }).fill("Tester Tester");
+  await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
+  await page.getByLabel("Postleitzahl").fill("4242");
+  await page.getByLabel("Ort").fill("Testort");
+  await page.getByLabel("Land").fill("Testland");
+
+  await page.getByRole("button", { name: "Weiter" }).click();
+
+  await expect(
+    page.getByRole("heading", {
+      name: "Bezahlen",
+    })
+  ).toBeVisible();
 
   const stripeFrame = page.frameLocator('[name="embedded-checkout"]');
-
-  await expect(page.getByTestId("precheckout-summary")).toContainText("240");
 
   await expect(
     stripeFrame.getByTestId("product-summary-total-amount")
