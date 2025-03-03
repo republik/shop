@@ -39,11 +39,12 @@ const containerStyle = css({
   margin: "auto",
 });
 
-export function SubscriptionSuccess({ offer, session }: SuccessProps) {
+export function SubscriptionSuccess({ offer }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.subscription");
 
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
+    variables: { stripeCompany: null },
   });
 
   const ready = !!meRes.data?.me?.activeMagazineSubscription || true;

@@ -83,7 +83,7 @@ export async function updateMe(
             name: `${firstName} ${lastName}`,
             ...address.data,
           }
-        : undefined,
+        : null,
     });
 
     if (res.data?.updateMe) {
