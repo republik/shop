@@ -5,7 +5,14 @@ import { nanoid } from "nanoid";
 import { PRODUCTS } from "./lib/products.mts";
 
 PRODUCTS.forEach(
-  ({ id, offerId, promoCode, expectedAmount, requiresAddress }) => {
+  ({
+    id,
+    offerId,
+    promoCode,
+    expectedAmount,
+    requiresAddress,
+    requiresLogin,
+  }) => {
     test(`Buy a ${id} subscription `, async ({ page }) => {
       const testId = nanoid(5);
 
@@ -27,24 +34,26 @@ PRODUCTS.forEach(
         throw new Error("Forget to set TEST_EMAIL_PATTERN");
       }
 
-      await page.getByLabel("E-Mail").fill(testEmail);
-      await page.getByRole("button", { name: "Weiter" }).click();
+      if (requiresLogin) {
+        await page.getByLabel("E-Mail").fill(testEmail);
+        await page.getByRole("button", { name: "Weiter" }).click();
 
-      let code: string | undefined;
+        let code: string | undefined;
 
-      await expect
-        .poll(
-          async () => {
-            code = await getEmailCode(testEmail);
-            return code;
-          },
+        await expect
+          .poll(
+            async () => {
+              code = await getEmailCode(testEmail);
+              return code;
+            },
 
-          { timeout: 10_000 }
-        )
-        .toBeDefined();
+            { timeout: 10_000 }
+          )
+          .toBeDefined();
 
-      // Pause for user to enter OTP from email
-      await page.getByLabel("Code").fill(code!);
+        // Pause for user to enter OTP from email
+        await page.getByLabel("Code").fill(code!);
+      }
 
       await expect(
         page.getByRole("heading", {
@@ -61,23 +70,25 @@ PRODUCTS.forEach(
 
       await page.getByRole("button", { name: "Weiter" }).click();
 
-      await expect(
-        page.getByRole("heading", {
-          name: "Persönliche Angaben",
-        })
-      ).toBeVisible();
+      if (requiresLogin) {
+        await expect(
+          page.getByRole("heading", {
+            name: "Persönliche Angaben",
+          })
+        ).toBeVisible();
 
-      await page.getByLabel("Vorname").fill("Tester");
-      await page.getByLabel("Nachname").fill("Tester");
+        await page.getByLabel("Vorname").fill("Tester");
+        await page.getByLabel("Nachname").fill("Tester");
 
-      if (requiresAddress) {
-        await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
-        await page.getByLabel("Postleitzahl").fill("4242");
-        await page.getByLabel("Ort").fill("Testort");
-        await page.getByLabel("Land").fill("Testland");
+        if (requiresAddress) {
+          await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
+          await page.getByLabel("Postleitzahl").fill("4242");
+          await page.getByLabel("Ort").fill("Testort");
+          await page.getByLabel("Land").fill("Testland");
+        }
+
+        await page.getByRole("button", { name: "Weiter" }).click();
       }
-
-      await page.getByRole("button", { name: "Weiter" }).click();
 
       await expect(
         page.getByRole("heading", {
@@ -90,6 +101,10 @@ PRODUCTS.forEach(
       await expect(
         stripeFrame.getByTestId("product-summary-total-amount")
       ).toContainText(expectedAmount);
+
+      if (!requiresLogin) {
+        await stripeFrame.getByLabel("E-Mail").fill(testEmail);
+      }
 
       await stripeFrame
         .getByRole("button", { name: "Mit Karte zahlen" })
@@ -106,7 +121,7 @@ PRODUCTS.forEach(
         .fill("Test Test");
 
       await stripeFrame.getByRole("checkbox", { name: "Ich stimme" }).check();
-      await stripeFrame.getByRole("button", { name: "abonnieren" }).click();
+      await stripeFrame.getByTestId("hosted-payment-submit-button").click();
 
       await expect(
         page.getByRole("heading", { name: "Vielen Dank" })

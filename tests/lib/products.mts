@@ -1,9 +1,21 @@
-export const PRODUCTS = [
+type ProductTest = {
+  id: string;
+  offerId: string;
+  name: string;
+  expectedAmount: string;
+  requiresAddress: boolean;
+  requiresLogin: boolean;
+  promoCode?: string;
+};
+
+export const PRODUCTS: ProductTest[] = [
   {
     id: "monthly",
     offerId: "MONTHLY",
     name: "Monats-Abo",
     expectedAmount: "11",
+    requiresAddress: true,
+    requiresLogin: true,
   },
   {
     id: "yearly",
@@ -11,6 +23,7 @@ export const PRODUCTS = [
     name: "Jahresmitgliedschaft",
     expectedAmount: "222",
     requiresAddress: true,
+    requiresLogin: true,
   },
   {
     id: "yearly (with promo code)",
@@ -19,6 +32,7 @@ export const PRODUCTS = [
     expectedAmount: "199",
     promoCode: "E2ETEST",
     requiresAddress: true,
+    requiresLogin: true,
   },
   {
     id: "yearly (with invalid promo code)",
@@ -27,6 +41,7 @@ export const PRODUCTS = [
     expectedAmount: "240",
     promoCode: "NOPE",
     requiresAddress: true,
+    requiresLogin: true,
   },
   {
     id: "student",
@@ -34,10 +49,14 @@ export const PRODUCTS = [
     name: "Ausbildungs-Mitgliedschaft",
     expectedAmount: "140",
     requiresAddress: true,
+    requiresLogin: true,
   },
-];
-
-export const GIFTS = [
-  // { offerId: "GIFT_MONTHLY", Geschenk" },
-  { offerId: "GIFT_YEARLY" },
+  {
+    id: "gift (yearly)",
+    offerId: "GIFT_YEARLY",
+    name: "Geschenk-Mitgliedschaft",
+    expectedAmount: "222",
+    requiresAddress: true,
+    requiresLogin: false,
+  },
 ];
