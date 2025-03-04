@@ -17,11 +17,7 @@ export function Hero({ children }: { children: ReactNode }) {
         textAlign: "center",
       })}
     >
-      <Link
-        className={css({ mb: "8" })}
-        href={process.env.NEXT_PUBLIC_MAGAZIN_URL}
-        title="Republik"
-      >
+      <Link className={css({ mb: "8" })} href={process.env.NEXT_PUBLIC_URL}>
         <Logo />
       </Link>
       {children}

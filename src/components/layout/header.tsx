@@ -21,7 +21,7 @@ export async function Header() {
           alignItems: "center",
         })}
       >
-        <Link href={process.env.NEXT_PUBLIC_MAGAZIN_URL} title="Republik">
+        <Link href={process.env.NEXT_PUBLIC_URL}>
           <Logo />
         </Link>
       </div>
