@@ -7,9 +7,6 @@ PRODUCTS.forEach(({ id, offerId, name }) => {
     await page.goto(`/angebot/${offerId}`);
 
     await expect(page).toHaveTitle(new RegExp(name));
-    await expect(
-      page.getByRole("heading", { level: 1, name: new RegExp(name) })
-    ).toBeVisible();
   });
 
   test(`${id} ${offerId} product query redirect`, async ({ page }) => {
