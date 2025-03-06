@@ -9,6 +9,11 @@ const nextConfig = {
   experimental: {
     // testProxy: true,
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   async headers() {
     return [
       // Migrated from custom express server
