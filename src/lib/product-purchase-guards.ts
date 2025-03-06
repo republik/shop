@@ -13,13 +13,15 @@ export type IsProductAvailableForUserPredicate = (
  * Checks if the user can buy a subscription based on their current
  * subscriptions and memberships.
  * @param me The user object
- * @param offerId The type of subscription to check
  * @returns An object with the availability status and a reason if not available
  */
 export function checkIfUserCanPurchase(
-  me: Me,
-  offerId: string
+  me?: Me
 ): ReturnType<IsProductAvailableForUserPredicate> {
+  if (!me) {
+    return { available: false };
+  }
+
   // Subscriptions
   if (me.activeMagazineSubscription) {
     return {

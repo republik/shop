@@ -11,10 +11,10 @@ function initStripe(company: string): Stripe {
   });
 }
 
-export type CheckoutSessionData = { email: string | null | undefined } & Pick<
-  Stripe.Checkout.Session,
-  "id" | "status" | "client_secret"
->;
+export type CheckoutSessionData = {
+  email: string | null | undefined;
+  client_secret: string;
+} & Pick<Stripe.Checkout.Session, "id" | "status">;
 
 export async function expireCheckoutSession(
   company: string,
@@ -44,6 +44,10 @@ export async function getCheckoutSession(
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     if (session.customer && session.customer !== customerId) {
+      return;
+    }
+
+    if (!session.client_secret) {
       return;
     }
 
