@@ -14,7 +14,7 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "MONTHLY",
     name: "Monats-Abo",
     expectedAmount: "11",
-    requiresAddress: true,
+    requiresAddress: false,
     requiresLogin: true,
   },
   {

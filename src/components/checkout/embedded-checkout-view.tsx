@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 
 interface CheckoutViewProps {
-  clientSecret: string;
+  clientSecret: string | null | undefined;
   company: string;
   errors: { title: string; description: string }[];
 }

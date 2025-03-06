@@ -109,20 +109,20 @@ export async function getCheckoutState({
     };
   }
 
-  const productAvailability = offer.requiresLogin
-    ? checkIfUserCanPurchase(me)
-    : { available: true };
-
-  if (!productAvailability.available) {
-    return {
-      step: "UNAVAILABLE",
-      reason: productAvailability.reason,
-      offer,
-      checkoutSession: undefined,
-    };
-  }
-
   if (!checkoutSession) {
+    const productAvailability = offer.requiresLogin
+      ? checkIfUserCanPurchase(me)
+      : { available: true };
+
+    if (!productAvailability.available) {
+      return {
+        step: "UNAVAILABLE",
+        reason: productAvailability.reason,
+        offer,
+        checkoutSession: undefined,
+      };
+    }
+
     return {
       step: "INITIAL",
       offer,
