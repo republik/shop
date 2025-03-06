@@ -6,27 +6,27 @@ import {
   GiftSuccess,
   SubscriptionSuccess,
 } from "@/components/checkout/success-view";
+import { UnavailableView } from "@/components/checkout/unavailable-view";
 import { LoginView } from "@/components/login/login-view";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { fetchMe } from "@/lib/auth/fetch-me";
+import { getCheckoutState } from "@/lib/checkout-state";
 import { fetchOffer } from "@/lib/offers";
-import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
-import { expireCheckoutSession, getCheckoutSession } from "@/lib/stripe/server";
+import { expireCheckoutSession } from "@/lib/stripe/server";
 import { css } from "@/theme/css";
-import { AlertCircleIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+
+type PageSearchParams = {
+  session_id?: string;
+  promo_code?: string;
+  donate_option?: string;
+  return_from_checkout?: "true";
+  step?: string;
+};
 
 type PageProps = {
   params: Promise<{ offerId: string }>;
-  searchParams: Promise<{
-    session_id?: string;
-    promo_code?: string;
-    return_from_checkout?: "true";
-    step?: string;
-  }>;
+  searchParams: Promise<PageSearchParams>;
 };
 
 export async function generateMetadata({
@@ -41,26 +41,38 @@ export async function generateMetadata({
 }
 
 export default async function OfferPage({ params, searchParams }: PageProps) {
-  const { session_id, promo_code, return_from_checkout, step } =
-    await searchParams;
-  const { offerId } = await params;
-  const offer = await fetchOffer(offerId, promo_code);
+  const t = await getTranslations();
 
-  if (!offer) {
-    notFound();
+  const { offerId } = await params;
+  const { step, donate_option, promo_code, return_from_checkout, session_id } =
+    await searchParams;
+
+  const checkoutState = await getCheckoutState({
+    offerId,
+    step: step ?? "???",
+    sessionId: session_id,
+    promoCode: promo_code,
+    donateOption: donate_option,
+    returnFromCheckout: return_from_checkout === "true",
+  });
+
+  // const afterCheckoutRedirect = return_from_checkout === "true";
+  // Early return in case login is needed
+
+  // Max steps are hard-coded until we collect personal info in a separate step from checkout
+  const maxStep = 3;
+
+  if (checkoutState.step === "ERROR") {
+    if (checkoutState.error === "NOT_FOUND") {
+      notFound();
+    }
+
+    if (checkoutState.error === "EXPIRED") {
+      redirect(`/angebot/${offerId}`);
+    }
   }
 
-  const { company } = offer;
-
-  const t = await getTranslations();
-  const sessionId = session_id;
-  const afterCheckoutRedirect = return_from_checkout === "true";
-  const me = await fetchMe(company);
-
-  const isGift = offer.id.startsWith("GIFT_");
-
-  // Early return in case login is needed
-  if (offer.requiresLogin && !me) {
+  if (checkoutState.step === "LOGIN") {
     return (
       <div className={css({ px: "6", py: "4" })}>
         <LoginView />
@@ -68,37 +80,33 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     );
   }
 
-  // Max steps are hard-coded until we collect personal info in a separate step from checkout
-  const maxStep = 3;
-
-  const checkoutSession = sessionId
-    ? await getCheckoutSession(
-        company,
-        sessionId,
-        me?.stripeCustomer?.customerId
-      )
-    : undefined;
-
-  // Session ID is invalid, redirect to initial step
-  if (sessionId && !checkoutSession) {
-    if (promo_code) {
-      redirect(`/angebot/${offerId}?promo_code=${promo_code}`);
-    } else {
-      redirect(`/angebot/${offerId}`);
-    }
-  }
-
   // TODO: rework
-  const productAvailability = offer.requiresLogin
-    ? me && checkIfUserCanPurchase(me, offer.id)
-    : { available: true };
+
+  // redirect to appropriate shtep
+
+  // const gotoParams = new URLSearchParams();
+  // if (promo_code) {
+  //   gotoParams.set("promo_code", promo_code);
+  // }
+  // if (donate_option) {
+  //   gotoParams.set("donate_option", donate_option);
+  // }
+
+  // if (!checkoutSession && step !== "init") {
+  //   gotoParams.set("step", "init");
+  //   redirect(`/angebot/${offerId}?${gotoParams}`);
+  // }
 
   async function goToOverview() {
     "use server";
     redirect("/");
   }
 
-  if (!checkoutSession) {
+  if (checkoutState.step === "UNAVAILABLE") {
+    return <UnavailableView reason={checkoutState.reason} />;
+  }
+
+  if (checkoutState.step === "INITIAL") {
     return (
       <Step
         currentStep={1}
@@ -106,57 +114,32 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         title={t("checkout.preCheckout.title")}
         goBack={goToOverview}
       >
-        {productAvailability?.available ? (
-          <CustomizeOfferView offer={offer} promoCode={promo_code} />
-        ) : (
-          <Alert variant="info">
-            <AlertCircleIcon />
-            <AlertTitle>
-              {t("checkout.preCheckout.unavailable.title")}
-            </AlertTitle>
-
-            <AlertDescription>
-              {t(
-                `checkout.preCheckout.unavailable.reasons.${productAvailability?.reason === "hasSubscription" ? "hasSubscription" : "generic"}`
-              )}
-            </AlertDescription>
-            <AlertDescription>
-              <Link
-                href="/"
-                className={css({ textDecoration: "underline", marginTop: "2" })}
-              >
-                {t("checkout.preCheckout.unavailable.action")}
-              </Link>
-            </AlertDescription>
-          </Alert>
-        )}
+        <CustomizeOfferView
+          offer={checkoutState.offer}
+          promoCode={promo_code}
+        />
       </Step>
     );
   }
 
-  async function resetCheckoutSession() {
-    "use server";
-    if (sessionId) {
-      await expireCheckoutSession(
-        company,
-        sessionId,
-        me?.stripeCustomer?.customerId
-      );
+  if (checkoutState.step === "INFO") {
+    async function goToCheckout() {
+      "use server";
+      redirect(`/angebot/${offerId}?session_id=${session_id}`);
     }
-    redirect(`/angebot/${offerId}`);
-  }
 
-  async function goToCheckout() {
-    "use server";
-    redirect(`/angebot/${offerId}?session_id=${session_id}`);
-  }
+    async function resetCheckoutSession() {
+      "use server";
+      if (checkoutState.checkoutSession) {
+        await expireCheckoutSession(
+          checkoutState.offer.company,
+          checkoutState.checkoutSession.id,
+          checkoutState.me?.stripeCustomer?.customerId
+        );
+      }
+      redirect(`/angebot/${offerId}`);
+    }
 
-  if (
-    checkoutSession?.status === "open" &&
-    checkoutSession.client_secret &&
-    me &&
-    step === "info"
-  ) {
     return (
       <Step
         currentStep={2}
@@ -165,8 +148,8 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         title={t("checkout.personalInfo.title")}
       >
         <PersonalInfoForm
-          me={me}
-          addressRequired={company === "PROJECT_R"}
+          me={checkoutState.me}
+          addressRequired={checkoutState.addressRequired}
           onComplete={goToCheckout}
         />
       </Step>
@@ -178,7 +161,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     redirect(`/angebot/${offerId}?step=info&session_id=${session_id}`);
   }
 
-  if (checkoutSession.status === "open" && checkoutSession.client_secret) {
+  if (checkoutState.step === "PAYMENT") {
     return (
       <Step
         currentStep={3}
@@ -187,10 +170,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         title={t("checkout.checkout.title")}
       >
         <EmbeddedCheckoutView
-          company={company}
-          clientSecret={checkoutSession.client_secret}
+          company={checkoutState.offer.company}
+          clientSecret={checkoutState.checkoutSession.client_secret}
           errors={
-            afterCheckoutRedirect
+            checkoutState.returnFromCheckout
               ? [
                   {
                     title: t("checkout.checkout.failed.title"),
@@ -204,18 +187,22 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     );
   }
 
-  if (checkoutSession.status === "complete") {
+  if (checkoutState.step === "SUCCESS") {
+    const isGift = checkoutState.offer.id.startsWith("GIFT_");
+
     return isGift ? (
-      <GiftSuccess offer={offer} session={checkoutSession} />
+      <GiftSuccess
+        offer={checkoutState.offer}
+        session={checkoutState.checkoutSession}
+      />
     ) : (
-      <SubscriptionSuccess offer={offer} session={checkoutSession} />
+      <SubscriptionSuccess
+        offer={checkoutState.offer}
+        session={checkoutState.checkoutSession}
+      />
     );
   }
 
-  if (checkoutSession.status === "expired") {
-    redirect(`/angebot/${offerId}`);
-  }
-
   // We should never end up here
-  redirect(`/angebot/${offerId}`);
+  throw Error();
 }

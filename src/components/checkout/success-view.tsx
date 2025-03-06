@@ -1,8 +1,9 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import type { CheckoutSessionData } from "@/lib/stripe/server";
+import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
+import type { CheckoutSessionData } from "@/lib/stripe/server";
 import { css } from "@/theme/css";
 import { CheckCircleIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -15,19 +16,6 @@ type SuccessProps = {
   offer: { id: string; name: string };
   session: CheckoutSessionData;
 };
-
-const linkStyle = css({
-  borderRadius: "sm",
-  fontSize: "md",
-  whiteSpace: "nowrap",
-  px: "4",
-  py: "2",
-  display: "inline-block",
-  fontWeight: "medium",
-  textAlign: "center",
-  background: "text",
-  color: "text.inverted",
-});
 
 const containerStyle = css({
   display: "flex",
@@ -87,12 +75,13 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
       {ready ? (
         <>
           <p className={css({ mb: "4" })}>{t("ready")}</p>
-          <Link
-            className={linkStyle}
-            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-          >
-            {t("action")}
-          </Link>
+          <Button asChild>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
+            >
+              {t("action")}
+            </Link>
+          </Button>
         </>
       ) : (
         <p>{t("waiting")}</p>
@@ -130,12 +119,11 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
           ),
         })}
       </p>
-      <Link
-        className={linkStyle}
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
-      >
-        {t("action")}
-      </Link>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
     </div>
   );
 }
@@ -176,12 +164,11 @@ export function RedeemSuccess({
           ),
         })}
       </p>
-      <Link
-        className={linkStyle}
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
-      >
-        {t("action")}
-      </Link>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
     </div>
   );
 }
