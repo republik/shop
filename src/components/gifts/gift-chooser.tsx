@@ -18,7 +18,7 @@ export function GiftChooser({
   analyticsParams?: AnalyticsObject;
 }) {
   const t = useTranslations("landing.gifts");
-  const [option, setOption] = useState<string>("ABO_GIVE");
+  const [option, setOption] = useState<string>("GIFT_YEARLY");
 
   const handleOption: ChangeEventHandler<HTMLInputElement> = (e) => {
     setOption(e.currentTarget.value);
@@ -30,19 +30,19 @@ export function GiftChooser({
         src={giftBigSrc}
         width={327}
         height={200}
-        hidden={option === "ABO_GIVE_MONTHS"}
+        hidden={option === "GIFT_MONTHLY"}
         alt="Illustration grosses Paket"
       />
       <Image
         src={giftSmallSrc}
         width={327}
         height={200}
-        hidden={option === "ABO_GIVE"}
+        hidden={option === "GIFT_YEARLY"}
         alt="Illustration kleines Paket"
       />
 
       <form
-        action={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote`}
+        action={`/angebot`}
         method="GET"
         className={css({
           display: "flex",
@@ -67,15 +67,15 @@ export function GiftChooser({
           })}
         >
           <Option
-            value="ABO_GIVE"
-            selected={option === "ABO_GIVE"}
+            value="GIFT_YEARLY"
+            selected={option === "GIFT_YEARLY"}
             onChange={handleOption}
           >
             <strong>{t("options.yearly")}</strong> CHF 222
           </Option>
           <Option
-            value="ABO_GIVE_MONTHS"
-            selected={option === "ABO_GIVE_MONTHS"}
+            value="GIFT_MONTHLY"
+            selected={option === "GIFT_MONTHLY"}
             onChange={handleOption}
           >
             <strong>{t("options.monthly")}</strong> CHF 48
@@ -96,7 +96,7 @@ export function GiftChooser({
       </form>
 
       <GiftDescription
-        interval={option === "ABO_GIVE_MONTHS" ? "monthly" : "yearly"}
+        interval={option === "GIFT_MONTHLY" ? "monthly" : "yearly"}
       />
     </>
   );
@@ -134,7 +134,7 @@ function Option({
       <input
         id={id}
         value={value}
-        name="package"
+        name="product"
         type="radio"
         checked={selected}
         onChange={onChange}

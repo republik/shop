@@ -4,6 +4,7 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { ChevronLeftIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
@@ -31,13 +32,13 @@ export function Step({
   title,
   currentStep,
   maxStep,
-  goBack,
+  previousUrl,
   children,
 }: {
   title: string;
   currentStep: number;
   maxStep: number;
-  goBack?: () => void;
+  previousUrl: string;
   children: ReactNode;
 }) {
   const t = useTranslations("step");
@@ -61,8 +62,8 @@ export function Step({
           pr: "6",
         })}
       >
-        <button
-          onClick={goBack}
+        <Link
+          href={previousUrl}
           className={css({
             cursor: "pointer",
             borderRadius: "sm",
@@ -71,9 +72,9 @@ export function Step({
             },
           })}
         >
-          <ChevronLeftIcon onClick={goBack} />
+          <ChevronLeftIcon />
           <span className={visuallyHidden()}>{t("back")}</span>
-        </button>
+        </Link>
 
         <div
           className={css({

@@ -3,19 +3,19 @@
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
-import { redirect } from "next/navigation";
 
-type CreateCheckoutState = {};
+type CreateCheckoutState = {
+  sessionId?: string;
+  donationOption?: string;
+};
 
 export async function createCheckoutSession(
   previousState: CreateCheckoutState,
   formData: FormData
 ): Promise<CreateCheckoutState> {
   const offerId = formData.get("offerId")?.toString() ?? "";
-  const price = formData.get("price");
-  const donationOption = formData.get("donationOption");
-
-  const promoCode = formData.get("promoCode");
+  const donationOption = formData.get("donationOption")?.toString();
+  const promoCode = formData.get("promoCode")?.toString();
 
   const gqlClient = await getClient();
 
@@ -27,8 +27,8 @@ export async function createCheckoutSession(
       offerId: offerId,
       // customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
-      promoCode: promoCode ? String(promoCode) : undefined,
-      donationOption: donationOption ? String(donationOption) : undefined,
+      promoCode,
+      donationOption,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
     }
   );
@@ -38,7 +38,8 @@ export async function createCheckoutSession(
     throw Error("Checkout session could not be created");
   }
 
-  redirect(
-    `/angebot/${offerId}?step=info&session_id=${data.createCheckoutSession.sessionId}&promo_code=${promoCode}`
-  );
+  return {
+    sessionId: data.createCheckoutSession.sessionId,
+    donationOption,
+  };
 }

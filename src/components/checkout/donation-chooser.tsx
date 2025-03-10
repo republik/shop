@@ -7,15 +7,17 @@ import { useTranslations } from "next-intl";
 
 export const OPTION_NONE = "_NONE";
 
+type DonationOption = {
+  id: string;
+  price: { amount: number; recurring?: { interval: string } | null };
+};
+
 export function DonationChooser({
   options,
   value,
   onChange,
 }: {
-  options: {
-    id: string;
-    price: { amount: number; recurring?: { interval: string } | null };
-  }[];
+  options: DonationOption[];
   value?: string;
   onChange: (id: string) => void;
 }) {
@@ -49,7 +51,7 @@ export function DonationChooser({
             <RadioOption
               key={id}
               name="donationOption"
-              selected={value === id}
+              checked={value === id}
               value={id}
               onChange={() => onChange(id)}
             >
@@ -65,7 +67,7 @@ export function DonationChooser({
         <RadioOption
           key={OPTION_NONE}
           name="donationOption"
-          selected={value === OPTION_NONE}
+          checked={value === OPTION_NONE}
           value={OPTION_NONE}
           onChange={() => onChange(OPTION_NONE)}
         >

@@ -19,7 +19,7 @@ import { notFound, redirect } from "next/navigation";
 type PageSearchParams = {
   session_id?: string;
   promo_code?: string;
-  donate_option?: string;
+  donation_option?: string;
   return_from_checkout?: "true";
   step?: string;
 };
@@ -44,23 +44,42 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
 
   const { offerId } = await params;
-  const { step, donate_option, promo_code, return_from_checkout, session_id } =
-    await searchParams;
+  const {
+    step,
+    donation_option,
+    promo_code,
+    return_from_checkout,
+    session_id,
+  } = await searchParams;
 
   const checkoutState = await getCheckoutState({
     offerId,
     step: step ?? "???",
     sessionId: session_id,
     promoCode: promo_code,
-    donateOption: donate_option,
+    donationOption: donation_option,
     returnFromCheckout: return_from_checkout === "true",
   });
 
+  const buildUrl = (params: { sessionId?: string; step?: string }): string => {
+    const p = new URLSearchParams();
+    if (params.sessionId) {
+      p.set("session_id", params.sessionId);
+    }
+    if (params.step) {
+      p.set("step", params.step);
+    }
+    if (promo_code) {
+      p.set("promo_code", promo_code);
+    }
+    if (donation_option) {
+      p.set("donation_option", donation_option);
+    }
+    return `/angebot/${offerId}?${p}`;
+  };
+
   // const afterCheckoutRedirect = return_from_checkout === "true";
   // Early return in case login is needed
-
-  // Max steps are hard-coded until we collect personal info in a separate step from checkout
-  const maxStep = 3;
 
   if (checkoutState.step === "ERROR") {
     if (checkoutState.error === "NOT_FOUND") {
@@ -68,7 +87,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
 
     if (checkoutState.error === "EXPIRED") {
-      redirect(`/angebot/${offerId}`);
+      redirect(buildUrl({}));
     }
   }
 
@@ -97,11 +116,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   //   redirect(`/angebot/${offerId}?${gotoParams}`);
   // }
 
-  async function goToOverview() {
-    "use server";
-    redirect("/");
-  }
-
   if (checkoutState.step === "UNAVAILABLE") {
     return <UnavailableView reason={checkoutState.reason} />;
   }
@@ -109,64 +123,78 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   if (checkoutState.step === "INITIAL") {
     return (
       <Step
-        currentStep={1}
-        maxStep={maxStep}
+        currentStep={checkoutState.currentStep}
+        maxStep={checkoutState.totalSteps}
         title={t("checkout.preCheckout.title")}
-        goBack={goToOverview}
+        previousUrl={"/"}
       >
         <CustomizeOfferView
           offer={checkoutState.offer}
           promoCode={promo_code}
+          onComplete={async ({ sessionId, donationOption }) => {
+            "use server";
+            const p = new URLSearchParams({
+              step: "info",
+              session_id: sessionId,
+            });
+            if (donationOption) {
+              p.set("donation_option", donationOption);
+            }
+            if (promo_code) {
+              p.set("promo_code", promo_code);
+            }
+            redirect(`/angebot/${offerId}/?${p}`);
+          }}
         />
       </Step>
     );
   }
 
   if (checkoutState.step === "INFO") {
-    async function goToCheckout() {
-      "use server";
-      redirect(`/angebot/${offerId}?session_id=${session_id}`);
-    }
+    const checkoutStepUrl = buildUrl({
+      sessionId: checkoutState.checkoutSession.id,
+    });
 
-    async function resetCheckoutSession() {
-      "use server";
-      if (checkoutState.checkoutSession) {
-        await expireCheckoutSession(
-          checkoutState.offer.company,
-          checkoutState.checkoutSession.id,
-          checkoutState.me?.stripeCustomer?.customerId
-        );
-      }
-      redirect(`/angebot/${offerId}`);
-    }
+    // const resetCheckoutSession = async () => {
+    //   "use server";
+    //   if (checkoutState.checkoutSession) {
+    //     await expireCheckoutSession(
+    //       checkoutState.offer.company,
+    //       checkoutState.checkoutSession.id,
+    //       checkoutState.me?.stripeCustomer?.customerId
+    //     );
+    //   }
+    //   redirectToOffer({});
+    // };
 
     return (
       <Step
-        currentStep={2}
-        maxStep={maxStep}
-        goBack={resetCheckoutSession}
+        currentStep={checkoutState.currentStep}
+        maxStep={checkoutState.totalSteps}
+        previousUrl={buildUrl({})}
         title={t("checkout.personalInfo.title")}
       >
         <PersonalInfoForm
           me={checkoutState.me}
           addressRequired={checkoutState.addressRequired}
-          onComplete={goToCheckout}
+          onComplete={async () => {
+            "use server";
+            redirect(checkoutStepUrl);
+          }}
         />
       </Step>
     );
   }
 
-  async function goToInfo() {
-    "use server";
-    redirect(`/angebot/${offerId}?step=info&session_id=${session_id}`);
-  }
-
   if (checkoutState.step === "PAYMENT") {
     return (
       <Step
-        currentStep={3}
-        maxStep={maxStep}
-        goBack={goToInfo}
+        currentStep={checkoutState.currentStep}
+        maxStep={checkoutState.totalSteps}
+        previousUrl={buildUrl({
+          sessionId: checkoutState.checkoutSession.id,
+          step: "info",
+        })}
         title={t("checkout.checkout.title")}
       >
         <EmbeddedCheckoutView

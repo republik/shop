@@ -28,6 +28,7 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     company
     name
     requiresLogin
+    requiresAddress
 
     donationOptions {
       id

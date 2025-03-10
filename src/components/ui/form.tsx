@@ -95,18 +95,13 @@ export function FormField({
 }
 
 export function RadioOption({
-  value,
-  name,
-  selected,
   children,
-  onChange,
+  ...inputProps
 }: {
   value: string;
   name: string;
-  selected: boolean;
   children: ReactNode;
-  onChange: ChangeEventHandler<HTMLInputElement>;
-}) {
+} & InputHTMLAttributes<HTMLInputElement>) {
   const id = useId();
   return (
     <label
@@ -127,43 +122,43 @@ export function RadioOption({
       })}
     >
       <input
+        {...inputProps}
         id={id}
-        value={value}
-        name={name}
         type="radio"
-        checked={selected}
-        onChange={onChange}
-        className={css({
-          flexShrink: 0,
-          // Custom checkbox style, see https://moderncss.dev/pure-css-custom-styled-radio-buttons/
-          appearance: "none",
-          backgroundColor: "transparent",
-          margin: "0",
-          color: "current",
-          width: "[1.15em]",
-          height: "[1.15em]",
-          borderWidth: 2,
-          borderStyle: "solid",
-          borderColor: "text",
-          borderRadius: "full",
-          display: "grid",
-          placeContent: "center",
-          outline: "none",
-          _before: {
-            content: '""',
-            width: "[0.35em]",
-            height: "[0.35em]",
-            borderRadius: "full",
+        className={cx(
+          css({
+            flexShrink: 0,
+            // Custom checkbox style, see https://moderncss.dev/pure-css-custom-styled-radio-buttons/
+            appearance: "none",
             backgroundColor: "transparent",
-          },
-
-          _checked: {
-            backgroundColor: "text",
+            margin: "0",
+            color: "current",
+            width: "[1.15em]",
+            height: "[1.15em]",
+            borderWidth: 2,
+            borderStyle: "solid",
+            borderColor: "text",
+            borderRadius: "full",
+            display: "grid",
+            placeContent: "center",
+            outline: "none",
             _before: {
-              backgroundColor: "text.inverted",
+              content: '""',
+              width: "[0.35em]",
+              height: "[0.35em]",
+              borderRadius: "full",
+              backgroundColor: "transparent",
             },
-          },
-        })}
+
+            _checked: {
+              backgroundColor: "text",
+              _before: {
+                backgroundColor: "text.inverted",
+              },
+            },
+          }),
+          inputProps.className
+        )}
       />
 
       <span>{children}</span>

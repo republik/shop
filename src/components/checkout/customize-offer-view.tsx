@@ -11,25 +11,50 @@ import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useActionState, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useActionState, useEffect, useMemo } from "react";
 import { LineItem, PricingTable } from "./pricing-table";
 
 interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
+  onComplete: (params: {
+    sessionId: string;
+    donationOption?: string;
+  }) => Promise<void>;
 }
 
-export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
-  const t = useTranslations();
+export function CustomizeOfferView({
+  offer,
+  promoCode,
+  onComplete,
+}: CustomizeOfferProps) {
+  const donationOptions = offer.donationOptions;
 
-  const [_, createCheckoutAction, createCheckoutPending] = useActionState(
+  const t = useTranslations();
+  const searchParams = useSearchParams();
+  const [state, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
     {}
   );
 
-  const donationOptions = offer.donationOptions;
+  // Get/set donation option from url search params
+  const donationOption = searchParams.get("donation_option") ?? OPTION_NONE;
+  const setDonationOption = (value: string) => {
+    const p = new URLSearchParams(searchParams);
+    if (value !== OPTION_NONE) {
+      p.set("donation_option", value);
+    } else {
+      p.delete("donation_option");
+    }
+    window.history.replaceState(null, "", `?${p}`);
+  };
 
-  const [donationOption, setDonationOption] = useState(OPTION_NONE);
+  useEffect(() => {
+    if (state.sessionId) {
+      onComplete({ sessionId: state.sessionId, donationOption });
+    }
+  }, [state, onComplete]);
 
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
@@ -103,9 +128,7 @@ export function CustomizeOfferView({ offer, promoCode }: CustomizeOfferProps) {
             donationOptions ? (
               <DonationChooser
                 options={donationOptions}
-                onChange={(id) => {
-                  setDonationOption(id);
-                }}
+                onChange={setDonationOption}
                 value={donationOption}
               />
             ) : null

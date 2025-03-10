@@ -18,21 +18,19 @@ type CheckoutState =
   | {
       step: "LOGIN";
       offer: Offer;
-      checkoutSession: undefined;
-      me?: undefined;
-    }
-  | {
-      step: "INITIAL";
-      offer: Offer;
-      checkoutSession: undefined;
-      me?: Me;
     }
   | {
       step: "UNAVAILABLE";
       offer: Offer;
       reason?: string;
-      checkoutSession: undefined;
       me?: Me;
+    }
+  | {
+      step: "INITIAL";
+      offer: Offer;
+      me?: Me;
+      totalSteps: number;
+      currentStep: number;
     }
   | {
       step: "INFO";
@@ -40,6 +38,8 @@ type CheckoutState =
       addressRequired: boolean;
       checkoutSession: CheckoutSessionData;
       me: Me;
+      totalSteps: number;
+      currentStep: number;
     }
   | {
       step: "PAYMENT";
@@ -47,6 +47,8 @@ type CheckoutState =
       checkoutSession: CheckoutSessionData;
       me?: Me;
       returnFromCheckout?: boolean;
+      totalSteps: number;
+      currentStep: number;
     }
   | {
       step: "SUCCESS";
@@ -58,7 +60,6 @@ type CheckoutState =
       step: "ERROR";
       error: "NOT_FOUND" | "EXPIRED";
       offer?: Offer;
-      checkoutSession: undefined;
       me?: Me;
     };
 
@@ -67,14 +68,14 @@ export async function getCheckoutState({
   offerId,
   sessionId,
   promoCode,
-  donateOption,
+  donationOption,
   returnFromCheckout,
 }: {
   step: string;
   offerId: string;
   sessionId?: string;
   promoCode?: string;
-  donateOption?: string;
+  donationOption?: string;
   returnFromCheckout?: boolean;
 }): Promise<CheckoutState> {
   const offer = await fetchOffer(offerId, promoCode);
@@ -83,9 +84,6 @@ export async function getCheckoutState({
     return {
       step: "ERROR",
       error: "NOT_FOUND",
-      offer: undefined,
-      checkoutSession: undefined,
-      me: undefined,
     };
   }
 
@@ -105,9 +103,10 @@ export async function getCheckoutState({
     return {
       step: "LOGIN",
       offer,
-      checkoutSession: undefined,
     };
   }
+
+  const totalSteps = offer.requiresLogin ? 3 : 2;
 
   if (!checkoutSession) {
     const productAvailability = offer.requiresLogin
@@ -119,24 +118,32 @@ export async function getCheckoutState({
         step: "UNAVAILABLE",
         reason: productAvailability.reason,
         offer,
-        checkoutSession: undefined,
       };
     }
 
     return {
       step: "INITIAL",
       offer,
-      checkoutSession: undefined,
+      totalSteps,
+      currentStep: 1,
     };
   }
 
-  if (checkoutSession.status === "open" && step === "info" && me) {
+  // Only show this step if login is required
+  if (
+    checkoutSession.status === "open" &&
+    step === "info" &&
+    offer.requiresLogin &&
+    me
+  ) {
     return {
       step: "INFO",
       offer,
-      addressRequired: offer.company === "PROJECT_R",
+      addressRequired: offer.requiresAddress ?? false,
       checkoutSession,
       me,
+      totalSteps,
+      currentStep: 2,
     };
   }
 
@@ -146,6 +153,8 @@ export async function getCheckoutState({
       offer,
       checkoutSession,
       returnFromCheckout,
+      totalSteps,
+      currentStep: totalSteps, // always the last step
     };
   }
 
@@ -162,7 +171,6 @@ export async function getCheckoutState({
       step: "ERROR",
       error: "EXPIRED",
       offer,
-      checkoutSession: undefined,
       me,
     };
   }
@@ -170,6 +178,7 @@ export async function getCheckoutState({
   return {
     step: "INITIAL",
     offer,
-    checkoutSession: undefined,
+    totalSteps,
+    currentStep: 1,
   };
 }
