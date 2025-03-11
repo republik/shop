@@ -111,17 +111,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   }
 
   if (checkoutState.step === "INITIAL") {
-    // Expire checkout session when navigating back to initial step
-    if (checkoutState.checkoutSession?.status === "open") {
-      await expireCheckoutSession(
-        checkoutState.offer.company,
-        checkoutState.checkoutSession.id,
-        checkoutState.me?.stripeCustomer?.customerId
-      );
-
-      redirect(buildUrl({ sessionId: null }));
-    }
-
     return (
       <Step
         currentStep={checkoutState.currentStep}
@@ -134,6 +123,17 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           promoCode={promo_code}
           onComplete={async ({ sessionId, donationOption }) => {
             "use server";
+
+            // Expire previous checkout session
+            if (checkoutState.checkoutSession?.status === "open") {
+              await expireCheckoutSession(
+                checkoutState.offer.company,
+                checkoutState.checkoutSession.id,
+                checkoutState.me?.stripeCustomer?.customerId
+              );
+            }
+
+            // Construct URL for next step
             const p = new URLSearchParams({
               step: checkoutState.offer.requiresLogin ? "info" : "payment",
               session_id: sessionId,
