@@ -61,13 +61,13 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     returnFromCheckout: return_from_checkout === "true",
   });
 
-  const buildUrl = (params: { sessionId?: string; step?: string }): string => {
+  const buildUrl = (params: {
+    sessionId?: string | null;
+    step?: string | null;
+  }): string => {
     const p = new URLSearchParams();
-    if (params.sessionId) {
-      p.set("session_id", params.sessionId);
-    }
-    if (params.step) {
-      p.set("step", params.step);
+    if (session_id) {
+      p.set("session_id", session_id);
     }
     if (promo_code) {
       p.set("promo_code", promo_code);
@@ -75,11 +75,18 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     if (donation_option) {
       p.set("donation_option", donation_option);
     }
+    if (params.sessionId) {
+      p.set("session_id", params.sessionId);
+    } else if (params.sessionId === null) {
+      p.delete("session_id");
+    }
+    if (params.step) {
+      p.set("step", params.step);
+    } else if (params.step === null) {
+      p.delete("step");
+    }
     return `/angebot/${offerId}?${p}`;
   };
-
-  // const afterCheckoutRedirect = return_from_checkout === "true";
-  // Early return in case login is needed
 
   if (checkoutState.step === "ERROR") {
     if (checkoutState.error === "NOT_FOUND") {
@@ -87,7 +94,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
 
     if (checkoutState.error === "EXPIRED") {
-      redirect(buildUrl({}));
+      redirect(buildUrl({ sessionId: null }));
     }
   }
 
@@ -99,28 +106,22 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     );
   }
 
-  // TODO: rework
-
-  // redirect to appropriate shtep
-
-  // const gotoParams = new URLSearchParams();
-  // if (promo_code) {
-  //   gotoParams.set("promo_code", promo_code);
-  // }
-  // if (donate_option) {
-  //   gotoParams.set("donate_option", donate_option);
-  // }
-
-  // if (!checkoutSession && step !== "init") {
-  //   gotoParams.set("step", "init");
-  //   redirect(`/angebot/${offerId}?${gotoParams}`);
-  // }
-
   if (checkoutState.step === "UNAVAILABLE") {
     return <UnavailableView reason={checkoutState.reason} />;
   }
 
   if (checkoutState.step === "INITIAL") {
+    // Expire checkout session when navigating back to initial step
+    if (checkoutState.checkoutSession?.status === "open") {
+      await expireCheckoutSession(
+        checkoutState.offer.company,
+        checkoutState.checkoutSession.id,
+        checkoutState.me?.stripeCustomer?.customerId
+      );
+
+      redirect(buildUrl({ sessionId: null }));
+    }
+
     return (
       <Step
         currentStep={checkoutState.currentStep}
@@ -152,20 +153,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   if (checkoutState.step === "INFO") {
     const checkoutStepUrl = buildUrl({
+      step: "checkout",
       sessionId: checkoutState.checkoutSession.id,
     });
-
-    // const resetCheckoutSession = async () => {
-    //   "use server";
-    //   if (checkoutState.checkoutSession) {
-    //     await expireCheckoutSession(
-    //       checkoutState.offer.company,
-    //       checkoutState.checkoutSession.id,
-    //       checkoutState.me?.stripeCustomer?.customerId
-    //     );
-    //   }
-    //   redirectToOffer({});
-    // };
 
     return (
       <Step

@@ -5,12 +5,7 @@ import { fetchMe } from "@/lib/auth/fetch-me";
 import { Me } from "@/lib/auth/types";
 import { fetchOffer } from "@/lib/offers";
 import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
-import {
-  CheckoutSessionData,
-  expireCheckoutSession,
-  getCheckoutSession,
-} from "@/lib/stripe/server";
-import { redirect } from "next/navigation";
+import { CheckoutSessionData, getCheckoutSession } from "@/lib/stripe/server";
 
 type Offer = NonNullable<OfferCheckoutQuery["offer"]>;
 
@@ -29,6 +24,7 @@ type CheckoutState =
       step: "INITIAL";
       offer: Offer;
       me?: Me;
+      checkoutSession?: CheckoutSessionData;
       totalSteps: number;
       currentStep: number;
     }
@@ -124,6 +120,7 @@ export async function getCheckoutState({
     return {
       step: "INITIAL",
       offer,
+      me,
       totalSteps,
       currentStep: 1,
     };
@@ -147,7 +144,7 @@ export async function getCheckoutState({
     };
   }
 
-  if (checkoutSession.status === "open") {
+  if (checkoutSession.status === "open" && step === "checkout") {
     return {
       step: "PAYMENT",
       offer,
@@ -178,7 +175,9 @@ export async function getCheckoutState({
   return {
     step: "INITIAL",
     offer,
+    me,
     totalSteps,
+    checkoutSession,
     currentStep: 1,
   };
 }

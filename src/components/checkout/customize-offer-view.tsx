@@ -11,8 +11,14 @@ import { Button } from "@/components/ui/button";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { useActionState, useEffect, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  startTransition,
+  useActionState,
+  useEffect,
+  useMemo,
+  useOptimistic,
+} from "react";
 import { LineItem, PricingTable } from "./pricing-table";
 
 interface CustomizeOfferProps {
@@ -33,13 +39,23 @@ export function CustomizeOfferView({
 
   const t = useTranslations();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [state, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
     {}
   );
 
   // Get/set donation option from url search params
-  const donationOption = searchParams.get("donation_option") ?? OPTION_NONE;
+  const actualDonationOption =
+    searchParams.get("donation_option") ?? OPTION_NONE;
+
+  const [donationOption, setOptimisticDonationOption] = useOptimistic(
+    actualDonationOption,
+    (_, newState: string) => {
+      return newState;
+    }
+  );
+
   const setDonationOption = (value: string) => {
     const p = new URLSearchParams(searchParams);
     if (value !== OPTION_NONE) {
@@ -47,7 +63,13 @@ export function CustomizeOfferView({
     } else {
       p.delete("donation_option");
     }
-    window.history.replaceState(null, "", `?${p}`);
+
+    startTransition(() => {
+      // Immediately change the selected option
+      setOptimisticDonationOption(value);
+      // This refetches the page, which makes sure that the correct searchParams are used when navigating
+      router.replace(`?${p}`);
+    });
   };
 
   useEffect(() => {
