@@ -8,7 +8,7 @@ import "@/theme/fonts.css";
 import "@/theme/styles.css";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import "./globals.css";
 
 export async function generateMetadata(): Promise<Metadata> {

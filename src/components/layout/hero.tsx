@@ -1,7 +1,7 @@
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export function Hero({ children }: { children: ReactNode }) {
   return (

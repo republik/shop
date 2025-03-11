@@ -1,5 +1,5 @@
 "use client";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cacheExchange, Client, fetchExchange, Provider } from "urql";
 
 const client = new Client({

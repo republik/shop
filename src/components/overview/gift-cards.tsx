@@ -2,7 +2,7 @@ import { OfferCard } from "@/components/overview/offer-cards";
 import { css, cx } from "@/theme/css";
 import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import Image, { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import couponSrc from "@/assets/coupon.svg";
 import giftSrc from "@/assets/gift.svg";

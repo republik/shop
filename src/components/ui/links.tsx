@@ -1,7 +1,7 @@
 import { css } from "@/theme/css";
 import { ArrowLeftIcon } from "lucide-react";
-import Link, { LinkProps } from "next/link";
-import { AnchorHTMLAttributes } from "react";
+import Link, { type LinkProps } from "next/link";
+import { type AnchorHTMLAttributes } from "react";
 
 export function BackLink({
   children,

@@ -1,6 +1,6 @@
 import { css, cx } from "@/theme/css";
 import { OTPInput } from "input-otp";
-import { ComponentPropsWithoutRef, RefObject } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
 export function CodeInput({
   ...props

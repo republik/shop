@@ -3,7 +3,7 @@ import { updateMe } from "@/actions/update-me";
 import { useSignOut } from "@/components/login/login-view";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
-import { Me } from "@/lib/auth/types";
+import type { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { useActionState } from "react";

@@ -1,7 +1,7 @@
 "use server";
 
 import {
-  RedeemGiftResult,
+  type RedeemGiftResult,
   RedeemGiftVoucherDocument,
   UpdateMeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";

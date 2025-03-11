@@ -1,6 +1,6 @@
 "use client";
 
-import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
 import {
   DonationChooser,
@@ -19,7 +19,7 @@ import {
   useMemo,
   useOptimistic,
 } from "react";
-import { LineItem, PricingTable } from "./pricing-table";
+import { type LineItem, PricingTable } from "./pricing-table";
 
 interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;

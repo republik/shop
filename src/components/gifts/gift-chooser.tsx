@@ -1,15 +1,20 @@
 "use client";
 
+import giftBigSrc from "@/assets/gift-big.svg";
+import giftSmallSrc from "@/assets/gift-small.svg";
 import { GiftDescription } from "@/components/gifts/gift-description";
 import { cardButton } from "@/components/ui/card-button";
-import { AnalyticsObject } from "@/lib/analytics";
+import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { token } from "@/theme/tokens";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { ChangeEventHandler, ReactNode, useId, useState } from "react";
-import giftBigSrc from "@/assets/gift-big.svg";
-import giftSmallSrc from "@/assets/gift-small.svg";
+import {
+  type ChangeEventHandler,
+  type ReactNode,
+  useId,
+  useState,
+} from "react";
 
 export function GiftChooser({
   analyticsParams,

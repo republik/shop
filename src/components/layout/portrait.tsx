@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
-import { Me } from "@/lib/auth/types";
+import type { Me } from "@/lib/auth/types";
 
 type PortraitProps = {
   me: Me;
@@ -23,14 +23,13 @@ export function Portrait({ me }: PortraitProps) {
   function signOut() {
     const logoutPromise = async () => gql.mutation(SignOutDocument, {});
     toast.promise(
-        logoutPromise()
-          .then(() => window.location.reload()),
-        {
-          loading: "Sie werden abgemeldet…",
-          success: "Sie wurden abgemeldet",
-          error: "Fehler beim Abmelden",
-        }
-        );
+      logoutPromise().then(() => window.location.reload()),
+      {
+        loading: "Sie werden abgemeldet…",
+        success: "Sie wurden abgemeldet",
+        error: "Fehler beim Abmelden",
+      }
+    );
   }
 
   return (

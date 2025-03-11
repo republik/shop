@@ -5,7 +5,7 @@ import { visuallyHidden } from "@/theme/patterns";
 import { ChevronLeftIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
   const progress = value / max;

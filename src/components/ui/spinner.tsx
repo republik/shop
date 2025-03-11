@@ -1,4 +1,4 @@
-import { css, cva, RecipeVariantProps } from "@/theme/css";
+import { css, cva, type RecipeVariantProps } from "@/theme/css";
 
 const spinnerVariants = cva({
   base: {

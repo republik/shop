@@ -1,11 +1,14 @@
 "use server";
 
-import { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import type { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { fetchMe } from "@/lib/auth/fetch-me";
-import { Me } from "@/lib/auth/types";
+import type { Me } from "@/lib/auth/types";
 import { fetchOffer } from "@/lib/offers";
 import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
-import { CheckoutSessionData, getCheckoutSession } from "@/lib/stripe/server";
+import {
+  type CheckoutSessionData,
+  getCheckoutSession,
+} from "@/lib/stripe/server";
 
 type Offer = NonNullable<OfferCheckoutQuery["offer"]>;
 

@@ -3,7 +3,7 @@ import {
   MeDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
-import { Me } from "./types";
+import type { Me } from "./types";
 
 export async function fetchMe(
   stripeCompany?: CompanyName

@@ -1,6 +1,6 @@
 "use client";
 import { css } from "@/theme/css";
-import { ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
 import * as Collapsible from "@radix-ui/react-collapsible";
 import { Button } from "@/components/ui/button";
 import { CheckIcon, InfoIcon } from "lucide-react";

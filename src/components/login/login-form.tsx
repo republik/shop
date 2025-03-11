@@ -5,17 +5,17 @@ import {
   SignInTokenType,
   UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form";
+import { Spinner } from "@/components/ui/spinner";
 import { css } from "@/theme/css";
 import { visuallyHidden, vstack } from "@/theme/patterns";
 import { useTranslations } from "next-intl";
-import { ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type ReactNode, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { CombinedError, useClient, useMutation } from "urql";
 import { CodeInput } from "./code-input";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Spinner } from "@/components/ui/spinner";
-import { FormField } from "@/components/ui/form";
 
 const ErrorMessage = ({
   error,

@@ -2,7 +2,7 @@
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { ReactNode, useMemo } from "react";
+import { type ReactNode, useMemo } from "react";
 export interface LineItem {
   label: string;
   amount: number;

@@ -1,12 +1,7 @@
 "use client";
 import { css, cx } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import {
-  ChangeEventHandler,
-  InputHTMLAttributes,
-  ReactNode,
-  useId,
-} from "react";
+import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 
 type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;

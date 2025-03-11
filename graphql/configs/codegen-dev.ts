@@ -34,6 +34,7 @@ const config: CodegenConfig = {
         fragmentMasking: { unmaskFunctionName: "getFragmentData" },
       },
       config: {
+        useTypeImports: true,
         scalars: {
           ItemId: "string",
           IntType: "number",

@@ -1,4 +1,4 @@
-import { Me } from "@/lib/auth/types";
+import type { Me } from "@/lib/auth/types";
 
 type ProductAvailabilityResult = {
   available: boolean;
