@@ -128,7 +128,8 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
             if (checkoutState.checkoutSession?.status === "open") {
               await expireCheckoutSession(
                 checkoutState.offer.company,
-                checkoutState.checkoutSession.id,
+                // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
+                checkoutState.checkoutSession?.id,
                 checkoutState.me?.stripeCustomer?.customerId
               );
             }
