@@ -54,7 +54,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   const checkoutState = await getCheckoutState({
     offerId,
-    step: step ?? "???",
+    step: step,
     sessionId: session_id,
     promoCode: promo_code,
     donationOption: donation_option,
@@ -135,7 +135,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           onComplete={async ({ sessionId, donationOption }) => {
             "use server";
             const p = new URLSearchParams({
-              step: "info",
+              step: checkoutState.offer.requiresLogin ? "info" : "payment",
               session_id: sessionId,
             });
             if (donationOption) {
@@ -153,7 +153,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
   if (checkoutState.step === "INFO") {
     const checkoutStepUrl = buildUrl({
-      step: "checkout",
+      step: "payment",
       sessionId: checkoutState.checkoutSession.id,
     });
 
@@ -183,7 +183,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         maxStep={checkoutState.totalSteps}
         previousUrl={buildUrl({
           sessionId: checkoutState.checkoutSession.id,
-          step: "info",
+          step: checkoutState.offer.requiresLogin ? "info" : null,
         })}
         title={t("checkout.checkout.title")}
       >

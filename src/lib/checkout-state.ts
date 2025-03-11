@@ -67,7 +67,7 @@ export async function getCheckoutState({
   donationOption,
   returnFromCheckout,
 }: {
-  step: string;
+  step: string | undefined;
   offerId: string;
   sessionId?: string;
   promoCode?: string;
@@ -144,7 +144,7 @@ export async function getCheckoutState({
     };
   }
 
-  if (checkoutSession.status === "open" && step === "checkout") {
+  if (checkoutSession.status === "open" && step === "payment") {
     return {
       step: "PAYMENT",
       offer,
