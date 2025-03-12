@@ -67,7 +67,7 @@ export function DonationChooser({
         <RadioOption
           key={OPTION_NONE}
           name="donationOption"
-          checked={value === OPTION_NONE}
+          checked={!value || value === OPTION_NONE}
           value={OPTION_NONE}
           onChange={() => onChange(OPTION_NONE)}
         >
