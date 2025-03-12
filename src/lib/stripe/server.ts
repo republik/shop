@@ -42,7 +42,7 @@ export async function getCheckoutSession(
     const stripe = initStripe(company);
     const session = await stripe.checkout.sessions.retrieve(sessionId);
 
-    if (session.customer && session.customer !== customerId) {
+    if (customerId && session.customer && session.customer !== customerId) {
       return;
     }
 

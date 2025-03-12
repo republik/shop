@@ -56,7 +56,7 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "GIFT_YEARLY",
     name: "Geschenk-Mitgliedschaft",
     expectedAmount: "222",
-    requiresAddress: true,
+    requiresAddress: false,
     requiresLogin: false,
   },
 ];
