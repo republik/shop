@@ -12,8 +12,11 @@ export async function fetchOffer(offerId: string, promoCode?: string) {
     },
     {
       fetchOptions: {
-        // Not sure if cache considers cookies
-        // cache: "force-cache",
+        // Should be safe because cache keys use headers
+        cache: "force-cache",
+        next: {
+          revalidate: 60,
+        },
       },
     }
   );
