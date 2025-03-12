@@ -5,7 +5,7 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 
-export const OPTION_NONE = "_NONE";
+export const OPTION_NONE = "";
 
 type DonationOption = {
   id: string;
