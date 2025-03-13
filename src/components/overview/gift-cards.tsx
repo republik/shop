@@ -68,7 +68,7 @@ export async function RedeemCard() {
 
       <div className={css({ mt: "auto" })}>
         <Link
-          href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
+          href={`/geschenk-einloesen`}
           className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tGift("cta")}

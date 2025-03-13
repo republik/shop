@@ -6,7 +6,7 @@ import { FormField } from "@/components/ui/form";
 import type { Me } from "@/lib/auth/types";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 export function PersonalInfoForm({
   code,
@@ -39,9 +39,11 @@ export function PersonalInfoForm({
   const tForm = useTranslations("form");
   const tField = useTranslations("form.fields");
 
-  if (state.type === "success") {
-    onComplete();
-  }
+  useEffect(() => {
+    if (state.type === "success") {
+      onComplete();
+    }
+  }, [state]);
 
   return (
     <form

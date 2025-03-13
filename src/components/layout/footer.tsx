@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
+import { LoginStatus } from "@/components/login/login-status";
 
 type Link = {
   text: string;
@@ -66,6 +67,7 @@ export async function Footer() {
         })}
       >
         {footerLinkNodes}
+        <LoginStatus />
       </div>
     </footer>
   );
