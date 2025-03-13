@@ -2,7 +2,7 @@ type ProductTest = {
   id: string;
   offerId: string;
   name: string;
-  expectedAmount: string;
+  expectedAmount: string | RegExp;
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
@@ -52,10 +52,26 @@ export const PRODUCTS: ProductTest[] = [
     requiresLogin: true,
   },
   {
+    id: "benefactor",
+    offerId: "BENEFACTOR",
+    name: "Gönnerschaft",
+    expectedAmount: /1\.?000/, // account for formatting in Stripe embedded checkout
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
     id: "gift (yearly)",
     offerId: "GIFT_YEARLY",
     name: "Geschenk-Mitgliedschaft",
     expectedAmount: "222",
+    requiresAddress: false,
+    requiresLogin: false,
+  },
+  {
+    id: "gift (monthly)",
+    offerId: "GIFT_MONTHLY",
+    name: "Geschenk-Abo",
+    expectedAmount: "48",
     requiresAddress: false,
     requiresLogin: false,
   },
