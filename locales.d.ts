@@ -1,8 +1,10 @@
 import de from "./locales/de.json";
 
-type Messages = typeof de;
+import { formats } from "@/i18n/request";
 
-declare global {
-  // Use type safe message keys with `next-intl`
-  interface IntlMessages extends Messages {}
+declare module "next-intl" {
+  interface AppConfig {
+    Messages: typeof de;
+    Formats: typeof formats;
+  }
 }
