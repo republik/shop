@@ -40,6 +40,7 @@ export function FormField({
           fontSize: "sm",
           display: "block",
           color: "text.secondary",
+          textAlign: "left",
         })}
       >
         {label}

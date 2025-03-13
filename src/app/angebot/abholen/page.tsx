@@ -1,11 +1,14 @@
 import { redeemGiftVoucher } from "@/actions/redeem-gift-voucher";
 import { Step } from "@/components/checkout/checkout-step";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
-import { RedeemSuccess } from "@/components/checkout/success-view";
+import {
+  RedeemFailed,
+  RedeemSuccess,
+} from "@/components/checkout/redeem-result-view";
+import { CenterContainer } from "@/components/layout/center-container";
 import { LoginView } from "@/components/login/login-view";
 import { featureFlagEnabled } from "@/lib/env";
 import { getGiftRedeemState } from "@/lib/redeem-gift-state";
-import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
@@ -22,7 +25,7 @@ export default async function RedeemGiftPage({
   }
 
   const { voucher, step } = await searchParams;
-  const t = await getTranslations("checkout.redeem");
+  const t = await getTranslations("checkout");
 
   const redeemState = await getGiftRedeemState({ step, voucher });
 
@@ -31,10 +34,10 @@ export default async function RedeemGiftPage({
   switch (redeemState.step) {
     case "ERROR": {
       switch (redeemState.error) {
-        case "NO_CODE":
+        case "VOUCHER_MISSING":
           redirect("/geschenk-einloesen");
 
-        case "CODE_NOT_VALID":
+        case "VOUCHER_INVALID":
           redirect("/geschenk-einloesen?error=invalid");
         default:
           redeemState.error satisfies never;
@@ -43,9 +46,9 @@ export default async function RedeemGiftPage({
 
     case "LOGIN":
       return (
-        <div className={css({ px: "6", py: "4" })}>
+        <CenterContainer>
           <LoginView />
-        </div>
+        </CenterContainer>
       );
 
     case "LEGACY_CODE":
@@ -79,11 +82,8 @@ export default async function RedeemGiftPage({
           currentStep={redeemState.currentStep}
           maxStep={redeemState.totalSteps}
           previousUrl={"/geschenk-einloesen"}
-          title={t("checkout.personalInfo.title")}
+          title={t("personalInfo.title")}
         >
-          <p>Hallo {redeemState.me.name}</p>
-          <p>CODE {redeemState.voucher}</p>
-
           <PersonalInfoForm
             // code={redeemState.voucher}
             me={redeemState.me}
@@ -92,10 +92,15 @@ export default async function RedeemGiftPage({
               "use server";
               const redeem = await redeemGiftVoucher(redeemState.voucher);
 
-              if (redeem) {
-                redirect(`?step=success`);
+              console.log(redeem);
+              if (redeem.type === "success") {
+                redirect(
+                  `/angebot/abholen?step=success&voucher=${redeemState.voucher}`
+                );
               } else {
-                redirect(`?error=invalid`);
+                redirect(
+                  `/angebot/abholen?step=redeem-failed&voucher=${redeemState.voucher}`
+                );
               }
             }}
           />
@@ -106,12 +111,14 @@ export default async function RedeemGiftPage({
       // TODO: decide what to do with aboType and starting
       return (
         <RedeemSuccess
-          // aboType={aboType}
-          // starting={starting}
-
+          // aboType={redeemState.aboType}
+          // starting={redeemState.starting}
           email={redeemState.me.email!}
         />
       );
+
+    case "REDEEM_FAILED":
+      return <RedeemFailed voucher={redeemState.voucher} />;
 
     default:
       // Make sure all cases are handled

@@ -1,10 +1,6 @@
 "use server";
 
-import {
-  type RedeemGiftResult,
-  RedeemGiftVoucherDocument,
-  UpdateMeDocument,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 
 import * as z from "zod";
@@ -33,8 +29,6 @@ const MeInput = z.discriminatedUnion("addressRequired", [
     lastName: z.string().nonempty(),
   }),
 ]);
-
-const CodeInput = z.string();
 
 type UpdateMeState =
   | {
@@ -98,56 +92,3 @@ export async function updateMe(
   }
   return previousState;
 }
-
-type RedeemGiftVoucherState =
-  | { type: "error"; errors: Record<string, string> }
-  | { ok: true; data: RedeemGiftResult; errors: Record<string, string> };
-
-async function redeemGiftVoucher(
-  data: Record<string, FormDataEntryValue>
-): Promise<RedeemGiftVoucherState> {
-  const gql = await getClient();
-
-  const code = CodeInput.safeParse(data.code);
-
-  if (code.error) {
-    return {
-      type: "error",
-      errors: { code: "valueMissing" },
-    };
-  }
-
-  const { data: redeemData, error: redeemError } = await gql.mutation(
-    RedeemGiftVoucherDocument,
-    { voucher: code.data }
-  );
-
-  if (redeemError || !redeemData?.redeemGiftVoucher) {
-    return { type: "error", errors: {} };
-  }
-
-  return { ok: true, data: redeemData.redeemGiftVoucher, errors: {} };
-}
-
-// export async function updateMeRedeemGiftVoucher(
-//   previousState: UpdateMeResult,
-//   formData: FormData
-// ): Promise<UpdateMeResult> {
-//   const data = Object.fromEntries(formData);
-
-//   const updateMeResult = await updateMe(data);
-
-//   if (!updateMeResult.ok) {
-//     return updateMeResult;
-//   }
-
-//   const redeemGiftVoucherResult = await redeemGiftVoucher(data);
-
-//   if (!redeemGiftVoucherResult.ok) {
-//     return redeemGiftVoucherResult;
-//   }
-
-//   redirect(
-//     `/angebot/abholen?success=true&aboType=${redeemGiftVoucherResult.data.aboType}&starting=${redeemGiftVoucherResult.data.starting}`
-//   );
-// }

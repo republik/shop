@@ -1,5 +1,6 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
@@ -16,16 +17,6 @@ type SuccessProps = {
   offer: { id: string; name: string };
   session: CheckoutSessionData;
 };
-
-const containerStyle = css({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "4",
-  textAlign: "center",
-  margin: "auto",
-});
 
 export function SubscriptionSuccess({ offer }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.subscription");
@@ -62,7 +53,7 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
   );
 
   return (
-    <div className={containerStyle}>
+    <CenterContainer>
       <CheckCircleIcon
         className={css({
           height: "10",
@@ -86,7 +77,7 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
       ) : (
         <p>{t("waiting")}</p>
       )}
-    </div>
+    </CenterContainer>
   );
 }
 
@@ -100,7 +91,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
   }, [plausible, offer.id]);
 
   return (
-    <div className={containerStyle}>
+    <CenterContainer>
       <CheckCircleIcon
         className={css({
           height: "10",
@@ -124,51 +115,6 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
           {t("action")}
         </Link>
       </Button>
-    </div>
-  );
-}
-
-export function RedeemSuccess({
-  email,
-  // aboType
-  // starting
-}: {
-  email: string;
-  // aboType: string;
-  // starting: string;
-}) {
-  const t = useTranslations("checkout.checkout.success.redeem");
-
-  const plausible = usePlausible();
-
-  // useEffect(() => {
-  //   plausible("Redeem Success", { props: { offer: aboType } });
-  // }, [plausible, aboType]);
-
-  return (
-    <div className={containerStyle}>
-      <HeartIcon
-        className={css({
-          height: "10",
-          width: "10",
-          fill: "[#B7A5EC]",
-        })}
-      />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
-      <p className={css({ mb: "4" })}>
-        {t.rich("description", {
-          email: () => (
-            <strong data-testid="success-recipient-email">{email}</strong>
-          ),
-        })}
-      </p>
-      <Button asChild>
-        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
-          {t("action")}
-        </Link>
-      </Button>
-    </div>
+    </CenterContainer>
   );
 }

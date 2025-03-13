@@ -34,12 +34,18 @@ type GiftRedeemState =
     }
   | {
       step: "SUCCESS";
-
+      voucher: string;
+      me: Me;
+    }
+  | {
+      step: "REDEEM_FAILED";
+      voucher: string;
       me: Me;
     }
   | {
       step: "ERROR";
-      error: "NO_CODE" | "CODE_NOT_VALID";
+      error: "VOUCHER_MISSING" | "VOUCHER_INVALID";
+      voucher?: string;
       me?: Me;
     }
   | {
@@ -55,10 +61,6 @@ export async function getGiftRedeemState({
   step: string | undefined;
   voucher?: string;
 }): Promise<GiftRedeemState> {
-  if (!voucher) {
-    return { step: "ERROR", error: "NO_CODE" };
-  }
-
   const me = await fetchMe();
 
   if (!me) {
@@ -67,30 +69,38 @@ export async function getGiftRedeemState({
     };
   }
 
+  if (!voucher) {
+    return { step: "ERROR", error: "VOUCHER_MISSING" };
+  }
+
   if (step === "success") {
-    return { step: "SUCCESS", me };
+    return { step: "SUCCESS", voucher, me };
+  }
+
+  if (step === "redeem-failed") {
+    return { step: "REDEEM_FAILED", voucher, me };
   }
 
   const { valid, company, isLegacyVoucher } = await validateVoucher(voucher);
 
   if (isLegacyVoucher) {
-    return { step: "LEGACY_CODE", voucher: voucher };
+    return { step: "LEGACY_CODE", voucher };
   }
 
-  if (valid) {
+  if (!valid) {
     return {
-      step: "INFO",
-      addressRequired: company === "PROJECT_R",
+      step: "ERROR",
+      error: "VOUCHER_INVALID",
       me,
-      voucher,
-      currentStep: 1,
-      totalSteps: 1,
     };
   }
 
   return {
-    step: "ERROR",
-    error: "CODE_NOT_VALID",
+    step: "INFO",
+    addressRequired: company === "PROJECT_R",
     me,
+    voucher,
+    currentStep: 1,
+    totalSteps: 1,
   };
 }

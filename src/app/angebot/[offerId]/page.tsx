@@ -7,6 +7,7 @@ import {
   SubscriptionSuccess,
 } from "@/components/checkout/success-view";
 import { UnavailableView } from "@/components/checkout/unavailable-view";
+import { CenterContainer } from "@/components/layout/center-container";
 import { LoginView } from "@/components/login/login-view";
 import { getCheckoutState } from "@/lib/checkout-state";
 import { fetchOffer } from "@/lib/offers";
@@ -101,9 +102,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
     case "LOGIN":
       return (
-        <div className={css({ px: "6", py: "4" })}>
+        <CenterContainer>
           <LoginView />
-        </div>
+        </CenterContainer>
       );
 
     case "UNAVAILABLE":

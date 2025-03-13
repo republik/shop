@@ -232,7 +232,14 @@
       },
       "failed": {
         "title": "Der Bezahlvorgang ist fehlgeschlagen",
-        "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
+        "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode.",
+        "redeem": {
+          "title": "Da ist etwas schiefgegangen",
+          "description": "Ihr Geschenk-Gutschein <voucher></voucher> konnte leider nicht eingelöst werden. Bitte wenden Sie sich an <contactEmail></contactEmail>.",
+          "supportEmailSubject": "Gutschein-Code konnte nicht eingelöst werden",
+          "supportEmailBody": "Gutschein-Code: {voucher}",
+          "action": "Zurück zu allen Angeboten"
+        }
       }
     },
     "redeem": {}

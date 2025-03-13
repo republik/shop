@@ -1,20 +1,31 @@
 "use server";
 
-import { RedeemGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  RedeemGiftVoucherDocument,
+  type RedeemGiftVoucherMutation,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 
-export async function redeemGiftVoucher(voucher: string) {
+type RedeemGiftVoucherState =
+  | { type: "error"; errors: Record<string, string> }
+  | {
+      type: "success";
+      data: NonNullable<RedeemGiftVoucherMutation["redeemGiftVoucher"]>;
+    };
+
+export async function redeemGiftVoucher(
+  voucher: string
+): Promise<RedeemGiftVoucherState> {
   const gql = await getClient();
 
-  const res = await gql.mutation(RedeemGiftVoucherDocument, { voucher });
+  const { data, error } = await gql.mutation(RedeemGiftVoucherDocument, {
+    voucher,
+  });
 
-  if (res.error) {
-    throw Error(res.error.message);
+  if (error || !data?.redeemGiftVoucher) {
+    // TODO: map errors
+    return { type: "error", errors: {} };
   }
 
-  if (!res.data) {
-    throw Error("no redeem result");
-  }
-
-  return res.data.redeemGiftVoucher;
+  return { type: "success", data: data.redeemGiftVoucher };
 }
