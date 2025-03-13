@@ -1,6 +1,5 @@
 import { LogoutButton } from "@/components/login/logout-button";
 import { fetchMe } from "@/lib/auth/fetch-me";
-import { css } from "@/theme/css";
 
 export async function LoginStatus() {
   const me = await fetchMe();
@@ -10,9 +9,9 @@ export async function LoginStatus() {
   }
 
   return (
-    <div className={css({ fontSize: "sm" })}>
+    <span>
       Angemeldet als <strong>{me?.email}</strong>{" "}
       <LogoutButton>Abmelden</LogoutButton>
-    </div>
+    </span>
   );
 }

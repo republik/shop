@@ -33,7 +33,6 @@ export async function Footer() {
       key={link.href}
       href={link.href}
       className={css({
-        color: "zinc.400",
         textAlign: "center",
         _hover: {
           textDecoration: "underline",
