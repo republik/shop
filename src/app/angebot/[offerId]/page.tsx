@@ -88,140 +88,139 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     return `/angebot/${offerId}?${p}`;
   };
 
-  if (checkoutState.step === "ERROR") {
-    if (checkoutState.error === "NOT_FOUND") {
-      notFound();
-    }
+  switch (checkoutState.step) {
+    case "ERROR":
+      switch (checkoutState.error) {
+        case "NOT_FOUND":
+          notFound();
+        case "EXPIRED":
+          redirect(buildUrl({ sessionId: null }));
+        default:
+          checkoutState.error satisfies never;
+      }
 
-    if (checkoutState.error === "EXPIRED") {
-      redirect(buildUrl({ sessionId: null }));
-    }
-  }
+    case "LOGIN":
+      return (
+        <div className={css({ px: "6", py: "4" })}>
+          <LoginView />
+        </div>
+      );
 
-  if (checkoutState.step === "LOGIN") {
-    return (
-      <div className={css({ px: "6", py: "4" })}>
-        <LoginView />
-      </div>
-    );
-  }
+    case "UNAVAILABLE":
+      return <UnavailableView reason={checkoutState.reason} />;
 
-  if (checkoutState.step === "UNAVAILABLE") {
-    return <UnavailableView reason={checkoutState.reason} />;
-  }
+    case "INITIAL":
+      return (
+        <Step
+          currentStep={checkoutState.currentStep}
+          maxStep={checkoutState.totalSteps}
+          title={t("checkout.preCheckout.title")}
+          previousUrl={"/"}
+        >
+          <CustomizeOfferView
+            offer={checkoutState.offer}
+            promoCode={promo_code}
+            onComplete={async ({ sessionId, donationOption }) => {
+              "use server";
 
-  if (checkoutState.step === "INITIAL") {
-    return (
-      <Step
-        currentStep={checkoutState.currentStep}
-        maxStep={checkoutState.totalSteps}
-        title={t("checkout.preCheckout.title")}
-        previousUrl={"/"}
-      >
-        <CustomizeOfferView
+              // Expire previous checkout session
+              if (checkoutState.checkoutSession?.status === "open") {
+                await expireCheckoutSession(
+                  checkoutState.offer.company,
+                  // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
+                  checkoutState.checkoutSession?.id,
+                  checkoutState.me?.stripeCustomer?.customerId
+                );
+              }
+
+              // Construct URL for next step
+              const p = new URLSearchParams({
+                step: checkoutState.offer.requiresLogin ? "info" : "payment",
+                session_id: sessionId,
+              });
+              if (donationOption) {
+                p.set("donation_option", donationOption);
+              }
+              if (promo_code) {
+                p.set("promo_code", promo_code);
+              }
+              redirect(`/angebot/${offerId}/?${p}`);
+            }}
+          />
+        </Step>
+      );
+
+    case "INFO":
+      const checkoutStepUrl = buildUrl({
+        step: "payment",
+        sessionId: checkoutState.checkoutSession.id,
+      });
+
+      return (
+        <Step
+          currentStep={checkoutState.currentStep}
+          maxStep={checkoutState.totalSteps}
+          previousUrl={buildUrl({})}
+          title={t("checkout.personalInfo.title")}
+        >
+          <PersonalInfoForm
+            me={checkoutState.me}
+            addressRequired={checkoutState.addressRequired}
+            onComplete={async () => {
+              "use server";
+              redirect(checkoutStepUrl);
+            }}
+          />
+        </Step>
+      );
+
+    case "PAYMENT":
+      return (
+        <Step
+          currentStep={checkoutState.currentStep}
+          maxStep={checkoutState.totalSteps}
+          previousUrl={buildUrl({
+            sessionId: checkoutState.checkoutSession.id,
+            step: checkoutState.offer.requiresLogin ? "info" : null,
+          })}
+          title={t("checkout.checkout.title")}
+        >
+          <EmbeddedCheckoutView
+            company={checkoutState.offer.company}
+            clientSecret={checkoutState.checkoutSession.client_secret}
+            errors={
+              checkoutState.returnFromCheckout
+                ? [
+                    {
+                      title: t("checkout.checkout.failed.title"),
+                      description: t("checkout.checkout.failed.description"),
+                    },
+                  ]
+                : []
+            }
+          />
+        </Step>
+      );
+
+    case "SUCCESS":
+      const isGift = checkoutState.offer.id.startsWith("GIFT_");
+
+      return isGift ? (
+        <GiftSuccess
           offer={checkoutState.offer}
-          promoCode={promo_code}
-          onComplete={async ({ sessionId, donationOption }) => {
-            "use server";
-
-            // Expire previous checkout session
-            if (checkoutState.checkoutSession?.status === "open") {
-              await expireCheckoutSession(
-                checkoutState.offer.company,
-                // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
-                checkoutState.checkoutSession?.id,
-                checkoutState.me?.stripeCustomer?.customerId
-              );
-            }
-
-            // Construct URL for next step
-            const p = new URLSearchParams({
-              step: checkoutState.offer.requiresLogin ? "info" : "payment",
-              session_id: sessionId,
-            });
-            if (donationOption) {
-              p.set("donation_option", donationOption);
-            }
-            if (promo_code) {
-              p.set("promo_code", promo_code);
-            }
-            redirect(`/angebot/${offerId}/?${p}`);
-          }}
+          session={checkoutState.checkoutSession}
         />
-      </Step>
-    );
-  }
-
-  if (checkoutState.step === "INFO") {
-    const checkoutStepUrl = buildUrl({
-      step: "payment",
-      sessionId: checkoutState.checkoutSession.id,
-    });
-
-    return (
-      <Step
-        currentStep={checkoutState.currentStep}
-        maxStep={checkoutState.totalSteps}
-        previousUrl={buildUrl({})}
-        title={t("checkout.personalInfo.title")}
-      >
-        <PersonalInfoForm
-          me={checkoutState.me}
-          addressRequired={checkoutState.addressRequired}
-          onComplete={async () => {
-            "use server";
-            redirect(checkoutStepUrl);
-          }}
+      ) : (
+        <SubscriptionSuccess
+          offer={checkoutState.offer}
+          session={checkoutState.checkoutSession}
         />
-      </Step>
-    );
-  }
-
-  if (checkoutState.step === "PAYMENT") {
-    return (
-      <Step
-        currentStep={checkoutState.currentStep}
-        maxStep={checkoutState.totalSteps}
-        previousUrl={buildUrl({
-          sessionId: checkoutState.checkoutSession.id,
-          step: checkoutState.offer.requiresLogin ? "info" : null,
-        })}
-        title={t("checkout.checkout.title")}
-      >
-        <EmbeddedCheckoutView
-          company={checkoutState.offer.company}
-          clientSecret={checkoutState.checkoutSession.client_secret}
-          errors={
-            checkoutState.returnFromCheckout
-              ? [
-                  {
-                    title: t("checkout.checkout.failed.title"),
-                    description: t("checkout.checkout.failed.description"),
-                  },
-                ]
-              : []
-          }
-        />
-      </Step>
-    );
-  }
-
-  if (checkoutState.step === "SUCCESS") {
-    const isGift = checkoutState.offer.id.startsWith("GIFT_");
-
-    return isGift ? (
-      <GiftSuccess
-        offer={checkoutState.offer}
-        session={checkoutState.checkoutSession}
-      />
-    ) : (
-      <SubscriptionSuccess
-        offer={checkoutState.offer}
-        session={checkoutState.checkoutSession}
-      />
-    );
+      );
+    default:
+      // Make sure all cases are handled
+      checkoutState satisfies never;
   }
 
   // We should never end up here
-  throw Error();
+  throw Error("State not handled");
 }
