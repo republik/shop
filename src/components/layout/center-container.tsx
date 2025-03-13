@@ -19,6 +19,8 @@ export function CenterContainer({
           gap: "4",
           textAlign: "center",
           margin: "auto",
+          px: "6",
+          py: "4",
         }),
         className
       )}
