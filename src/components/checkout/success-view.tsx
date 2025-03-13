@@ -111,9 +111,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
         })}
       </p>
       <Button asChild>
-        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
-          {t("action")}
-        </Link>
+        <Link href={`/`}>{t("action")}</Link>
       </Button>
     </CenterContainer>
   );

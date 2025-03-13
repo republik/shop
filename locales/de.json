@@ -222,7 +222,7 @@
         "gift": {
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
-          "action": "Zum Magazin"
+          "action": "Zurück zu allen Angeboten"
         },
         "redeem": {
           "title": "Herzlichen Glückwunsch",
