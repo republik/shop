@@ -1,5 +1,6 @@
 "use client";
 import { css, cx } from "@/theme/css";
+import { visuallyHidden } from "@/theme/patterns";
 import { useTranslations } from "next-intl";
 import { type InputHTMLAttributes, type ReactNode, useId } from "react";
 
@@ -8,6 +9,7 @@ type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   error?: string;
   name: string;
   description?: ReactNode;
+  hideLabel?: boolean;
 };
 
 export function FormField({
@@ -16,6 +18,7 @@ export function FormField({
   name,
   type = "text",
   description,
+  hideLabel,
   ...inputProps
 }: FormFieldProps) {
   const id = useId();
@@ -36,12 +39,15 @@ export function FormField({
     >
       <label
         htmlFor={id}
-        className={css({
-          fontSize: "sm",
-          display: "block",
-          color: "text.secondary",
-          textAlign: "left",
-        })}
+        className={cx(
+          css({
+            fontSize: "sm",
+            display: "block",
+            color: "text.secondary",
+            textAlign: "left",
+          }),
+          hideLabel && visuallyHidden()
+        )}
       >
         {label}
       </label>
@@ -52,13 +58,18 @@ export function FormField({
         type={type}
         className={cx(
           css({
+            background: "white",
             borderWidth: "1px",
             borderColor: "divider",
             borderRadius: "sm",
             p: "2",
             _disabled: {
               color: "text.secondary",
-              background: "[rgba(0,0,0,0.03)]",
+              background: "disabled",
+            },
+            _placeholder: {
+              color: "text.tertiary",
+              fontWeight: "normal",
             },
           }),
           error && css({ borderColor: "error" }),

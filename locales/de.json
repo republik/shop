@@ -116,9 +116,10 @@
       }
     },
     "redeem": {
-      "title": "Ein Geschenk wartet auf Sie",
-      "lead": "Halten Sie Ihren Geschenk-Code bereit und die E-Mail-Adresse, mit der Sie sich früher bei der Republik eingeloggt haben. Neu hier? Dann können Sie sich gleich registrieren. Eine Kreditkarte ist nicht erforderlich.",
-      "cta": "Jetzt Geschenk einlösen",
+      "title": "Geschenk einlösen",
+      "lead": "Ein Geschenk wartet auf Sie.",
+      "voucherFieldLabel": "Geschenk-Code",
+      "cta": "Geschenk einlösen",
       "invalidGiftCode": {
         "title": "Ungültiger Geschenkgutschein",
         "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."

@@ -74,14 +74,14 @@ export const presetRepublik = definePreset({
             },
             secondary: {
               value: {
-                base: "#757575",
-                _dark: "#A9A9A9",
+                base: "rgba(0,0,0,0.55)",
+                _dark: "#rgba(255,255,255,0.55)",
               },
             },
             tertiary: {
               value: {
-                base: "#909090",
-                _dark: "#909090",
+                base: "rgba(0,0,0,0.45)",
+                _dark: "#rgba(255,255,255,0.45)",
               },
             },
             inverted: {
@@ -144,14 +144,14 @@ export const presetRepublik = definePreset({
           },
           divider: {
             value: {
-              base: "#BCBCBC",
-              _dark: "#4C4C4C",
+              base: "rgba(0,0,0,0.25)",
+              _dark: "rgba(255,255,255,0.25)",
             },
           },
           disabled: {
             value: {
-              base: "#B8BDC1",
-              _dark: "#949494",
+              base: "rgba(0,0,0,0.03)",
+              _dark: "rgba(255,255,255,0.03)",
             },
           },
         },

@@ -10,6 +10,9 @@ import { LandingPageLayout } from "@/layouts/landing-page";
 import { featureFlagEnabled } from "@/lib/env";
 import { AlertCircleIcon } from "lucide-react";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+
+import giftOpenSrc from "@/assets/gift-open.svg";
 
 export async function generateMetadata() {
   const t = await getTranslations("landing.redeem");
@@ -24,13 +27,14 @@ export default async function GiftRedeemPage({
 }: {
   searchParams: Promise<{
     error?: string;
+    voucher?: string;
   }>;
 }) {
   if (!(await featureFlagEnabled("gift-redeem"))) {
     return notFound();
   }
 
-  const { error } = await searchParams;
+  const { error, voucher } = await searchParams;
 
   const t = await getTranslations("landing.redeem");
 
@@ -44,6 +48,13 @@ export default async function GiftRedeemPage({
           })}
         </p>
       </Hero>
+
+      <Image
+        src={giftOpenSrc}
+        width={140}
+        height={140}
+        alt="Illustration grosses Paket"
+      />
 
       {error && (
         <Alert variant="info">
@@ -63,7 +74,19 @@ export default async function GiftRedeemPage({
           spaceY: "4",
         })}
       >
-        <FormField label="Le Code" name="voucher"></FormField>
+        <FormField
+          label={t("voucherFieldLabel")}
+          name="voucher"
+          autoFocus
+          required
+          placeholder={t("voucherFieldLabel")}
+          hideLabel
+          className={css({
+            textAlign: "center",
+            fontWeight: "medium",
+          })}
+          defaultValue={voucher}
+        ></FormField>
         <Button type="submit" size="large">
           {t("cta")}
         </Button>
