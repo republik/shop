@@ -59,12 +59,15 @@ export const PRODUCTS: ProductTest[] = [
     requiresAddress: true,
     requiresLogin: true,
   },
+];
+
+export const GIFTS: ProductTest[] = [
   {
     id: "gift (yearly)",
     offerId: "GIFT_YEARLY",
     name: "Geschenk-Mitgliedschaft",
     expectedAmount: "222",
-    requiresAddress: false,
+    requiresAddress: true,
     requiresLogin: false,
   },
   {

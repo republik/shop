@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { getEmailCode } from "./lib/get-email-code.mts";
-
+import { getTestEmailAddress } from "./lib/get-test-email-address.mts";
+import { login } from "./lib/login.mts";
 import { nanoid } from "nanoid";
 import { PRODUCTS } from "./lib/products.mts";
 
@@ -15,6 +16,7 @@ PRODUCTS.forEach(
   }) => {
     test(`Buy a ${id} subscription `, async ({ page }) => {
       const testId = nanoid(5);
+      const testEmail = getTestEmailAddress(testId);
 
       const params = new URLSearchParams();
       params.set("utm_source", "test");
@@ -22,37 +24,10 @@ PRODUCTS.forEach(
       if (promoCode) {
         params.set("promo_code", promoCode);
       }
-
       await page.goto(`/angebot/${offerId}?${params}`);
 
-      const testEmail = process.env.TEST_EMAIL_PATTERN?.replace(
-        /\{suffix\}/,
-        testId
-      );
-
-      if (!testEmail) {
-        throw new Error("Forget to set TEST_EMAIL_PATTERN");
-      }
-
       if (requiresLogin) {
-        await page.getByLabel("E-Mail").fill(testEmail);
-        await page.getByRole("button", { name: "Weiter" }).click();
-
-        let code: string | undefined;
-
-        await expect
-          .poll(
-            async () => {
-              code = await getEmailCode(testEmail);
-              return code;
-            },
-
-            { timeout: 10_000 }
-          )
-          .toBeDefined();
-
-        // Pause for user to enter OTP from email
-        await page.getByLabel("Code").fill(code!);
+        await login(page, testEmail);
       }
 
       await expect(
