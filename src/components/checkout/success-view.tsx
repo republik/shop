@@ -44,6 +44,7 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
 
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
+    variables: { stripeCompany: null },
   });
 
   const ready = !!meRes.data?.me?.activeMagazineSubscription || true;
@@ -141,9 +142,9 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
 
 export function RedeemSuccess({
   email,
-  // aboType
-  // starting
-}: {
+}: // aboType
+// starting
+{
   email: string;
   // aboType: string;
   // starting: string;
