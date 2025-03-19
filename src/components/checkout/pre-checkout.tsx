@@ -117,6 +117,7 @@ export function PreCheckout({
                     : offer.price.amount / 100
                 ),
                 interval: t(
+                  // @ts-expect-error FIXME possibly unknown interval
                   `checkout.preCheckout.intervals.${
                     offer.customPrice ? "year" : offer.price.recurring?.interval
                   }`
