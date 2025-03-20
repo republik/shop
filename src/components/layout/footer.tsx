@@ -63,6 +63,7 @@ export async function Footer() {
           rowGap: "1",
           justifyContent: "center",
           fontSize: "xs",
+          textAlign: "center",
         })}
       >
         {footerLinkNodes}
