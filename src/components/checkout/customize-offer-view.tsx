@@ -4,6 +4,7 @@ import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql
 import { createCheckoutSession } from "@/actions/create-checkout-session";
 import {
   DonationChooser,
+  OPTION_CUSTOM,
   OPTION_NONE,
 } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -21,12 +22,17 @@ import {
 } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
 
+type DonationOptionParams = {
+  donationOption: string;
+  customDonation?: string;
+};
+
 interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
   onComplete: (params: {
     sessionId: string;
-    donationOption?: string;
+    donationOption?: DonationOptionParams;
   }) => Promise<void>;
 }
 
@@ -46,17 +52,18 @@ export function CustomizeOfferView({
   );
 
   // Get/set donation option from url search params
-  const actualDonationOption =
-    searchParams.get("donation_option") ?? OPTION_NONE;
-
+  const actualDonationOption: DonationOptionParams = {
+    donationOption: searchParams.get("donation_option") ?? OPTION_NONE,
+    customDonation: searchParams.get("custom_donation") ?? undefined,
+  };
   const [donationOption, setOptimisticDonationOption] = useOptimistic(
     actualDonationOption,
-    (_, newState: string) => {
+    (_, newState: DonationOptionParams) => {
       return newState;
     }
   );
 
-  const setDonationOption = (value: string) => {
+  const setDonationOption = (value: string, customDonation?: string) => {
     const p = new URLSearchParams(searchParams);
     if (value !== OPTION_NONE) {
       p.set("donation_option", value);
@@ -64,9 +71,15 @@ export function CustomizeOfferView({
       p.delete("donation_option");
     }
 
+    if (value === OPTION_CUSTOM && customDonation) {
+      p.set("custom_donation", customDonation);
+    } else {
+      p.delete("custom_donation");
+    }
+
     startTransition(() => {
       // Immediately change the selected option
-      setOptimisticDonationOption(value);
+      setOptimisticDonationOption({ donationOption: value, customDonation });
       // This refetches the page, which makes sure that the correct searchParams are used when navigating
       router.replace(`?${p}`);
     });
@@ -96,7 +109,17 @@ export function CustomizeOfferView({
       });
     }
 
-    const donation = donationOptions?.find(({ id }) => id === donationOption);
+    const donation = donationOption.customDonation
+      ? {
+          price: {
+            amount: Math.max(
+              0,
+              parseInt(donationOption.customDonation, 10) * 100
+            ),
+          },
+        }
+      : donationOptions?.find(({ id }) => id === donationOption.donationOption);
+
     if (donation) {
       items.push({
         label: t("checkout.preCheckout.donate.itemName"),
@@ -151,7 +174,8 @@ export function CustomizeOfferView({
               <DonationChooser
                 options={donationOptions}
                 onChange={setDonationOption}
-                value={donationOption}
+                value={donationOption.donationOption}
+                customDonationValue={donationOption.customDonation}
               />
             ) : null
           }

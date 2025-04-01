@@ -21,6 +21,7 @@ type PageSearchParams = {
   session_id?: string;
   promo_code?: string;
   donation_option?: string;
+  custom_donation?: string;
   return_from_checkout?: "true";
   step?: string;
 };
@@ -48,6 +49,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const {
     step,
     donation_option,
+    custom_donation,
     promo_code,
     return_from_checkout,
     session_id,
@@ -75,6 +77,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
     if (donation_option) {
       p.set("donation_option", donation_option);
+    }
+    if (custom_donation) {
+      p.set("custom_donation", custom_donation);
     }
     if (params.sessionId) {
       p.set("session_id", params.sessionId);
@@ -140,7 +145,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
                 session_id: sessionId,
               });
               if (donationOption) {
-                p.set("donation_option", donationOption);
+                p.set("donation_option", donationOption.donationOption);
+                if (donationOption.customDonation) {
+                  p.set("custom_donation", donationOption.customDonation);
+                }
               }
               if (promo_code) {
                 p.set("promo_code", promo_code);

@@ -205,7 +205,9 @@
         "title": "Für Grosszügige",
         "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind.",
         "itemName": "Spende",
-        "optionNone": "Nein danke"
+        "optionNone": "Nein danke",
+        "optionCustom": "Eigener Betrag",
+        "optionCustomField": "Betrag"
       }
     },
     "personalInfo": {

@@ -15,7 +15,13 @@ export async function createCheckoutSession(
 ): Promise<CreateCheckoutState> {
   const offerId = formData.get("offerId")?.toString() ?? "";
   const donationOption = formData.get("donationOption")?.toString();
+  const customDonation = formData.get("customDonation")?.toString();
   const promoCode = formData.get("promoCode")?.toString();
+
+  const customDonationAmount =
+    donationOption === "CUSTOM" && customDonation
+      ? parseInt(customDonation, 10) * 100
+      : undefined;
 
   const gqlClient = await getClient();
 
@@ -28,7 +34,10 @@ export async function createCheckoutSession(
       // customPrice: price ? Number(price) * 100 : undefined,
       metadata: analyticsParams,
       promoCode,
-      donationOption,
+      donationOption: customDonationAmount ? null : donationOption,
+      customDonation: customDonationAmount
+        ? { amount: customDonationAmount }
+        : null,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
     }
   );

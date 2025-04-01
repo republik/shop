@@ -1,11 +1,12 @@
 "use client";
 
-import { RadioOption } from "@/components/ui/form";
+import { FormField, RadioOption } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 
 export const OPTION_NONE = "";
+export const OPTION_CUSTOM = "CUSTOM";
 
 type DonationOption = {
   id: string;
@@ -15,11 +16,13 @@ type DonationOption = {
 export function DonationChooser({
   options,
   value,
+  customDonationValue,
   onChange,
 }: {
   options: DonationOption[];
   value?: string;
-  onChange: (id: string) => void;
+  customDonationValue?: string;
+  onChange: (option: string, customDonation?: string) => void;
 }) {
   const t = useTranslations();
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
@@ -63,6 +66,36 @@ export function DonationChooser({
             </RadioOption>
           );
         })}
+
+        <RadioOption
+          key={OPTION_CUSTOM}
+          name="donationOption"
+          checked={value === OPTION_CUSTOM}
+          value={OPTION_CUSTOM}
+          onChange={() => onChange(OPTION_CUSTOM)}
+        >
+          {t("checkout.preCheckout.donate.optionCustom")}
+        </RadioOption>
+
+        {value === OPTION_CUSTOM && (
+          <div
+            className={css({
+              pl: "[calc(1.15em + var(--spacing-4))]",
+            })}
+          >
+            <FormField
+              type="number"
+              min={0}
+              required
+              name="customDonation"
+              autoFocus
+              value={customDonationValue ?? ""}
+              onChange={(e) => onChange(OPTION_CUSTOM, e.currentTarget.value)}
+              label={t("checkout.preCheckout.donate.optionCustomField")}
+              hideLabel
+            />
+          </div>
+        )}
 
         <RadioOption
           key={OPTION_NONE}

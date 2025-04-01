@@ -6,6 +6,7 @@ type ProductTest = {
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
+  donationOption?: { name: string; amount?: string };
 };
 
 export const PRODUCTS: ProductTest[] = [
@@ -40,6 +41,24 @@ export const PRODUCTS: ProductTest[] = [
     name: "Jahresmitgliedschaft",
     expectedAmount: "240",
     promoCode: "NOPE",
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "yearly (with donation)",
+    offerId: "YEARLY",
+    name: "Jahresmitgliedschaft",
+    donationOption: { name: "CHF 20.00" },
+    expectedAmount: "242",
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "yearly (with custom donation)",
+    offerId: "YEARLY",
+    name: "Jahresmitgliedschaft",
+    donationOption: { name: "Betrag", amount: "333" },
+    expectedAmount: "555",
     requiresAddress: true,
     requiresLogin: true,
   },

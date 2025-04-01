@@ -13,6 +13,7 @@ PRODUCTS.forEach(
     expectedAmount,
     requiresAddress,
     requiresLogin,
+    donationOption,
   }) => {
     test(`Buy a ${id} subscription `, async ({ page }) => {
       const testId = nanoid(5);
@@ -35,6 +36,16 @@ PRODUCTS.forEach(
           name: "Preisübersicht",
         })
       ).toBeVisible();
+
+      if (donationOption) {
+        await page.getByLabel(donationOption.name).check();
+
+        if (donationOption.amount) {
+          await page
+            .getByLabel("Betrag", { exact: true }) // This is the input field for the custom amount
+            .fill(donationOption.amount);
+        }
+      }
 
       await expect(page.getByTestId("price-overview-total")).toContainText(
         expectedAmount
