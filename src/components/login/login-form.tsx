@@ -3,7 +3,6 @@ import {
   AuthorizeSessionDocument,
   SignInDocument,
   SignInTokenType,
-  UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
@@ -28,8 +27,8 @@ const ErrorMessage = ({
     typeof error === "string"
       ? error
       : error?.networkError
-        ? t("graphql.networkError")
-        : error?.graphQLErrors[0]?.message;
+      ? t("graphql.networkError")
+      : error?.graphQLErrors[0]?.message;
 
   return (
     <Alert variant="error">
@@ -147,21 +146,11 @@ function CodeForm({
 
     setPending(true);
 
-    const unauthorizedRes = await gql.query(UnauthorizedSessionDocument, {
-      email,
-      token,
-    });
-
-    if (unauthorizedRes.error) {
-      setError(unauthorizedRes.error);
-      setPending(false);
-      return;
-    }
-
     const autorizedRes = await gql.mutation(AuthorizeSessionDocument, {
       email,
       tokens: [token],
-      consents: unauthorizedRes.data?.unauthorizedSession?.requiredConsents,
+      // Automatically consent to the privacy statement
+      consents: ["PRIVACY"],
     });
 
     if (autorizedRes.error) {
