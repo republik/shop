@@ -57,7 +57,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "yearly (with custom donation)",
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
-    donationOption: { name: "Betrag", amount: "333" },
+    donationOption: { name: "Eigener Betrag", amount: "333" },
     expectedAmount: "555",
     requiresAddress: true,
     requiresLogin: true,
