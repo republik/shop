@@ -77,6 +77,20 @@ PRODUCTS.forEach(
           })
         ).toBeVisible();
 
+        // Navigate 1 step back and check if the price is still the same, then proceed again
+        await page.getByRole("link", { name: "Zurück" }).click();
+        await expect(page.getByTestId("price-overview-total")).toContainText(
+          expectedAmount
+        );
+        await page.getByRole("button", { name: "Weiter" }).click();
+
+        // OK, we should be back here
+        await expect(
+          page.getByRole("heading", {
+            name: "Persönliche Angaben",
+          })
+        ).toBeVisible();
+
         await page.getByLabel("Vorname").fill("Tester");
         await page.getByLabel("Nachname").fill("Tester");
 
