@@ -51,6 +51,15 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
       }
     }
 
+    discountOptions {
+      id
+      name
+      amountOff
+      duration
+      durationInMonths
+      currency
+    }
+
     # customPrice {
     #   min
     #   max

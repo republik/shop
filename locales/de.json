@@ -208,6 +208,12 @@
         "optionNone": "Nein danke",
         "optionCustom": "Eigener Betrag",
         "optionCustomField": "Betrag"
+      },
+      "reduced": {
+        "title": "Wählen Sie Ihre Preisreduktion",
+        "description": "Wenn Sie knapp bei Kasse sind, blah blah Grund etc.",
+        "itemName": "Reduktion",
+        "reason": "Begründung"
       }
     },
     "personalInfo": {

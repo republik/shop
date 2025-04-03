@@ -22,6 +22,7 @@ type PageSearchParams = {
   promo_code?: string;
   donation_option?: string;
   custom_donation?: string;
+  discount_option?: string;
   return_from_checkout?: "true";
   step?: string;
 };
@@ -50,6 +51,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     step,
     donation_option,
     custom_donation,
+    discount_option,
     promo_code,
     return_from_checkout,
     session_id,
@@ -80,6 +82,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
     if (custom_donation) {
       p.set("custom_donation", custom_donation);
+    }
+    if (discount_option) {
+      p.set("discount_option", discount_option);
     }
     if (params.sessionId) {
       p.set("session_id", params.sessionId);

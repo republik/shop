@@ -21,10 +21,15 @@ import {
   useOptimistic,
 } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
+import { DiscountChooser } from "@/components/checkout/discount-chooser";
 
 type DonationOptionParams = {
   donationOption: string;
   customDonation?: string;
+};
+
+type DiscountOptionParams = {
+  discountOption: string;
 };
 
 interface CustomizeOfferProps {
@@ -42,6 +47,7 @@ export function CustomizeOfferView({
   onComplete,
 }: CustomizeOfferProps) {
   const donationOptions = offer.donationOptions;
+  const discountOptions = offer.discountOptions;
 
   const t = useTranslations();
   const searchParams = useSearchParams();
@@ -80,6 +86,33 @@ export function CustomizeOfferView({
     startTransition(() => {
       // Immediately change the selected option
       setOptimisticDonationOption({ donationOption: value, customDonation });
+      // This refetches the page, which makes sure that the correct searchParams are used when navigating
+      router.replace(`?${p}`);
+    });
+  };
+
+  // Get/set discount option from url search params
+  const actualDiscountOption: DiscountOptionParams = {
+    discountOption: searchParams.get("discount_option") ?? OPTION_NONE,
+  };
+  const [discountOption, setOptimisticDiscountOption] = useOptimistic(
+    actualDiscountOption,
+    (_, newState: DiscountOptionParams) => {
+      return newState;
+    }
+  );
+
+  const setDiscountOption = (value: string, customDonation?: string) => {
+    const p = new URLSearchParams(searchParams);
+    if (value !== OPTION_NONE) {
+      p.set("discount_option", value);
+    } else {
+      p.delete("discount_option");
+    }
+
+    startTransition(() => {
+      // Immediately change the selected option
+      setOptimisticDiscountOption({ discountOption: value });
       // This refetches the page, which makes sure that the correct searchParams are used when navigating
       router.replace(`?${p}`);
     });
@@ -170,14 +203,23 @@ export function CustomizeOfferView({
           currency={offer.price.currency}
           lineItems={lineItems}
           extraItem={
-            donationOptions ? (
-              <DonationChooser
-                options={donationOptions}
-                onChange={setDonationOption}
-                value={donationOption.donationOption}
-                customDonationValue={donationOption.customDonation}
-              />
-            ) : null
+            <>
+              {discountOptions && (
+                <DiscountChooser
+                  options={discountOptions}
+                  onChange={setDiscountOption}
+                  value={discountOption.discountOption}
+                />
+              )}
+              {donationOptions && (
+                <DonationChooser
+                  options={donationOptions}
+                  onChange={setDonationOption}
+                  value={donationOption.donationOption}
+                  customDonationValue={donationOption.customDonation}
+                />
+              )}
+            </>
           }
         />
 
