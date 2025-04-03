@@ -30,6 +30,7 @@ type DonationOptionParams = {
 
 type DiscountOptionParams = {
   discountOption: string;
+  discountReason?: string;
 };
 
 interface CustomizeOfferProps {
@@ -38,6 +39,7 @@ interface CustomizeOfferProps {
   onComplete: (params: {
     sessionId: string;
     donationOption?: DonationOptionParams;
+    discountOption?: DiscountOptionParams;
   }) => Promise<void>;
 }
 
@@ -102,7 +104,7 @@ export function CustomizeOfferView({
     }
   );
 
-  const setDiscountOption = (value: string, customDonation?: string) => {
+  const setDiscountOption = (value: string, discountReason?: string) => {
     const p = new URLSearchParams(searchParams);
     if (value !== OPTION_NONE) {
       p.set("discount_option", value);
@@ -110,9 +112,15 @@ export function CustomizeOfferView({
       p.delete("discount_option");
     }
 
+    if (discountReason) {
+      p.set("discount_reason", discountReason);
+    } else {
+      p.delete("discount_reason");
+    }
+
     startTransition(() => {
       // Immediately change the selected option
-      setOptimisticDiscountOption({ discountOption: value });
+      setOptimisticDiscountOption({ discountOption: value, discountReason });
       // This refetches the page, which makes sure that the correct searchParams are used when navigating
       router.replace(`?${p}`);
     });
@@ -120,7 +128,11 @@ export function CustomizeOfferView({
 
   useEffect(() => {
     if (state.sessionId) {
-      onComplete({ sessionId: state.sessionId, donationOption });
+      onComplete({
+        sessionId: state.sessionId,
+        donationOption,
+        discountOption,
+      });
     }
   }, [state, onComplete]);
 
@@ -157,6 +169,18 @@ export function CustomizeOfferView({
       items.push({
         label: t("checkout.preCheckout.donate.itemName"),
         amount: donation.price.amount,
+        hidden: true,
+      });
+    }
+
+    const selectedDiscount = discountOptions?.find(
+      ({ id }) => id === discountOption.discountOption
+    );
+
+    if (selectedDiscount) {
+      items.push({
+        label: t("checkout.preCheckout.reduced.itemName"),
+        amount: -selectedDiscount.amountOff,
         hidden: true,
       });
     }

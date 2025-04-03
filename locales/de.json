@@ -210,8 +210,8 @@
         "optionCustomField": "Betrag"
       },
       "reduced": {
-        "title": "Wählen Sie Ihre Preisreduktion",
-        "description": "Wenn Sie knapp bei Kasse sind, blah blah Grund etc.",
+        "title": "Journalismus kostet",
+        "description": "Aber wir wollen niemanden ausschliessen. Falls Sie sich den regulären Mitgliederbeitrag nicht leisten können, bitten wir Sie um eine knappe Begründung. Wählen Sie eine Reduktion, die Ihnen gerecht scheint.",
         "itemName": "Reduktion",
         "reason": "Begründung"
       }

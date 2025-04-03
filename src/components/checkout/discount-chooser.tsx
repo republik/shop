@@ -20,7 +20,7 @@ export function DiscountChooser({
 }: {
   options: DiscountOption[];
   value?: string;
-  onChange: (option: string) => void;
+  onChange: (option: string, reason?: string) => void;
 }) {
   const t = useTranslations();
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
@@ -32,7 +32,7 @@ export function DiscountChooser({
         width: "full",
         padding: "4",
         borderRadius: "sm",
-        backgroundColor: "purple.50",
+        backgroundColor: "purple.100",
         whiteSpace: "normal",
         spaceY: "3",
       })}
@@ -47,6 +47,7 @@ export function DiscountChooser({
           label={t("checkout.preCheckout.reduced.reason")}
           required
           name="discountReason"
+          onChange={(e) => onChange(value, e.currentTarget.value)}
         />
       </div>
 
