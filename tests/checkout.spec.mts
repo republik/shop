@@ -1,8 +1,7 @@
-import { test, expect } from "@playwright/test";
-import { getEmailCode } from "./lib/get-email-code.mts";
+import { expect, test } from "@playwright/test";
+import { nanoid } from "nanoid";
 import { getTestEmailAddress } from "./lib/get-test-email-address.mts";
 import { login } from "./lib/login.mts";
-import { nanoid } from "nanoid";
 import { PRODUCTS } from "./lib/products.mts";
 
 PRODUCTS.forEach(
@@ -37,9 +36,12 @@ PRODUCTS.forEach(
         })
       ).toBeVisible();
 
+      // Wait until Next.js has hydrated the page and all client side-scripts / server actions are available
+      await page.waitForLoadState("load");
+
       if (donationOption) {
         await page.getByRole("radio", { name: donationOption.name }).click();
-        // await expect(page.getByLabel(donationOption.name)).toBeChecked();
+        await expect(page.getByLabel(donationOption.name)).toBeChecked();
 
         await expect(page).toHaveURL((url) => {
           const params = url.searchParams;
@@ -64,9 +66,6 @@ PRODUCTS.forEach(
       await expect(page.getByTestId("price-overview-total")).toContainText(
         expectedAmount
       );
-
-      // For some reason we need to wait here for some Next.js BS
-      await page.waitForTimeout(5000);
 
       await page.getByRole("button", { name: "Weiter" }).click();
 
