@@ -5,7 +5,6 @@ import { FormField, RadioOption } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import * as Collapsible from "@radix-ui/react-collapsible";
-import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
