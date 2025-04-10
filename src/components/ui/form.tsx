@@ -222,7 +222,7 @@ export function RadioOption({
         display: "flex",
         gap: "4",
         alignItems: "center",
-        "&:has(:checked)": {
+        "&:has(:checked, [data-checked])": {
           borderColor: "text",
         },
         // fontSize: "xl",
@@ -232,6 +232,8 @@ export function RadioOption({
         {...inputProps}
         id={id}
         type="radio"
+        // Also set data-checked because the checked attribute doesn't update reliably on re-renders
+        data-checked={inputProps.checked ? true : undefined}
         className={cx(
           css({
             flexShrink: 0,

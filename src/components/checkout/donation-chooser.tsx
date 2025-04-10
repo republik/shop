@@ -83,24 +83,25 @@ export function DonationChooser({
           {t("checkout.preCheckout.donate.optionCustom")}
         </RadioOption>
 
-        <div
-          className={css({
-            pl: "[calc(1.15em + var(--spacing-4))]",
-          })}
-          hidden={donationOption !== OPTION_CUSTOM}
-        >
-          <FormField
-            type="number"
-            min={0}
-            required
-            name="customDonation"
-            autoFocus
-            value={customDonation}
-            onChange={(e) => setCustomDonationOption(e.currentTarget.value)}
-            label={t("checkout.preCheckout.donate.optionCustomField")}
-            hideLabel
-          />
-        </div>
+        {donationOption === "CUSTOM" && (
+          <div
+            className={css({
+              pl: "[calc(1.15em + var(--spacing-4))]",
+            })}
+          >
+            <FormField
+              type="number"
+              min={0}
+              required
+              name="customDonation"
+              autoFocus
+              value={customDonation}
+              onChange={(e) => setCustomDonationOption(e.currentTarget.value)}
+              label={t("checkout.preCheckout.donate.optionCustomField")}
+              hideLabel
+            />
+          </div>
+        )}
 
         <Button
           variant="link"
