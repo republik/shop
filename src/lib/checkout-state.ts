@@ -67,14 +67,12 @@ export async function getCheckoutState({
   offerId,
   sessionId,
   promoCode,
-  donationOption,
   returnFromCheckout,
 }: {
   step: string | undefined;
   offerId: string;
   sessionId?: string;
   promoCode?: string;
-  donationOption?: string;
   returnFromCheckout?: boolean;
 }): Promise<CheckoutState> {
   const offer = await fetchOffer(offerId, promoCode);

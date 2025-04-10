@@ -12,7 +12,6 @@ import { LoginView } from "@/components/login/login-view";
 import { getCheckoutState } from "@/lib/checkout-state";
 import { fetchOffer } from "@/lib/offers";
 import { expireCheckoutSession } from "@/lib/stripe/server";
-import { css } from "@/theme/css";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
@@ -20,9 +19,6 @@ import { notFound, redirect } from "next/navigation";
 type PageSearchParams = {
   session_id?: string;
   promo_code?: string;
-  donation_option?: string;
-  custom_donation?: string;
-  discount_option?: string;
   return_from_checkout?: "true";
   step?: string;
 };
@@ -47,22 +43,14 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
 
   const { offerId } = await params;
-  const {
-    step,
-    donation_option,
-    custom_donation,
-    discount_option,
-    promo_code,
-    return_from_checkout,
-    session_id,
-  } = await searchParams;
+  const { step, promo_code, return_from_checkout, session_id } =
+    await searchParams;
 
   const checkoutState = await getCheckoutState({
     offerId,
     step: step,
     sessionId: session_id,
     promoCode: promo_code,
-    donationOption: donation_option,
     returnFromCheckout: return_from_checkout === "true",
   });
 
@@ -76,15 +64,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
     if (promo_code) {
       p.set("promo_code", promo_code);
-    }
-    if (donation_option) {
-      p.set("donation_option", donation_option);
-    }
-    if (custom_donation) {
-      p.set("custom_donation", custom_donation);
-    }
-    if (discount_option) {
-      p.set("discount_option", discount_option);
     }
     if (params.sessionId) {
       p.set("session_id", params.sessionId);
@@ -131,7 +110,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           <CustomizeOfferView
             offer={checkoutState.offer}
             promoCode={promo_code}
-            onComplete={async ({ sessionId, donationOption }) => {
+            onComplete={async ({ sessionId }) => {
               "use server";
 
               // Expire previous checkout session
@@ -149,12 +128,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
                 step: checkoutState.offer.requiresLogin ? "info" : "payment",
                 session_id: sessionId,
               });
-              if (donationOption) {
-                p.set("donation_option", donationOption.donationOption);
-                if (donationOption.customDonation) {
-                  p.set("custom_donation", donationOption.customDonation);
-                }
-              }
+
               if (promo_code) {
                 p.set("promo_code", promo_code);
               }

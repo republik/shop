@@ -207,7 +207,8 @@
         "itemName": "Spende",
         "optionNone": "Nein danke",
         "optionCustom": "Eigener Betrag",
-        "optionCustomField": "Betrag"
+        "optionCustomField": "Betrag",
+        "reset": "Zurücksetzen"
       },
       "reduced": {
         "title": "Journalismus kostet",

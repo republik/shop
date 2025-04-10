@@ -1,29 +1,31 @@
 "use client";
 
-import { FormField, RadioOption } from "@/components/ui/form";
+import { RadioOption, TextArea } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 
-export const OPTION_NONE = "";
-export const OPTION_CUSTOM = "CUSTOM";
-
 type DiscountOption = {
   id: string;
   amountOff: number;
+  duration: string;
 };
 
 export function DiscountChooser({
   options,
-  value,
-  onChange,
+  discountOption,
+  setDiscountOption,
+  discountReason,
+  setDiscountReason,
 }: {
   options: DiscountOption[];
-  value?: string;
-  onChange: (option: string, reason?: string) => void;
+  discountOption: string;
+  setDiscountOption: (value: string) => void;
+  discountReason: string;
+  setDiscountReason: (value: string) => void;
 }) {
   const t = useTranslations();
-  const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
+  // const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
 
   return (
@@ -43,11 +45,15 @@ export function DiscountChooser({
       <p>{t("checkout.preCheckout.reduced.description")}</p>
 
       <div>
-        <FormField
+        <TextArea
           label={t("checkout.preCheckout.reduced.reason")}
           required
           name="discountReason"
-          onChange={(e) => onChange(value, e.currentTarget.value)}
+          rows={3}
+          value={discountReason}
+          onChange={(e) => {
+            setDiscountReason(e.currentTarget.value);
+          }}
         />
       </div>
 
@@ -62,9 +68,11 @@ export function DiscountChooser({
             <RadioOption
               key={id}
               name="discountOption"
-              checked={value === id}
+              checked={discountOption === id}
               value={id}
-              onChange={() => onChange(id)}
+              onChange={() => {
+                setDiscountOption(id);
+              }}
             >
               - {f(amountOff)}
             </RadioOption>

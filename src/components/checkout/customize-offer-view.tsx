@@ -2,26 +2,19 @@
 
 import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
+import { DiscountChooser } from "@/components/checkout/discount-chooser";
 import {
   DonationChooser,
   OPTION_CUSTOM,
-  OPTION_NONE,
 } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
-import {
-  startTransition,
-  useActionState,
-  useEffect,
-  useMemo,
-  useOptimistic,
-} from "react";
+import { useActionState, useEffect, useMemo } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
-import { DiscountChooser } from "@/components/checkout/discount-chooser";
 
 type DonationOptionParams = {
   donationOption: string;
@@ -51,87 +44,29 @@ export function CustomizeOfferView({
   const donationOptions = offer.donationOptions;
   const discountOptions = offer.discountOptions;
 
+  const hasDonationOptions = donationOptions && donationOptions.length > 0;
+  const hasDiscountOptions = discountOptions && discountOptions.length > 0;
+
   const t = useTranslations();
-  const searchParams = useSearchParams();
-  const router = useRouter();
+
   const [state, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
     {}
   );
 
-  // Get/set donation option from url search params
-  const actualDonationOption: DonationOptionParams = {
-    donationOption: searchParams.get("donation_option") ?? OPTION_NONE,
-    customDonation: searchParams.get("custom_donation") ?? undefined,
-  };
-  const [donationOption, setOptimisticDonationOption] = useOptimistic(
-    actualDonationOption,
-    (_, newState: DonationOptionParams) => {
-      return newState;
-    }
-  );
-
-  const setDonationOption = (value: string, customDonation?: string) => {
-    const p = new URLSearchParams(searchParams);
-    if (value !== OPTION_NONE) {
-      p.set("donation_option", value);
-    } else {
-      p.delete("donation_option");
-    }
-
-    if (value === OPTION_CUSTOM && customDonation) {
-      p.set("custom_donation", customDonation);
-    } else {
-      p.delete("custom_donation");
-    }
-
-    startTransition(() => {
-      // Immediately change the selected option
-      setOptimisticDonationOption({ donationOption: value, customDonation });
-      // This refetches the page, which makes sure that the correct searchParams are used when navigating
-      router.replace(`?${p}`);
-    });
-  };
-
-  // Get/set discount option from url search params
-  const actualDiscountOption: DiscountOptionParams = {
-    discountOption: searchParams.get("discount_option") ?? OPTION_NONE,
-  };
-  const [discountOption, setOptimisticDiscountOption] = useOptimistic(
-    actualDiscountOption,
-    (_, newState: DiscountOptionParams) => {
-      return newState;
-    }
-  );
-
-  const setDiscountOption = (value: string, discountReason?: string) => {
-    const p = new URLSearchParams(searchParams);
-    if (value !== OPTION_NONE) {
-      p.set("discount_option", value);
-    } else {
-      p.delete("discount_option");
-    }
-
-    if (discountReason) {
-      p.set("discount_reason", discountReason);
-    } else {
-      p.delete("discount_reason");
-    }
-
-    startTransition(() => {
-      // Immediately change the selected option
-      setOptimisticDiscountOption({ discountOption: value, discountReason });
-      // This refetches the page, which makes sure that the correct searchParams are used when navigating
-      router.replace(`?${p}`);
-    });
-  };
+  const [donationOption, setDonationOption] =
+    useSessionStorage("donationOption");
+  const [customDonation, setCustomDonationOption] =
+    useSessionStorage("customDonation");
+  const [discountReason, setDiscountReason] =
+    useSessionStorage("discountReason");
+  const [discountOption, setDiscountOption] =
+    useSessionStorage("discountOption");
 
   useEffect(() => {
     if (state.sessionId) {
       onComplete({
         sessionId: state.sessionId,
-        donationOption,
-        discountOption,
       });
     }
   }, [state, onComplete]);
@@ -154,16 +89,14 @@ export function CustomizeOfferView({
       });
     }
 
-    const donation = donationOption.customDonation
-      ? {
-          price: {
-            amount: Math.max(
-              0,
-              parseInt(donationOption.customDonation, 10) * 100
-            ),
-          },
-        }
-      : donationOptions?.find(({ id }) => id === donationOption.donationOption);
+    const donation =
+      customDonation && donationOption === OPTION_CUSTOM
+        ? {
+            price: {
+              amount: Math.max(0, parseInt(customDonation, 10) * 100),
+            },
+          }
+        : donationOptions?.find(({ id }) => id === donationOption);
 
     if (donation) {
       items.push({
@@ -174,7 +107,7 @@ export function CustomizeOfferView({
     }
 
     const selectedDiscount = discountOptions?.find(
-      ({ id }) => id === discountOption.discountOption
+      ({ id }) => id === discountOption
     );
 
     if (selectedDiscount) {
@@ -189,10 +122,12 @@ export function CustomizeOfferView({
   }, [
     offer.name,
     offer.price,
-    /* offer.customPrice, */
     offer.discount,
     donationOptions,
     donationOption,
+    discountOptions,
+    customDonation,
+    discountOption,
   ]);
 
   return (
@@ -228,19 +163,23 @@ export function CustomizeOfferView({
           lineItems={lineItems}
           extraItem={
             <>
-              {discountOptions && (
+              {hasDiscountOptions && (
                 <DiscountChooser
+                  // @ts-expect-error FIXME: id should not be nullable!
                   options={discountOptions}
-                  onChange={setDiscountOption}
-                  value={discountOption.discountOption}
+                  discountOption={discountOption}
+                  setDiscountOption={setDiscountOption}
+                  discountReason={discountReason}
+                  setDiscountReason={setDiscountReason}
                 />
               )}
-              {donationOptions && (
+              {hasDonationOptions && (
                 <DonationChooser
                   options={donationOptions}
-                  onChange={setDonationOption}
-                  value={donationOption.donationOption}
-                  customDonationValue={donationOption.customDonation}
+                  donationOption={donationOption}
+                  setDonationOption={setDonationOption}
+                  customDonation={customDonation}
+                  setCustomDonationOption={setCustomDonationOption}
                 />
               )}
             </>

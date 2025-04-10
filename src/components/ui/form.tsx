@@ -2,7 +2,12 @@
 import { css, cx } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { useTranslations } from "next-intl";
-import { type InputHTMLAttributes, type ReactNode, useId } from "react";
+import {
+  type InputHTMLAttributes,
+  type ReactNode,
+  type TextareaHTMLAttributes,
+  useId,
+} from "react";
 
 type FormFieldProps = InputHTMLAttributes<HTMLInputElement> & {
   label: string;
@@ -56,6 +61,101 @@ export function FormField({
         id={id}
         name={name}
         type={type}
+        className={cx(
+          css({
+            background: "white",
+            borderWidth: "1px",
+            borderColor: "divider",
+            borderRadius: "sm",
+            p: "2",
+            _disabled: {
+              color: "text.secondary",
+              background: "disabled",
+            },
+            _placeholder: {
+              color: "text.tertiary",
+              fontWeight: "normal",
+            },
+          }),
+          error && css({ borderColor: "error" }),
+          inputProps?.className
+        )}
+      />
+      {error && (
+        <div
+          aria-live="polite"
+          className={css({
+            color: "error",
+            fontSize: "sm",
+          })}
+        >
+          {errorMessage}
+        </div>
+      )}
+      {description && (
+        <div
+          className={css({
+            color: "text.tertiary",
+            fontSize: "xs",
+          })}
+        >
+          {description}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type TextAreaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+  label: string;
+  error?: string;
+  name: string;
+  description?: ReactNode;
+  hideLabel?: boolean;
+};
+
+export function TextArea({
+  label,
+  error,
+  name,
+  description,
+  hideLabel,
+  ...inputProps
+}: TextAreaProps) {
+  const id = useId();
+  const t = useTranslations("formValidation");
+
+  // TODO: handle other validity states than valueMissing
+  // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
+  const errorMessage = error ? t("valueMissing", { label }) : null;
+
+  return (
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "1.5",
+      })}
+      data-invalid={error ? "true" : undefined}
+    >
+      <label
+        htmlFor={id}
+        className={cx(
+          css({
+            fontSize: "sm",
+            display: "block",
+            color: "text.secondary",
+            textAlign: "left",
+          }),
+          hideLabel && visuallyHidden()
+        )}
+      >
+        {label}
+      </label>
+      <textarea
+        {...inputProps}
+        id={id}
+        name={name}
         className={cx(
           css({
             background: "white",

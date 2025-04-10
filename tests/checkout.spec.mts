@@ -43,23 +43,10 @@ PRODUCTS.forEach(
         await page.getByRole("radio", { name: donationOption.name }).click();
         await expect(page.getByLabel(donationOption.name)).toBeChecked();
 
-        await expect(page).toHaveURL((url) => {
-          const params = url.searchParams;
-          return params.has("donation_option");
-        });
-
         if (donationOption.amount) {
           await page
             .getByLabel("Betrag", { exact: true }) // This is the input field for the custom amount
             .fill(donationOption.amount);
-
-          await expect(page).toHaveURL((url) => {
-            const params = url.searchParams;
-            return (
-              params.get("donation_option") === "CUSTOM" &&
-              params.get("custom_donation") === donationOption.amount
-            );
-          });
         }
       }
 
