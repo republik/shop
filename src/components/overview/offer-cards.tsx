@@ -91,14 +91,6 @@ export async function OfferCardPrimary({
             </p>
             <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
           </>
-        ) : offer.customPrice ? (
-          <>
-            <p className={titleStyle}>
-              ab {currencyPrefix}
-              {formatCurrencyShort(offer.customPrice.min)}
-            </p>
-            <p className={intervalStyle}>{tOffer("interval")}</p>
-          </>
         ) : (
           <>
             <p className={titleStyle}>

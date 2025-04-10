@@ -11,10 +11,6 @@ query OfferCard($offerId: ID!) {
       }
     }
 
-    customPrice {
-      min
-    }
-
     discount {
       name
       amountOff
@@ -59,12 +55,6 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
       durationInMonths
       currency
     }
-
-    # customPrice {
-    #   min
-    #   max
-    #   step
-    # }
 
     discount {
       name
