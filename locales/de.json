@@ -208,7 +208,8 @@
         "optionNone": "Nein danke",
         "optionCustom": "Eigener Betrag",
         "optionCustomField": "Betrag",
-        "reset": "Zurücksetzen"
+        "reset": "Zurücksetzen",
+        "showOptions": "Optionen anzeigen"
       },
       "reduced": {
         "title": "Journalismus kostet",
