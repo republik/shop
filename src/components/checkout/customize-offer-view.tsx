@@ -169,7 +169,6 @@ export function CustomizeOfferView({
             <>
               {hasDiscountOptions && (
                 <DiscountChooser
-                  // @ts-expect-error FIXME: id should not be nullable!
                   options={discountOptions}
                   discountOption={discountOption}
                   setDiscountOption={setDiscountOption}
