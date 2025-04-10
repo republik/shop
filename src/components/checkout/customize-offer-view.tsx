@@ -54,14 +54,18 @@ export function CustomizeOfferView({
     {}
   );
 
-  const [donationOption, setDonationOption] =
-    useSessionStorage("donationOption");
-  const [customDonation, setCustomDonationOption] =
-    useSessionStorage("customDonation");
-  const [discountReason, setDiscountReason] =
-    useSessionStorage("discountReason");
-  const [discountOption, setDiscountOption] =
-    useSessionStorage("discountOption");
+  const [donationOption, setDonationOption] = useSessionStorage(
+    `${offer.id}_donationOption`
+  );
+  const [customDonation, setCustomDonationOption] = useSessionStorage(
+    `${offer.id}_customDonation`
+  );
+  const [discountReason, setDiscountReason] = useSessionStorage(
+    `${offer.id}_discountReason`
+  );
+  const [discountOption, setDiscountOption] = useSessionStorage(
+    `${offer.id}_discountOption`
+  );
 
   useEffect(() => {
     if (state.sessionId) {
