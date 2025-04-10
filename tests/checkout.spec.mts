@@ -13,6 +13,7 @@ PRODUCTS.forEach(
     requiresAddress,
     requiresLogin,
     donationOption,
+    discountOption,
   }) => {
     test(`Buy a ${id} subscription `, async ({ page }) => {
       const testId = nanoid(5);
@@ -59,6 +60,12 @@ PRODUCTS.forEach(
             .getByLabel("Betrag", { exact: true }) // This is the input field for the custom amount
             .fill(donationOption.amount);
         }
+      }
+
+      if (discountOption) {
+        await page.getByLabel("Begründung").fill(discountOption.reason);
+        await page.getByRole("radio", { name: discountOption.name }).click();
+        await expect(page.getByLabel(discountOption.name)).toBeChecked();
       }
 
       await expect(page.getByTestId("price-overview-total")).toContainText(

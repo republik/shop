@@ -7,6 +7,7 @@ type ProductTest = {
   requiresLogin: boolean;
   promoCode?: string;
   donationOption?: { name: string; amount?: string };
+  discountOption?: { name: string; reason: string };
 };
 
 export const PRODUCTS: ProductTest[] = [
@@ -93,6 +94,15 @@ export const PRODUCTS: ProductTest[] = [
     name: "Gönnerschaft",
     donationOption: { name: "Eigener Betrag", amount: "750" },
     expectedAmount: /1\.?750/, // account for formatting in Stripe embedded checkout
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "yearly reduced",
+    offerId: "YEARLY_REDUCED",
+    name: "Mitgliedschaft",
+    discountOption: { name: "120", reason: "Test" },
+    expectedAmount: "120",
     requiresAddress: true,
     requiresLogin: true,
   },
