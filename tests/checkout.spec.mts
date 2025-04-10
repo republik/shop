@@ -43,6 +43,14 @@ PRODUCTS.forEach(
         await page.getByRole("radio", { name: donationOption.name }).click();
         await expect(page.getByLabel(donationOption.name)).toBeChecked();
 
+        // Reset form
+        await page.getByRole("button", { name: "Zurücksetzen" }).click();
+        await expect(page.getByLabel(donationOption.name)).not.toBeChecked();
+
+        // Select again
+        await page.getByRole("radio", { name: donationOption.name }).click();
+        await expect(page.getByLabel(donationOption.name)).toBeChecked();
+
         if (donationOption.amount) {
           await page
             .getByLabel("Betrag", { exact: true }) // This is the input field for the custom amount
