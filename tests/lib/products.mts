@@ -78,6 +78,24 @@ export const PRODUCTS: ProductTest[] = [
     requiresAddress: true,
     requiresLogin: true,
   },
+  {
+    id: "benefactor (with donation)",
+    offerId: "BENEFACTOR",
+    name: "Gönnerschaft",
+    donationOption: { name: "CHF 500.00" },
+    expectedAmount: /1\.?500/, // account for formatting in Stripe embedded checkout
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "benefactor (with custom donation)",
+    offerId: "BENEFACTOR",
+    name: "Gönnerschaft",
+    donationOption: { name: "Eigener Betrag", amount: "750" },
+    expectedAmount: /1\.?750/, // account for formatting in Stripe embedded checkout
+    requiresAddress: true,
+    requiresLogin: true,
+  },
 ];
 
 export const GIFTS: ProductTest[] = [
