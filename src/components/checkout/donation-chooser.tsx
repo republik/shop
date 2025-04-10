@@ -32,7 +32,10 @@ export function DonationChooser({
   const t = useTranslations();
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
-  const [open, setOpen] = useState(false);
+  const [shouldOpen, setOpen] = useState(false);
+
+  // Always open when a donation option is set
+  const open = donationOption !== "" || shouldOpen;
 
   return (
     <div

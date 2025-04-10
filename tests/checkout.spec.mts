@@ -40,11 +40,14 @@ PRODUCTS.forEach(
       await page.waitForLoadState("load");
 
       if (donationOption) {
+        await page.getByRole("button", { name: "Optionen anzeigen" }).click();
+
         await page.getByRole("radio", { name: donationOption.name }).click();
         await expect(page.getByLabel(donationOption.name)).toBeChecked();
 
         // Reset form
         await page.getByRole("button", { name: "Zurücksetzen" }).click();
+        await page.getByRole("button", { name: "Optionen anzeigen" }).click();
         await expect(page.getByLabel(donationOption.name)).not.toBeChecked();
 
         // Select again
