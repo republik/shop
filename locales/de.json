@@ -157,7 +157,7 @@
             "currency": "Währung",
             "price": "Preis"
           },
-          "summary": "Jetzt zu bezahlen"
+          "summary": "Gesamtpreis"
         },
         "success": {
           "title": "Vielen Dank für Ihren Kauf",
@@ -192,12 +192,8 @@
         "day": "täglich",
         "undefined": ""
       },
-      "pricePerInterval": "{price} pro {interval}",
-      "priceDescription": "Sie bezahlen <b>{price} pro {interval}</b>, bis Sie kündigen.",
-      "priceDescriptionWithDiscount": "Sie bezahlen <b>im ersten {interval} {discountPrice}</b> und danach <b>{price} pro {interval}</b>, bis Sie kündigen.",
-      "priceDescriptionOnce": "Sie bezahlen <b>{price}</b>.",
+      "futurePriceDescription": "im ersten {interval}, danach {intervalAdjective} {price}",
       "action": "Kaufen",
-      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr.",
       "discount": {
         "itemName": "Rabatt"
       },

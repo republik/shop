@@ -81,15 +81,19 @@ export function CustomizeOfferView({
     const items: LineItem[] = [];
 
     items.push({
+      type: "OFFER",
       label: offer.name,
       amount: offer.price.amount,
+      recurringInterval: offer.price.recurring?.interval,
     });
 
     if (offer.discount /*&& !offer.customPrice*/) {
       items.push({
+        type: "DISCOUNT",
         label:
           offer.discount.name || t("checkout.preCheckout.discount.itemName"),
         amount: -1 * (offer.discount.amountOff ? offer.discount.amountOff : 0),
+        duration: offer.discount.duration,
       });
     }
 
@@ -104,6 +108,7 @@ export function CustomizeOfferView({
 
     if (donation) {
       items.push({
+        type: "DONATION",
         label: t("checkout.preCheckout.donate.itemName"),
         amount: donation.price.amount,
         hidden: true,
@@ -116,9 +121,11 @@ export function CustomizeOfferView({
 
     if (selectedDiscount) {
       items.push({
+        type: "DISCOUNT",
         label: t("checkout.preCheckout.reduced.itemName"),
         amount: -selectedDiscount.amountOff,
         hidden: true,
+        duration: selectedDiscount.duration,
       });
     }
 
@@ -188,38 +195,6 @@ export function CustomizeOfferView({
             </>
           }
         />
-
-        {/* TODO: this contains too many assumptions about discounts */}
-        {/* <p>
-          {offer.price.recurring
-            ? offer.discount
-              ? t.rich(
-                  "checkout.preCheckout.priceDescriptionWithDiscount",
-                  {
-                    discountPrice: formatPrice(total),
-                    price: formatPrice(offer.price.amount),
-                    interval: t(
-                      // @ts-expect-error FIXME possibly unknown interval
-                      `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
-                    ),
-                    b: (chunks) => <b>{chunks}</b>,
-                  },
-                  {}
-                )
-              : t.rich(
-                  "checkout.preCheckout.priceDescription",
-                  {
-                    price: formatPrice(offer.price.amount),
-                    interval: t(
-                      // @ts-expect-error FIXME possibly unknown interval
-                      `checkout.preCheckout.intervals.${offer.customPrice ? "year" : offer.price.recurring?.interval}`
-                    ),
-                    b: (chunks) => <b>{chunks}</b>,
-                  },
-                  {}
-                )
-            : formatPrice(offer.price.amount)}
-        </p> */}
       </div>
 
       {invalidPromoCode && (
