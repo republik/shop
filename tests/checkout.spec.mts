@@ -10,6 +10,7 @@ PRODUCTS.forEach(
     offerId,
     promoCode,
     expectedAmount,
+    futureAmount,
     requiresAddress,
     requiresLogin,
     donationOption,
@@ -72,6 +73,11 @@ PRODUCTS.forEach(
         expectedAmount
       );
 
+      if (futureAmount)
+        await expect(page.getByTestId("price-future-summary")).toContainText(
+          futureAmount
+        );
+
       await page.getByRole("button", { name: "Weiter" }).click();
 
       if (requiresLogin) {
@@ -119,6 +125,12 @@ PRODUCTS.forEach(
       await expect(
         stripeFrame.getByTestId("product-summary-total-amount")
       ).toContainText(expectedAmount);
+
+      if (futureAmount) {
+        await expect(
+          stripeFrame.getByTestId("product-summary-description")
+        ).toContainText(futureAmount);
+      }
 
       if (!requiresLogin) {
         await stripeFrame.getByLabel("E-Mail").fill(testEmail);

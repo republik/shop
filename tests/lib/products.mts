@@ -3,6 +3,7 @@ type ProductTest = {
   offerId: string;
   name: string;
   expectedAmount: string | RegExp;
+  futureAmount?: string | RegExp;
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
@@ -15,7 +16,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "monthly",
     offerId: "MONTHLY",
     name: "Monats-Abo",
-    expectedAmount: "11",
+    expectedAmount: "22",
     requiresAddress: false,
     requiresLogin: true,
   },
@@ -23,7 +24,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "yearly",
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
-    expectedAmount: "222",
+    expectedAmount: "240",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -32,6 +33,7 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
     expectedAmount: "199",
+    futureAmount: "240",
     promoCode: "E2ETEST",
     requiresAddress: true,
     requiresLogin: true,
