@@ -89,7 +89,11 @@ export async function OfferCardPrimary({
                 offer.price.amount - offer.discount.amountOff
               )}
             </p>
-            <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
+            <p className={intervalStyle}>
+              {offer.discount.duration === "once"
+                ? tOffer("intervalDiscount")
+                : tOffer("interval")}
+            </p>
           </>
         ) : (
           <>
