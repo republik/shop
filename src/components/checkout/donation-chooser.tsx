@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { FormField, RadioOption } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
-import * as Collapsible from "@radix-ui/react-collapsible";
 import { useTranslations } from "next-intl";
+import { Collapsible } from "radix-ui";
 import { useState } from "react";
 
 export const OPTION_CUSTOM = "CUSTOM";

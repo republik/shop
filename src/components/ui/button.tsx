@@ -3,7 +3,7 @@
 import { Spinner } from "@/components/ui/spinner";
 import { css, cx } from "@/theme/css";
 import { button, type ButtonVariantProps } from "@/theme/recipes";
-import { Slot } from "@radix-ui/react-slot";
+import { Slot } from "radix-ui";
 import { useMemo } from "react";
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -21,7 +21,7 @@ export const Button = ({
   loading,
   ...props
 }: ButtonProps) => {
-  const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot.Root : "button";
   const content = useMemo(() => {
     if (!loading) {
       return children;

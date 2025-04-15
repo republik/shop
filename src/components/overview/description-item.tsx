@@ -1,9 +1,9 @@
 "use client";
-import { css } from "@/theme/css";
-import { type ReactNode, useState } from "react";
-import * as Collapsible from "@radix-ui/react-collapsible";
 import { Button } from "@/components/ui/button";
+import { css } from "@/theme/css";
 import { CheckIcon, InfoIcon } from "lucide-react";
+import { Collapsible } from "radix-ui";
+import { type ReactNode, useState } from "react";
 
 export function DescriptionItem({
   icon = <CheckIcon />,
