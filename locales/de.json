@@ -192,6 +192,7 @@
         "day": "täglich",
         "undefined": ""
       },
+      "priceDescription": "pro {interval}",
       "futurePriceDescription": "im ersten {interval}, danach {intervalAdjective} {price}",
       "action": "Kaufen",
       "discount": {

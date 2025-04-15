@@ -5,7 +5,7 @@ import { FormField, RadioOption } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { Collapsible } from "radix-ui";
+import { Collapsible, ToggleGroup } from "radix-ui";
 import { useState } from "react";
 
 export const OPTION_CUSTOM = "CUSTOM";
@@ -21,12 +21,16 @@ export function DonationChooser({
   setDonationOption,
   customDonation,
   setCustomDonationOption,
+  donationRecurring,
+  setDonationRecurring,
 }: {
   options: DonationOption[];
   donationOption: string;
   setDonationOption: (value: string) => void;
   customDonation: string;
   setCustomDonationOption: (value: string) => void;
+  donationRecurring: string;
+  setDonationRecurring: (value: string) => void;
 }) {
   const t = useTranslations();
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
@@ -62,6 +66,56 @@ export function DonationChooser({
 
         <Collapsible.Content>
           <div
+            className={css({
+              pb: "3",
+            })}
+          >
+            <ToggleGroup.Root
+              type="single"
+              value={donationRecurring}
+              onValueChange={(value) => {
+                if (value) {
+                  setDonationRecurring(value);
+                  setDonationOption("");
+                  setCustomDonationOption("");
+                }
+              }}
+            >
+              <ToggleGroup.Item
+                value="false"
+                className={css({
+                  px: "2",
+                  py: "1",
+                  border: "[1px solid black]",
+                  borderTopLeftRadius: "sm",
+                  borderBottomLeftRadius: "sm",
+                  _checked: {
+                    background: "text",
+                    color: "text.inverted",
+                  },
+                })}
+              >
+                einmalig
+              </ToggleGroup.Item>
+              <ToggleGroup.Item
+                value="true"
+                className={css({
+                  px: "2",
+                  py: "1",
+                  border: "[1px solid black]",
+                  borderTopRightRadius: "sm",
+                  borderBottomRightRadius: "sm",
+                  _checked: {
+                    background: "text",
+                    color: "text.inverted",
+                  },
+                })}
+              >
+                jährlich
+              </ToggleGroup.Item>
+            </ToggleGroup.Root>
+          </div>
+          <div
             role="radiogroup"
             className={css({
               spaceY: "3",
@@ -81,10 +135,6 @@ export function DonationChooser({
                   }}
                 >
                   + {f(price.amount)}
-                  {price.recurring
-                    ? // @ts-expect-error interval
-                      `, ${tInterval(price.recurring.interval)}`
-                    : ""}
                 </RadioOption>
               );
             })}
