@@ -116,3 +116,41 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
     </CenterContainer>
   );
 }
+
+export function DonationSuccess({ offer, session }: SuccessProps) {
+  const t = useTranslations("checkout.checkout.success.donation");
+
+  const plausible = usePlausible();
+
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
+
+  return (
+    <CenterContainer>
+      <CheckCircleIcon
+        className={css({
+          height: "10",
+          width: "10",
+        })}
+      />
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      <p className={css({ mb: "4" })}>
+        {t.rich("description", {
+          email: () => (
+            <strong data-testid="success-recipient-email">
+              {session.email}
+            </strong>
+          ),
+        })}
+      </p>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
+    </CenterContainer>
+  );
+}

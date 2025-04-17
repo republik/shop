@@ -30,6 +30,7 @@ type CheckoutState =
       checkoutSession?: CheckoutSessionData;
       totalSteps: number;
       currentStep: number;
+      requiresInfo: boolean;
     }
   | {
       step: "INFO";
@@ -96,6 +97,12 @@ export async function getCheckoutState({
       )
     : undefined;
 
+  // FIXME Replace ID check with something?
+  const requiresInfo =
+    offer.id !== "DONATION" && offer.requiresLogin ? true : false;
+
+  const totalSteps = requiresInfo ? 3 : 2;
+
   if (offer.requiresLogin && !me) {
     return {
       step: "LOGIN",
@@ -103,27 +110,24 @@ export async function getCheckoutState({
     };
   }
 
-  const totalSteps = offer.requiresLogin ? 3 : 2;
+  const productAvailability = checkIfUserCanPurchase({ me, offer });
+
+  if (!productAvailability.available) {
+    return {
+      step: "UNAVAILABLE",
+      reason: productAvailability.reason,
+      offer,
+    };
+  }
 
   if (!checkoutSession) {
-    const productAvailability = offer.requiresLogin
-      ? checkIfUserCanPurchase(me)
-      : { available: true };
-
-    if (!productAvailability.available) {
-      return {
-        step: "UNAVAILABLE",
-        reason: productAvailability.reason,
-        offer,
-      };
-    }
-
     return {
       step: "INITIAL",
       offer,
       me,
       totalSteps,
       currentStep: 1,
+      requiresInfo,
     };
   }
 
@@ -131,7 +135,7 @@ export async function getCheckoutState({
   if (
     checkoutSession.status === "open" &&
     step === "info" &&
-    offer.requiresLogin &&
+    requiresInfo &&
     me
   ) {
     return {

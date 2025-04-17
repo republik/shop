@@ -3,6 +3,7 @@ import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
 import { EmbeddedCheckoutView } from "@/components/checkout/embedded-checkout-view";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import {
+  DonationSuccess,
   GiftSuccess,
   SubscriptionSuccess,
 } from "@/components/checkout/success-view";
@@ -125,7 +126,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
 
               // Construct URL for next step
               const p = new URLSearchParams({
-                step: checkoutState.offer.requiresLogin ? "info" : "payment",
+                step: checkoutState.requiresInfo ? "info" : "payment",
                 session_id: sessionId,
               });
 
@@ -191,10 +192,16 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       );
 
     case "SUCCESS":
+      const isDonation = checkoutState.offer.id === "DONATION";
       const isGift = checkoutState.offer.id.startsWith("GIFT_");
 
       return isGift ? (
         <GiftSuccess
+          offer={checkoutState.offer}
+          session={checkoutState.checkoutSession}
+        />
+      ) : isDonation ? (
+        <DonationSuccess
           offer={checkoutState.offer}
           session={checkoutState.checkoutSession}
         />

@@ -177,6 +177,7 @@
         "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
+          "needsMembershipForDonation": "Um spenden zu können, benötigen Sie eine laufende Mitgliedschaft bei der Project R Genossenschaft.",
           "generic": ""
         }
       },
@@ -239,6 +240,11 @@
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
           "action": "Zurück zu allen Angeboten"
+        },
+        "donation": {
+          "title": "Vielen Dank für Ihre Spende",
+          "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zum Magazin"
         },
         "redeem": {
           "title": "Herzlichen Glückwunsch",
