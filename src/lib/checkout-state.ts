@@ -184,5 +184,6 @@ export async function getCheckoutState({
     totalSteps,
     checkoutSession,
     currentStep: 1,
+    requiresInfo,
   };
 }
