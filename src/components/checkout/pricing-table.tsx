@@ -36,7 +36,7 @@ export function PricingTable({
   const futureAmount = useMemo(
     () =>
       lineItems.reduce((sum, item) => {
-        if (item.duration !== "once" && item.recurringInterval) {
+        if (item.duration === "forever" || item.recurringInterval) {
           return sum + item.amount;
         }
         return sum;
@@ -49,8 +49,7 @@ export function PricingTable({
     [lineItems]
   );
 
-  const showFuturePriceDescription =
-    recurringInterval && total !== futureAmount;
+  const showSubscriptionInfo = lineItems.some((item) => item.recurringInterval);
 
   return (
     <>
@@ -105,7 +104,7 @@ export function PricingTable({
               data-f={JSON.stringify(item)}
             >
               <th scope="row">{item.label}</th>
-              <td>{formatPrice(item.amount)}</td>
+              <td>{formatPrice(item.amount, { displayZeroAmount: false })}</td>
             </tr>
           ))}
 
@@ -129,37 +128,39 @@ export function PricingTable({
             </th>
             <td data-testid="price-overview-total">{formatPrice(total)}</td>
           </tr>
-          <tr>
-            <td
-              colSpan={2}
-              data-testid="price-future-summary"
-              className={css({
-                fontSize: "sm",
-                fontWeight: "normal",
-                color: "text.secondary",
-                textAlign: "right",
-              })}
-            >
-              {total !== futureAmount
-                ? t("checkout.preCheckout.futurePriceDescription", {
-                    interval: t(
-                      // @ts-expect-error FIXME possibly unknown interval
-                      `checkout.preCheckout.intervals.${recurringInterval}`
-                    ),
-                    intervalAdjective: t(
-                      // @ts-expect-error FIXME possibly unknown interval
-                      `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-                    ),
-                    price: formatPrice(futureAmount),
-                  })
-                : t("checkout.preCheckout.priceDescription", {
-                    interval: t(
-                      // @ts-expect-error FIXME possibly unknown interval
-                      `checkout.preCheckout.intervals.${recurringInterval}`
-                    ),
-                  })}
-            </td>
-          </tr>
+          {showSubscriptionInfo && (
+            <tr>
+              <td
+                colSpan={2}
+                data-testid="price-future-summary"
+                className={css({
+                  fontSize: "sm",
+                  fontWeight: "normal",
+                  color: "text.secondary",
+                  textAlign: "right",
+                })}
+              >
+                {total !== futureAmount
+                  ? t("checkout.preCheckout.futurePriceDescription", {
+                      interval: t(
+                        // @ts-expect-error FIXME possibly unknown interval
+                        `checkout.preCheckout.intervals.${recurringInterval}`
+                      ),
+                      intervalAdjective: t(
+                        // @ts-expect-error FIXME possibly unknown interval
+                        `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+                      ),
+                      price: formatPrice(futureAmount),
+                    })
+                  : t("checkout.preCheckout.priceDescription", {
+                      interval: t(
+                        // @ts-expect-error FIXME possibly unknown interval
+                        `checkout.preCheckout.intervals.${recurringInterval}`
+                      ),
+                    })}
+              </td>
+            </tr>
+          )}
         </tfoot>
       </table>
     </>

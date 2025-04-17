@@ -190,6 +190,7 @@
         "year": "jährlich",
         "week": "wöchentlich",
         "day": "täglich",
+        "once": "einmalig",
         "undefined": ""
       },
       "priceDescription": "pro {interval}",

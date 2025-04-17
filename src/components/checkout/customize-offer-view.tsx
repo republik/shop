@@ -70,11 +70,6 @@ export function CustomizeOfferView({
     `${offer.id}_donationRecurring`
   );
 
-  const filteredDonationOptions =
-    (donationRecurring === "true"
-      ? donationOptions?.filter((opt) => opt.price.recurring)
-      : donationOptions?.filter((opt) => !opt.price.recurring)) ?? [];
-
   useEffect(() => {
     if (state.sessionId) {
       onComplete({
@@ -111,7 +106,7 @@ export function CustomizeOfferView({
             price: {
               amount: Math.max(0, parseInt(customDonation, 10) * 100),
               recurring:
-                donationRecurring === "true"
+                donationRecurring !== "once"
                   ? offer.price.recurring
                   : undefined,
             },
@@ -199,7 +194,7 @@ export function CustomizeOfferView({
               )}
               {hasDonationOptions && (
                 <DonationChooser
-                  options={filteredDonationOptions}
+                  options={donationOptions}
                   donationOption={donationOption}
                   setDonationOption={setDonationOption}
                   customDonation={customDonation}

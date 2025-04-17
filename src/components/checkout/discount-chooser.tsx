@@ -74,7 +74,7 @@ export function DiscountChooser({
                 setDiscountOption(id);
               }}
             >
-              - {f(amountOff)}
+              {f(-1 * amountOff)}
             </RadioOption>
           );
         })}

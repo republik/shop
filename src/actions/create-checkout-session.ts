@@ -19,6 +19,7 @@ export async function createCheckoutSession(
   const discountOption = formData.get("discountOption")?.toString();
   const discountReason = formData.get("discountReason")?.toString();
   const promoCode = formData.get("promoCode")?.toString();
+  const customDonationRecurring = formData.has("customDonationRecurring");
 
   const customDonationAmount =
     donationOption === "CUSTOM" && customDonation
@@ -38,7 +39,7 @@ export async function createCheckoutSession(
       promoCode,
       donationOption: customDonationAmount ? null : donationOption,
       customDonation: customDonationAmount
-        ? { amount: customDonationAmount }
+        ? { amount: customDonationAmount, recurring: customDonationRecurring }
         : null,
       selectedDiscount: discountOption ?? null,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,

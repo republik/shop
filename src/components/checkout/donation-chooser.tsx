@@ -37,6 +37,20 @@ export function DonationChooser({
   const f = useFormatCurrency("CHF");
   const [shouldOpen, setOpen] = useState(false);
 
+  const intervals = new Set(
+    options.map(({ price }) => {
+      return price.recurring?.interval ?? "once";
+    })
+  );
+
+  const filteredOptions = intervals.has(donationRecurring)
+    ? options.filter(
+        ({ price }) =>
+          (donationRecurring === "once" && !price.recurring) ||
+          price.recurring?.interval === donationRecurring
+      )
+    : options;
+
   // Always open when a donation option is set
   const open = donationOption !== "" || shouldOpen;
 
@@ -70,50 +84,48 @@ export function DonationChooser({
               pb: "3",
             })}
           >
-            <ToggleGroup.Root
-              type="single"
-              value={donationRecurring}
-              onValueChange={(value) => {
-                if (value) {
-                  setDonationRecurring(value);
-                  setDonationOption("");
-                  setCustomDonationOption("");
-                }
-              }}
-            >
-              <ToggleGroup.Item
-                value="false"
-                className={css({
-                  px: "2",
-                  py: "1",
-                  border: "[1px solid black]",
-                  borderTopLeftRadius: "sm",
-                  borderBottomLeftRadius: "sm",
-                  _checked: {
-                    background: "text",
-                    color: "text.inverted",
-                  },
-                })}
+            {intervals.size > 1 && (
+              <ToggleGroup.Root
+                type="single"
+                value={donationRecurring}
+                onValueChange={(value) => {
+                  if (value) {
+                    setDonationRecurring(value);
+                    setDonationOption("");
+                    setCustomDonationOption("");
+                  }
+                }}
               >
-                einmalig
-              </ToggleGroup.Item>
-              <ToggleGroup.Item
-                value="true"
-                className={css({
-                  px: "2",
-                  py: "1",
-                  border: "[1px solid black]",
-                  borderTopRightRadius: "sm",
-                  borderBottomRightRadius: "sm",
-                  _checked: {
-                    background: "text",
-                    color: "text.inverted",
-                  },
-                })}
-              >
-                jährlich
-              </ToggleGroup.Item>
-            </ToggleGroup.Root>
+                {[...intervals].map((interval) => (
+                  <ToggleGroup.Item
+                    key={interval}
+                    value={interval}
+                    className={css({
+                      px: "2",
+                      py: "1",
+                      border: "[1px solid black]",
+                      _firstOfType: {
+                        borderTopLeftRadius: "sm",
+                        borderBottomLeftRadius: "sm",
+                      },
+                      _lastOfType: {
+                        borderTopRightRadius: "sm",
+                        borderBottomRightRadius: "sm",
+                      },
+                      _checked: {
+                        background: "text",
+                        color: "text.inverted",
+                      },
+                    })}
+                  >
+                    {
+                      // @ts-expect-error FIXME possibly unknown interval
+                      tInterval(interval)
+                    }
+                  </ToggleGroup.Item>
+                ))}
+              </ToggleGroup.Root>
+            )}
           </div>
           <div
             role="radiogroup"
@@ -121,7 +133,7 @@ export function DonationChooser({
               spaceY: "3",
             })}
           >
-            {options.map(({ id, price }) => {
+            {filteredOptions.map(({ id, price }) => {
               return (
                 <RadioOption
                   key={id}
@@ -134,7 +146,7 @@ export function DonationChooser({
                     setCustomDonationOption("");
                   }}
                 >
-                  + {f(price.amount)}
+                  {f(price.amount)}
                 </RadioOption>
               );
             })}
@@ -168,6 +180,14 @@ export function DonationChooser({
                   label={t("checkout.preCheckout.donate.optionCustomField")}
                   hideLabel
                 />
+                {donationRecurring !== "once" && (
+                  <input
+                    type="hidden"
+                    readOnly
+                    name="customDonationRecurring"
+                    value="true"
+                  />
+                )}
               </div>
             )}
 
