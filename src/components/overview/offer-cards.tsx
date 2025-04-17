@@ -22,7 +22,7 @@ export async function OfferCardPrimary({
   ctaColor,
   redirect,
 }: {
-  offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
+  offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
   color?: string;
   background?: string;
   ctaColor?: string;
@@ -77,33 +77,34 @@ export async function OfferCardPrimary({
       <div>
         <h2 className={titleStyle}>{tOffer("title")}</h2>
 
-        {offer.discount ? (
-          <>
-            <p className={titleStyle}>
-              {currencyPrefix}
-              <del>{offer.price.amount / 100}</del>
-            </p>
-            <p className={titleStyle}>
-              {currencyPrefix}
-              {formatCurrencyShort(
-                offer.price.amount - offer.discount.amountOff
-              )}
-            </p>
-            <p className={intervalStyle}>
-              {offer.discount.duration === "once"
-                ? tOffer("intervalDiscount")
-                : tOffer("interval")}
-            </p>
-          </>
-        ) : (
-          <>
-            <p className={titleStyle}>
-              {currencyPrefix}
-              {formatCurrencyShort(offer.price.amount)}
-            </p>
-            <p className={intervalStyle}>{tOffer("interval")}</p>
-          </>
-        )}
+        {offer.price.amount > 0 &&
+          (offer.discount ? (
+            <>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                <del>{offer.price.amount / 100}</del>
+              </p>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                {formatCurrencyShort(
+                  offer.price.amount - offer.discount.amountOff
+                )}
+              </p>
+              <p className={intervalStyle}>
+                {offer.discount.duration === "once"
+                  ? tOffer("intervalDiscount")
+                  : tOffer("interval")}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                {formatCurrencyShort(offer.price.amount)}
+              </p>
+              <p className={intervalStyle}>{tOffer("interval")}</p>
+            </>
+          ))}
       </div>
 
       <div className={css({ flexGrow: 1 })}>

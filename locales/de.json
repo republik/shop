@@ -64,6 +64,13 @@
         "intervalDiscount": "im ersten Jahr",
         "info": "Die vergünstigte Jahresmitgliedschaft für Menschen in Ausbildung.",
         "cta": "Mitglied werden"
+      },
+      "DONATION": {
+        "title": "Spende",
+        "interval": "",
+        "intervalDiscount": "",
+        "info": "Eine Spende für die Project R Genossenschaft",
+        "cta": "Jetzt spenden"
       }
     },
     "gift": {
