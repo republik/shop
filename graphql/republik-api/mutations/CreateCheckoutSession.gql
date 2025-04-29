@@ -5,14 +5,12 @@ mutation CreateCheckoutSession(
   $promoCode: String
   $donationOption: ID
   $customDonation: CustomDonation
-  $selectedDiscount: ID
 ) {
   createCheckoutSession(
     offerId: $offerId
     promoCode: $promoCode
     withDonation: $donationOption
     withCustomDonation: $customDonation
-    withSelectedDiscount: $selectedDiscount
     options: { uiMode: EMBEDDED, metadata: $metadata, returnURL: $returnUrl }
   ) {
     company

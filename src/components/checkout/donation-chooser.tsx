@@ -12,10 +12,11 @@ export const OPTION_CUSTOM = "CUSTOM";
 
 type DonationOption = {
   id: string;
-  price: { amount: number; recurring?: { interval: string } | null };
+  amount: number;
 };
 
 export function DonationChooser({
+  recurringInterval,
   options,
   donationOption,
   setDonationOption,
@@ -24,6 +25,7 @@ export function DonationChooser({
   donationRecurring,
   setDonationRecurring,
 }: {
+  recurringInterval?: string;
   options: DonationOption[];
   donationOption: string;
   setDonationOption: (value: string) => void;
@@ -36,20 +38,6 @@ export function DonationChooser({
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
   const [shouldOpen, setOpen] = useState(false);
-
-  const intervals = new Set(
-    options.map(({ price }) => {
-      return price.recurring?.interval ?? "once";
-    })
-  );
-
-  const filteredOptions = intervals.has(donationRecurring)
-    ? options.filter(
-        ({ price }) =>
-          (donationRecurring === "once" && !price.recurring) ||
-          price.recurring?.interval === donationRecurring
-      )
-    : options;
 
   // Always open when a donation option is set
   const open = donationOption !== "" || shouldOpen;
@@ -84,19 +72,17 @@ export function DonationChooser({
               pb: "3",
             })}
           >
-            {intervals.size > 1 && (
+            {recurringInterval && (
               <ToggleGroup.Root
                 type="single"
-                value={donationRecurring}
+                value={donationRecurring || "once"}
                 onValueChange={(value) => {
                   if (value) {
                     setDonationRecurring(value);
-                    setDonationOption("");
-                    setCustomDonationOption("");
                   }
                 }}
               >
-                {[...intervals].map((interval) => (
+                {["once", recurringInterval].map((interval) => (
                   <ToggleGroup.Item
                     key={interval}
                     value={interval}
@@ -133,20 +119,20 @@ export function DonationChooser({
               spaceY: "3",
             })}
           >
-            {filteredOptions.map(({ id, price }) => {
+            {options.map(({ id, amount }) => {
               return (
                 <RadioOption
                   key={id}
                   name="donationOption"
                   checked={donationOption === id}
-                  value={id}
+                  value={amount.toString()}
                   onChange={() => {
                     setDonationOption(id);
                     // reset custom donation
                     setCustomDonationOption("");
                   }}
                 >
-                  {f(price.amount)}
+                  {f(amount)}
                 </RadioOption>
               );
             })}
@@ -160,6 +146,15 @@ export function DonationChooser({
             >
               {t("checkout.preCheckout.donate.optionCustom")}
             </RadioOption>
+
+            {donationRecurring && donationRecurring !== "once" && (
+              <input
+                type="hidden"
+                readOnly
+                name="donationRecurring"
+                value="true"
+              />
+            )}
 
             {donationOption === "CUSTOM" && (
               <div
@@ -180,14 +175,6 @@ export function DonationChooser({
                   label={t("checkout.preCheckout.donate.optionCustomField")}
                   hideLabel
                 />
-                {donationRecurring !== "once" && (
-                  <input
-                    type="hidden"
-                    readOnly
-                    name="customDonationRecurring"
-                    value="true"
-                  />
-                )}
               </div>
             )}
 
@@ -199,6 +186,7 @@ export function DonationChooser({
                 setOpen(false);
                 setDonationOption("");
                 setCustomDonationOption("");
+                setDonationRecurring("");
               }}
             >
               {t("checkout.preCheckout.donate.reset")}

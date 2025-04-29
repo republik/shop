@@ -19,11 +19,13 @@ export async function createCheckoutSession(
   const discountOption = formData.get("discountOption")?.toString();
   const discountReason = formData.get("discountReason")?.toString();
   const promoCode = formData.get("promoCode")?.toString();
-  const customDonationRecurring = formData.has("customDonationRecurring");
+  const donationRecurring = formData.has("donationRecurring");
 
-  const customDonationAmount =
+  const donationAmount =
     donationOption === "CUSTOM" && customDonation
-      ? parseInt(customDonation, 10) * 100
+      ? parseInt(customDonation, 10) * 100 // customDonation is a user-provided field in francs, we need to convert to cents
+      : donationOption
+      ? parseInt(donationOption, 10)
       : undefined;
 
   const gqlClient = await getClient();
@@ -34,12 +36,10 @@ export async function createCheckoutSession(
     CreateCheckoutSessionDocument,
     {
       offerId: offerId,
-      // customPrice: price ? Number(price) * 100 : undefined,
       metadata: { ...analyticsParams, reason: discountReason },
       promoCode,
-      donationOption: customDonationAmount ? null : donationOption,
-      customDonation: customDonationAmount
-        ? { amount: customDonationAmount, recurring: customDonationRecurring }
+      customDonation: donationAmount
+        ? { amount: donationAmount, recurring: donationRecurring }
         : null,
       selectedDiscount: discountOption ?? null,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,

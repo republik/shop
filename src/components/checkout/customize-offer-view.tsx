@@ -41,11 +41,18 @@ export function CustomizeOfferView({
   promoCode,
   onComplete,
 }: CustomizeOfferProps) {
-  const donationOptions = offer.donationOptions;
+  const donationOptions = offer.suggestedDonations?.map((amount) => {
+    return {
+      id: `option_${amount}`,
+      amount,
+    };
+  });
   const discountOptions = offer.discountOptions;
 
   const hasDonationOptions = donationOptions && donationOptions.length > 0;
   const hasDiscountOptions = discountOptions && discountOptions.length > 0;
+
+  const recurringInterval = offer.price.recurring?.interval;
 
   const t = useTranslations();
 
@@ -90,7 +97,7 @@ export function CustomizeOfferView({
       recurringInterval: offer.price.recurring?.interval,
     });
 
-    if (offer.discount /*&& !offer.customPrice*/) {
+    if (offer.discount) {
       items.push({
         type: "DISCOUNT",
         label:
@@ -100,26 +107,27 @@ export function CustomizeOfferView({
       });
     }
 
-    const donation =
-      customDonation && donationOption === OPTION_CUSTOM
-        ? {
-            price: {
-              amount: Math.max(0, parseInt(customDonation, 10) * 100),
-              recurring:
-                donationRecurring !== "once"
-                  ? offer.price.recurring
-                  : undefined,
-            },
-          }
-        : donationOptions?.find(({ id }) => id === donationOption);
+    const selectedDonation = donationOptions?.find(
+      ({ id }) => id === donationOption
+    );
 
-    if (donation) {
+    const donationAmount =
+      customDonation && donationOption === OPTION_CUSTOM
+        ? Math.max(0, parseInt(customDonation, 10) * 100)
+        : selectedDonation?.amount;
+
+    if (donationAmount) {
+      const recurringInterval =
+        donationRecurring !== "once" && donationRecurring !== ""
+          ? offer.price.recurring?.interval
+          : undefined;
+
       items.push({
         type: "DONATION",
         label: t("checkout.preCheckout.donate.itemName"),
-        amount: donation.price.amount,
+        amount: donationAmount,
         hidden: true,
-        recurringInterval: donation.price.recurring?.interval,
+        recurringInterval,
       });
     }
 
@@ -194,6 +202,7 @@ export function CustomizeOfferView({
               )}
               {hasDonationOptions && (
                 <DonationChooser
+                  recurringInterval={recurringInterval}
                   options={donationOptions}
                   donationOption={donationOption}
                   setDonationOption={setDonationOption}

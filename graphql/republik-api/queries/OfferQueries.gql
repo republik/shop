@@ -42,17 +42,7 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
       # durationInMonths # only relevant when duration is "repeating"
     }
 
-    donationOptions {
-      id
-      price {
-        amount
-        currency
-        recurring {
-          interval
-          intervalCount
-        }
-      }
-    }
+    suggestedDonations
 
     discountOptions {
       id
