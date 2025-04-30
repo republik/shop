@@ -94,6 +94,9 @@ export function DonationChooser(props: DonationChooserProps) {
             _stateClosed: {
               animation: "fadeOut",
             },
+            sm: {
+              placeItems: "center",
+            },
           })}
         >
           <Dialog.Content
@@ -110,6 +113,14 @@ export function DonationChooser(props: DonationChooserProps) {
               _stateClosed: {
                 animation: "slideDown",
               },
+
+              sm: {
+                width: "content.narrow",
+                _stateOpen: { animation: "slideIn" },
+                _stateClosed: {
+                  animation: "slideOut",
+                },
+              },
             })}
           >
             <div
@@ -121,10 +132,8 @@ export function DonationChooser(props: DonationChooserProps) {
                 mb: "4",
               })}
             >
-              <Dialog.Title>
-                <h2 className={css({ textStyle: "h3Sans" })}>
-                  {t("checkout.preCheckout.donate.chooseAmount")}
-                </h2>
+              <Dialog.Title className={css({ textStyle: "h3Sans" })}>
+                {t("checkout.preCheckout.donate.chooseAmount")}
               </Dialog.Title>
               <Dialog.Close className={css({})} aria-label="schliessen">
                 <XIcon />
