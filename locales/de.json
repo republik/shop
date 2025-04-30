@@ -164,7 +164,7 @@
             "currency": "Währung",
             "price": "Preis"
           },
-          "summary": "Gesamtpreis"
+          "summary": "Gesamtsumme"
         },
         "success": {
           "title": "Vielen Dank für Ihren Kauf",
@@ -180,6 +180,29 @@
           "needsMembershipForDonation": "Um spenden zu können, benötigen Sie eine laufende Mitgliedschaft bei der Project R Genossenschaft.",
           "generic": ""
         }
+      },
+
+      "offer": {
+        "YEARLY": {
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+        },
+        "MONTHLY": {
+          "description": "Einen Monat lang Zugang zu allem, was die Republik zu bieten hat."
+        },
+        "BENEFACTOR": {
+          "description": "Hallo"
+        },
+        "REDUCED": {
+          "description": "Hallo"
+        },
+        "STUDENT": {
+          "description": "Hallo"
+        }
+      },
+
+      "durationAvailable": {
+        "once": "Einmal gültig",
+        "forever": "Unbeschränkt gültig"
       },
 
       "invalidPromoCode": {
@@ -210,7 +233,7 @@
       "donate": {
         "title": "Für Grosszügige",
         "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind.",
-        "itemName": "Spende",
+        "itemName": "Freiwillige Spende",
         "optionNone": "Nein danke",
         "optionCustom": "Eigener Betrag",
         "optionCustomField": "Betrag",

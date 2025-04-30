@@ -1,11 +1,14 @@
 "use client";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
+import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
 export interface LineItem {
   type: "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
+  description?: string;
+  info?: string;
   amount: number;
   hidden?: boolean;
   duration?: string;
@@ -16,6 +19,12 @@ interface PricingTableProps {
   lineItems: LineItem[];
   extraItem?: ReactNode;
 }
+
+const lineItemIcons = {
+  OFFER: null,
+  DISCOUNT: TicketPercentIcon,
+  DONATION: HandHeartIcon,
+} as const;
 
 export function PricingTable({
   currency,
@@ -57,10 +66,11 @@ export function PricingTable({
         className={css({
           borderCollapse: "collapse",
           "& th, td": {
-            pb: "4",
+            py: "4",
             // fontSize: "md",
             // fontWeight: "normal",
             // whiteSpace: "nowrap",
+            verticalAlign: "top",
           },
           "& th:first-child": {
             width: "full",
@@ -73,6 +83,7 @@ export function PricingTable({
             // fontVariantNumeric: "tabular-nums",
           },
           "& tfoot > tr ": {
+            fontSize: "lg",
             fontWeight: "medium",
           },
           "& tfoot > tr:first-child > td,& tfoot > tr > th": {
@@ -97,19 +108,68 @@ export function PricingTable({
           </tr>
         </thead>
         <tbody>
-          {lineItems.map((item) => (
-            <tr
-              key={item.label}
-              className={cx(item.hidden && "sr-only")}
-              data-f={JSON.stringify(item)}
-            >
-              <th scope="row">{item.label}</th>
-              <td>{formatPrice(item.amount, { displayZeroAmount: false })}</td>
-            </tr>
-          ))}
+          {lineItems.map((item) => {
+            const Icon = lineItemIcons[item.type];
+
+            return (
+              <tr
+                key={item.label}
+                className={cx(
+                  item.hidden && "sr-only",
+                  css({
+                    borderColor: "divider",
+                    borderTopWidth: 1,
+                    _firstOfType: { borderTop: "none" },
+                  })
+                )}
+                data-f={JSON.stringify(item)}
+              >
+                <th scope="row">
+                  <div
+                    className={css({
+                      fontSize: "lg",
+                      display: "flex",
+                      gap: "2",
+                      alignItems: "center",
+                    })}
+                  >
+                    {Icon && <Icon />}
+                    {item.label}
+                  </div>
+
+                  {item.description && (
+                    <p
+                      className={css({
+                        fontWeight: "normal",
+                        mt: "2",
+                      })}
+                    >
+                      {item.description}
+                    </p>
+                  )}
+
+                  {item.info && (
+                    <p
+                      className={css({
+                        fontWeight: "normal",
+                        color: "text.tertiary",
+                        mt: "2",
+                        _firstLetter: { textTransform: "uppercase" },
+                      })}
+                    >
+                      {item.info}
+                    </p>
+                  )}
+                </th>
+                <td className={css({ fontSize: "lg", fontWeight: "medium" })}>
+                  {formatPrice(item.amount, { displayZeroAmount: false })}
+                </td>
+              </tr>
+            );
+          })}
 
           {extraItem && (
-            <tr>
+            <tr className="extra">
               <td
                 colSpan={2}
                 className={css({

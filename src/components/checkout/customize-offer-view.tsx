@@ -90,20 +90,32 @@ export function CustomizeOfferView({
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
 
+    const descriptionTranslationKey = `checkout.preCheckout.offer.${offer.id}.description`;
+    // @ts-expect-error unknown message key
+    const description = t.has(descriptionTranslationKey)
+      ? // @ts-expect-error unknown message key
+        t(descriptionTranslationKey)
+      : undefined;
+
     items.push({
       type: "OFFER",
       label: offer.name,
+      description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
     });
 
     if (offer.discount) {
+      const infoTranslationKey = `checkout.preCheckout.durationAvailable.${offer.discount.duration}`;
+
       items.push({
         type: "DISCOUNT",
         label:
           offer.discount.name || t("checkout.preCheckout.discount.itemName"),
         amount: -1 * (offer.discount.amountOff ? offer.discount.amountOff : 0),
         duration: offer.discount.duration,
+        // @ts-expect-error unknown message key
+        info: t.has(infoTranslationKey) ? t(infoTranslationKey) : undefined,
       });
     }
 
@@ -122,12 +134,20 @@ export function CustomizeOfferView({
           ? offer.price.recurring?.interval
           : undefined;
 
+      const info =
+        recurringInterval &&
+        // @ts-expect-error unknown message key
+        t.has(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
+          ? // @ts-expect-error unknown message key
+            t(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
+          : t(`checkout.preCheckout.intervalsAdjective.once`);
+
       items.push({
         type: "DONATION",
         label: t("checkout.preCheckout.donate.itemName"),
         amount: donationAmount,
-        hidden: true,
         recurringInterval,
+        info,
       });
     }
 
@@ -190,29 +210,32 @@ export function CustomizeOfferView({
           currency={offer.price.currency}
           lineItems={lineItems}
           extraItem={
-            <>
-              {hasDiscountOptions && (
-                <DiscountChooser
-                  options={discountOptions}
-                  discountOption={discountOption}
-                  setDiscountOption={setDiscountOption}
-                  discountReason={discountReason}
-                  setDiscountReason={setDiscountReason}
-                />
-              )}
-              {hasDonationOptions && (
-                <DonationChooser
-                  recurringInterval={recurringInterval}
-                  options={donationOptions}
-                  donationOption={donationOption}
-                  setDonationOption={setDonationOption}
-                  customDonation={customDonation}
-                  setCustomDonationOption={setCustomDonationOption}
-                  donationRecurring={donationRecurring}
-                  setDonationRecurring={setDonationRecurring}
-                />
-              )}
-            </>
+            hasDiscountOptions ||
+            (hasDonationOptions && (
+              <>
+                {hasDiscountOptions && (
+                  <DiscountChooser
+                    options={discountOptions}
+                    discountOption={discountOption}
+                    setDiscountOption={setDiscountOption}
+                    discountReason={discountReason}
+                    setDiscountReason={setDiscountReason}
+                  />
+                )}
+                {hasDonationOptions && (
+                  <DonationChooser
+                    recurringInterval={recurringInterval}
+                    options={donationOptions}
+                    donationOption={donationOption}
+                    setDonationOption={setDonationOption}
+                    customDonation={customDonation}
+                    setCustomDonationOption={setCustomDonationOption}
+                    donationRecurring={donationRecurring}
+                    setDonationRecurring={setDonationRecurring}
+                  />
+                )}
+              </>
+            ))
           }
         />
       </div>
