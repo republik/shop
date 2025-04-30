@@ -1,8 +1,15 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
-import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
+import {
+  HandHeartIcon,
+  TicketPercentIcon,
+  Trash2Icon,
+  TrashIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
+import { VisuallyHidden } from "radix-ui";
 import { type ReactNode, useMemo } from "react";
 export interface LineItem {
   type: "OFFER" | "DONATION" | "DISCOUNT";
@@ -13,6 +20,8 @@ export interface LineItem {
   hidden?: boolean;
   duration?: string;
   recurringInterval?: string;
+  onChange?: (item: LineItem) => void;
+  onRemove?: (item: LineItem) => void;
 }
 interface PricingTableProps {
   currency: string;
@@ -158,6 +167,41 @@ export function PricingTable({
                       })}
                     >
                       {item.info}
+                    </p>
+                  )}
+
+                  {(item.onChange || item.onRemove) && (
+                    <p
+                      className={css({
+                        display: "flex",
+                        gap: "2",
+                        mt: "2",
+                        color: "text.tertiary",
+                        fontWeight: "normal",
+                      })}
+                    >
+                      {item.onChange && (
+                        <Button
+                          variant="link"
+                          type="button"
+                          onClick={() => {
+                            item.onChange?.(item);
+                          }}
+                        >
+                          {t("checkout.actions.change")}
+                        </Button>
+                      )}
+                      {item.onRemove && (
+                        <Button
+                          variant="link"
+                          type="button"
+                          onClick={() => {
+                            item.onRemove?.(item);
+                          }}
+                        >
+                          {t("checkout.actions.remove")}
+                        </Button>
+                      )}
                     </p>
                   )}
                 </th>

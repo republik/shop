@@ -137,6 +137,7 @@
   "checkout": {
     "actions": {
       "change": "Ändern",
+      "remove": "Entfernen",
       "buy": "Kaufen",
       "next": "Weiter"
     },

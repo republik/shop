@@ -87,6 +87,12 @@ export function CustomizeOfferView({
 
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
+  const resetDonation = () => {
+    setDonationOption("");
+    setCustomDonationOption("");
+    setDonationRecurring("");
+  };
+
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
 
@@ -148,6 +154,8 @@ export function CustomizeOfferView({
         amount: donationAmount,
         recurringInterval,
         info,
+        onChange: (item) => console.log("change", item),
+        onRemove: resetDonation,
       });
     }
 
