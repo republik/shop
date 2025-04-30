@@ -138,6 +138,7 @@
     "actions": {
       "change": "Ändern",
       "remove": "Entfernen",
+      "choose": "Wählen",
       "buy": "Kaufen",
       "next": "Weiter"
     },
@@ -239,7 +240,8 @@
         "optionCustom": "Eigener Betrag",
         "optionCustomField": "Betrag",
         "reset": "Zurücksetzen",
-        "showOptions": "Optionen anzeigen"
+        "showOptions": "Optionen anzeigen",
+        "chooseAmount": "Betrag wählen"
       },
       "reduced": {
         "title": "Journalismus kostet",

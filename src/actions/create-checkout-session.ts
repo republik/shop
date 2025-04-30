@@ -3,30 +3,33 @@
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
+import * as z from "zod";
+
+const CheckoutSessionInput = z.object({
+  offerId: z.string(),
+  promoCode: z.string().optional(),
+  donationAmount: z.coerce.number().optional(),
+  donationRecurring: z.coerce.boolean(),
+  discountOption: z.string().optional(),
+  discountReason: z.string().optional(),
+});
 
 type CreateCheckoutState = {
   sessionId?: string;
-  donationOption?: string;
 };
 
 export async function createCheckoutSession(
   previousState: CreateCheckoutState,
   formData: FormData
 ): Promise<CreateCheckoutState> {
-  const offerId = formData.get("offerId")?.toString() ?? "";
-  const donationOption = formData.get("donationOption")?.toString();
-  const customDonation = formData.get("customDonation")?.toString();
-  const discountOption = formData.get("discountOption")?.toString();
-  const discountReason = formData.get("discountReason")?.toString();
-  const promoCode = formData.get("promoCode")?.toString();
-  const donationRecurring = formData.has("donationRecurring");
-
-  const donationAmount =
-    donationOption === "CUSTOM" && customDonation
-      ? parseInt(customDonation, 10) * 100 // customDonation is a user-provided field in francs, we need to convert to cents
-      : donationOption
-      ? parseInt(donationOption, 10)
-      : undefined;
+  const {
+    offerId,
+    promoCode,
+    donationAmount,
+    donationRecurring,
+    discountOption,
+    discountReason,
+  } = CheckoutSessionInput.parse(Object.fromEntries(formData));
 
   const gqlClient = await getClient();
 
@@ -53,6 +56,5 @@ export async function createCheckoutSession(
 
   return {
     sessionId: data.createCheckoutSession.sessionId,
-    donationOption,
   };
 }

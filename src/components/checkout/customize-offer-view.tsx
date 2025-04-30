@@ -61,11 +61,8 @@ export function CustomizeOfferView({
     {}
   );
 
-  const [donationOption, setDonationOption] = useSessionStorage(
-    `${offer.id}_donationOption`
-  );
-  const [customDonation, setCustomDonationOption] = useSessionStorage(
-    `${offer.id}_customDonation`
+  const [donationAmount, setDonationAmount] = useSessionStorage(
+    `${offer.id}_donationAmount`
   );
   const [discountReason, setDiscountReason] = useSessionStorage(
     `${offer.id}_discountReason`
@@ -88,10 +85,13 @@ export function CustomizeOfferView({
   const invalidPromoCode = promoCode !== undefined && !offer.discount;
 
   const resetDonation = () => {
-    setDonationOption("");
-    setCustomDonationOption("");
+    setDonationAmount("");
     setDonationRecurring("");
   };
+
+  const selectedDonation = donationOptions?.find(
+    ({ id }) => id === donationAmount
+  );
 
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
@@ -125,14 +125,10 @@ export function CustomizeOfferView({
       });
     }
 
-    const selectedDonation = donationOptions?.find(
-      ({ id }) => id === donationOption
-    );
-
-    const donationAmount =
-      customDonation && donationOption === OPTION_CUSTOM
-        ? Math.max(0, parseInt(customDonation, 10) * 100)
-        : selectedDonation?.amount;
+    // const donationAmount =
+    //   customDonation && donationOption === OPTION_CUSTOM
+    //     ? Math.max(0, parseInt(customDonation, 10) * 100)
+    //     : selectedDonation?.amount;
 
     if (donationAmount) {
       const recurringInterval =
@@ -151,10 +147,10 @@ export function CustomizeOfferView({
       items.push({
         type: "DONATION",
         label: t("checkout.preCheckout.donate.itemName"),
-        amount: donationAmount,
+        amount: parseInt(donationAmount, 10),
         recurringInterval,
         info,
-        onChange: (item) => console.log("change", item),
+        // onChange: (item) => console.log("change", item),
         onRemove: resetDonation,
       });
     }
@@ -179,11 +175,11 @@ export function CustomizeOfferView({
     offer.price,
     offer.discount,
     donationOptions,
-    donationOption,
+    donationAmount,
     discountOptions,
-    customDonation,
     discountOption,
     donationRecurring,
+    selectedDonation,
   ]);
 
   return (
@@ -195,20 +191,22 @@ export function CustomizeOfferView({
         gap: "4",
       })}
     >
-      <input
-        type="text"
-        name="offerId"
-        hidden
-        readOnly
-        defaultValue={offer.id}
-      />
-      <input
-        type="text"
-        name="promoCode"
-        hidden
-        readOnly
-        defaultValue={promoCode}
-      />
+      <input type="hidden" readOnly name="offerId" defaultValue={offer.id} />
+      <input type="hidden" readOnly name="promoCode" defaultValue={promoCode} />
+
+      {donationAmount && (
+        <input
+          type="hidden"
+          readOnly
+          name="donationAmount"
+          value={donationAmount}
+        />
+      )}
+
+      {donationRecurring && donationRecurring !== "once" && (
+        <input type="hidden" readOnly name="donationRecurring" value="true" />
+      )}
+
       <div
         className={css({
           spaceY: "2",
@@ -218,8 +216,7 @@ export function CustomizeOfferView({
           currency={offer.price.currency}
           lineItems={lineItems}
           extraItem={
-            hasDiscountOptions ||
-            (hasDonationOptions && (
+            (hasDiscountOptions || hasDonationOptions) && (
               <>
                 {hasDiscountOptions && (
                   <DiscountChooser
@@ -234,16 +231,14 @@ export function CustomizeOfferView({
                   <DonationChooser
                     recurringInterval={recurringInterval}
                     options={donationOptions}
-                    donationOption={donationOption}
-                    setDonationOption={setDonationOption}
-                    customDonation={customDonation}
-                    setCustomDonationOption={setCustomDonationOption}
+                    donationAmount={donationAmount}
+                    setDonationAmount={setDonationAmount}
                     donationRecurring={donationRecurring}
                     setDonationRecurring={setDonationRecurring}
                   />
                 )}
               </>
-            ))
+            )
           }
         />
       </div>
