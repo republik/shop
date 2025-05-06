@@ -1,20 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FormField, RadioOption } from "@/components/ui/form";
+import { FormField } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
-import { visuallyHidden } from "@/theme/patterns";
-import {
-  CheckCheckIcon,
-  CheckCircle2Icon,
-  CheckCircleIcon,
-  CheckIcon,
-  XCircleIcon,
-  XIcon,
-} from "lucide-react";
+import { XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Dialog, RadioGroup, ToggleGroup } from "radix-ui";
+import { Dialog, RadioGroup } from "radix-ui";
 import { useState } from "react";
 
 export const OPTION_CUSTOM = "CUSTOM";
@@ -42,8 +34,6 @@ export function DonationChooser(props: DonationChooserProps) {
     const customAmount = formData.get("customDonationAmount")?.toString();
     const amount = formData.get("donationAmount")?.toString();
     const recurring = formData.get("donationRecurring")?.toString() ?? "";
-
-    console.log(Object.fromEntries(formData));
 
     props.setDonationAmount(
       customAmount

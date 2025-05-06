@@ -3,10 +3,7 @@
 import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
 import { DiscountChooser } from "@/components/checkout/discount-chooser";
-import {
-  DonationChooser,
-  OPTION_CUSTOM,
-} from "@/components/checkout/donation-chooser";
+import { DonationChooser } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { useSessionStorage } from "@/lib/hooks/use-session-storage";
@@ -125,11 +122,6 @@ export function CustomizeOfferView({
       });
     }
 
-    // const donationAmount =
-    //   customDonation && donationOption === OPTION_CUSTOM
-    //     ? Math.max(0, parseInt(customDonation, 10) * 100)
-    //     : selectedDonation?.amount;
-
     if (donationAmount) {
       const recurringInterval =
         donationRecurring !== "once" && donationRecurring !== ""
@@ -147,7 +139,7 @@ export function CustomizeOfferView({
       items.push({
         type: "DONATION",
         label: t("checkout.preCheckout.donate.itemName"),
-        amount: parseInt(donationAmount, 10),
+        amount: Math.max(0, parseInt(donationAmount, 10)),
         recurringInterval,
         info,
         // onChange: (item) => console.log("change", item),
@@ -181,6 +173,11 @@ export function CustomizeOfferView({
     donationRecurring,
     selectedDonation,
   ]);
+
+  const submitDisabled =
+    createCheckoutPending ||
+    (offer.id === "DONATION" &&
+      !lineItems.some(({ type }) => type === "DONATION"));
 
   return (
     <form
@@ -261,7 +258,7 @@ export function CustomizeOfferView({
         size="large"
         type="submit"
         loading={createCheckoutPending}
-        disabled={createCheckoutPending}
+        disabled={submitDisabled}
       >
         {t("checkout.actions.next")}
       </Button>
