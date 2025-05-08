@@ -10,7 +10,7 @@ import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useActionState, useEffect, useMemo } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
 
 type DonationOptionParams = {
@@ -57,6 +57,8 @@ export function CustomizeOfferView({
     createCheckoutSession,
     {}
   );
+
+  const [showOptions, setShowOptions] = useState(false);
 
   const [donationAmount, setDonationAmount] = useSessionStorage(
     `${offer.id}_donationAmount`
@@ -147,7 +149,7 @@ export function CustomizeOfferView({
         amount: Math.max(0, parseInt(donationAmount, 10)),
         recurringInterval,
         info,
-        // onChange: (item) => console.log("change", item),
+        onChange: () => setShowOptions(true),
         onRemove: resetDonation,
       });
     }
@@ -162,6 +164,7 @@ export function CustomizeOfferView({
         label: t("checkout.preCheckout.reduced.itemName"),
         amount: -selectedDiscount.amountOff,
         duration: selectedDiscount.duration,
+        onChange: () => setShowOptions(true),
         onRemove: resetDiscount,
       });
     }
@@ -177,6 +180,7 @@ export function CustomizeOfferView({
     discountOption,
     donationRecurring,
     selectedDonation,
+    setShowOptions,
   ]);
 
   const submitDisabled =
@@ -245,6 +249,8 @@ export function CustomizeOfferView({
                     setDiscountOption={setDiscountOption}
                     discountReason={discountReason}
                     setDiscountReason={setDiscountReason}
+                    showOptions={showOptions}
+                    setShowOptions={setShowOptions}
                   />
                 )}
                 {hasDonationOptions && (
@@ -257,6 +263,8 @@ export function CustomizeOfferView({
                     setDonationAmount={setDonationAmount}
                     donationRecurring={donationRecurring}
                     setDonationRecurring={setDonationRecurring}
+                    showOptions={showOptions}
+                    setShowOptions={setShowOptions}
                   />
                 )}
               </>

@@ -11,7 +11,6 @@ import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
 import { RadioGroup } from "radix-ui";
-import { useState } from "react";
 
 export const OPTION_CUSTOM = "CUSTOM";
 
@@ -28,12 +27,17 @@ type DonationChooserProps = {
   setDonationAmount: (value: string) => void;
   donationRecurring: string;
   setDonationRecurring: (value: string) => void;
+  showOptions: boolean;
+  setShowOptions: (value: boolean) => void;
+  hideTrigger?: boolean;
 };
 
-export function DonationChooser(props: DonationChooserProps) {
+export function DonationChooser({
+  showOptions,
+  setShowOptions,
+  ...props
+}: DonationChooserProps) {
   const t = useTranslations(`checkout.preCheckout.donate.${props.offerId}`);
-
-  const [open, setOpen] = useState(false);
 
   const handleSubmit = (formData: FormData) => {
     const customAmount = formData.get("customDonationAmount")?.toString();
@@ -46,11 +50,11 @@ export function DonationChooser(props: DonationChooserProps) {
         : amount ?? ""
     );
     props.setDonationRecurring(recurring);
-    setOpen(false);
+    setShowOptions(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={showOptions} onOpenChange={setShowOptions}>
       <div
         hidden={!!props.donationAmount}
         className={css({
@@ -96,12 +100,14 @@ function DonationChooserOptions({
   offerId,
   recurringInterval,
   options,
-  // donationAmount,
+  donationAmount,
   // setDonationAmount,
-  // donationRecurring,
+  donationRecurring,
   // setDonationRecurring,
   onSubmit,
-}: DonationChooserProps & { onSubmit: (data: FormData) => void }) {
+}: Omit<DonationChooserProps, "showOptions" | "setShowOptions"> & {
+  onSubmit: (data: FormData) => void;
+}) {
   const tOffer = useTranslations(`checkout.preCheckout.donate.${offerId}`);
   const t = useTranslations(`checkout`);
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
@@ -131,7 +137,7 @@ function DonationChooserOptions({
         {recurringInterval && (
           <RadioGroup.Root
             name="donationRecurring"
-            defaultValue={recurringInterval}
+            defaultValue={donationRecurring || recurringInterval}
             className={css({
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
@@ -201,6 +207,7 @@ function DonationChooserOptions({
           step={1}
           name="customDonationAmount"
           label={tOffer("optionCustom")}
+          // defaultValue={parseInt(donationAmount, 10) / 100}
         />
 
         <Button type="submit">{t("actions.choose")}</Button>

@@ -2,14 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
-import {
-  HandHeartIcon,
-  TicketPercentIcon,
-  Trash2Icon,
-  TrashIcon,
-} from "lucide-react";
+import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { VisuallyHidden } from "radix-ui";
 import { type ReactNode, useMemo } from "react";
 export interface LineItem {
   type: "OFFER" | "DONATION" | "DISCOUNT";

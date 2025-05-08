@@ -24,17 +24,19 @@ export function DiscountChooser({
   setDiscountOption,
   discountReason,
   setDiscountReason,
+  showOptions,
+  setShowOptions,
 }: {
   options: DiscountOption[];
   discountOption: string;
   setDiscountOption: (value: string) => void;
   discountReason: string;
   setDiscountReason: (value: string) => void;
+  showOptions: boolean;
+  setShowOptions: (value: boolean) => void;
 }) {
   const t = useTranslations(`checkout.preCheckout.reduced`);
   const f = useFormatCurrency("CHF");
-
-  const [open, setOpen] = useState(false);
 
   const handleSubmit = (formData: FormData) => {
     const option = formData.get("discountOption")?.toString() ?? "";
@@ -42,11 +44,11 @@ export function DiscountChooser({
 
     setDiscountOption(option);
     setDiscountReason(reason);
-    setOpen(false);
+    setShowOptions(false);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={showOptions} onOpenChange={setShowOptions}>
       <div
         hidden={!!discountOption}
         className={css({
