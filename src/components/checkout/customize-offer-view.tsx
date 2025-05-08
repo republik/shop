@@ -86,6 +86,11 @@ export function CustomizeOfferView({
     setDonationRecurring("");
   };
 
+  const resetDiscount = () => {
+    setDiscountOption("");
+    setDiscountReason("");
+  };
+
   const selectedDonation = donationOptions?.find(
     ({ id }) => id === donationAmount
   );
@@ -156,8 +161,8 @@ export function CustomizeOfferView({
         type: "DISCOUNT",
         label: t("checkout.preCheckout.reduced.itemName"),
         amount: -selectedDiscount.amountOff,
-        hidden: true,
         duration: selectedDiscount.duration,
+        onRemove: resetDiscount,
       });
     }
 

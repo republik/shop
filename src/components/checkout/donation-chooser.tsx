@@ -1,5 +1,6 @@
 "use client";
 
+import { OptionsDialogContent } from "@/components/checkout/options-dialog";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
@@ -67,71 +68,9 @@ export function DonationChooser(props: DonationChooserProps) {
           </Button>
         </Dialog.Trigger>
       </div>
-      <Dialog.Portal>
-        <Dialog.Overlay
-          className={css({
-            backgroundColor: "overlay",
-            position: "fixed",
-            color: "text",
-            inset: "0",
-            display: "grid",
-            placeItems: "end center",
-            overflowY: "auto",
-            zIndex: 9999,
-
-            _stateOpen: { animation: "fadeIn" },
-            _stateClosed: {
-              animation: "fadeOut",
-            },
-            sm: {
-              placeItems: "center",
-            },
-          })}
-        >
-          <Dialog.Content
-            aria-describedby={undefined}
-            className={css({
-              position: "relative",
-              boxShadow: "sm",
-              background: "background",
-              width: "full",
-              p: "8",
-              _stateOpen: {
-                animation: "slideUp",
-              },
-              _stateClosed: {
-                animation: "slideDown",
-              },
-
-              sm: {
-                width: "content.narrow",
-                _stateOpen: { animation: "slideIn" },
-                _stateClosed: {
-                  animation: "slideOut",
-                },
-              },
-            })}
-          >
-            <div
-              className={css({
-                display: "grid",
-                gap: "4",
-                gridTemplateColumns: "1fr max-content",
-                alignItems: "start",
-                mb: "4",
-              })}
-            >
-              <Dialog.Title className={css({ textStyle: "h3Sans" })}>
-                {t("chooseAmount")}
-              </Dialog.Title>
-              <Dialog.Close className={css({})} aria-label="schliessen">
-                <XIcon />
-              </Dialog.Close>
-            </div>
-            <DonationChooserOptions {...props} onSubmit={handleSubmit} />
-          </Dialog.Content>
-        </Dialog.Overlay>
-      </Dialog.Portal>
+      <OptionsDialogContent title={t("chooseAmount")}>
+        <DonationChooserOptions {...props} onSubmit={handleSubmit} />
+      </OptionsDialogContent>
     </Dialog.Root>
   );
 }

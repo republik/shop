@@ -259,7 +259,9 @@
         "title": "Vergünstigung",
         "description": "Falls Sie sich den regulären Mitgliederbeitrag nicht leisten können, bieten wir Ihnen eine Preisreduktion an. Nennen Sie uns Ihren Grund und wählen Sie eine Reduktion, die Ihnen gerecht erscheint",
         "itemName": "Reduktion",
-        "reason": "Begründung"
+        "reason": "Begründung",
+        "showOptions": "Vergünstigung wählen",
+        "chooseAmount": "Vergünstigung wählen"
       }
     },
     "personalInfo": {
