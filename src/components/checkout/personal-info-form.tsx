@@ -38,6 +38,7 @@ export function PersonalInfoForm({
   const t = useTranslations();
   const tForm = useTranslations("form");
   const tField = useTranslations("form.fields");
+  const tDefault = useTranslations("form.defaults");
 
   useEffect(() => {
     if (state.type === "success") {
@@ -155,7 +156,7 @@ export function PersonalInfoForm({
             name="country"
             error={state.errors?.country}
             autoComplete="country-name"
-            defaultValue={state.data.country ?? undefined}
+            defaultValue={state.data.country ?? tDefault("country")}
             required
           />
         </>

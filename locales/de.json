@@ -325,6 +325,10 @@
       "postalCode": "Postleitzahl",
       "city": "Ort",
       "country": "Land"
+    },
+
+    "defaults": {
+      "country": "Schweiz"
     }
   },
   "formValidation": {
