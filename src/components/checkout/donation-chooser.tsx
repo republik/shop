@@ -17,6 +17,7 @@ type DonationOption = {
 };
 
 type DonationChooserProps = {
+  offerId: "YEARLY" | "BENEFACTOR";
   recurringInterval?: string;
   options: DonationOption[];
   donationAmount: string;
@@ -26,7 +27,7 @@ type DonationChooserProps = {
 };
 
 export function DonationChooser(props: DonationChooserProps) {
-  const t = useTranslations();
+  const t = useTranslations(`checkout.preCheckout.donate.${props.offerId}`);
 
   const [open, setOpen] = useState(false);
 
@@ -52,19 +53,17 @@ export function DonationChooser(props: DonationChooserProps) {
           width: "full",
           padding: "4",
           borderRadius: "sm",
-          backgroundColor: "pink.50",
+          backgroundColor: "[#FFD3EE]",
           whiteSpace: "normal",
           spaceY: "3",
         })}
       >
-        <h3 className={css({ fontWeight: "medium" })}>
-          {t("checkout.preCheckout.donate.title")}
-        </h3>
-        <p>{t("checkout.preCheckout.donate.description")}</p>
+        <h3 className={css({ fontWeight: "medium" })}>{t("title")}</h3>
+        <p>{t("description")}</p>
 
         <Dialog.Trigger asChild>
           <Button type="button" variant="outline" className={css({})}>
-            {t("checkout.preCheckout.donate.showOptions")}
+            {t("showOptions")}
           </Button>
         </Dialog.Trigger>
       </div>
@@ -123,7 +122,7 @@ export function DonationChooser(props: DonationChooserProps) {
               })}
             >
               <Dialog.Title className={css({ textStyle: "h3Sans" })}>
-                {t("checkout.preCheckout.donate.chooseAmount")}
+                {t("chooseAmount")}
               </Dialog.Title>
               <Dialog.Close className={css({})} aria-label="schliessen">
                 <XIcon />
@@ -152,6 +151,7 @@ onClick={() => {
 </Button> */
 
 function DonationChooserOptions({
+  offerId,
   recurringInterval,
   options,
   // donationAmount,
@@ -160,11 +160,10 @@ function DonationChooserOptions({
   // setDonationRecurring,
   onSubmit,
 }: DonationChooserProps & { onSubmit: (data: FormData) => void }) {
-  const t = useTranslations();
+  const tOffer = useTranslations(`checkout.preCheckout.donate.${offerId}`);
+  const t = useTranslations(`checkout`);
   const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
-
-  const [recurring, setRecurring] = useState("once");
 
   return (
     <form
@@ -190,10 +189,16 @@ function DonationChooserOptions({
         {recurringInterval && (
           <RadioGroup.Root
             name="donationRecurring"
-            defaultValue="once"
+            defaultValue={recurringInterval}
             className={css({
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
+              gap: "1",
+              borderColor: "divider",
+              borderStyle: "solid",
+              borderWidth: 1,
+              p: "[3px]",
+              borderRadius: "md",
             })}
           >
             {["once", recurringInterval].map((interval) => (
@@ -203,18 +208,24 @@ function DonationChooserOptions({
                 className={css({
                   px: "2",
                   py: "1",
-                  border: "[1px solid black]",
-                  _firstOfType: {
-                    borderTopLeftRadius: "sm",
-                    borderBottomLeftRadius: "sm",
+                  borderStyle: "solid",
+                  borderWidth: 1,
+                  borderRadius: "sm",
+                  color: "text.secondary",
+                  borderColor: "transparent",
+
+                  cursor: "pointer",
+                  _hover: {
+                    color: "primary",
                   },
-                  _lastOfType: {
-                    borderTopRightRadius: "sm",
-                    borderBottomRightRadius: "sm",
-                  },
+
                   _checked: {
+                    borderColor: "primary",
                     background: "text",
                     color: "text.inverted",
+                    _hover: {
+                      color: "text.inverted",
+                    },
                   },
                 })}
               >
@@ -247,10 +258,10 @@ function DonationChooserOptions({
           min={0}
           step={1}
           name="customDonationAmount"
-          label={t("checkout.preCheckout.donate.optionCustom")}
+          label={tOffer("optionCustom")}
         />
 
-        <Button type="submit">{t("checkout.actions.choose")}</Button>
+        <Button type="submit">{t("actions.choose")}</Button>
       </div>
     </form>
   );

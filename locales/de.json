@@ -192,13 +192,13 @@
           "description": "Einen Monat lang Zugang zu allem, was die Republik zu bieten hat."
         },
         "BENEFACTOR": {
-          "description": "Hallo"
+          "description": "Ein Jahr Zugang zur Republik. Und dazu die Gewissheit, ein unabhängiges Magazin substanziell zu unterstützen. Sie werden auch Mitglied der Project R Genossenschaft, haben keine Verpflichtungen, aber können bei ausgewählten Fragen mitentscheiden. Als Dank schicken wir Ihnen eine Aufmerksamkeit aus der Redaktion."
         },
         "REDUCED": {
-          "description": "Hallo"
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
         },
         "STUDENT": {
-          "description": "Hallo"
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
         }
       },
 
@@ -233,19 +233,31 @@
         "itemName": "Rabatt"
       },
       "donate": {
-        "title": "Für Grosszügige",
-        "description": "Wenn Sie Ihren Beitrag erhöhen, ermöglichen Sie uns, vergünstigte Mitgliedschaften anzubieten für Menschen, die knapp bei Kasse sind.",
         "itemName": "Freiwillige Spende",
-        "optionNone": "Nein danke",
-        "optionCustom": "Eigener Betrag",
-        "optionCustomField": "Betrag",
-        "reset": "Zurücksetzen",
-        "showOptions": "Optionen anzeigen",
-        "chooseAmount": "Betrag wählen"
+        "YEARLY": {
+          "title": "Für Grosszügige",
+          "description": "Die Republik ist Ihnen mehr wert? Gerne können Sie Ihren Beitrag auch freiwillig erhöhen.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        },
+        "BENEFACTOR": {
+          "title": "Noch grosszügiger?",
+          "description": "Sie können die Republik so umfassend unterstützen, wie Sie wünschen.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        }
       },
       "reduced": {
-        "title": "Journalismus kostet",
-        "description": "Aber wir wollen niemanden ausschliessen. Falls Sie sich den regulären Mitgliederbeitrag nicht leisten können, bitten wir Sie um eine knappe Begründung. Wählen Sie eine Reduktion, die Ihnen gerecht scheint.",
+        "title": "Vergünstigung",
+        "description": "Falls Sie sich den regulären Mitgliederbeitrag nicht leisten können, bieten wir Ihnen eine Preisreduktion an. Nennen Sie uns Ihren Grund und wählen Sie eine Reduktion, die Ihnen gerecht erscheint",
         "itemName": "Reduktion",
         "reason": "Begründung"
       }

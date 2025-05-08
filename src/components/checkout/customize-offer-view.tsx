@@ -226,6 +226,8 @@ export function CustomizeOfferView({
                 )}
                 {hasDonationOptions && (
                   <DonationChooser
+                    // @ts-expect-error possible not matching offer ID
+                    offerId={offer.id}
                     recurringInterval={recurringInterval}
                     options={donationOptions}
                     donationAmount={donationAmount}

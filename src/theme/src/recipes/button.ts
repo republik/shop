@@ -34,6 +34,9 @@ export const buttonRecipe = defineRecipe({
         _hover: {
           bg: "primaryHover",
         },
+        borderColor: "primary",
+        borderStyle: "solid",
+        borderWidth: "1px",
       },
       link: {
         bg: "transparent",
