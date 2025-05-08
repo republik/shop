@@ -1,13 +1,16 @@
 "use client";
 
-import { OptionsDialogContent } from "@/components/checkout/options-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/checkout/options-dialog";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
-import { XIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { Dialog, RadioGroup } from "radix-ui";
+import { RadioGroup } from "radix-ui";
 import { useState } from "react";
 
 export const OPTION_CUSTOM = "CUSTOM";
@@ -47,7 +50,7 @@ export function DonationChooser(props: DonationChooserProps) {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div
         hidden={!!props.donationAmount}
         className={css({
@@ -62,16 +65,16 @@ export function DonationChooser(props: DonationChooserProps) {
         <h3 className={css({ fontWeight: "medium" })}>{t("title")}</h3>
         <p>{t("description")}</p>
 
-        <Dialog.Trigger asChild>
+        <DialogTrigger asChild>
           <Button type="button" variant="outline" className={css({})}>
             {t("showOptions")}
           </Button>
-        </Dialog.Trigger>
+        </DialogTrigger>
       </div>
-      <OptionsDialogContent title={t("chooseAmount")}>
+      <DialogContent title={t("chooseAmount")}>
         <DonationChooserOptions {...props} onSubmit={handleSubmit} />
-      </OptionsDialogContent>
-    </Dialog.Root>
+      </DialogContent>
+    </Dialog>
   );
 }
 

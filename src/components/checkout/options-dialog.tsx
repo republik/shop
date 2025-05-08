@@ -1,9 +1,12 @@
-import { Dialog, RadioGroup } from "radix-ui";
 import { css } from "@/theme/css";
-import type { ReactNode } from "react";
 import { XIcon } from "lucide-react";
+import { Dialog as DialogPrimitive } from "radix-ui";
+import type { ReactNode } from "react";
 
-export function OptionsDialogContent({
+export const Dialog = DialogPrimitive.Root;
+export const DialogTrigger = DialogPrimitive.Trigger;
+
+export function DialogContent({
   title,
   children,
 }: {
@@ -11,8 +14,8 @@ export function OptionsDialogContent({
   children: ReactNode;
 }) {
   return (
-    <Dialog.Portal>
-      <Dialog.Overlay
+    <DialogPrimitive.Portal>
+      <DialogPrimitive.Overlay
         className={css({
           backgroundColor: "overlay",
           position: "fixed",
@@ -32,7 +35,7 @@ export function OptionsDialogContent({
           },
         })}
       >
-        <Dialog.Content
+        <DialogPrimitive.Content
           aria-describedby={undefined}
           className={css({
             position: "relative",
@@ -65,16 +68,16 @@ export function OptionsDialogContent({
               mb: "4",
             })}
           >
-            <Dialog.Title className={css({ textStyle: "h3Sans" })}>
+            <DialogPrimitive.Title className={css({ textStyle: "h3Sans" })}>
               {title}
-            </Dialog.Title>
-            <Dialog.Close className={css({})} aria-label="Schliessen">
+            </DialogPrimitive.Title>
+            <DialogPrimitive.Close className={css({})} aria-label="Schliessen">
               <XIcon />
-            </Dialog.Close>
+            </DialogPrimitive.Close>
           </div>
           {children}
-        </Dialog.Content>
-      </Dialog.Overlay>
-    </Dialog.Portal>
+        </DialogPrimitive.Content>
+      </DialogPrimitive.Overlay>
+    </DialogPrimitive.Portal>
   );
 }

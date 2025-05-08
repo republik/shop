@@ -1,12 +1,15 @@
 "use client";
 
-import { OptionsDialogContent } from "@/components/checkout/options-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/checkout/options-dialog";
 import { Button } from "@/components/ui/button";
-import { RadioOption, TextArea } from "@/components/ui/form";
+import { TextArea } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
-import { Dialog } from "radix-ui";
 import { useState } from "react";
 
 type DiscountOption = {
@@ -29,10 +32,7 @@ export function DiscountChooser({
   setDiscountReason: (value: string) => void;
 }) {
   const t = useTranslations(`checkout.preCheckout.reduced`);
-  // const tInterval = useTranslations("checkout.preCheckout.intervalsAdjective");
   const f = useFormatCurrency("CHF");
-
-  // const t = useTranslations(`checkout.preCheckout.r`);
 
   const [open, setOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export function DiscountChooser({
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div
         hidden={!!discountOption}
         className={css({
@@ -61,13 +61,13 @@ export function DiscountChooser({
         <h3 className={css({ fontWeight: "medium" })}>{t("title")}</h3>
         <p>{t("description")}</p>
 
-        <Dialog.Trigger asChild>
+        <DialogTrigger asChild>
           <Button type="button" variant="outline" className={css({})}>
             {t("showOptions")}
           </Button>
-        </Dialog.Trigger>
+        </DialogTrigger>
       </div>
-      <OptionsDialogContent title={t("chooseAmount")}>
+      <DialogContent title={t("chooseAmount")}>
         <form
           onSubmit={(e) => {
             handleSubmit(
@@ -113,39 +113,7 @@ export function DiscountChooser({
             })}
           </div>
         </form>
-      </OptionsDialogContent>
-    </Dialog.Root>
+      </DialogContent>
+    </Dialog>
   );
-
-  // return (
-  //   <div
-  //     className={css({
-  //       width: "full",
-  //       padding: "4",
-  //       borderRadius: "sm",
-  //       backgroundColor: "purple.100",
-  //       whiteSpace: "normal",
-  //       spaceY: "3",
-  //     })}
-  //   >
-  //     <h3 className={css({ fontWeight: "medium" })}>
-  //       {t("checkout.preCheckout.reduced.title")}
-  //     </h3>
-  //     <p>{t("checkout.preCheckout.reduced.description")}</p>
-
-  //     <div>
-  //       <TextArea
-  //         label={t("checkout.preCheckout.reduced.reason")}
-  //         required
-  //         name="discountReason"
-  //         rows={3}
-  //         value={discountReason}
-  //         onChange={(e) => {
-  //           setDiscountReason(e.currentTarget.value);
-  //         }}
-  //       />
-  //     </div>
-
-  //   </div>
-  // );
 }
