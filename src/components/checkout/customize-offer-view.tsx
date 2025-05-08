@@ -209,6 +209,24 @@ export function CustomizeOfferView({
         <input type="hidden" readOnly name="donationRecurring" value="true" />
       )}
 
+      {discountOption && (
+        <input
+          type="hidden"
+          readOnly
+          name="discountOption"
+          value={discountOption}
+        />
+      )}
+
+      {discountReason && (
+        <input
+          type="hidden"
+          readOnly
+          name="discountReason"
+          value={discountReason}
+        />
+      )}
+
       <div
         className={css({
           spaceY: "2",
