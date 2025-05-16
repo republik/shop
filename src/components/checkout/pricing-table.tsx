@@ -211,7 +211,7 @@ export function PricingTable({
               <td
                 colSpan={2}
                 className={css({
-                  pl: "0",
+                  p: "0",
                 })}
               >
                 {extraItem}

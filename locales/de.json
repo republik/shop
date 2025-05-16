@@ -118,8 +118,7 @@
           "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
           "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
           "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
-        },
-        "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+        }
       }
     },
     "redeem": {
@@ -246,6 +245,16 @@
         },
         "BENEFACTOR": {
           "title": "Noch grosszügiger?",
+          "description": "Sie können die Republik so umfassend unterstützen, wie Sie wünschen.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        },
+        "DONATION": {
+          "title": "Wählen Sie einen Betrag",
           "description": "Sie können die Republik so umfassend unterstützen, wie Sie wünschen.",
           "optionNone": "Nein danke",
           "optionCustom": "Eigener Betrag",
