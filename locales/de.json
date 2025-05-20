@@ -202,8 +202,8 @@
       },
 
       "durationAvailable": {
-        "once": "Einmal gültig",
-        "forever": ""
+        "once": "Einmalig.",
+        "forever": "Erneuert sich automatisch mit der Verlängerung."
       },
 
       "invalidPromoCode": {
@@ -223,12 +223,14 @@
         "week": "wöchentlich",
         "day": "täglich",
         "once": "einmalig",
-        "undefined": ""
+        "undefined": "",
+        "auto": "automatisch"
       },
-      "priceDescription": "pro {interval}",
-      "futurePriceDescription": "im ersten {interval}, danach {intervalAdjective} {price}",
+      "priceDescription": "Pro {interval}.",
+      "futurePriceDescription": "Im ersten {interval}, danach {intervalAdjective} {price}.",
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
+      "recurringInfo": "Wird {intervalAdjective} erneuert.",
       "discount": {
         "itemName": "Rabatt"
       },

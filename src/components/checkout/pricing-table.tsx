@@ -236,7 +236,7 @@ export function PricingTable({
                   fontSize: "md",
                   fontWeight: "normal",
                   // color: "text.secondary",
-                  textAlign: "right",
+                  textAlign: "left",
                 })}
               >
                 {total !== futureAmount
@@ -267,7 +267,7 @@ export function PricingTable({
                 fontSize: "md",
                 fontWeight: "normal",
                 color: "text.tertiary",
-                textAlign: "right",
+                textAlign: "left",
               })}
             >
               {t("checkout.preCheckout.cancelableAnytime")}

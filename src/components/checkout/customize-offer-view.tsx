@@ -137,11 +137,15 @@ export function CustomizeOfferView({
 
       const info =
         recurringInterval &&
-        // @ts-expect-error unknown message key
-        t.has(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
-          ? // @ts-expect-error unknown message key
-            t(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
-          : t(`checkout.preCheckout.intervalsAdjective.once`);
+        t("checkout.preCheckout.recurringInfo", {
+          intervalAdjective: t.has(
+            // @ts-expect-error unknown message key
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+          )
+            ? // @ts-expect-error unknown message key
+              t(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
+            : t(`checkout.preCheckout.intervalsAdjective.auto`),
+        });
 
       items.push({
         type: "DONATION",
