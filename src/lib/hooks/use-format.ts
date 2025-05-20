@@ -6,7 +6,7 @@ export function useFormatCurrency(currency: string) {
     const inFrancs = amountInRappen / 100;
 
     return options.displayZeroAmount || amountInRappen !== 0
-      ? `${currency.toUpperCase()} ${inFrancs.toFixed(2)}`
+      ? `${currency.toUpperCase()} ${inFrancs.toFixed(0)}`
       : "";
   };
 }

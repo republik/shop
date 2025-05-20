@@ -96,7 +96,7 @@ export function PricingTable({
             borderColor: "current",
             // fontSize: "lg",
             pt: "4",
-            pb: "0",
+            pb: "1",
           },
         })}
       >
@@ -266,7 +266,7 @@ export function PricingTable({
               className={css({
                 fontSize: "md",
                 fontWeight: "normal",
-                color: "text.secondary",
+                color: "text.tertiary",
                 textAlign: "right",
               })}
             >
