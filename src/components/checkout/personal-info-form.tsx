@@ -55,7 +55,6 @@ export function PersonalInfoForm({
         gap: "4",
       })}
     >
-      <p>{tForm("infoFormNote")}</p>
       <FormField
         type="text"
         label={tField("email")}

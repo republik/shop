@@ -70,9 +70,7 @@ export function PricingTable({
           borderCollapse: "collapse",
           "& th, td": {
             py: "4",
-            // fontSize: "md",
-            // fontWeight: "normal",
-            // whiteSpace: "nowrap",
+
             verticalAlign: "top",
           },
           "& th:first-child": {
@@ -89,13 +87,16 @@ export function PricingTable({
             fontSize: "lg",
             fontWeight: "medium",
           },
+          "& tfoot > tr > td": {
+            py: "1",
+          },
           "& tfoot > tr:first-child > td,& tfoot > tr > th": {
             borderTopStyle: "solid",
             borderTopWidth: "1px",
             borderColor: "current",
             // fontSize: "lg",
             pt: "4",
-            pb: "1",
+            pb: "0",
           },
         })}
       >
@@ -232,9 +233,9 @@ export function PricingTable({
                 colSpan={2}
                 data-testid="price-future-summary"
                 className={css({
-                  fontSize: "sm",
+                  fontSize: "md",
                   fontWeight: "normal",
-                  color: "text.secondary",
+                  // color: "text.secondary",
                   textAlign: "right",
                 })}
               >
@@ -259,6 +260,19 @@ export function PricingTable({
               </td>
             </tr>
           )}
+          <tr>
+            <td
+              colSpan={2}
+              className={css({
+                fontSize: "md",
+                fontWeight: "normal",
+                color: "text.secondary",
+                textAlign: "right",
+              })}
+            >
+              {t("checkout.preCheckout.cancelableAnytime")}
+            </td>
+          </tr>
         </tfoot>
       </table>
     </>

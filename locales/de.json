@@ -156,7 +156,7 @@
       }
     },
     "preCheckout": {
-      "title": "Preisübersicht",
+      "title": "Überprüfen Sie Ihre Wahl",
       "summary": {
         "title": "{product} kaufen",
         "table": {
@@ -174,7 +174,7 @@
         }
       },
       "unavailable": {
-        "title": "Das gewählte Produkt ist nicht verfügbar.",
+        "title": "Das Angebot ist leider nicht für Sie verfügbar.",
         "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
@@ -203,7 +203,7 @@
 
       "durationAvailable": {
         "once": "Einmal gültig",
-        "forever": "Unbeschränkt gültig"
+        "forever": ""
       },
 
       "invalidPromoCode": {
@@ -227,15 +227,16 @@
       },
       "priceDescription": "pro {interval}",
       "futurePriceDescription": "im ersten {interval}, danach {intervalAdjective} {price}",
+      "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
       "discount": {
         "itemName": "Rabatt"
       },
       "donate": {
-        "itemName": "Freiwillige Spende",
+        "itemName": "Freiwilliger Beitrag",
         "YEARLY": {
-          "title": "Für Grosszügige",
-          "description": "Die Republik ist Ihnen mehr wert? Gerne können Sie Ihren Beitrag auch freiwillig erhöhen.",
+          "title": "Die Republik ist Ihnen mehr wert?",
+          "description": "Erhöhen Sie Ihren Beitrag freiwillig.",
           "optionNone": "Nein danke",
           "optionCustom": "Eigener Betrag",
           "optionCustomField": "Betrag",
@@ -274,7 +275,7 @@
       }
     },
     "personalInfo": {
-      "title": "Persönliche Angaben"
+      "title": "Vervollständigen Sie Ihre Angaben"
     },
     "checkout": {
       "title": "Bezahlen",
@@ -291,7 +292,7 @@
           "action": "Zurück zu allen Angeboten"
         },
         "donation": {
-          "title": "Vielen Dank für Ihre Spende",
+          "title": "Vielen Dank für Ihren Beitrag",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
           "action": "Zum Magazin"
         },
@@ -320,8 +321,6 @@
     "address": "Adresse",
 
     "changeEmailNote": "Um die E-Mail-Adresse zu ändern, <signOutButton>melden Sie sich neu an</signOutButton>.",
-
-    "infoFormNote": "Bald geschafft! Bitte überprüfen und vervollständigen Sie noch Ihre Angaben.",
     "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
 
     "fields": {
