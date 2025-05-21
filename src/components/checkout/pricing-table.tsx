@@ -260,19 +260,21 @@ export function PricingTable({
               </td>
             </tr>
           )}
-          <tr>
-            <td
-              colSpan={2}
-              className={css({
-                fontSize: "md",
-                fontWeight: "normal",
-                color: "text.tertiary",
-                textAlign: "left",
-              })}
-            >
-              {t("checkout.preCheckout.cancelableAnytime")}
-            </td>
-          </tr>
+          {recurringInterval && (
+            <tr>
+              <td
+                colSpan={2}
+                className={css({
+                  fontSize: "md",
+                  fontWeight: "normal",
+                  color: "text.tertiary",
+                  textAlign: "left",
+                })}
+              >
+                {t("checkout.preCheckout.cancelableAnytime")}
+              </td>
+            </tr>
+          )}
         </tfoot>
       </table>
     </>
