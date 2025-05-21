@@ -3,13 +3,13 @@ mutation CreateCheckoutSession(
   $metadata: JSON
   $returnUrl: String
   $promoCode: String
-  $donationOption: ID
+  $selectedDiscount: ID
   $customDonation: CustomDonation
 ) {
   createCheckoutSession(
     offerId: $offerId
     promoCode: $promoCode
-    withDonation: $donationOption
+    withSelectedDiscount: $selectedDiscount
     withCustomDonation: $customDonation
     options: { uiMode: EMBEDDED, metadata: $metadata, returnURL: $returnUrl }
   ) {
