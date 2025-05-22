@@ -4,7 +4,7 @@ import { Hero } from "@/components/layout/hero";
 import { OfferDescription } from "@/components/overview/description";
 import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";
 import {
-  OfferCard,
+  DonationCard,
   OfferCardPrimary,
   OfferGrid,
   OfferGridCompact,
@@ -83,9 +83,9 @@ export default async function Home() {
         <OfferGrid>
           <OfferCardPrimary offerId="BENEFACTOR" background="#EFC07A" />
           <OfferCardPrimary offerId="STUDENT" background="#BCC9E9" />
-          <OfferCardPrimary offerId="DONATION" background="hotpink" />
           <GiftCard />
           <RedeemCard />
+          <DonationCard />
         </OfferGrid>
       </div>
       <Footer />

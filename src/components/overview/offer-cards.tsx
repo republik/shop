@@ -212,3 +212,53 @@ export function OfferCard({
     </div>
   );
 }
+
+export async function DonationCard() {
+  const t = await getTranslations("overview.offer.DONATION");
+
+  return (
+    <div
+      className={css({
+        textStyle: "sansSerifMedium",
+
+        position: "relative",
+        background: "white",
+        borderColor: `[#EFEFEF]`,
+        borderWidth: 1,
+        borderStyle: "solid",
+        p: "6",
+        color: "text",
+        display: "flex",
+        flexDirection: "column",
+        gap: "4",
+        fontWeight: "normal",
+        fontSize: "lg",
+        textAlign: "center",
+        md: {
+          gridColumnEnd: "span 2",
+          alignItems: "center",
+        },
+      })}
+    >
+      <p>{t("info")}</p>
+      <h2
+        className={css({
+          textStyle: "serifBold",
+          fontSize: "5xl",
+          lineHeight: "tight",
+        })}
+      >
+        {t("title")}
+      </h2>
+
+      <div className={css({ mt: "auto" })}>
+        <Link
+          href={`/angebot/DONATION`}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
+        >
+          {t("cta")}
+        </Link>
+      </div>
+    </div>
+  );
+}

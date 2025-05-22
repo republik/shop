@@ -66,11 +66,11 @@
         "cta": "Mitglied werden"
       },
       "DONATION": {
-        "title": "Spende",
+        "title": "Freiwilliger Beitrag",
         "interval": "",
         "intervalDiscount": "",
-        "info": "Eine Spende für die Project R Genossenschaft",
-        "cta": "Jetzt spenden"
+        "info": "Sie sind schon Mitglied, wollen aber mehr geben?",
+        "cta": "Ab CHF 1 unterstützen"
       }
     },
     "gift": {
