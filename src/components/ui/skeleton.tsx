@@ -1,10 +1,7 @@
 import { css, cx } from "@/theme/css";
-import {HTMLAttributes} from "react";
+import { type HTMLAttributes } from "react";
 
-function Skeleton({
-  className,
-  ...props
-}: HTMLAttributes<HTMLDivElement>) {
+function Skeleton({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cx(

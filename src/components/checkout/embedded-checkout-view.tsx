@@ -1,23 +1,25 @@
 "use client";
 
+import { ErrorMessage } from "@/components/checkout/error-message";
+import { loadStripe } from "@/lib/stripe/client";
 import {
   EmbeddedCheckout,
   EmbeddedCheckoutProvider,
 } from "@stripe/react-stripe-js";
-import { loadStripe } from "@/lib/stripe/client";
-import { ErrorMessage } from "@/components/checkout/error-message";
+import { useState } from "react";
 
 interface CheckoutViewProps {
-  clientSecret: string;
+  clientSecret: string | null | undefined;
   company: string;
   errors: { title: string; description: string }[];
 }
 
-export function CheckoutView({
+export function EmbeddedCheckoutView({
   clientSecret,
   company,
   errors,
 }: CheckoutViewProps) {
+  const [complete, setComplete] = useState(false);
   return (
     <div id="checkout">
       {errors.map((e) => (
@@ -32,11 +34,12 @@ export function CheckoutView({
         options={{
           clientSecret,
           onComplete: () => {
+            setComplete(true);
             window.location.reload();
           },
         }}
       >
-        <EmbeddedCheckout />
+        {!complete && <EmbeddedCheckout />}
       </EmbeddedCheckoutProvider>
     </div>
   );

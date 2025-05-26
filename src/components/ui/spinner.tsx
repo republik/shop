@@ -1,15 +1,32 @@
-import { css } from "@/theme/css";
+import { css, cva, type RecipeVariantProps } from "@/theme/css";
 
-export function Spinner() {
-  return (
-    <svg
-      className={css({
+const spinnerVariants = cva({
+  base: {
+    ml: "2",
+    mr: "-1",
+    animation: "[spin 1s ease-in-out infinite]",
+  },
+  variants: {
+    size: {
+      default: {
         h: "4",
         w: "4",
-        ml: "2",
-        mr: "-1",
-        animation: "[spin 1s ease-in-out infinite]",
-      })}
+      },
+      large: {
+        h: "6",
+        w: "6",
+      },
+    },
+  },
+  defaultVariants: { size: "default" },
+});
+
+export type SpinnerVariants = RecipeVariantProps<typeof spinnerVariants>;
+
+export function Spinner({ size }: {} & SpinnerVariants) {
+  return (
+    <svg
+      className={spinnerVariants({ size })}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

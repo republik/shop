@@ -6,7 +6,14 @@ import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
+
+const currencyPrefix = "CHF ";
+
+const formatCurrencyShort = (amountInRappen: number) => {
+  const inFrancs = amountInRappen / 100;
+  return inFrancs.toFixed(0);
+};
 
 export async function OfferCardPrimary({
   offerId,
@@ -15,7 +22,7 @@ export async function OfferCardPrimary({
   ctaColor,
   redirect,
 }: {
-  offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT";
+  offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
   color?: string;
   background?: string;
   ctaColor?: string;
@@ -70,27 +77,34 @@ export async function OfferCardPrimary({
       <div>
         <h2 className={titleStyle}>{tOffer("title")}</h2>
 
-        {offer.discount ? (
-          <>
-            <p className={titleStyle}>
-              CHF <del>{offer.price.amount / 100}</del>
-            </p>
-            <p className={titleStyle}>
-              CHF {(offer.price.amount - offer.discount.amountOff) / 100}
-            </p>
-            <p className={intervalStyle}>{tOffer("intervalDiscount")}</p>
-          </>
-        ) : offer.customPrice ? (
-          <>
-            <p className={titleStyle}>ab CHF {offer.customPrice.min / 100}</p>
-            <p className={intervalStyle}>{tOffer("interval")}</p>
-          </>
-        ) : (
-          <>
-            <p className={titleStyle}>CHF {offer.price.amount / 100}</p>
-            <p className={intervalStyle}>{tOffer("interval")}</p>
-          </>
-        )}
+        {offer.price.amount > 0 &&
+          (offer.discount ? (
+            <>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                <del>{offer.price.amount / 100}</del>
+              </p>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                {formatCurrencyShort(
+                  offer.price.amount - offer.discount.amountOff
+                )}
+              </p>
+              <p className={intervalStyle}>
+                {offer.discount.duration === "once"
+                  ? tOffer("intervalDiscount")
+                  : tOffer("interval")}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className={titleStyle}>
+                {currencyPrefix}
+                {formatCurrencyShort(offer.price.amount)}
+              </p>
+              <p className={intervalStyle}>{tOffer("interval")}</p>
+            </>
+          ))}
       </div>
 
       <div className={css({ flexGrow: 1 })}>
@@ -195,6 +209,56 @@ export function OfferCard({
       })}
     >
       {children}
+    </div>
+  );
+}
+
+export async function DonationCard() {
+  const t = await getTranslations("overview.offer.DONATION");
+
+  return (
+    <div
+      className={css({
+        textStyle: "sansSerifMedium",
+
+        position: "relative",
+        background: "white",
+        borderColor: `[#EFEFEF]`,
+        borderWidth: 1,
+        borderStyle: "solid",
+        p: "6",
+        color: "text",
+        display: "flex",
+        flexDirection: "column",
+        gap: "4",
+        fontWeight: "normal",
+        fontSize: "lg",
+        textAlign: "center",
+        md: {
+          gridColumnEnd: "span 2",
+          alignItems: "center",
+        },
+      })}
+    >
+      <p>{t("info")}</p>
+      <h2
+        className={css({
+          textStyle: "serifBold",
+          fontSize: "5xl",
+          lineHeight: "tight",
+        })}
+      >
+        {t("title")}
+      </h2>
+
+      <div className={css({ mt: "auto" })}>
+        <Link
+          href={`/angebot/DONATION`}
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
+        >
+          {t("cta")}
+        </Link>
+      </div>
     </div>
   );
 }

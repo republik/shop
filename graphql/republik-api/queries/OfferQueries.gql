@@ -11,13 +11,9 @@ query OfferCard($offerId: ID!) {
       }
     }
 
-    customPrice {
-      min
-    }
-
     discount {
-      name
       amountOff
+      duration
     }
   }
 }
@@ -27,24 +23,34 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     id
     company
     name
+    requiresLogin
+    requiresAddress
 
     price {
       amount
       currency
       recurring {
         interval
+        intervalCount
       }
-    }
-
-    customPrice {
-      min
-      max
-      step
     }
 
     discount {
       name
       amountOff
+      duration # forever | repeating | once
+      # durationInMonths # only relevant when duration is "repeating"
+    }
+
+    suggestedDonations
+
+    discountOptions {
+      id
+      name
+      amountOff
+      duration
+      durationInMonths
+      currency
     }
   }
 }

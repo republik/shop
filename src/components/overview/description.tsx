@@ -50,11 +50,7 @@ export async function OfferDescription() {
       <p className={css({ mt: "8", fontSize: "md" })}>
         {tDescription.rich("reducedPrice", {
           reducedLink: (chunks) => (
-            <Link
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1`}
-            >
-              {chunks}
-            </Link>
+            <Link href={`/angebot/YEARLY_REDUCED`}>{chunks}</Link>
           ),
         })}
       </p>

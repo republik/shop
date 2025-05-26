@@ -1,3 +1,4 @@
+import { buttonRecipe } from "@/theme/src/recipes/button";
 import { definePreset } from "@pandacss/dev";
 
 export const presetRepublik = definePreset({
@@ -6,6 +7,8 @@ export const presetRepublik = definePreset({
     extend: {
       light: '[data-theme="light"] &',
       dark: '[data-theme="dark"] &',
+      stateOpen: '&[data-state="open"]',
+      stateClosed: '&[data-state="closed"]',
     },
   },
   globalCss: {
@@ -32,6 +35,7 @@ export const presetRepublik = definePreset({
       },
     },
   },
+
   // Useful for theme customization
   theme: {
     extend: {
@@ -59,6 +63,12 @@ export const presetRepublik = definePreset({
         },
         animations: {
           spin: { value: "spin 1s linear infinite" },
+          slideUp: { value: "slideUp 300ms ease-in-out" },
+          slideDown: { value: "slideDown 300ms ease-in-out" },
+          fadeIn: { value: "fadeIn 300ms ease-in-out" },
+          fadeOut: { value: "fadeOut 300ms ease-in-out" },
+          slideIn: { value: "slideIn 300ms ease-in-out" },
+          slideOut: { value: "slideOut 300ms ease-in-out" },
         },
       },
       semanticTokens: {
@@ -68,6 +78,18 @@ export const presetRepublik = definePreset({
               value: {
                 base: "{colors.neutral.950}",
                 _dark: "{colors.neutral.50}",
+              },
+            },
+            secondary: {
+              value: {
+                base: "rgba(0,0,0,0.55)",
+                _dark: "#rgba(255,255,255,0.55)",
+              },
+            },
+            tertiary: {
+              value: {
+                base: "rgba(0,0,0,0.45)",
+                _dark: "#rgba(255,255,255,0.45)",
               },
             },
             inverted: {
@@ -130,20 +152,14 @@ export const presetRepublik = definePreset({
           },
           divider: {
             value: {
-              base: "#DBDCDD",
-              _dark: "#4C4C4C",
+              base: "rgba(0,0,0,0.25)",
+              _dark: "rgba(255,255,255,0.25)",
             },
           },
           disabled: {
             value: {
-              base: "#B8BDC1",
-              _dark: "#949494",
-            },
-          },
-          textSoft: {
-            value: {
-              base: "#757575",
-              _dark: "#A9A9A9",
+              base: "rgba(0,0,0,0.03)",
+              _dark: "rgba(255,255,255,0.03)",
             },
           },
         },
@@ -411,6 +427,9 @@ export const presetRepublik = definePreset({
           },
         },
       },
+      recipes: {
+        button: buttonRecipe,
+      },
     },
     keyframes: {
       radixCollapsibleSlideDown: {
@@ -428,6 +447,30 @@ export const presetRepublik = definePreset({
       spin: {
         from: { transform: "rotate(0deg)" },
         to: { transform: "rotate(360deg)" },
+      },
+      fadeIn: {
+        from: { opacity: 0 },
+        to: { opacity: 1 },
+      },
+      fadeOut: {
+        from: { opacity: 1 },
+        to: { opacity: 0 },
+      },
+      slideUp: {
+        from: { transform: "translateY(100%)" },
+        to: { transform: "translateY(0%)" },
+      },
+      slideDown: {
+        from: { transform: "translateY(0%)" },
+        to: { transform: "translateY(100%)" },
+      },
+      slideIn: {
+        from: { transform: "translateY(5%)" },
+        to: { transform: "translateY(0%)" },
+      },
+      slideOut: {
+        from: { transform: "translateY(0%)" },
+        to: { transform: "translateY(5%)" },
       },
     },
   },

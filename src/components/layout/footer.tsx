@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
+import { LoginStatus } from "@/components/login/login-status";
 
 type Link = {
   text: string;
@@ -32,7 +33,6 @@ export async function Footer() {
       key={link.href}
       href={link.href}
       className={css({
-        color: "zinc.400",
         textAlign: "center",
         _hover: {
           textDecoration: "underline",
@@ -63,9 +63,11 @@ export async function Footer() {
           rowGap: "1",
           justifyContent: "center",
           fontSize: "xs",
+          textAlign: "center",
         })}
       >
         {footerLinkNodes}
+        <LoginStatus />
       </div>
     </footer>
   );

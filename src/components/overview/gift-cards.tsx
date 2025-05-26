@@ -2,7 +2,7 @@ import { OfferCard } from "@/components/overview/offer-cards";
 import { css, cx } from "@/theme/css";
 import { linkOverlay } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
-import Image, { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import couponSrc from "@/assets/coupon.svg";
 import giftSrc from "@/assets/gift.svg";
@@ -69,6 +69,7 @@ export async function RedeemCard() {
       <div className={css({ mt: "auto" })}>
         <Link
           href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/abholen`}
+          // href={`/geschenk-einloesen`}
           className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tGift("cta")}

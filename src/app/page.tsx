@@ -1,24 +1,20 @@
+import { AboBanner } from "@/components/layout/abo-banner";
+import { Footer } from "@/components/layout/footer";
+import { Hero } from "@/components/layout/hero";
 import { OfferDescription } from "@/components/overview/description";
 import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";
 import {
+  DonationCard,
   OfferCardPrimary,
   OfferGrid,
   OfferGridCompact,
 } from "@/components/overview/offer-cards";
-import { AboBanner } from "@/components/layout/abo-banner";
-import { Footer } from "@/components/layout/footer";
-import { Hero } from "@/components/layout/hero";
-import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
   const t = await getTranslations("overview");
-
-  // TODO remove this again when we don't redirect to legacy /angebote
-  const analyticsParams = await readAnalyticsParamsFromCookie();
-  const analyticsSearchParams = new URLSearchParams(analyticsParams).toString();
 
   return (
     <div>
@@ -85,18 +81,11 @@ export default async function Home() {
           {t("more")}
         </h2>
         <OfferGrid>
-          <OfferCardPrimary
-            offerId="BENEFACTOR"
-            background="#EFC07A"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=BENEFACTOR&${analyticsSearchParams}`}
-          />
-          <OfferCardPrimary
-            offerId="STUDENT"
-            background="#BCC9E9"
-            redirect={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1&price=14000&reason=Ausbildung&${analyticsSearchParams}`}
-          />
+          <OfferCardPrimary offerId="BENEFACTOR" background="#EFC07A" />
+          <OfferCardPrimary offerId="STUDENT" background="#BCC9E9" />
           <GiftCard />
           <RedeemCard />
+          <DonationCard />
         </OfferGrid>
       </div>
       <Footer />

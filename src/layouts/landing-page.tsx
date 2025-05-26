@@ -2,7 +2,7 @@ import { Footer } from "@/components/layout/footer";
 import { BackLink } from "@/components/ui/links";
 import { css, cx } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export async function LandingPageLayout({
   className,

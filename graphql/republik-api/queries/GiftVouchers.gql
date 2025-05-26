@@ -2,6 +2,7 @@ query ValidateGiftVoucher($voucher: String!) {
   validateGiftVoucher(voucherCode: $voucher) {
     valid
     isLegacyVoucher
+    company
   }
 }
 

@@ -5,5 +5,15 @@ mutation UpdateMe(
 ) {
   updateMe(firstName: $firstName, lastName: $lastName, address: $address) {
     id
+    firstName
+    lastName
+    address {
+      name
+      line1
+      line2
+      postalCode
+      city
+      country
+    }
   }
 }

@@ -16,6 +16,6 @@ export async function loadStripe(company: string): Promise<Stripe | null> {
   const stripePublishableKey = getStripePublishablekey(company);
 
   return stripeLoadStripe(stripePublishableKey, {
-    betas: ["custom_checkout_beta_2"],
+    betas: ["custom_checkout_beta_5"],
   });
 }

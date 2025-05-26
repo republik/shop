@@ -3,18 +3,33 @@
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
-import { redirect } from "next/navigation";
+import * as z from "zod";
 
-type CreateCheckoutState = {};
+const CheckoutSessionInput = z.object({
+  offerId: z.string(),
+  promoCode: z.string().optional(),
+  donationAmount: z.coerce.number().optional(),
+  donationRecurring: z.coerce.boolean(),
+  discountOption: z.string().optional(),
+  discountReason: z.string().optional(),
+});
+
+type CreateCheckoutState = {
+  sessionId?: string;
+};
 
 export async function createCheckoutSession(
   previousState: CreateCheckoutState,
   formData: FormData
 ): Promise<CreateCheckoutState> {
-  const offerId = formData.get("offerId")?.toString() ?? "";
-  const price = formData.get("price");
-
-  const promoCode = formData.get("promoCode");
+  const {
+    offerId,
+    promoCode,
+    donationAmount,
+    donationRecurring,
+    discountOption,
+    discountReason,
+  } = CheckoutSessionInput.parse(Object.fromEntries(formData));
 
   const gqlClient = await getClient();
 
@@ -24,9 +39,12 @@ export async function createCheckoutSession(
     CreateCheckoutSessionDocument,
     {
       offerId: offerId,
-      customPrice: price ? Number(price) * 100 : undefined,
-      metadata: analyticsParams,
-      promoCode: promoCode ? String(promoCode) : undefined,
+      metadata: { ...analyticsParams, reason: discountReason },
+      promoCode,
+      customDonation: donationAmount
+        ? { amount: donationAmount, recurring: donationRecurring }
+        : null,
+      selectedDiscount: discountOption ?? null,
       returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
     }
   );
@@ -36,7 +54,7 @@ export async function createCheckoutSession(
     throw Error("Checkout session could not be created");
   }
 
-  redirect(
-    `/angebot/${offerId}?session_id=${data.createCheckoutSession.sessionId}&promo_code=${promoCode}`
-  );
+  return {
+    sessionId: data.createCheckoutSession.sessionId,
+  };
 }

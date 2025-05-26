@@ -3,18 +3,18 @@ import {
   AuthorizeSessionDocument,
   SignInDocument,
   SignInTokenType,
-  UnauthorizedSessionDocument,
 } from "#graphql/republik-api/__generated__/gql/graphql";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { FormField } from "@/components/ui/form";
+import { Spinner } from "@/components/ui/spinner";
 import { css } from "@/theme/css";
 import { visuallyHidden, vstack } from "@/theme/patterns";
 import { useTranslations } from "next-intl";
-import { ReactNode, useEffect, useId, useRef, useState } from "react";
+import { type ReactNode, useId, useRef, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { CombinedError, useClient, useMutation } from "urql";
 import { CodeInput } from "./code-input";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Spinner } from "@/components/ui/spinner";
 
 const ErrorMessage = ({
   error,
@@ -27,8 +27,8 @@ const ErrorMessage = ({
     typeof error === "string"
       ? error
       : error?.networkError
-        ? t("graphql.networkError")
-        : error?.graphQLErrors[0]?.message;
+      ? t("graphql.networkError")
+      : error?.graphQLErrors[0]?.message;
 
   return (
     <Alert variant="error">
@@ -51,7 +51,7 @@ export function Submit({ children }: SubmitProps) {
       disabled={pending}
       loading={pending}
       className={css({
-        w: "max",
+        w: "full",
       })}
     >
       {children ?? t("action")}
@@ -104,27 +104,9 @@ export function LoginForm(props: LoginFormProps) {
       >
         {props.loginFormHeader}
         {error && <ErrorMessage error={error} />}
-        <label
-          htmlFor={emailId}
-          className={css({
-            fontWeight: "medium",
-            fontSize: "sm",
-          })}
-        >
-          E-Mail
-        </label>
-        <input
-          id={emailId}
-          name="email"
-          type="email"
-          autoFocus
-          className={css({
-            borderWidth: "1px",
-            borderColor: "text",
-            borderRadius: "sm",
-            p: "2",
-          })}
-        ></input>
+
+        <FormField label="E-Mail" name="email" type="email" autoFocus />
+
         {props.loginFormInfo}
         <Submit>{props.submitButtonText}</Submit>
       </div>
@@ -164,21 +146,11 @@ function CodeForm({
 
     setPending(true);
 
-    const unauthorizedRes = await gql.query(UnauthorizedSessionDocument, {
-      email,
-      token,
-    });
-
-    if (unauthorizedRes.error) {
-      setError(unauthorizedRes.error);
-      setPending(false);
-      return;
-    }
-
     const autorizedRes = await gql.mutation(AuthorizeSessionDocument, {
       email,
       tokens: [token],
-      consents: unauthorizedRes.data?.unauthorizedSession?.requiredConsents,
+      // Automatically consent to the privacy statement
+      consents: ["PRIVACY"],
     });
 
     if (autorizedRes.error) {
@@ -218,13 +190,7 @@ function CodeForm({
             mt: "4",
           })}
         >
-          <label
-            htmlFor={codeId}
-            className={visuallyHidden({
-              fontWeight: "medium",
-              fontSize: "sm",
-            })}
-          >
+          <label htmlFor={codeId} className={visuallyHidden()}>
             Code
           </label>
           <CodeInput
@@ -246,7 +212,7 @@ function CodeForm({
             className={css({
               display: "flex",
               alignItems: "center",
-              color: "textSoft",
+              color: "text.secondary",
               fontSize: "sm",
               textAlign: "center",
             })}

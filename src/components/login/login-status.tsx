@@ -1,20 +1,17 @@
-import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { LogoutButton } from "@/components/login/logout-button";
-import { getClient } from "@/lib/graphql/client";
-import { css } from "@/theme/css";
+import { fetchMe } from "@/lib/auth/fetch-me";
 
 export async function LoginStatus() {
-  const gql = await getClient();
-  const { data } = await gql.query(MeDocument, {});
+  const me = await fetchMe();
 
-  if (!data?.me) {
+  if (!me) {
     return null;
   }
 
   return (
-    <div className={css({ fontSize: "sm" })}>
-      Angemeldet als <strong>{data?.me?.email}</strong>{" "}
+    <span>
+      Angemeldet als <strong>{me?.email}</strong>{" "}
       <LogoutButton>Abmelden</LogoutButton>
-    </div>
+    </span>
   );
 }

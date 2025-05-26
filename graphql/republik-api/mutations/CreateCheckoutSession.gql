@@ -1,19 +1,17 @@
 mutation CreateCheckoutSession(
   $offerId: ID!
-  $customPrice: Int
   $metadata: JSON
   $returnUrl: String
   $promoCode: String
+  $selectedDiscount: ID
+  $customDonation: CustomDonation
 ) {
   createCheckoutSession(
     offerId: $offerId
     promoCode: $promoCode
-    options: {
-      uiMode: EMBEDDED
-      customPrice: $customPrice
-      metadata: $metadata
-      returnURL: $returnUrl
-    }
+    withSelectedDiscount: $selectedDiscount
+    withCustomDonation: $customDonation
+    options: { uiMode: EMBEDDED, metadata: $metadata, returnURL: $returnUrl }
   ) {
     company
     sessionId

@@ -2,5 +2,6 @@
 /patterns
 /tokens
 /types
+/recipes
 /helpers.mjs
 /styles.css

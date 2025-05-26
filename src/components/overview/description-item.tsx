@@ -1,9 +1,9 @@
 "use client";
-import { css } from "@/theme/css";
-import { ReactNode, useState } from "react";
-import * as Collapsible from "@radix-ui/react-collapsible";
 import { Button } from "@/components/ui/button";
+import { css } from "@/theme/css";
 import { CheckIcon, InfoIcon } from "lucide-react";
+import { Collapsible } from "radix-ui";
+import { type ReactNode, useState } from "react";
 
 export function DescriptionItem({
   icon = <CheckIcon />,
@@ -54,11 +54,12 @@ export function DescriptionItem({
           <>
             <Collapsible.Trigger asChild>
               <Button
-                variant="ghost"
+                variant="link"
                 className={css({
                   flexGrow: "0",
                   flexShrink: "0",
                   p: "0",
+                  textDecoration: "none",
                 })}
               >
                 <InfoIcon />

@@ -21,6 +21,7 @@ console.log("Running tests on", process.env.TEST_BASE_URL);
  */
 export default defineConfig({
   testDir: "./tests",
+  timeout: 60_000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

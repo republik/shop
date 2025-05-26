@@ -1,8 +1,10 @@
 "use client";
 import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import type { CheckoutSessionData } from "@/lib/stripe/server";
+import { CenterContainer } from "@/components/layout/center-container";
+import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
+import type { CheckoutSessionData } from "@/lib/stripe/server";
 import { css } from "@/theme/css";
 import { CheckCircleIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -16,30 +18,7 @@ type SuccessProps = {
   session: CheckoutSessionData;
 };
 
-const linkStyle = css({
-  borderRadius: "sm",
-  fontSize: "md",
-  whiteSpace: "nowrap",
-  px: "4",
-  py: "2",
-  display: "inline-block",
-  fontWeight: "medium",
-  textAlign: "center",
-  background: "text",
-  color: "text.inverted",
-});
-
-const containerStyle = css({
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
-  alignItems: "center",
-  gap: "4",
-  textAlign: "center",
-  margin: "auto",
-});
-
-export function SubscriptionSuccess({ offer, session }: SuccessProps) {
+export function SubscriptionSuccess({ offer }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.subscription");
 
   const [meRes, refetchMe] = useQuery({
@@ -74,7 +53,7 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
   );
 
   return (
-    <div className={containerStyle}>
+    <CenterContainer>
       <CheckCircleIcon
         className={css({
           height: "10",
@@ -87,17 +66,18 @@ export function SubscriptionSuccess({ offer, session }: SuccessProps) {
       {ready ? (
         <>
           <p className={css({ mb: "4" })}>{t("ready")}</p>
-          <Link
-            className={linkStyle}
-            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-          >
-            {t("action")}
-          </Link>
+          <Button asChild>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
+            >
+              {t("action")}
+            </Link>
+          </Button>
         </>
       ) : (
         <p>{t("waiting")}</p>
       )}
-    </div>
+    </CenterContainer>
   );
 }
 
@@ -111,7 +91,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
   }, [plausible, offer.id]);
 
   return (
-    <div className={containerStyle}>
+    <CenterContainer>
       <CheckCircleIcon
         className={css({
           height: "10",
@@ -130,40 +110,28 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
           ),
         })}
       </p>
-      <Link
-        className={linkStyle}
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
-      >
-        {t("action")}
-      </Link>
-    </div>
+      <Button asChild>
+        <Link href={`/`}>{t("action")}</Link>
+      </Button>
+    </CenterContainer>
   );
 }
 
-export function RedeemSuccess({
-  email,
-}: // aboType
-// starting
-{
-  email: string;
-  // aboType: string;
-  // starting: string;
-}) {
-  const t = useTranslations("checkout.checkout.success.redeem");
+export function DonationSuccess({ offer, session }: SuccessProps) {
+  const t = useTranslations("checkout.checkout.success.donation");
 
   const plausible = usePlausible();
 
-  // useEffect(() => {
-  //   plausible("Redeem Success", { props: { offer: aboType } });
-  // }, [plausible, aboType]);
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
 
   return (
-    <div className={containerStyle}>
-      <HeartIcon
+    <CenterContainer>
+      <CheckCircleIcon
         className={css({
           height: "10",
           width: "10",
-          fill: "[#B7A5EC]",
         })}
       />
       <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
@@ -172,16 +140,17 @@ export function RedeemSuccess({
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
-            <strong data-testid="success-recipient-email">{email}</strong>
+            <strong data-testid="success-recipient-email">
+              {session.email}
+            </strong>
           ),
         })}
       </p>
-      <Link
-        className={linkStyle}
-        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}
-      >
-        {t("action")}
-      </Link>
-    </div>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
+    </CenterContainer>
   );
 }

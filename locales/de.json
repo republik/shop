@@ -64,6 +64,13 @@
         "intervalDiscount": "im ersten Jahr",
         "info": "Die vergünstigte Jahresmitgliedschaft für Menschen in Ausbildung.",
         "cta": "Mitglied werden"
+      },
+      "DONATION": {
+        "title": "Freiwilliger Beitrag",
+        "interval": "",
+        "intervalDiscount": "",
+        "info": "Sie sind schon Mitglied, wollen aber mehr geben?",
+        "cta": "Ab CHF 1 unterstützen"
       }
     },
     "gift": {
@@ -111,20 +118,26 @@
           "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
           "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
           "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
-        },
-        "reducedPrice": "* Nur solange Vorrat, Versand in die Schweiz und nach Liechtenstein."
+        }
       }
     },
     "redeem": {
-      "title": "Ein Geschenk wartet auf Sie",
-      "lead": "Halten Sie Ihren Geschenk-Code bereit und die E-Mail-Adresse, mit der Sie sich früher bei der Republik eingeloggt haben. Neu hier? Dann können Sie sich gleich registrieren. Eine Kreditkarte ist nicht erforderlich.",
-      "cta": "Jetzt Geschenk einlösen"
+      "title": "Geschenk einlösen",
+      "lead": "Ein Geschenk wartet auf Sie.",
+      "voucherFieldLabel": "Geschenk-Code",
+      "cta": "Geschenk einlösen",
+      "invalidGiftCode": {
+        "title": "Ungültiger Geschenkgutschein",
+        "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."
+      }
     }
   },
 
   "checkout": {
     "actions": {
       "change": "Ändern",
+      "remove": "Entfernen",
+      "choose": "Wählen",
       "buy": "Kaufen",
       "next": "Weiter"
     },
@@ -132,18 +145,18 @@
       "title": "Konto",
       "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmungen</privacyLink>.",
       "email": {
-        "title": "Login oder Konto eröffnen",
-        "description": "Loggen Sie sich ein, oder erstellen Sie ein Republik-Konto, um den Kauf abzuschliessen."
+        "title": "Anmeldung",
+        "description": "Melden Sie sich mit der E-Mail-Adresse Ihres Republik-Kontos an oder registrieren Sie sich für ein neues Konto."
       },
       "code": {
         "checkingCode": "Überprüfen …",
         "noCodeReceived": "Keinen Code erhalten? Überprüfen Sie Ihren Spam-Ordner oder <changeEmailButton>ändern Sie die E-Mail-Adresse.</changeEmailButton>",
         "title": "Code",
-        "description": "Wir haben Ihnen einen Code an <email></email> geschickt. Geben Sie ihn ein, um ihre E-Mail-Adresse zu bestätigen."
+        "description": "Wir haben Ihnen einen Bestätigungs-Code an <email></email> geschickt. Geben Sie ihn ein, um Ihre E-Mail-Adresse zu bestätigen."
       }
     },
     "preCheckout": {
-      "title": "Abonnement",
+      "title": "Überprüfen Sie Ihre Wahl",
       "summary": {
         "title": "{product} kaufen",
         "table": {
@@ -152,7 +165,7 @@
             "currency": "Währung",
             "price": "Preis"
           },
-          "summary": "Total, jetzt zu bezahlen"
+          "summary": "Gesamtsumme"
         },
         "success": {
           "title": "Vielen Dank für Ihren Kauf",
@@ -161,13 +174,38 @@
         }
       },
       "unavailable": {
-        "title": "Das gewählte Produkt ist nicht verfügbar.",
+        "title": "Das Angebot ist leider nicht für Sie verfügbar.",
         "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
+          "needsMembershipForDonation": "Um spenden zu können, benötigen Sie eine laufende Mitgliedschaft bei der Project R Genossenschaft.",
           "generic": ""
         }
       },
+
+      "offer": {
+        "YEARLY": {
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+        },
+        "MONTHLY": {
+          "description": "Einen Monat lang Zugang zu allem, was die Republik zu bieten hat."
+        },
+        "BENEFACTOR": {
+          "description": "Ein Jahr Zugang zur Republik. Und dazu die Gewissheit, ein unabhängiges Magazin substanziell zu unterstützen. Sie werden auch Mitglied der Project R Genossenschaft, haben keine Verpflichtungen, aber können bei ausgewählten Fragen mitentscheiden. Als Dank schicken wir Ihnen eine Aufmerksamkeit aus der Redaktion."
+        },
+        "REDUCED": {
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+        },
+        "STUDENT": {
+          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+        }
+      },
+
+      "durationAvailable": {
+        "once": "Einmalig.",
+        "forever": "Erneuert sich automatisch mit der Verlängerung."
+      },
+
       "invalidPromoCode": {
         "title": "Ungültiges Sonderangebot",
         "description": "Das Sonderangebot ist ungültig oder abgelaufen."
@@ -179,9 +217,67 @@
         "day": "Tag",
         "undefined": ""
       },
-      "pricePerInterval": "{price} pro {interval}",
+      "intervalsAdjective": {
+        "month": "monatlich",
+        "year": "jährlich",
+        "week": "wöchentlich",
+        "day": "täglich",
+        "once": "einmalig",
+        "undefined": "",
+        "auto": "automatisch"
+      },
+      "priceDescription": "Pro {interval}.",
+      "futurePriceDescription": "Im ersten {interval}, danach {intervalAdjective} {price}.",
+      "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
-      "customPrice": "Ihr gewählter Preis ist CHF {price} pro Jahr."
+      "recurringInfo": "Wird {intervalAdjective} erneuert.",
+      "discount": {
+        "itemName": "Rabatt"
+      },
+      "donate": {
+        "itemName": "Freiwilliger Beitrag",
+        "YEARLY": {
+          "title": "Die Republik ist Ihnen mehr wert?",
+          "description": "Erhöhen Sie Ihren Beitrag freiwillig.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        },
+        "BENEFACTOR": {
+          "title": "Noch grosszügiger?",
+          "description": "Sie können die Republik so umfassend unterstützen, wie Sie wünschen.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        },
+        "DONATION": {
+          "title": "Wählen Sie einen Betrag",
+          "description": "Sie können die Republik so umfassend unterstützen, wie Sie wünschen.",
+          "optionNone": "Nein danke",
+          "optionCustom": "Eigener Betrag",
+          "optionCustomField": "Betrag",
+          "reset": "Zurücksetzen",
+          "showOptions": "Optionen anzeigen",
+          "chooseAmount": "Betrag wählen"
+        }
+      },
+      "reduced": {
+        "title": "Vergünstigung",
+        "description": "Falls Sie sich den regulären Mitgliederbeitrag nicht leisten können, bieten wir Ihnen eine Preisreduktion an. Nennen Sie uns Ihren Grund und wählen Sie eine Reduktion, die Ihnen gerecht erscheint",
+        "itemName": "Reduktion",
+        "reason": "Begründung",
+        "showOptions": "Vergünstigung wählen",
+        "chooseAmount": "Vergünstigung wählen"
+      }
+    },
+    "personalInfo": {
+      "title": "Vervollständigen Sie Ihre Angaben"
     },
     "checkout": {
       "title": "Bezahlen",
@@ -195,6 +291,11 @@
         "gift": {
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
+          "action": "Zurück zu allen Angeboten"
+        },
+        "donation": {
+          "title": "Vielen Dank für Ihren Beitrag",
+          "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
           "action": "Zum Magazin"
         },
         "redeem": {
@@ -205,21 +306,27 @@
       },
       "failed": {
         "title": "Der Bezahlvorgang ist fehlgeschlagen",
-        "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode."
+        "description": "Bitte versuchen sie den Vorgang erneut oder wählen sie eine andere Zahlungsmethode.",
+        "redeem": {
+          "title": "Da ist etwas schiefgegangen",
+          "description": "Ihr Geschenk-Gutschein <voucher></voucher> konnte leider nicht eingelöst werden. Bitte wenden Sie sich an <contactEmail></contactEmail>.",
+          "supportEmailSubject": "Gutschein-Code konnte nicht eingelöst werden",
+          "supportEmailBody": "Gutschein-Code: {voucher}",
+          "action": "Zurück zu allen Angeboten"
+        }
       }
     },
-    "redeem": {
-      "invalidGiftCode": {
-        "title": "Ungültiger Geschenkgutschein",
-        "description": "Der Geschenkgutschein ist ungültig oder abgelaufen."
-      }
-    }
+    "redeem": {}
   },
   "form": {
     "name": "Name",
     "address": "Adresse",
 
+    "changeEmailNote": "Um die E-Mail-Adresse zu ändern, <signOutButton>melden Sie sich neu an</signOutButton>.",
+    "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
+
     "fields": {
+      "email": "E-Mail-Adresse",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "name": "Name",
@@ -228,10 +335,18 @@
       "postalCode": "Postleitzahl",
       "city": "Ort",
       "country": "Land"
+    },
+
+    "defaults": {
+      "country": "Schweiz"
     }
   },
   "formValidation": {
     "generic": "Dieses Feld ist ungültig",
     "valueMissing": "{label} darf nicht leer sein"
+  },
+  "step": {
+    "progressTitle": "Schritt {value} von {max}",
+    "back": "Zurück"
   }
 }

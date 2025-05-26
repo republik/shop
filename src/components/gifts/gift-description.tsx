@@ -52,21 +52,7 @@ export function GiftDescription({
         </DescriptionItem>
         <DescriptionItem>{getText("briefings")}</DescriptionItem>
         <DescriptionItem>{getText("dialog")}</DescriptionItem>
-        <DescriptionItem icon={<SparklesIcon />}>
-          {getText("goodie")}
-        </DescriptionItem>
       </ul>
-      <p className={css({ mt: "8", fontSize: "md" })}>
-        {tDescription.rich("reducedPrice", {
-          reducedLink: (chunks) => (
-            <Link
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/angebote?package=ABO&userPrice=1`}
-            >
-              {chunks}
-            </Link>
-          ),
-        })}
-      </p>
     </div>
   );
 }
