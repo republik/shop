@@ -3,7 +3,7 @@
 import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 
-import * as z from "zod";
+import * as z from "zod/v4";
 
 const Address = z.object({
   // name is required for the mutation but if not present, we assemble it from firstName and lastName
@@ -16,13 +16,11 @@ const Address = z.object({
 });
 
 const MeInput = z.discriminatedUnion("addressRequired", [
-  z
-    .object({
-      addressRequired: z.literal("required"),
-      firstName: z.string().nonempty(),
-      lastName: z.string().nonempty(),
-    })
-    .merge(Address),
+  Address.extend({
+    addressRequired: z.literal("required"),
+    firstName: z.string().nonempty(),
+    lastName: z.string().nonempty(),
+  }),
   z.object({
     addressRequired: z.literal("notRequired"),
     firstName: z.string().nonempty(),
@@ -59,7 +57,7 @@ export async function updateMe(
     return {
       type: "error",
       errors: Object.fromEntries(
-        input.error.errors.map((e) => [e.path[0], "valueMissing"])
+        input.error.issues.map((e) => [e.path[0], "valueMissing"])
       ),
       data,
     };
