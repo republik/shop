@@ -51,6 +51,10 @@ export const buttonRecipe = defineRecipe({
         borderColor: "current",
         borderStyle: "solid",
         borderWidth: "1px",
+        _hover: {
+          color: "text.primaryForeground",
+          bg: "primaryHover",
+        },
       },
     },
     size: {

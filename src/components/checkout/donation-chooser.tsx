@@ -56,12 +56,17 @@ export function DonationChooser({
   return (
     <Dialog open={showOptions} onOpenChange={setShowOptions}>
       <div
+        style={{
+          // @ts-expect-error custom css prop
+          "--color-donation-highlight":
+            props.offerId === "YEARLY" ? "#FFD3EE" : "#F2ECE6",
+        }}
         hidden={!!props.donationAmount}
         className={css({
           width: "full",
           padding: "4",
           borderRadius: "sm",
-          backgroundColor: "[#FFD3EE]",
+          backgroundColor: "var(--color-donation-highlight)",
           whiteSpace: "normal",
           spaceY: "3",
         })}
@@ -190,7 +195,9 @@ function DonationChooserOptions({
           return (
             <Button
               variant="outline"
-              className={css({ width: "full" })}
+              className={css({
+                width: "full",
+              })}
               key={id}
               type="submit"
               name="donationAmount"
