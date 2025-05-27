@@ -34,7 +34,7 @@ PRODUCTS.forEach(
 
       await expect(
         page.getByRole("heading", {
-          name: "Preisübersicht",
+          name: "Überprüfen Sie Ihre Wahl",
         })
       ).toBeVisible();
 
@@ -44,29 +44,35 @@ PRODUCTS.forEach(
       if (donationOption) {
         await page.getByRole("button", { name: "Optionen anzeigen" }).click();
 
-        await page.getByRole("radio", { name: donationOption.name }).click();
-        await expect(page.getByLabel(donationOption.name)).toBeChecked();
-
-        // Reset form
-        await page.getByRole("button", { name: "Zurücksetzen" }).click();
-        await page.getByRole("button", { name: "Optionen anzeigen" }).click();
-        await expect(page.getByLabel(donationOption.name)).not.toBeChecked();
-
-        // Select again
-        await page.getByRole("radio", { name: donationOption.name }).click();
-        await expect(page.getByLabel(donationOption.name)).toBeChecked();
-
-        if (donationOption.amount) {
+        if (donationOption.interval) {
           await page
-            .getByLabel("Betrag", { exact: true }) // This is the input field for the custom amount
+            .getByRole("radio", { name: donationOption.interval })
+            .click();
+        }
+
+        if ("name" in donationOption) {
+          await page.getByRole("button", { name: donationOption.name }).click();
+
+          // Reset form
+          await page.getByRole("button", { name: "Ändern" }).click();
+
+          // Select again
+          await page.getByRole("button", { name: donationOption.name }).click();
+        } else {
+          await page
+            .getByLabel("Eigener Betrag") // This is the input field for the custom amount
             .fill(donationOption.amount);
+          await page.getByRole("button", { name: "Wählen" }).click();
         }
       }
 
       if (discountOption) {
+        await page
+          .getByRole("button", { name: "Vergünstigung wählen" })
+          .click();
+
         await page.getByLabel("Begründung").fill(discountOption.reason);
-        await page.getByRole("radio", { name: discountOption.name }).click();
-        await expect(page.getByLabel(discountOption.name)).toBeChecked();
+        await page.getByRole("button", { name: discountOption.name }).click();
       }
 
       await expect(page.getByTestId("price-overview-total")).toContainText(
@@ -83,7 +89,7 @@ PRODUCTS.forEach(
       if (requiresLogin) {
         await expect(
           page.getByRole("heading", {
-            name: "Persönliche Angaben",
+            name: "Vervollständigen Sie Ihre Angaben",
           })
         ).toBeVisible();
 
@@ -97,7 +103,7 @@ PRODUCTS.forEach(
         // OK, we should be back here
         await expect(
           page.getByRole("heading", {
-            name: "Persönliche Angaben",
+            name: "Vervollständigen Sie Ihre Angaben",
           })
         ).toBeVisible();
 

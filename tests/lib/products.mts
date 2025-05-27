@@ -7,7 +7,9 @@ type ProductTest = {
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
-  donationOption?: { name: string; amount?: string };
+  donationOption?:
+    | { name: string; interval?: string }
+    | { amount: string; interval?: string };
   discountOption?: { name: string; reason: string };
 };
 
@@ -51,8 +53,8 @@ export const PRODUCTS: ProductTest[] = [
     id: "yearly (with donation)",
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
-    donationOption: { name: "CHF 20.00" },
-    expectedAmount: "242",
+    donationOption: { name: "CHF 60" },
+    expectedAmount: "300",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -60,8 +62,9 @@ export const PRODUCTS: ProductTest[] = [
     id: "yearly (with custom donation)",
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
-    donationOption: { name: "Eigener Betrag", amount: "333" },
-    expectedAmount: "555",
+    donationOption: { amount: "240", interval: "einmalig" },
+    expectedAmount: "480",
+    futureAmount: "240",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -85,7 +88,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "benefactor (with donation)",
     offerId: "BENEFACTOR",
     name: "Gönnerschaft",
-    donationOption: { name: "CHF 500.00" },
+    donationOption: { name: "CHF 500" },
     expectedAmount: /1\.?500/, // account for formatting in Stripe embedded checkout
     requiresAddress: true,
     requiresLogin: true,
@@ -94,7 +97,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "benefactor (with custom donation)",
     offerId: "BENEFACTOR",
     name: "Gönnerschaft",
-    donationOption: { name: "Eigener Betrag", amount: "750" },
+    donationOption: { amount: "750" },
     expectedAmount: /1\.?750/, // account for formatting in Stripe embedded checkout
     requiresAddress: true,
     requiresLogin: true,
@@ -103,7 +106,7 @@ export const PRODUCTS: ProductTest[] = [
     id: "yearly reduced",
     offerId: "YEARLY_REDUCED",
     name: "Mitgliedschaft",
-    discountOption: { name: "120", reason: "Test" },
+    discountOption: { name: "CHF -120", reason: "Test" },
     expectedAmount: "120",
     requiresAddress: true,
     requiresLogin: true,
