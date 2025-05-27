@@ -14,7 +14,7 @@
     "gql:types": "graphql-codegen --config graphql/configs/codegen-dev.ts",
     "test": "NODE_ENV=test playwright test --project 'Mobile Chrome'",
     "test:generate": "pnpm exec playwright codegen ",
-    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api-shop.republik.love yaproxy"
+    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
