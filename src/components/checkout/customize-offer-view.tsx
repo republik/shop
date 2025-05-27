@@ -175,16 +175,18 @@ export function CustomizeOfferView({
 
     return items;
   }, [
+    offer.id,
     offer.name,
     offer.price,
     offer.discount,
-    donationOptions,
     donationAmount,
     discountOptions,
     discountOption,
     donationRecurring,
-    selectedDonation,
     setShowOptions,
+    resetDiscount,
+    resetDonation,
+    t,
   ]);
 
   const submitDisabled =

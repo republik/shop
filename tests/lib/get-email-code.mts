@@ -30,7 +30,7 @@ export const getEmailCode = async (
         envelope: true,
       });
 
-      const [match] = message.envelope.subject.match(/(\d{1,6})/) ?? [];
+      const [match] = message.envelope?.subject?.match(/(\d{1,6})/) ?? [];
 
       if (match) {
         code = match;

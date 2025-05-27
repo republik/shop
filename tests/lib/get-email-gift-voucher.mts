@@ -32,9 +32,9 @@ export const getEmailGiftVoucher = async (
         source: true,
       });
 
-      const source = message.source.toString();
+      const source = message.source?.toString();
 
-      const [match] = source.match(/([A-Z\d]{4}-[A-Z\d]{4})/) ?? [];
+      const [match] = source?.match(/([A-Z\d]{4}-[A-Z\d]{4})/) ?? [];
 
       if (match) {
         code = match;

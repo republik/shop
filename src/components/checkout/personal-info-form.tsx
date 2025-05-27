@@ -44,7 +44,7 @@ export function PersonalInfoForm({
     if (state.type === "success") {
       onComplete();
     }
-  }, [state]);
+  }, [state, onComplete]);
 
   return (
     <form
