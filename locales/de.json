@@ -227,7 +227,8 @@
         "auto": "automatisch"
       },
       "priceDescription": "Pro {interval}.",
-      "futurePriceDescription": "Im ersten {interval}, danach {intervalAdjective} {price}.",
+      "priceDescriptionCouponOnce": "Im ersten {interval}, danach {intervalAdjective} {price}.",
+      "priceDescriptionCouponRepeating": "Bis der Rabatt abläuft, danach {intervalAdjective} {price}.",
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
       "recurringInfo": "Wird {intervalAdjective} erneuert.",

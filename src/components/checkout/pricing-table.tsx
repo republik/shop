@@ -61,6 +61,11 @@ export function PricingTable({
     [lineItems]
   );
 
+  // One of "once" | "forever" | "repeating"
+  const couponDuration = useMemo(() => {
+    return lineItems.find((item) => item.duration)?.duration;
+  }, [lineItems]);
+
   const showSubscriptionInfo = lineItems.some((item) => item.recurringInterval);
 
   return (
@@ -239,8 +244,8 @@ export function PricingTable({
                   textAlign: "left",
                 })}
               >
-                {total !== futureAmount
-                  ? t("checkout.preCheckout.futurePriceDescription", {
+                {total !== futureAmount && couponDuration === "once"
+                  ? t("checkout.preCheckout.priceDescriptionCouponOnce", {
                       interval: t(
                         // @ts-expect-error FIXME possibly unknown interval
                         `checkout.preCheckout.intervals.${recurringInterval}`
@@ -251,12 +256,23 @@ export function PricingTable({
                       ),
                       price: formatPrice(futureAmount),
                     })
-                  : t("checkout.preCheckout.priceDescription", {
-                      interval: t(
-                        // @ts-expect-error FIXME possibly unknown interval
-                        `checkout.preCheckout.intervals.${recurringInterval}`
-                      ),
-                    })}
+                  : total !== futureAmount
+                    ? t(
+                        "checkout.preCheckout.priceDescriptionCouponRepeating",
+                        {
+                          intervalAdjective: t(
+                            // @ts-expect-error FIXME possibly unknown interval
+                            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+                          ),
+                          price: formatPrice(futureAmount),
+                        }
+                      )
+                    : t("checkout.preCheckout.priceDescription", {
+                        interval: t(
+                          // @ts-expect-error FIXME possibly unknown interval
+                          `checkout.preCheckout.intervals.${recurringInterval}`
+                        ),
+                      })}
               </td>
             </tr>
           )}
