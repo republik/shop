@@ -2,6 +2,7 @@
   "name": "shop-republik-ch",
   "version": "0.1.0",
   "private": true,
+  "license": "BSD-3-Clause",
   "engines": {
     "node": "22"
   },
