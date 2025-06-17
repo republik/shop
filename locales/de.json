@@ -203,7 +203,9 @@
 
       "durationAvailable": {
         "once": "Einmalig.",
-        "forever": "Erneuert sich automatisch mit der Verlängerung."
+        "forever": "Erneuert sich automatisch mit der Verlängerung.",
+        "repeatingMonths": "Für die ersten {repeating} Monate.",
+        "repeatingYears": "Für die ersten {repeating} Jahre."
       },
 
       "invalidPromoCode": {
@@ -217,6 +219,13 @@
         "day": "Tag",
         "undefined": ""
       },
+      "intervalsPlural": {
+        "month": "Monate",
+        "year": "Jahre",
+        "week": "Wochen",
+        "day": "Tage",
+        "undefined": ""
+      },
       "intervalsAdjective": {
         "month": "monatlich",
         "year": "jährlich",
@@ -226,9 +235,9 @@
         "undefined": "",
         "auto": "automatisch"
       },
-      "priceDescription": "Pro {interval}.",
-      "priceDescriptionCouponOnce": "Im ersten {interval}, danach {intervalAdjective} {price}.",
-      "priceDescriptionCouponRepeating": "Bis der Rabatt abläuft, danach {intervalAdjective} {price}.",
+      "priceDescription": "pro {interval}.",
+      "priceDescriptionCouponOnce": "im ersten {interval}, danach {intervalAdjective} {price}.",
+      "priceDescriptionCouponRepeating": "für {repeating} {interval}, danach {intervalAdjective} {price}.",
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
       "recurringInfo": "Wird {intervalAdjective} erneuert.",

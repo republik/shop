@@ -116,7 +116,21 @@ export function CustomizeOfferView({
     });
 
     if (offer.discount) {
-      const infoTranslationKey = `checkout.preCheckout.durationAvailable.${offer.discount.duration}`;
+      const isRepeating = offer.discount.duration === "repeating";
+      const repeatingInterval = offer.discount.durationInMonths
+        ? offer.price.recurring?.interval === "year"
+          ? "repeatingYears"
+          : "repeatingMonths"
+        : undefined;
+      const repeating = offer.discount.durationInMonths
+        ? offer.price.recurring?.interval === "year"
+          ? Math.ceil(offer.discount.durationInMonths / 12)
+          : offer.discount.durationInMonths
+        : undefined;
+
+      const infoTranslationKey = isRepeating
+        ? `checkout.preCheckout.durationAvailable.${repeatingInterval}`
+        : `checkout.preCheckout.durationAvailable.${offer.discount.duration}`;
 
       items.push({
         type: "DISCOUNT",
@@ -124,8 +138,12 @@ export function CustomizeOfferView({
           offer.discount.name || t("checkout.preCheckout.discount.itemName"),
         amount: -1 * (offer.discount.amountOff ? offer.discount.amountOff : 0),
         duration: offer.discount.duration,
+        repeating: repeating,
         // @ts-expect-error unknown message key
-        info: t.has(infoTranslationKey) ? t(infoTranslationKey) : undefined,
+        info: t.has(infoTranslationKey)
+          ? // @ts-expect-error unknown message key
+            t(infoTranslationKey, { repeating })
+          : null,
       });
     }
 

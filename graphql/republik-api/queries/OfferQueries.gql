@@ -39,7 +39,7 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
       name
       amountOff
       duration # forever | repeating | once
-      # durationInMonths # only relevant when duration is "repeating"
+      durationInMonths # only relevant when duration is "repeating"
     }
 
     suggestedDonations

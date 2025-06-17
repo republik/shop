@@ -13,6 +13,7 @@ export interface LineItem {
   amount: number;
   hidden?: boolean;
   duration?: string;
+  repeating?: number;
   recurringInterval?: string;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
@@ -64,6 +65,10 @@ export function PricingTable({
   // One of "once" | "forever" | "repeating"
   const couponDuration = useMemo(() => {
     return lineItems.find((item) => item.duration)?.duration;
+  }, [lineItems]);
+
+  const couponRepeating = useMemo(() => {
+    return lineItems.find((item) => item.repeating)?.repeating;
   }, [lineItems]);
 
   const showSubscriptionInfo = lineItems.some((item) => item.recurringInterval);
@@ -227,10 +232,17 @@ export function PricingTable({
         </tbody>
         <tfoot>
           <tr>
-            <th scope="row">
+            <th scope="row" className={css({ fontSize: "xl" })}>
               {t("checkout.preCheckout.summary.table.summary")}
             </th>
-            <td data-testid="price-overview-total">{formatPrice(total)}</td>
+            <td
+              data-testid="price-overview-total"
+              className={css({
+                fontSize: "xl",
+              })}
+            >
+              {formatPrice(total)}
+            </td>
           </tr>
           {showSubscriptionInfo && (
             <tr>
@@ -241,7 +253,7 @@ export function PricingTable({
                   fontSize: "md",
                   fontWeight: "normal",
                   // color: "text.secondary",
-                  textAlign: "left",
+                  textAlign: "right",
                 })}
               >
                 {total !== futureAmount && couponDuration === "once"
@@ -256,10 +268,15 @@ export function PricingTable({
                       ),
                       price: formatPrice(futureAmount),
                     })
-                  : total !== futureAmount
+                  : total !== futureAmount && couponRepeating
                     ? t(
                         "checkout.preCheckout.priceDescriptionCouponRepeating",
                         {
+                          repeating: couponRepeating,
+                          interval: t(
+                            // @ts-expect-error FIXME possibly unknown interval
+                            `checkout.preCheckout.intervalsPlural.${recurringInterval}`
+                          ),
                           intervalAdjective: t(
                             // @ts-expect-error FIXME possibly unknown interval
                             `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
@@ -284,7 +301,7 @@ export function PricingTable({
                   fontSize: "md",
                   fontWeight: "normal",
                   color: "text.tertiary",
-                  textAlign: "left",
+                  textAlign: "right",
                 })}
               >
                 {t("checkout.preCheckout.cancelableAnytime")}
