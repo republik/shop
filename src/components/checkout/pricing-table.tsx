@@ -49,28 +49,15 @@ function SubscriptionPriceSummary({
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
 
+  // If we don't have a recurring interval, we're not selling a subscription, so we don't show anything in addition to the price.
   if (!isKeyOfValue(recurringInterval, ["month", "year"])) {
     return null;
   }
 
-  if (total !== futureAmount) {
-    return (
-      <>
-        {t("checkout.preCheckout.priceDescriptionCouponOnce", {
-          interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
-          intervalAdjective: t(
-            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-          ),
-          price: formatPrice(futureAmount),
-        })}
-      </>
-    );
-  }
-
+  // If we have a repeating discount, show the appropriate info
   if (couponDuration === "repeating" && couponRepeating) {
     return (
       <>
-        {" "}
         {t("checkout.preCheckout.priceDescriptionCouponRepeating", {
           repeating: couponRepeating,
           interval: t(
@@ -85,6 +72,25 @@ function SubscriptionPriceSummary({
     );
   }
 
+  // If we have a one-time discount (or donation), we show the future price
+  if (total !== futureAmount) {
+    return (
+      <>
+        {t("checkout.preCheckout.priceDescriptionCouponOnce", {
+          interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
+          intervalAdjective: t(
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+          ),
+          price: formatPrice(futureAmount),
+        })}
+      </>
+    );
+  }
+
+  // If we have either
+  // - no discount/donation
+  // - a forever discount/donation
+  // we show only the recurring interval because the price doesn't change in the future
   return (
     <>
       {t("checkout.preCheckout.priceDescription", {
