@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
 import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
@@ -29,6 +30,75 @@ const lineItemIcons = {
   DISCOUNT: TicketPercentIcon,
   DONATION: HandHeartIcon,
 } as const;
+
+function SubscriptionPriceSummary({
+  currency,
+  futureAmount,
+  total,
+  recurringInterval,
+  couponDuration,
+  couponRepeating,
+}: {
+  currency: string;
+  futureAmount: number;
+  total: number;
+  recurringInterval: string;
+  couponDuration?: "once" | "forever" | "repeating" | string;
+  couponRepeating?: number;
+}) {
+  const t = useTranslations();
+  const formatPrice = useFormatCurrency(currency);
+
+  // If we don't have a recurring interval, we're not selling a subscription, so we don't show anything in addition to the price.
+  if (!isKeyOfValue(recurringInterval, ["month", "year"])) {
+    return null;
+  }
+
+  // If we have a repeating discount, show the appropriate info
+  if (couponDuration === "repeating" && couponRepeating) {
+    return (
+      <>
+        {t("checkout.preCheckout.priceDescriptionCouponRepeating", {
+          repeating: couponRepeating,
+          interval: t(
+            `checkout.preCheckout.intervalsPlural.${recurringInterval}`
+          ),
+          intervalAdjective: t(
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+          ),
+          price: formatPrice(futureAmount),
+        })}
+      </>
+    );
+  }
+
+  // If we have a one-time discount (or donation), we show the future price
+  if (total !== futureAmount) {
+    return (
+      <>
+        {t("checkout.preCheckout.priceDescriptionCouponOnce", {
+          interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
+          intervalAdjective: t(
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+          ),
+          price: formatPrice(futureAmount),
+        })}
+      </>
+    );
+  }
+
+  // If we have either
+  // - no discount/donation
+  // - a forever discount/donation
+  // we show only the recurring interval because the price doesn't change in the future
+  return (
+    <>
+      {t("checkout.preCheckout.priceDescription", {
+        interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
+      })}
+    </>
+  );
+}
 
 export function PricingTable({
   currency,
@@ -70,8 +140,6 @@ export function PricingTable({
   const couponRepeating = useMemo(() => {
     return lineItems.find((item) => item.repeating)?.repeating;
   }, [lineItems]);
-
-  const showSubscriptionInfo = lineItems.some((item) => item.recurringInterval);
 
   return (
     <>
@@ -244,69 +312,44 @@ export function PricingTable({
               {formatPrice(total)}
             </td>
           </tr>
-          {showSubscriptionInfo && (
-            <tr>
-              <td
-                colSpan={2}
-                data-testid="price-future-summary"
-                className={css({
-                  fontSize: "md",
-                  fontWeight: "normal",
-                  // color: "text.secondary",
-                  textAlign: "right",
-                })}
-              >
-                {total !== futureAmount && couponDuration === "once"
-                  ? t("checkout.preCheckout.priceDescriptionCouponOnce", {
-                      interval: t(
-                        // @ts-expect-error FIXME possibly unknown interval
-                        `checkout.preCheckout.intervals.${recurringInterval}`
-                      ),
-                      intervalAdjective: t(
-                        // @ts-expect-error FIXME possibly unknown interval
-                        `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-                      ),
-                      price: formatPrice(futureAmount),
-                    })
-                  : total !== futureAmount && couponRepeating
-                    ? t(
-                        "checkout.preCheckout.priceDescriptionCouponRepeating",
-                        {
-                          repeating: couponRepeating,
-                          interval: t(
-                            // @ts-expect-error FIXME possibly unknown interval
-                            `checkout.preCheckout.intervalsPlural.${recurringInterval}`
-                          ),
-                          intervalAdjective: t(
-                            // @ts-expect-error FIXME possibly unknown interval
-                            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-                          ),
-                          price: formatPrice(futureAmount),
-                        }
-                      )
-                    : t("checkout.preCheckout.priceDescription", {
-                        interval: t(
-                          // @ts-expect-error FIXME possibly unknown interval
-                          `checkout.preCheckout.intervals.${recurringInterval}`
-                        ),
-                      })}
-              </td>
-            </tr>
-          )}
+
           {recurringInterval && (
-            <tr>
-              <td
-                colSpan={2}
-                className={css({
-                  fontSize: "md",
-                  fontWeight: "normal",
-                  color: "text.tertiary",
-                  textAlign: "right",
-                })}
-              >
-                {t("checkout.preCheckout.cancelableAnytime")}
-              </td>
-            </tr>
+            <>
+              <tr>
+                <td
+                  colSpan={2}
+                  data-testid="price-future-summary"
+                  className={css({
+                    fontSize: "md",
+                    fontWeight: "normal",
+                    // color: "text.secondary",
+                    textAlign: "right",
+                  })}
+                >
+                  <SubscriptionPriceSummary
+                    currency={currency}
+                    total={total}
+                    futureAmount={futureAmount}
+                    recurringInterval={recurringInterval}
+                    couponDuration={couponDuration}
+                    couponRepeating={couponRepeating}
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td
+                  colSpan={2}
+                  className={css({
+                    fontSize: "md",
+                    fontWeight: "normal",
+                    color: "text.tertiary",
+                    textAlign: "right",
+                  })}
+                >
+                  {t("checkout.preCheckout.cancelableAnytime")}
+                </td>
+              </tr>
+            </>
           )}
         </tfoot>
       </table>

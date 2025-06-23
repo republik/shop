@@ -4,6 +4,7 @@ type ProductTest = {
   name: string;
   expectedAmount: string | RegExp;
   futureAmount?: string | RegExp;
+  futurePriceDescription?: string | RegExp;
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
@@ -19,6 +20,7 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "MONTHLY",
     name: "Monats-Abo",
     expectedAmount: "22",
+    futurePriceDescription: "pro Monat",
     requiresAddress: false,
     requiresLogin: true,
   },
@@ -36,7 +38,19 @@ export const PRODUCTS: ProductTest[] = [
     name: "Jahresmitgliedschaft",
     expectedAmount: "199",
     futureAmount: "240",
+    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 240",
     promoCode: "E2ETEST",
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "yearly (with multi-year promo code)",
+    offerId: "YEARLY",
+    name: "Jahresmitgliedschaft",
+    expectedAmount: "163",
+    // futureAmount: "240",
+    futurePriceDescription: "für 2 Jahre, danach jährlich CHF 240",
+    promoCode: "COOL",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -55,16 +69,30 @@ export const PRODUCTS: ProductTest[] = [
     name: "Jahresmitgliedschaft",
     donationOption: { name: "CHF 60" },
     expectedAmount: "300",
+    futurePriceDescription: "pro Jahr",
     requiresAddress: true,
     requiresLogin: true,
   },
   {
-    id: "yearly (with custom donation)",
+    id: "yearly (with custom one-time donation)",
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
     donationOption: { amount: "240", interval: "einmalig" },
     expectedAmount: "480",
     futureAmount: "240",
+    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 240",
+    requiresAddress: true,
+    requiresLogin: true,
+  },
+  {
+    id: "yearly (with donation AND promo code)",
+    offerId: "YEARLY",
+    name: "Jahresmitgliedschaft",
+    donationOption: { amount: "240" },
+    expectedAmount: "439",
+    promoCode: "E2ETEST",
+    futureAmount: "480",
+    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 480",
     requiresAddress: true,
     requiresLogin: true,
   },

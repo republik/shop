@@ -11,6 +11,7 @@ PRODUCTS.forEach(
     promoCode,
     expectedAmount,
     futureAmount,
+    futurePriceDescription,
     requiresAddress,
     requiresLogin,
     donationOption,
@@ -79,10 +80,17 @@ PRODUCTS.forEach(
         expectedAmount
       );
 
-      if (futureAmount)
+      if (futureAmount) {
         await expect(page.getByTestId("price-future-summary")).toContainText(
           futureAmount
         );
+      }
+
+      if (futurePriceDescription) {
+        await expect(page.getByTestId("price-future-summary")).toContainText(
+          futurePriceDescription
+        );
+      }
 
       await page.getByRole("button", { name: "Weiter" }).click();
 
