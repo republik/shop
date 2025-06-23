@@ -13,8 +13,7 @@ export async function login(page: Page, testEmail: string) {
         code = await getEmailCode(testEmail);
         return code;
       },
-
-      { timeout: 10_000 }
+      { intervals: [2_000, 5_000, 10_000], timeout: 60_000 }
     )
     .toBeDefined();
 
