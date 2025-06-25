@@ -338,6 +338,7 @@
 
     "fields": {
       "email": "E-Mail-Adresse",
+      "confirmationCode": "Bestätigungs-Code",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "name": "Name",

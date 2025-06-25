@@ -27,8 +27,8 @@ const ErrorMessage = ({
     typeof error === "string"
       ? error
       : error?.networkError
-      ? t("graphql.networkError")
-      : error?.graphQLErrors[0]?.message;
+        ? t("graphql.networkError")
+        : error?.graphQLErrors[0]?.message;
 
   return (
     <Alert variant="error">
@@ -67,7 +67,7 @@ interface LoginFormProps {
 }
 
 export function LoginForm(props: LoginFormProps) {
-  const emailId = useId();
+  const t = useTranslations("form");
 
   const [{ data, error, operation }, signIn] = useMutation(SignInDocument);
 
@@ -76,8 +76,6 @@ export function LoginForm(props: LoginFormProps) {
       <CodeForm
         email={operation?.variables.email}
         renderHint={props.renderCodeFormHint}
-        info={props.loginFormInfo}
-        submitButtonText={props.submitButtonText}
       />
     );
   }
@@ -105,7 +103,12 @@ export function LoginForm(props: LoginFormProps) {
         {props.loginFormHeader}
         {error && <ErrorMessage error={error} />}
 
-        <FormField label="E-Mail" name="email" type="email" autoFocus />
+        <FormField
+          label={t("fields.email")}
+          name="email"
+          type="email"
+          autoFocus
+        />
 
         {props.loginFormInfo}
         <Submit>{props.submitButtonText}</Submit>
@@ -117,21 +120,15 @@ export function LoginForm(props: LoginFormProps) {
 interface CodeFormProps {
   email: string;
   renderHint?: (email: string) => ReactNode;
-  info?: ReactNode;
-  submitButtonText?: string;
 }
 
-function CodeForm({
-  email,
-  renderHint,
-  info,
-  submitButtonText,
-}: CodeFormProps) {
+function CodeForm({ email, renderHint }: CodeFormProps) {
   const codeId = useId();
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<CombinedError | undefined>();
   const [pending, setPending] = useState(false);
   const t = useTranslations("checkout");
+  const tForm = useTranslations("form");
 
   const gql = useClient();
 
@@ -191,7 +188,7 @@ function CodeForm({
           })}
         >
           <label htmlFor={codeId} className={visuallyHidden()}>
-            Code
+            {tForm("fields.confirmationCode")}
           </label>
           <CodeInput
             id={codeId}
