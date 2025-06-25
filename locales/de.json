@@ -146,6 +146,7 @@
       "privacyPolicy": "Mit der Anmeldung akzeptieren Sie die <privacyLink>Datenschutzbestimmungen</privacyLink>.",
       "email": {
         "title": "Anmeldung",
+        "titleOffer": "{offerName} kaufen",
         "description": "Melden Sie sich mit der E-Mail-Adresse Ihres Republik-Kontos an oder registrieren Sie sich für ein neues Konto."
       },
       "code": {

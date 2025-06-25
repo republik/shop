@@ -93,7 +93,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     case "LOGIN":
       return (
         <CenterContainer>
-          <LoginView />
+          <LoginView offer={checkoutState.offer} />
         </CenterContainer>
       );
 

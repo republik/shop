@@ -1,6 +1,9 @@
 "use client";
 
-import { SignOutDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  SignOutDocument,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { LoginForm } from "@/components/login/login-form";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
@@ -19,66 +22,58 @@ export function useSignOut() {
 interface LoginViewProps {
   title?: string;
   description?: string;
+  offer?: NonNullable<OfferCheckoutQuery["offer"]>;
 }
 
-export function LoginView({ title, description }: LoginViewProps) {
+export function LoginView({ title, description, offer }: LoginViewProps) {
   const t = useTranslations("checkout");
 
   return (
-    <LoginForm
-      submitButtonText={t("actions.next")}
-      loginFormHeader={
-        <div className={css({ textAlign: "center" })}>
-          <h1
-            className={css({
-              textStyle: "h2Sans",
-              mb: "4",
-            })}
-          >
-            {title ?? t("loginStep.email.title")}
-          </h1>
-          <p>{description ?? t("loginStep.email.description")}</p>
-        </div>
-      }
-      loginFormInfo={
-        <>
-          <p
-            className={css({
-              fontSize: "sm",
-            })}
-          >
-            {t.rich("loginStep.privacyPolicy", {
-              privacyLink: (chunks) => (
-                <Link
-                  key="privacyPolicyLink"
-                  href={PRIVACY_POLICY_HREF}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {chunks}
-                </Link>
-              ),
-            })}
-          </p>
-        </>
-      }
-      renderCodeFormHint={(email) => (
-        <div className={css({ textAlign: "center" })}>
-          <h1
-            className={css({
-              textStyle: "h2Sans",
-              mb: "4",
-            })}
-          >
-            {title ?? t("loginStep.email.title")}
-          </h1>
-          <p>
-            {t.rich("loginStep.code.description", {
-              email: () => <strong>{email}</strong>,
-            })}
-          </p>
-        </div>
-      )}
-    />
+    <>
+      <h1 className={css({ textStyle: "h2Sans" })}>
+        {offer
+          ? t("loginStep.email.titleOffer", { offerName: offer.name })
+          : t("loginStep.email.title")}
+      </h1>
+      <LoginForm
+        submitButtonText={t("actions.next")}
+        loginFormHeader={
+          <div className={css({ textAlign: "center" })}>
+            <p>{description ?? t("loginStep.email.description")}</p>
+          </div>
+        }
+        loginFormInfo={
+          <>
+            <p
+              className={css({
+                fontSize: "sm",
+              })}
+            >
+              {t.rich("loginStep.privacyPolicy", {
+                privacyLink: (chunks) => (
+                  <Link
+                    key="privacyPolicyLink"
+                    href={PRIVACY_POLICY_HREF}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {chunks}
+                  </Link>
+                ),
+              })}
+            </p>
+          </>
+        }
+        renderCodeFormHint={(email) => (
+          <div className={css({ textAlign: "center" })}>
+            <p>
+              {t.rich("loginStep.code.description", {
+                email: () => <strong>{email}</strong>,
+              })}
+            </p>
+          </div>
+        )}
+      />
+    </>
   );
 }
