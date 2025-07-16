@@ -121,6 +121,24 @@
         }
       }
     },
+    "u30": {
+      "title": "Die Republik für unter 30",
+      "lead": "Jung? Arm? Kein Problem!",
+      "cta": "Jetzt absahnen",
+      "options": {
+        "yearly": "Jahresmitgliedschaft",
+        "monthly": "Monats-Abo"
+      },
+      "description": {
+        "items": {
+          "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+          "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+          "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+          "allTheContent": "Alle Geschichten aus der Republik",
+          "disclaimer": "Profitiere vom vergünstigten Preis, <b>bis du 30 wirst</b>"
+        }
+      }
+    },
     "redeem": {
       "title": "Geschenk einlösen",
       "lead": "Ein Geschenk wartet auf Sie.",
