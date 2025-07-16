@@ -25,10 +25,14 @@ export const getEmailCode = async (
       to: email,
     });
 
-    if (emailIds.length > 0) {
+    if (emailIds && emailIds.length > 0) {
       const message = await client.fetchOne(`${emailIds[0]}`, {
         envelope: true,
       });
+
+      if (!message) {
+        throw new Error(`E-Mail: no message found for ID ${emailIds[0]}`);
+      }
 
       const [match] = message.envelope?.subject?.match(/(\d{1,6})/) ?? [];
 
