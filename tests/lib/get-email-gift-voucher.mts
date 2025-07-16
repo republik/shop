@@ -26,11 +26,15 @@ export const getEmailGiftVoucher = async (
       subject: "Vielen Dank! Wir haben Ihre Zahlung erhalten.",
     });
 
-    if (emailIds.length > 0) {
+    if (emailIds && emailIds.length > 0) {
       const message = await client.fetchOne(`${emailIds[0]}`, {
         envelope: true,
         source: true,
       });
+
+      if (!message) {
+        throw new Error(`E-Mail: no message found for ID ${emailIds[0]}`);
+      }
 
       const source = message.source?.toString();
 
