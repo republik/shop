@@ -3,7 +3,7 @@
 import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client";
 
-import * as z from "zod/v4";
+import * as z from "zod";
 
 const Address = z.object({
   // name is required for the mutation but if not present, we assemble it from firstName and lastName

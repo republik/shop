@@ -3,7 +3,7 @@
 import { CreateCheckoutSessionDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { getClient } from "@/lib/graphql/client";
-import * as z from "zod/v4";
+import * as z from "zod";
 
 const CheckoutSessionInput = z.object({
   offerId: z.string(),
