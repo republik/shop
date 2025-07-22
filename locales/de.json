@@ -129,6 +129,8 @@
         "yearly": "Jahresmitgliedschaft",
         "monthly": "Monats-Abo"
       },
+      "tellUsYourAge": "Kurzer Check: In welchem Jahr wurdest du geboren?",
+      "birthYear": "Geburtsjahr",
       "description": {
         "items": {
           "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",

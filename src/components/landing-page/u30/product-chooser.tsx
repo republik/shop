@@ -49,8 +49,25 @@ export function U30Chooser({
         <LandingPageOption name="product" value="MONTHLY">
           <strong>{t("options.monthly")}</strong> für CHF 9 pro Monat
         </LandingPageOption>
+      </div>
 
-        <SelectField name="promo_code" label="Geburtsjahr" required>
+      <div
+        className={css({
+          display: "flex",
+          flexDirection: "column",
+          gap: "2",
+        })}
+      >
+        <p className={css({ fontSize: "lg" })}>{t("tellUsYourAge")}</p>
+
+        <SelectField
+          name="promo_code"
+          label={t("birthYear")}
+          defaultValue={""}
+          hideLabel
+          required
+        >
+          <option value="" selected disabled></option>
           {u30Coupons.map(({ durationInMonths, promoCode }) => {
             // get birth year relative to current year and coupon duration
             const currentYear = new Date().getFullYear();

@@ -1,6 +1,7 @@
 "use client";
 import { css, cx } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
+import { ChevronDownIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   type InputHTMLAttributes,
@@ -148,36 +149,51 @@ export function SelectField({
             display: "block",
             color: "text.secondary",
             textAlign: "left",
+            // fontWeight: "medium",
           }),
           hideLabel && visuallyHidden()
         )}
       >
         {label}
       </label>
-      <select
-        {...inputProps}
-        id={id}
-        name={name}
-        className={cx(
-          css({
-            background: "white",
-            borderWidth: "1px",
-            borderColor: "divider",
-            borderRadius: "sm",
-            p: "2",
-            _disabled: {
-              color: "text.secondary",
-              background: "disabled",
-            },
-            _placeholder: {
-              color: "text.tertiary",
-              fontWeight: "normal",
-            },
-          }),
-          error && css({ borderColor: "error" }),
-          inputProps?.className
-        )}
-      />
+      <div className={css({ position: "relative" })}>
+        <select
+          {...inputProps}
+          id={id}
+          name={name}
+          className={cx(
+            css({
+              appearance: "none",
+              background: "white",
+              borderWidth: "1px",
+              borderColor: "divider",
+              borderRadius: "sm",
+              width: "full",
+
+              p: "2",
+              _disabled: {
+                color: "text.secondary",
+                background: "disabled",
+              },
+            }),
+            error && css({ borderColor: "error" }),
+            inputProps?.className
+          )}
+        />
+        <span
+          className={css({
+            position: "absolute",
+            insetBlock: "0",
+            insetEnd: "2",
+            display: "grid",
+            alignItems: "center",
+            pointerEvents: "none",
+          })}
+        >
+          <ChevronDownIcon />
+        </span>
+      </div>
+
       {error && (
         <div
           aria-live="polite"
