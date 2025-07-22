@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { LandingPageOption } from "@/components/ui/landing-page-radio-option";
+import { LandingPageOption } from "@/components/landing-page/product-option";
 import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";

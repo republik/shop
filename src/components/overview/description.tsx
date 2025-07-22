@@ -1,7 +1,7 @@
 import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
-import { DescriptionItem } from "@/components/overview/description-item";
+import { DescriptionItem } from "@/components/landing-page/description-item";
 
 export async function OfferDescription() {
   const tDescription = await getTranslations("overview.description");

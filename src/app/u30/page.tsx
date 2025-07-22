@@ -1,9 +1,9 @@
 import giftBigSrc from "@/assets/gift-big.svg";
 import giftSmallSrc from "@/assets/gift-small.svg";
+import { DescriptionItem } from "@/components/landing-page/description-item";
+import { U30Chooser } from "@/components/landing-page/u30/product-chooser";
 import { Hero } from "@/components/layout/hero";
-import { DescriptionItem } from "@/components/overview/description-item";
-import { U30Chooser } from "@/components/u30/u30-chooser";
-import { LandingPageLayout } from "@/layouts/landing-page";
+import { LandingPageLayout } from "@/components/landing-page/page-layout";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";

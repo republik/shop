@@ -1,9 +1,9 @@
 "use client";
 
-import { u30Coupons } from "@/components/u30/u30-coupons";
+import { u30Coupons } from "@/components/landing-page/u30/coupons";
 import { Button } from "@/components/ui/button";
 import { SelectField } from "@/components/ui/form";
-import { LandingPageOption } from "@/components/ui/landing-page-radio-option";
+import { LandingPageOption } from "@/components/landing-page/product-option";
 import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
