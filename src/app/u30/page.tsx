@@ -1,17 +1,18 @@
 import giftBigSrc from "@/assets/gift-big.svg";
 import giftSmallSrc from "@/assets/gift-small.svg";
 import { DescriptionItem } from "@/components/landing-page/description-item";
-import { GiftChooser } from "@/components/landing-page/gifts/product-chooser";
+import { U30Chooser } from "@/components/landing-page/u30/product-chooser";
 import { Hero } from "@/components/layout/hero";
 import { LandingPageLayout } from "@/components/landing-page/page-layout";
 import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
+import { PiggyBankIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
 export async function generateMetadata() {
-  const t = await getTranslations("landing.gifts");
+  const t = await getTranslations("landing.u30");
 
   return {
     title: t("title"),
@@ -21,25 +22,27 @@ export async function generateMetadata() {
 const styles = {
   yearlyOnly: css({
     display: "block",
-    ":has([value='ABO_GIVE_MONTHS']:checked) &": {
+    ":has([value='MONTHLY']:checked) &": {
       display: "none",
     },
   }),
   monthlyOnly: css({
     display: "none",
-    ":has([value='ABO_GIVE_MONTHS']:checked) &": {
+    ":has([value='MONTHLY']:checked) &": {
       display: "block",
     },
   }),
 };
 
-export default async function GiftsPage() {
-  const t = await getTranslations("landing.gifts");
+export default async function U30LandingPage() {
+  const t = await getTranslations("landing.u30");
   const tDescriptionItems = await getTranslations(
-    "landing.gifts.description.items"
+    "landing.u30.description.items"
   );
 
-  const getText = (tKey: "dialog" | "general" | "briefings" | "goodie") =>
+  const getText = (
+    tKey: "dialog" | "general" | "briefings" | "disclaimer" | "allTheContent"
+  ) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,
@@ -51,9 +54,9 @@ export default async function GiftsPage() {
   return (
     <LandingPageLayout
       className={css({
-        background: "[#B7A5EC]",
-        "&:has([value='ABO_GIVE_MONTHS']:checked)": {
-          background: "[#EFAC9D]",
+        background: "[#B4B8AB]",
+        "&:has([value='MONTHLY']:checked)": {
+          background: "[#F4F9E9]",
         },
       })}
     >
@@ -81,7 +84,7 @@ export default async function GiftsPage() {
         alt="Illustration kleines Paket"
       />
 
-      <GiftChooser analyticsParams={analyticsParams} />
+      <U30Chooser analyticsParams={analyticsParams} />
 
       <ul
         className={css({
@@ -91,23 +94,11 @@ export default async function GiftsPage() {
           fontSize: "lg",
         })}
       >
-        <DescriptionItem>{getText("general")}</DescriptionItem>
-        <DescriptionItem>
-          <span className={styles.yearlyOnly}>
-            {" "}
-            {tDescriptionItems.rich("allTheContent", {
-              interval: "yearly",
-              b: (chunks) => <b>{chunks}</b>,
-            })}
-          </span>
-          <span className={styles.monthlyOnly}>
-            {" "}
-            {tDescriptionItems.rich("allTheContent", {
-              interval: "monthly",
-              b: (chunks) => <b>{chunks}</b>,
-            })}
-          </span>
+        <DescriptionItem icon={<PiggyBankIcon />}>
+          {getText("disclaimer")}
         </DescriptionItem>
+        <DescriptionItem>{getText("general")}</DescriptionItem>
+        <DescriptionItem>{getText("allTheContent")}</DescriptionItem>
         <DescriptionItem>{getText("briefings")}</DescriptionItem>
         <DescriptionItem>{getText("dialog")}</DescriptionItem>
       </ul>
