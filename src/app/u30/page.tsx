@@ -1,5 +1,4 @@
-import giftBigSrc from "@/assets/gift-big.svg";
-import giftSmallSrc from "@/assets/gift-small.svg";
+import illuSrc from "@/assets/u30.svg";
 import { DescriptionItem } from "@/components/landing-page/description-item";
 import { U30Chooser } from "@/components/landing-page/u30/product-chooser";
 import { Hero } from "@/components/layout/hero";
@@ -18,21 +17,6 @@ export async function generateMetadata() {
     title: t("title"),
   };
 }
-
-const styles = {
-  yearlyOnly: css({
-    display: "block",
-    ":has([value='MONTHLY']:checked) &": {
-      display: "none",
-    },
-  }),
-  monthlyOnly: css({
-    display: "none",
-    ":has([value='MONTHLY']:checked) &": {
-      display: "block",
-    },
-  }),
-};
 
 export default async function U30LandingPage() {
   const t = await getTranslations("landing.u30");
@@ -69,20 +53,7 @@ export default async function U30LandingPage() {
         </p>
       </Hero>
 
-      <Image
-        className={styles.yearlyOnly}
-        src={giftBigSrc}
-        width={327}
-        height={200}
-        alt="Illustration grosses Paket"
-      />
-      <Image
-        className={styles.monthlyOnly}
-        src={giftSmallSrc}
-        width={327}
-        height={200}
-        alt="Illustration kleines Paket"
-      />
+      <Image src={illuSrc} height={200} alt="Illustration" />
 
       <U30Chooser analyticsParams={analyticsParams} />
 
@@ -102,6 +73,10 @@ export default async function U30LandingPage() {
         <DescriptionItem>{getText("briefings")}</DescriptionItem>
         <DescriptionItem>{getText("dialog")}</DescriptionItem>
       </ul>
+
+      <p className={css({ fontSize: "sm", color: "text.secondary" })}>
+        {t("illustrationCredits")}
+      </p>
     </LandingPageLayout>
   );
 }
