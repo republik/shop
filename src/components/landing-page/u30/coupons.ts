@@ -1,4 +1,9 @@
-export const u30Coupons = [
+type U30Coupon = {
+  durationInMonths: number;
+  promoCode: string;
+};
+
+export const u30Coupons: U30Coupon[] = [
   { durationInMonths: 12, promoCode: "U3012" },
   { durationInMonths: 24, promoCode: "U3024" },
   { durationInMonths: 36, promoCode: "U3036" },
@@ -14,4 +19,4 @@ export const u30Coupons = [
   { durationInMonths: 156, promoCode: "U30156" },
   { durationInMonths: 168, promoCode: "U30168" },
   { durationInMonths: 180, promoCode: "U30180" },
-] as const;
+];
