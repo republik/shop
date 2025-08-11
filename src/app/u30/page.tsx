@@ -54,9 +54,9 @@ export default async function U30LandingPage() {
   return (
     <LandingPageLayout
       className={css({
-        background: "[#B4B8AB]",
+        background: "[#BCC9E9]",
         "&:has([value='MONTHLY']:checked)": {
-          background: "[#F4F9E9]",
+          background: "[#C9F086]",
         },
       })}
     >

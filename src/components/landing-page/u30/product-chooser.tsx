@@ -1,12 +1,38 @@
 "use client";
 
+import { LandingPageOption } from "@/components/landing-page/product-option";
 import { u30Coupons } from "@/components/landing-page/u30/coupons";
 import { Button } from "@/components/ui/button";
-import { SelectField } from "@/components/ui/form";
-import { LandingPageOption } from "@/components/landing-page/product-option";
+import { FormField } from "@/components/ui/form";
 import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
 import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
+
+type BirthYearState =
+  | {
+      state: "incomplete";
+      birthYear: string;
+    }
+  | {
+      state: "tooYoung";
+      birthYear: string;
+    }
+  | {
+      state: "tooOld";
+      birthYear: string;
+    }
+  | {
+      state: "valid";
+      birthYear: string;
+      promoCode: string;
+    };
+
+function getBirthYear(durationInMonths: number) {
+  // get birth year relative to current year and coupon duration
+  const currentYear = new Date().getFullYear();
+  return currentYear - 31 + durationInMonths / 12;
+}
 
 export function U30Chooser({
   analyticsParams,
@@ -15,6 +41,48 @@ export function U30Chooser({
   analyticsParams?: AnalyticsObject;
 }) {
   const t = useTranslations("landing.u30");
+  const [promoCode, setPromoCode] = useState<BirthYearState>({
+    state: "incomplete",
+    birthYear: "",
+  });
+
+  const minBirthYear = useMemo(
+    () => getBirthYear(u30Coupons[0].durationInMonths),
+    [u30Coupons]
+  );
+
+  const couponsByBirthYear = useMemo(() => {
+    return new Map(
+      u30Coupons.map(({ durationInMonths, promoCode }) => {
+        return [getBirthYear(durationInMonths).toString(), promoCode];
+      })
+    );
+  }, [u30Coupons]);
+
+  const updatePromoCode = (birthYear: string) => {
+    if (birthYear.length !== 4) {
+      setPromoCode({
+        state: "incomplete",
+        birthYear,
+      });
+    } else if (couponsByBirthYear.has(birthYear)) {
+      setPromoCode({
+        state: "valid",
+        birthYear,
+        promoCode: couponsByBirthYear.get(birthYear)!,
+      });
+    } else if (parseInt(birthYear, 10) < minBirthYear) {
+      setPromoCode({
+        state: "tooOld",
+        birthYear,
+      });
+    } else {
+      setPromoCode({
+        state: "tooYoung",
+        birthYear,
+      });
+    }
+  };
 
   return (
     <form
@@ -60,29 +128,38 @@ export function U30Chooser({
       >
         <p className={css({ fontSize: "lg" })}>{t("tellUsYourAge")}</p>
 
-        <SelectField
-          name="promo_code"
-          label={t("birthYear")}
-          defaultValue={""}
-          hideLabel
-          required
-        >
-          <option value="" selected disabled></option>
-          {u30Coupons.map(({ durationInMonths, promoCode }) => {
-            // get birth year relative to current year and coupon duration
-            const currentYear = new Date().getFullYear();
-            const birthYearLabel = currentYear - 31 + durationInMonths / 12;
+        {promoCode.state === "valid" && (
+          <input
+            type="hidden"
+            name="promo_code"
+            value={promoCode.promoCode}
+          ></input>
+        )}
 
-            return (
-              <option value={promoCode} key={promoCode}>
-                {birthYearLabel}
-              </option>
-            );
-          })}
-        </SelectField>
+        <FormField
+          name=""
+          hideLabel
+          label={t("birthYear")}
+          value={promoCode.birthYear}
+          onChange={(e) => {
+            updatePromoCode(e.currentTarget.value);
+          }}
+          type="number"
+          required
+        />
+
+        <p>
+          {promoCode.state === "tooOld"
+            ? t("tooOld")
+            : promoCode.state === "tooYoung"
+              ? t("tooYoung")
+              : ""}
+        </p>
       </div>
 
-      <Button type="submit">{t("cta")}</Button>
+      <Button type="submit" disabled={promoCode.state === "incomplete"}>
+        {t("cta")}
+      </Button>
     </form>
   );
 }

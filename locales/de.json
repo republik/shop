@@ -124,13 +124,15 @@
     "u30": {
       "title": "Die Republik für unter 30",
       "lead": "Jung? Arm? Kein Problem!",
-      "cta": "Jetzt absahnen",
+      "cta": "Jetzt kaufen",
       "options": {
         "yearly": "Jahresmitgliedschaft",
         "monthly": "Monats-Abo"
       },
       "tellUsYourAge": "Kurzer Check: In welchem Jahr wurdest du geboren?",
       "birthYear": "Geburtsjahr",
+      "tooOld": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
+      "tooYoung": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
       "description": {
         "items": {
           "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
