@@ -85,6 +85,12 @@
         "cta": "Abonnement einlösen"
       }
     },
+    "u30": {
+      "title": "Unter 30",
+      "interval": "pro Monat",
+      "info": "Für junge Menschen, die noch nicht Mitglied sind, aber schon gerne die Republik lesen möchten.",
+      "cta": "Abonnement lösen"
+    },
     "description": {
       "title": "Was Sie erwartet:",
       "items": {
