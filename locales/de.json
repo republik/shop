@@ -85,6 +85,12 @@
         "cta": "Abonnement einlösen"
       }
     },
+    "u30": {
+      "title": "Unter 30",
+      "interval": "pro Monat",
+      "info": "Für junge Menschen, die noch nicht Mitglied sind, aber schon gerne die Republik lesen möchten.",
+      "cta": "Abonnement lösen"
+    },
     "description": {
       "title": "Was Sie erwartet:",
       "items": {
@@ -118,6 +124,29 @@
           "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
           "allTheContent": "Alle Geschichten aus der Republik <b>für {interval, select, yearly {ein Jahr} monthly {drei Monate} other {}}</b>",
           "goodie": "<b>Aktuell und nur für begrenzte Zeit:</b> ein Taschenbuch aus der neuen Republik-Bibliothek-Sonderreihe*"
+        }
+      }
+    },
+    "u30": {
+      "title": "Die Republik für unter 30",
+      "lead": "Jung? Arm? Kein Problem!",
+      "cta": "Jetzt kaufen",
+      "options": {
+        "yearly": "Jahresmitgliedschaft",
+        "monthly": "Monats-Abo"
+      },
+      "illustrationCredits": "Illustration: Elena Xausa",
+      "tellUsYourAge": "Kurzer Check: In welchem Jahr wurdest du geboren?",
+      "birthYear": "Geburtsjahr",
+      "tooOld": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
+      "tooYoung": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
+      "description": {
+        "items": {
+          "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
+          "briefings": "Zwei kuratierte <b>Nachrichtenbriefings</b> für einen Überblick ohne News-Stress",
+          "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
+          "allTheContent": "Alle Geschichten aus der Republik",
+          "disclaimer": "Profitiere vom vergünstigten Preis, <b>bis du 30 wirst</b>"
         }
       }
     },

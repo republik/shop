@@ -8,6 +8,7 @@ import {
   OfferCardPrimary,
   OfferGrid,
   OfferGridCompact,
+  U30Card,
 } from "@/components/overview/offer-cards";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
@@ -82,7 +83,7 @@ export default async function Home() {
         </h2>
         <OfferGrid>
           <OfferCardPrimary offerId="BENEFACTOR" background="#EFC07A" />
-          <OfferCardPrimary offerId="STUDENT" background="#BCC9E9" />
+          <U30Card />
           <GiftCard />
           <RedeemCard />
           <DonationCard />

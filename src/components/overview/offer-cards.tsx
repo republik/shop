@@ -87,7 +87,7 @@ export async function OfferCardPrimary({
               <p className={titleStyle}>
                 {currencyPrefix}
                 {formatCurrencyShort(
-                  offer.price.amount - offer.discount.amountOff
+                  offer.price.amount - offer.discount.amountOff,
                 )}
               </p>
               <p className={intervalStyle}>
@@ -260,5 +260,38 @@ export async function DonationCard() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export async function U30Card() {
+  const t = await getTranslations("overview.u30");
+
+  const titleStyle = css({
+    textStyle: "serifBold",
+    fontSize: "5xl",
+    lineHeight: "tight",
+  });
+
+  const intervalStyle = css({
+    fontWeight: "medium",
+    lineHeight: "normal",
+  });
+
+  return (
+    <OfferCard id="u30-buy" background={"#BCC9E9"}>
+      <div>
+        <h2 className={titleStyle}>{t("title")}</h2>
+        <p className={titleStyle}>ab CHF 9</p>
+        <p className={intervalStyle}>{t("interval")}</p>
+      </div>
+
+      <p className={css({ flexGrow: 1 })}>{t("info")}</p>
+
+      <div className={css({ mt: "auto" })}>
+        <Link href={`/u30`} className={cx(cardButton({}), linkOverlay())}>
+          {t("cta")}
+        </Link>
+      </div>
+    </OfferCard>
   );
 }

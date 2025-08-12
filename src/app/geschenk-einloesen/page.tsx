@@ -6,7 +6,7 @@ import { Hero } from "@/components/layout/hero";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
-import { LandingPageLayout } from "@/layouts/landing-page";
+import { LandingPageLayout } from "@/components/landing-page/page-layout";
 import { featureFlagEnabled } from "@/lib/env";
 import { AlertCircleIcon } from "lucide-react";
 import { notFound } from "next/navigation";
