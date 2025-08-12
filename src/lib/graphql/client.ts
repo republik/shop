@@ -19,6 +19,7 @@ export async function getClient(): Promise<Client> {
     url: process.env.NEXT_PUBLIC_API_URL,
     exchanges: [fetchExchange],
     requestPolicy: "network-only",
+    preferGetMethod: false,
     fetchOptions: {
       headers: reqHeaders,
       credentials: "include",
