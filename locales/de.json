@@ -138,7 +138,7 @@
       "illustrationCredits": "Illustration: Elena Xausa",
       "birthYearLabel": "Gib dein Geburtsjahr ein:",
       "birthYear": "Geburtsjahr",
-      "notEligible": "Sorry, das Angebot gilt für dich leider nicht. Du kannst aber die Republik zum regulären Preis kaufen:",
+      "notEligible": "Sorry, dieses Angebot gilt für dich leider nicht.<br></br><overviewLink>Andere Angebote anzeigen</overviewLink>",
       "description": {
         "items": {
           "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",

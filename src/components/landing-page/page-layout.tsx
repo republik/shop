@@ -40,9 +40,9 @@ export async function LandingPageLayout({
         >
           {children}
 
-          <Link className={css({ textDecoration: "underline" })} href={"/"}>
-            {t("goBack")}
-          </Link>
+          <p>
+            <Link href={"/"}>{t("goBack")}</Link>
+          </p>
         </div>
       </main>
       <Footer />

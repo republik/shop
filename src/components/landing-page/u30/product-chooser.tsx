@@ -2,12 +2,13 @@
 
 import { LandingPageOption } from "@/components/landing-page/product-option";
 import { u30Coupons } from "@/components/landing-page/u30/coupons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
-import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
-import { InfoIcon } from "lucide-react";
+import { AlertCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
 type BirthYearState =
@@ -134,22 +135,23 @@ export function U30Chooser({}: {}) {
           required
         />
 
-        <p>
-          {promoCode.state === "tooOld" || promoCode.state === "tooYoung" ? (
-            <>
-              <InfoIcon
-                size={18}
-                className={css({ display: "inline-block" })}
-              />{" "}
-              {t("notEligible")}
-            </>
-          ) : (
-            ""
-          )}
-        </p>
+        {promoCode.state === "tooOld" || promoCode.state === "tooYoung" ? (
+          <Alert variant="info">
+            <AlertCircleIcon />
+
+            <AlertDescription>
+              <p>
+                {t.rich("notEligible", {
+                  br: () => <br />,
+                  overviewLink: (chunks) => <Link href="/">{chunks}</Link>,
+                })}
+              </p>
+            </AlertDescription>
+          </Alert>
+        ) : null}
       </div>
 
-      <Button type="submit" disabled={promoCode.state === "incomplete"}>
+      <Button type="submit" disabled={promoCode.state !== "valid"}>
         {t("cta")}
       </Button>
     </form>
