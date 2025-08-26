@@ -1,11 +1,9 @@
 import illuSrc from "@/assets/u30.svg";
 import { DescriptionItem } from "@/components/landing-page/description-item";
+import { LandingPageLayout } from "@/components/landing-page/page-layout";
 import { U30Chooser } from "@/components/landing-page/u30/product-chooser";
 import { Hero } from "@/components/layout/hero";
-import { LandingPageLayout } from "@/components/landing-page/page-layout";
-import { readAnalyticsParamsFromCookie } from "@/lib/analytics";
 import { css } from "@/theme/css";
-import { visuallyHidden } from "@/theme/patterns";
 import { PiggyBankIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -32,9 +30,6 @@ export default async function U30LandingPage() {
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,
     });
 
-  // TODO remove this again when we don't redirect to legacy /angebote
-  const analyticsParams = await readAnalyticsParamsFromCookie();
-
   return (
     <LandingPageLayout
       className={css({
@@ -45,7 +40,13 @@ export default async function U30LandingPage() {
       })}
     >
       <Hero>
-        <h1 className={visuallyHidden()}>{t("title")}</h1>
+        <h1
+          className={css({
+            textStyle: "leadTitleSerif",
+          })}
+        >
+          {t("title")}
+        </h1>
         <p className={css({ textStyle: "lead" })}>
           {t.rich("lead", {
             br: () => <br />,
@@ -55,7 +56,7 @@ export default async function U30LandingPage() {
 
       <Image src={illuSrc} height={200} alt="Illustration" />
 
-      <U30Chooser analyticsParams={analyticsParams} />
+      <U30Chooser />
 
       <ul
         className={css({

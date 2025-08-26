@@ -50,7 +50,8 @@ export function FormField({
           css({
             fontSize: "sm",
             display: "block",
-            color: "text.secondary",
+            color: "text",
+            fontWeight: "medium",
             textAlign: "left",
           }),
           hideLabel && visuallyHidden()
@@ -70,6 +71,7 @@ export function FormField({
             borderColor: "divider",
             borderRadius: "sm",
             p: "2",
+            _focus: { borderColor: "text", outline: "none" },
             _disabled: {
               color: "text.secondary",
               background: "disabled",

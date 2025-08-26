@@ -86,9 +86,9 @@
       }
     },
     "u30": {
-      "title": "Unter 30",
+      "title": "Für Junge",
       "interval": "pro Monat",
-      "info": "Für junge Menschen, die noch nicht Mitglied sind, aber schon gerne die Republik lesen möchten.",
+      "info": "Allen unter 30 bieten wir die Republik deutlich günstiger an.",
       "cta": "Abonnement lösen"
     },
     "description": {
@@ -107,7 +107,7 @@
   },
 
   "landing": {
-    "goBack": "Zurück zu allen Angeboten",
+    "goBack": "Alle Angebote",
 
     "gifts": {
       "title": "Die Republik zum Verschenken",
@@ -128,18 +128,17 @@
       }
     },
     "u30": {
-      "title": "Die Republik für unter 30",
-      "lead": "Jung? Arm? Kein Problem!",
-      "cta": "Jetzt kaufen",
+      "title": "Für Junge",
+      "lead": "Allen unter 30 bieten wir die Republik deutlich günstiger an.",
+      "cta": "Weiter",
       "options": {
         "yearly": "Jahresmitgliedschaft",
         "monthly": "Monats-Abo"
       },
       "illustrationCredits": "Illustration: Elena Xausa",
-      "tellUsYourAge": "Kurzer Check: In welchem Jahr wurdest du geboren?",
+      "birthYearLabel": "Gib dein Geburtsjahr ein:",
       "birthYear": "Geburtsjahr",
-      "tooOld": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
-      "tooYoung": "Sorry, das Angebot gilt für dich leider nicht, wir würden uns aber freuen, dich zum regulären Preis begrüssen zu dürfen:",
+      "notEligible": "Sorry, das Angebot gilt für dich leider nicht. Du kannst aber die Republik zum regulären Preis kaufen:",
       "description": {
         "items": {
           "general": "Sorgfältig verfasste <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit",
@@ -331,7 +330,7 @@
         "gift": {
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
           "description": "Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
-          "action": "Zurück zu allen Angeboten"
+          "action": "Alle Angebote"
         },
         "donation": {
           "title": "Vielen Dank für Ihren Beitrag",
@@ -352,7 +351,7 @@
           "description": "Ihr Geschenk-Gutschein <voucher></voucher> konnte leider nicht eingelöst werden. Bitte wenden Sie sich an <contactEmail></contactEmail>.",
           "supportEmailSubject": "Gutschein-Code konnte nicht eingelöst werden",
           "supportEmailBody": "Gutschein-Code: {voucher}",
-          "action": "Zurück zu allen Angeboten"
+          "action": "Alle Angebote"
         }
       }
     },

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import type { AnalyticsObject } from "@/lib/analytics";
 import { css } from "@/theme/css";
+import { InfoIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
@@ -34,12 +35,7 @@ function getBirthYear(durationInMonths: number) {
   return currentYear - 31 + durationInMonths / 12;
 }
 
-export function U30Chooser({
-  analyticsParams,
-}: {
-  // TODO remove this again when we don't redirect to legacy /angebote
-  analyticsParams?: AnalyticsObject;
-}) {
+export function U30Chooser({}: {}) {
   const t = useTranslations("landing.u30");
   const [promoCode, setPromoCode] = useState<BirthYearState>({
     state: "incomplete",
@@ -95,14 +91,6 @@ export function U30Chooser({
         width: "full",
       })}
     >
-      {
-        // TODO remove this again when we don't redirect to legacy /angebote
-        analyticsParams
-          ? Object.entries(analyticsParams).map(([k, v]) => {
-              return <input key={k} name={k} value={v} hidden readOnly />;
-            })
-          : null
-      }
       <div
         className={css({
           display: "flex",
@@ -111,11 +99,11 @@ export function U30Chooser({
         })}
       >
         <LandingPageOption name="product" value="YEARLY" defaultChecked>
-          <strong>{t("options.yearly")}</strong> für CHF 99 pro Jahr
+          <strong>{t("options.yearly")}</strong> für CHF 99
         </LandingPageOption>
 
         <LandingPageOption name="product" value="MONTHLY">
-          <strong>{t("options.monthly")}</strong> für CHF 9 pro Monat
+          <strong>{t("options.monthly")}</strong> für CHF 9
         </LandingPageOption>
       </div>
 
@@ -126,8 +114,6 @@ export function U30Chooser({
           gap: "2",
         })}
       >
-        <p className={css({ fontSize: "lg" })}>{t("tellUsYourAge")}</p>
-
         {promoCode.state === "valid" && (
           <input
             type="hidden"
@@ -137,9 +123,9 @@ export function U30Chooser({
         )}
 
         <FormField
+          // No field name because we don't actually pass the value to the form
           name=""
-          hideLabel
-          label={t("birthYear")}
+          label={t("birthYearLabel")}
           value={promoCode.birthYear}
           onChange={(e) => {
             updatePromoCode(e.currentTarget.value);
@@ -149,11 +135,17 @@ export function U30Chooser({
         />
 
         <p>
-          {promoCode.state === "tooOld"
-            ? t("tooOld")
-            : promoCode.state === "tooYoung"
-              ? t("tooYoung")
-              : ""}
+          {promoCode.state === "tooOld" || promoCode.state === "tooYoung" ? (
+            <>
+              <InfoIcon
+                size={18}
+                className={css({ display: "inline-block" })}
+              />{" "}
+              {t("notEligible")}
+            </>
+          ) : (
+            ""
+          )}
         </p>
       </div>
 
