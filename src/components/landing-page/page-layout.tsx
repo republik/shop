@@ -1,7 +1,7 @@
 import { Footer } from "@/components/layout/footer";
-import { BackLink } from "@/components/ui/links";
 import { css, cx } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 import { type ReactNode } from "react";
 
 export async function LandingPageLayout({
@@ -40,7 +40,9 @@ export async function LandingPageLayout({
         >
           {children}
 
-          <BackLink href={"/"}>{t("goBack")}</BackLink>
+          <p>
+            <Link href={"/"}>{t("goBack")}</Link>
+          </p>
         </div>
       </main>
       <Footer />

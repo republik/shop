@@ -58,16 +58,13 @@ function SubscriptionPriceSummary({
   if (couponDuration === "repeating" && couponRepeating) {
     return (
       <>
-        {t("checkout.preCheckout.priceDescriptionCouponRepeating", {
-          repeating: couponRepeating,
-          interval: t(
-            `checkout.preCheckout.intervalsPlural.${recurringInterval}`
-          ),
-          intervalAdjective: t(
-            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-          ),
-          price: formatPrice(futureAmount),
-        })}
+        {t(
+          `checkout.preCheckout.priceDescriptionCouponRepeating.${recurringInterval}`,
+          {
+            repeating: couponRepeating,
+            price: formatPrice(futureAmount),
+          }
+        )}
       </>
     );
   }
@@ -76,13 +73,12 @@ function SubscriptionPriceSummary({
   if (total !== futureAmount) {
     return (
       <>
-        {t("checkout.preCheckout.priceDescriptionCouponOnce", {
-          interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
-          intervalAdjective: t(
-            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
-          ),
-          price: formatPrice(futureAmount),
-        })}
+        {t(
+          `checkout.preCheckout.priceDescriptionCouponOnce.${recurringInterval}`,
+          {
+            price: formatPrice(futureAmount),
+          }
+        )}
       </>
     );
   }

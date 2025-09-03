@@ -119,8 +119,8 @@ export function CustomizeOfferView({
       const isRepeating = offer.discount.duration === "repeating";
       const repeatingInterval = offer.discount.durationInMonths
         ? offer.price.recurring?.interval === "year"
-          ? "repeatingYears"
-          : "repeatingMonths"
+          ? "year"
+          : "month"
         : undefined;
       const repeating = offer.discount.durationInMonths
         ? offer.price.recurring?.interval === "year"
@@ -129,7 +129,7 @@ export function CustomizeOfferView({
         : undefined;
 
       const infoTranslationKey = isRepeating
-        ? `checkout.preCheckout.durationAvailable.${repeatingInterval}`
+        ? `checkout.preCheckout.durationAvailable.repeating.${repeatingInterval}`
         : `checkout.preCheckout.durationAvailable.${offer.discount.duration}`;
 
       items.push({

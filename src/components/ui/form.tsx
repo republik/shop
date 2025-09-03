@@ -1,10 +1,12 @@
 "use client";
 import { css, cx } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
+import { ChevronDownIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   type InputHTMLAttributes,
   type ReactNode,
+  type SelectHTMLAttributes,
   type TextareaHTMLAttributes,
   useId,
 } from "react";
@@ -48,7 +50,8 @@ export function FormField({
           css({
             fontSize: "sm",
             display: "block",
-            color: "text.secondary",
+            color: "text",
+            fontWeight: "medium",
             textAlign: "left",
           }),
           hideLabel && visuallyHidden()
@@ -68,6 +71,7 @@ export function FormField({
             borderColor: "divider",
             borderRadius: "sm",
             p: "2",
+            _focus: { borderColor: "text", outline: "none" },
             _disabled: {
               color: "text.secondary",
               background: "disabled",
@@ -81,6 +85,117 @@ export function FormField({
           inputProps?.className
         )}
       />
+      {error && (
+        <div
+          aria-live="polite"
+          className={css({
+            color: "error",
+            fontSize: "sm",
+          })}
+        >
+          {errorMessage}
+        </div>
+      )}
+      {description && (
+        <div
+          className={css({
+            color: "text.tertiary",
+            fontSize: "xs",
+          })}
+        >
+          {description}
+        </div>
+      )}
+    </div>
+  );
+}
+
+type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
+  label: string;
+  error?: string;
+  name: string;
+  description?: ReactNode;
+  hideLabel?: boolean;
+  children: ReactNode;
+};
+
+export function SelectField({
+  label,
+  error,
+  name,
+  description,
+  hideLabel,
+  ...inputProps
+}: SelectFieldProps) {
+  const id = useId();
+  const t = useTranslations("formValidation");
+
+  // TODO: handle other validity states than valueMissing
+  // https://developer.mozilla.org/en-US/docs/Web/API/ValidityState
+  const errorMessage = error ? t("valueMissing", { label }) : null;
+
+  return (
+    <div
+      className={css({
+        display: "flex",
+        flexDirection: "column",
+        gap: "1.5",
+      })}
+      data-invalid={error ? "true" : undefined}
+    >
+      <label
+        htmlFor={id}
+        className={cx(
+          css({
+            fontSize: "sm",
+            display: "block",
+            color: "text.secondary",
+            textAlign: "left",
+            // fontWeight: "medium",
+          }),
+          hideLabel && visuallyHidden()
+        )}
+      >
+        {label}
+      </label>
+      <div className={css({ position: "relative" })}>
+        <select
+          {...inputProps}
+          id={id}
+          name={name}
+          className={cx(
+            css({
+              appearance: "none",
+              background: "white",
+              borderWidth: "1px",
+              borderColor: "divider",
+              borderRadius: "sm",
+              width: "full",
+
+              p: "2",
+              _disabled: {
+                color: "text.secondary",
+                background: "disabled",
+              },
+            }),
+            error && css({ borderColor: "error" }),
+            inputProps?.className
+          )}
+        />
+        <span
+          className={css({
+            position: "absolute",
+            insetBlock: "0",
+            insetEnd: "2",
+            display: "grid",
+            alignItems: "center",
+            pointerEvents: "none",
+          })}
+        >
+          <ChevronDownIcon />
+        </span>
+      </div>
+
       {error && (
         <div
           aria-live="polite"

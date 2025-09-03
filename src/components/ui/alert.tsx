@@ -1,5 +1,5 @@
-import * as React from "react";
 import { css, cva, cx, type RecipeVariantProps } from "@/theme/css";
+import * as React from "react";
 
 const alertVariants = cva({
   base: {
@@ -9,8 +9,8 @@ const alertVariants = cva({
     display: "inline-grid",
     rowGap: "2",
     columnGap: "3",
-    gridTemplateColumns: "[auto 1fr]",
-    gridTemplateRows: "[auto 1fr]",
+    gridTemplateColumns: "auto 1fr",
+    gridTemplateRows: "auto",
     "& > svg": {
       gridColumnStart: "1",
       gridColumnEnd: "1",
@@ -26,8 +26,14 @@ const alertVariants = cva({
         "& > svg": { color: "slate.700" },
       },
       error: { backgroundColor: "red.50", "& > svg": { color: "red.700" } },
-      warning: { backgroundColor: "yellow.50", "& > svg": { color: "yellow.700" } },
-      success: { backgroundColor: "green.50", "& > svg": { color: "green.700" } },
+      warning: {
+        backgroundColor: "yellow.50",
+        "& > svg": { color: "yellow.700" },
+      },
+      success: {
+        backgroundColor: "green.50",
+        "& > svg": { color: "green.700" },
+      },
     },
   },
   defaultVariants: {
@@ -82,4 +88,4 @@ const AlertDescription = React.forwardRef<
 ));
 AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertTitle, AlertDescription };
+export { Alert, AlertDescription, AlertTitle };
