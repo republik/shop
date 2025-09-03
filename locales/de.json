@@ -99,7 +99,7 @@
         "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
         "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
         "adFree": "Und das alles <b>ohne Werbung</b>",
-        "projectR": "<b>Nur bei jährlicher Zahlungsweise:</b> Sie werden Mitglied der <b>Project R Genossenschaft</b>",
+        "projectR": "<b>Nur bei jährlicher Zahlungsweise:</b> Sie werden Mitglied der <b>Project R Genossenschaft</b>",
         "projectRDescription": "<p><b>Project R</b> ist eine Genossenschaft, die sich für unabhängigen Journalismus, freie Meinungsäusserung, öffentliche Debatten und eine funktionierende Demokratie einsetzt.</p><p>Mit 46,4 Prozent der Anteile ist sie <b>Hauptaktionärin der Republik AG</b> und garantiert damit die Unabhängigkeit des Magazins.</p><p><b>Als Mitglied haben Sie keine Verpflichtungen, können aber bei ausgewählten Fragen mitentscheiden.</b></p>"
       },
       "reducedPrice": "Sie können sich keinen der genannten Beiträge leisten? <reducedLink>Gemeinsam finden wir eine Lösung.</reducedLink>"
@@ -214,19 +214,19 @@
 
       "offer": {
         "YEARLY": {
-          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+          "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."
         },
         "MONTHLY": {
-          "description": "Einen Monat lang Zugang zu allem, was die Republik zu bieten hat."
+          "description": "Zugang zu allem, was die Republik zu bieten hat."
         },
         "BENEFACTOR": {
-          "description": "Ein Jahr Zugang zur Republik. Und dazu die Gewissheit, ein unabhängiges Magazin substanziell zu unterstützen. Sie werden auch Mitglied der Project R Genossenschaft, haben keine Verpflichtungen, aber können bei ausgewählten Fragen mitentscheiden. Als Dank schicken wir Ihnen eine Aufmerksamkeit aus der Redaktion."
+          "description": "Zugang zur Republik. Und dazu die Gewissheit, ein unabhängiges Magazin substanziell zu unterstützen. Sie werden auch Mitglied der Project R Genossenschaft, haben keine Verpflichtungen, aber können bei ausgewählten Fragen mitentscheiden. Als Dank schicken wir Ihnen eine Aufmerksamkeit aus der Redaktion."
         },
         "REDUCED": {
-          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+          "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."
         },
         "STUDENT": {
-          "description": "Ein Jahr lang Zugang zu allen Republik-Beiträgen. Und Sie werden Mitglied der Project R Genossenschaft."
+          "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."
         }
       },
 
@@ -370,7 +370,7 @@
     "address": "Adresse",
 
     "changeEmailNote": "Um die E-Mail-Adresse zu ändern, <signOutButton>melden Sie sich neu an</signOutButton>.",
-    "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
+    "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
 
     "fields": {
       "email": "E-Mail-Adresse",
