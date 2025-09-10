@@ -6,20 +6,12 @@ declare global {
       NEXT_PUBLIC_URL: string;
       NEXT_PUBLIC_API_URL: string;
       NEXT_PUBLIC_MAGAZIN_URL: string;
-      NEXT_PUBLIC_SUBSCRIPTION_CONFIGURATION?: string;
-      NEXT_PUBLIC_PLAUSIBLE_DOMAIN: string;
+      NEXT_PUBLIC_PLAUSIBLE_DOMAIN?: string;
 
-      // DATOCMS (currently unused)
-      // DATO_CMS_API_URL: string;
-      // DATO_CMS_API_TOKEN: string;
-      // DATO_CMS_ENVIRONMENT: string | undefined;
       // STRIPE
-      STRIPE_SECRET_KEY_PROJECT_R: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;
-      STRIPE_SECRET_KEY_REPUBLIK: string;
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK: string;
-      // CURTAIN
-      CURTAIN_BACKDOOR_URL?: string;
+
       // SENTRY
       SENTRY_ORG?: string;
       SENTRY_PROJECT?: string;
