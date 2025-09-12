@@ -25,7 +25,9 @@ The following environment variables are required for the application to correctl
 The following environment variables are required to connect to the Stripe API for both organizations:
 
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R`
+- `STRIPE_SECRET_KEY_PROJECT_R`
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK`
+- `STRIPE_SECRET_KEY_REPUBLIK`
 
 #### Testing
 
