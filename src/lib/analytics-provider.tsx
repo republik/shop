@@ -6,6 +6,10 @@ type AnalyticsProviderProps = Omit<
 >;
 
 export const AnalyticsProvider = (props: AnalyticsProviderProps) => {
+  if (!process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN) {
+    return <>{props.children}</>;
+  }
+
   return (
     <PlausibleProvider
       domain={process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN}
