@@ -112,7 +112,7 @@ export async function getCheckoutState({
 
   const productAvailability = checkIfUserCanPurchase({ me, offer });
 
-  if (!productAvailability.available) {
+  if (!checkoutSession && !productAvailability.available) {
     return {
       step: "UNAVAILABLE",
       reason: productAvailability.reason,
