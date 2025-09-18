@@ -16,7 +16,7 @@ import {
   type StripeElementsOptions,
 } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 
 interface CheckoutViewProps {
   clientSecret: string;
@@ -107,8 +107,15 @@ type CheckoutFormState =
 
 function CheckoutForm() {
   const checkoutState = useCheckout();
-  const [confirmResult, setConfirmResult] =
-    useState<StripeCheckoutConfirmResult>();
+  const [formState, formAction, isPending] =
+    useActionState<StripeCheckoutConfirmResult | null>(async () => {
+      if (checkoutState.type === "success") {
+        const confirmResult = await checkoutState.checkout.confirm();
+        return confirmResult;
+      }
+      return null;
+    }, null);
+
   const t = useTranslations();
 
   console.log("state", checkoutState);
@@ -126,10 +133,7 @@ function CheckoutForm() {
     case "success":
       return (
         <form
-          action={async () => {
-            const confirmResult = await checkoutState.checkout.confirm();
-            setConfirmResult(confirmResult);
-          }}
+          action={formAction}
           className={css({
             display: "flex",
             flexDirection: "column",
@@ -145,10 +149,10 @@ function CheckoutForm() {
             />
           ) : null}
 
-          {confirmResult?.type === "error" ? (
+          {formState?.type === "error" ? (
             <ErrorMessage
               title={t("checkout.checkout.failed.title")}
-              description={confirmResult.error.message}
+              description={formState.error.message}
             />
           ) : null}
 
@@ -178,6 +182,7 @@ function CheckoutForm() {
             size="large"
             type="submit"
             disabled={!checkoutState.checkout.canConfirm}
+            loading={isPending}
           >
             Bezahlen
           </Button>
