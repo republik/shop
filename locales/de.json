@@ -8,7 +8,8 @@
 
   "error": {
     "generic": {
-      "title": "Es ist ein Fehler aufgetreten."
+      "title": "Es ist ein Fehler aufgetreten.",
+      "message": "Versuchen Sie, die Seite neu zu laden."
     },
     "global": {
       "title": "Es ist ein Fehler aufgetreten.",
@@ -328,6 +329,10 @@
     },
     "checkout": {
       "title": "Bezahlen",
+      "summary": {
+        "amountToPay": "Jetzt zu bezahlender Betrag"
+      },
+      "paymentMethod": "Zahlungsmethode",
       "success": {
         "subscription": {
           "title": "Vielen Dank für Ihren Kauf",

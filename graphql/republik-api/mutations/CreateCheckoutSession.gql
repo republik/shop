@@ -11,7 +11,7 @@ mutation CreateCheckoutSession(
     promoCode: $promoCode
     withSelectedDiscount: $selectedDiscount
     withCustomDonation: $customDonation
-    options: { uiMode: EMBEDDED, metadata: $metadata, returnURL: $returnUrl }
+    options: { uiMode: CUSTOM, metadata: $metadata, returnURL: $returnUrl }
   ) {
     company
     sessionId

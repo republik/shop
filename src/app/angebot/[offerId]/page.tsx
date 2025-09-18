@@ -1,4 +1,5 @@
 import { Step } from "@/components/checkout/checkout-step";
+import { CheckoutView } from "@/components/checkout/custom-checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
 import { EmbeddedCheckoutView } from "@/components/checkout/embedded-checkout-view";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
@@ -174,19 +175,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           })}
           title={t("checkout.checkout.title")}
         >
-          <EmbeddedCheckoutView
+          <CheckoutView
             company={checkoutState.offer.company}
-            clientSecret={checkoutState.checkoutSession.client_secret}
-            errors={
-              checkoutState.returnFromCheckout
-                ? [
-                    {
-                      title: t("checkout.checkout.failed.title"),
-                      description: t("checkout.checkout.failed.description"),
-                    },
-                  ]
-                : []
-            }
+            clientSecret={checkoutState.checkoutSession.client_secret ?? ""}
           />
         </Step>
       );
