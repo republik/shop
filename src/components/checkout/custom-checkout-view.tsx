@@ -173,11 +173,7 @@ function CheckoutForm() {
           >
             Bezahlen
           </Button>
-          <pre>
-            {JSON.stringify(checkoutState.checkout, null, 2)}
-            // A formatted total amount Total:{" "}
-            {checkoutState.checkout.total.total.minorUnitsAmount}
-          </pre>
+          <pre>{JSON.stringify(checkoutState.checkout, null, 2)}</pre>
         </form>
       );
   }
