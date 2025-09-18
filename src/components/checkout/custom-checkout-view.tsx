@@ -2,36 +2,78 @@
 
 import { ErrorMessage } from "@/components/checkout/error-message";
 import { PaymentSummary } from "@/components/checkout/payment-summary";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { loadStripe } from "@/lib/stripe/client";
+import { css } from "@/theme/css";
 import {
   CheckoutProvider,
   PaymentElement,
   useCheckout,
 } from "@stripe/react-stripe-js/checkout";
-import { AlertCircleIcon } from "lucide-react";
+import {
+  type StripeCheckoutConfirmResult,
+  type StripeElementsOptions,
+} from "@stripe/stripe-js";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 interface CheckoutViewProps {
   clientSecret: string;
   company: string;
-  errors: { title: string; description: string }[];
 }
 
-export function CheckoutView({
-  clientSecret,
-  company,
-  errors,
-}: CheckoutViewProps) {
+const elementsOptions: StripeElementsOptions = {
+  // loader: "never",
+  appearance: {
+    theme: "stripe",
+    variables: {
+      fontFamily: "GT-America-Standard",
+      fontWeightMedium: "500",
+      fontSizeSm: "14px",
+      borderRadius: "4px",
+      spacingUnit: "0.25rem",
+      focusBoxShadow: "none",
+    },
+
+    rules: {
+      ".AccordionItem": {
+        borderColor: "rgba(0,0,0,0.25)",
+        boxShadow: "none",
+        paddingLeft: "16px",
+        paddingRight: "16px",
+      },
+      ".Input": {
+        boxShadow: "none",
+      },
+      ".Label": {
+        fontWeight: "500",
+      },
+    },
+  },
+  fonts: [
+    {
+      family: "GT-America-Standard",
+      src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.woff)
+      format('woff'),
+    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.ttf)
+      format('truetype')`,
+      weight: "400",
+    },
+    {
+      family: "GT-America-Standard",
+      src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.woff)
+      format('woff'),
+    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.ttf)
+      format('truetype')`,
+      weight: "500",
+    },
+  ],
+};
+
+export function CheckoutView({ clientSecret, company }: CheckoutViewProps) {
   return (
     <div id="checkout">
-      {errors.map((e) => (
-        <ErrorMessage
-          key={e.title}
-          title={e.title}
-          description={e.description}
-        />
-      ))}
       <CheckoutProvider
         stripe={loadStripe(company)}
         options={{
@@ -42,50 +84,7 @@ export function CheckoutView({
           //   setComplete(true);
           //   window.location.reload();
           // },
-          elementsOptions: {
-            // loader: "never",
-            appearance: {
-              theme: "stripe",
-              variables: {
-                fontFamily: "GT-America-Standard",
-                fontWeightMedium: "500",
-                fontSizeSm: "14px",
-                borderRadius: "4px",
-                spacingUnit: "0.25rem",
-                focusBoxShadow: "none",
-              },
-
-              rules: {
-                ".AccordionItem": {
-                  borderColor: "transparent",
-                  boxShadow: "none",
-                  paddingLeft: "0",
-                  paddingRight: "0",
-                },
-                ".Input": {
-                  boxShadow: "none",
-                },
-              },
-            },
-            fonts: [
-              {
-                family: "GT-America-Standard",
-                src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.woff)
-      format('woff'),
-    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-regular.ttf)
-      format('truetype')`,
-                weight: "400",
-              },
-              {
-                family: "GT-America-Standard",
-                src: `url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.woff)
-      format('woff'),
-    url(https://cdn.repub.ch/s3/republik-assets/fonts/gt-america-standard-medium.ttf)
-      format('truetype')`,
-                weight: "500",
-              },
-            ],
-          },
+          elementsOptions,
         }}
       >
         <CheckoutForm />
@@ -108,34 +107,58 @@ type CheckoutFormState =
 
 function CheckoutForm() {
   const checkoutState = useCheckout();
+  const [confirmResult, setConfirmResult] =
+    useState<StripeCheckoutConfirmResult>();
+  const t = useTranslations();
 
-  console.log(checkoutState);
+  console.log("state", checkoutState);
 
   switch (checkoutState.type) {
     case "loading":
-      return <div>Loading ...</div>;
+      return <Spinner />;
     case "error":
-      return <div>Error: {checkoutState.error.message}</div>;
+      return (
+        <ErrorMessage
+          title={t("error.generic.title")}
+          description={t("error.generic.message")}
+        />
+      );
     case "success":
       return (
         <form
           action={async () => {
-            const checkoutResult = await checkoutState.checkout.confirm();
-
-            console.log(checkoutResult);
+            const confirmResult = await checkoutState.checkout.confirm();
+            setConfirmResult(confirmResult);
           }}
+          className={css({
+            display: "flex",
+            flexDirection: "column",
+            gap: "4",
+          })}
         >
           <PaymentSummary checkoutState={checkoutState} />
 
           {checkoutState.checkout.lastPaymentError ? (
-            <Alert variant="error">
-              <AlertCircleIcon />
-              <AlertTitle>Ups</AlertTitle>
-              <AlertDescription>
-                <>{checkoutState.checkout.lastPaymentError.message}</>
-              </AlertDescription>
-            </Alert>
+            <ErrorMessage
+              title={t("checkout.checkout.failed.title")}
+              description={checkoutState.checkout.lastPaymentError.message}
+            />
           ) : null}
+
+          {confirmResult?.type === "error" ? (
+            <ErrorMessage
+              title={t("checkout.checkout.failed.title")}
+              description={confirmResult.error.message}
+            />
+          ) : null}
+
+          <h2
+            className={css({
+              textStyle: "h3Sans",
+            })}
+          >
+            {t("checkout.checkout.paymentMethod")}
+          </h2>
 
           <PaymentElement
             options={{

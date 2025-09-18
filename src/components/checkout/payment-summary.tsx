@@ -1,4 +1,5 @@
 import { useFormatCurrency } from "@/lib/hooks/use-format";
+import { css } from "@/theme/css";
 import type { CheckoutState } from "@stripe/react-stripe-js/checkout";
 import { useTranslations } from "next-intl";
 
@@ -7,7 +8,7 @@ export function PaymentSummary({
 }: {
   checkoutState: CheckoutState;
 }) {
-  const t = useTranslations();
+  const t = useTranslations("checkout.checkout.summary");
   const formatPrice = useFormatCurrency("CHF");
 
   if (checkoutState.type !== "success") {
@@ -18,17 +19,25 @@ export function PaymentSummary({
 
   return (
     <div>
-      {formatPrice(total.total.minorUnitsAmount)}
+      <div>{t("amountToPay")}:</div>
+      <div
+        className={css({
+          fontWeight: "medium",
+          fontSize: "2xl",
+        })}
+      >
+        {formatPrice(total.total.minorUnitsAmount)}
+      </div>
 
       {taxAmounts?.length ? (
-        <div>
+        <div className={css({ fontSize: "sm", color: "text.secondary" })}>
           inkl.{" "}
           {formatPrice(taxAmounts[0].minorUnitsAmount, { displayRappen: true })}{" "}
           {taxAmounts[0].displayName}
         </div>
       ) : null}
 
-      <details>
+      {/* <details>
         <summary>Details</summary>
 
         {lineItems.map((item) => {
@@ -39,7 +48,7 @@ export function PaymentSummary({
             </div>
           );
         })}
-      </details>
+      </details> */}
     </div>
   );
 }

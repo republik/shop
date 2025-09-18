@@ -45,7 +45,7 @@ export async function createCheckoutSession(
         ? { amount: donationAmount, recurring: donationRecurring }
         : null,
       selectedDiscount: discountOption ?? null,
-      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}`,
+      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}&step=payment`,
     }
   );
 
