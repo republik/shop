@@ -163,8 +163,16 @@ function CheckoutForm() {
           <PaymentElement
             options={{
               layout: "accordion",
+              terms: {
+                card: "never",
+                applePay: "never",
+                googlePay: "never",
+                paypal: "never",
+              },
             }}
           />
+
+          <p>AGB einverstanden ja/nein</p>
 
           <Button
             size="large"
@@ -173,7 +181,13 @@ function CheckoutForm() {
           >
             Bezahlen
           </Button>
-          <pre>{JSON.stringify(checkoutState.checkout, null, 2)}</pre>
+
+          <p>Bla blah Abbuchen, Kündigen</p>
+
+          <details>
+            <summary>Debug Checkout State</summary>
+            <pre>{JSON.stringify(checkoutState.checkout, null, 2)}</pre>
+          </details>
         </form>
       );
   }
