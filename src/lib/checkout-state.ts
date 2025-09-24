@@ -1,10 +1,12 @@
 "use server";
 
-import type { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  OfferAvailability,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import type { Me } from "@/lib/auth/types";
 import { fetchOffer } from "@/lib/offers";
-import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
 import {
   type CheckoutSessionData,
   getCheckoutSession,
@@ -78,6 +80,8 @@ export async function getCheckoutState({
 }): Promise<CheckoutState> {
   const offer = await fetchOffer(offerId, promoCode);
 
+  console.log(offer);
+
   if (!offer) {
     return {
       step: "ERROR",
@@ -110,12 +114,14 @@ export async function getCheckoutState({
     };
   }
 
-  const productAvailability = checkIfUserCanPurchase({ me, offer });
+  const offerAvailable =
+    offer.availability === OfferAvailability.Purchasable ||
+    offer.availability === OfferAvailability.Upgradeable;
 
-  if (!checkoutSession && !productAvailability.available) {
+  if (!checkoutSession && !offerAvailable) {
     return {
       step: "UNAVAILABLE",
-      reason: productAvailability.reason,
+      // TODO: reason
       offer,
     };
   }

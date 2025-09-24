@@ -113,6 +113,7 @@ export function CustomizeOfferView({
       description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
+      info: "startDate" in offer ? offer.startDate : undefined,
     });
 
     if (offer.discount) {
