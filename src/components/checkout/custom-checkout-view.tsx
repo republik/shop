@@ -87,6 +87,7 @@ const elementsOptions: StripeElementsOptions = {
         paddingLeft: "16px",
         paddingRight: "16px",
         borderColor: "rgba(0,0,0,0.25)",
+        borderRadius: "0.5rem",
         boxShadow: "none",
         fontSize: "var(--fontSizeBase)",
       },

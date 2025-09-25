@@ -28,7 +28,7 @@ export function PaymentSummary({
         background: "background.light",
         borderRadius: "lg",
         p: "4",
-        spaceY: "4",
+        spaceY: "2",
       })}
     >
       <div>
@@ -36,14 +36,25 @@ export function PaymentSummary({
         <div
           className={css({
             fontWeight: "medium",
-            fontSize: "2xl",
+            fontSize: "3xl",
           })}
         >
           {formatPrice(total.total.minorUnitsAmount)}
         </div>
       </div>
 
-      {startInfo && <AlertDescription>{startInfo}</AlertDescription>}
+      {startInfo && (
+        <div
+          className={css({
+            borderColor: "divider",
+            borderTopStyle: "solid",
+            borderTopWidth: "1",
+            pt: "2",
+          })}
+        >
+          <AlertDescription>{startInfo}</AlertDescription>
+        </div>
+      )}
 
       {taxAmounts?.length ? (
         <div className={css({ fontSize: "sm", color: "text.secondary" })}>
