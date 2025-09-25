@@ -168,6 +168,7 @@
       "remove": "Entfernen",
       "choose": "Wählen",
       "buy": "Kaufen",
+      "pay": "Bezahlen",
       "next": "Weiter"
     },
     "loginStep": {
@@ -211,6 +212,9 @@
           "needsMembershipForDonation": "Um spenden zu können, benötigen Sie eine laufende Mitgliedschaft bei der Project R Genossenschaft.",
           "generic": ""
         }
+      },
+      "upgradeable": {
+        "startInfo": "Beginnt, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> abläuft."
       },
 
       "offer": {
@@ -330,7 +334,12 @@
     "checkout": {
       "title": "Bezahlen",
       "summary": {
-        "amountToPay": "Jetzt zu bezahlender Betrag"
+        "amountToPay": "Jetzt zu bezahlender Betrag",
+        "startInfo": "Die gewählte Zahlungsmethode wird erst belastet, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> abläuft."
+      },
+      "terms": {
+        "PROJECT_R": "Ich bin mit den <tosLink>AGB</tosLink>, den <privacyLink>Datenschutz­bestimmungen</privacyLink> und den <statutesLink>Statuten</statutesLink> der Project R Genossenschaft einverstanden.",
+        "REPUBLIK": "Ich bin mit den <tosLink>AGB</tosLink> und den <privacyLink>Datenschutz­bestimmungen</privacyLink> einverstanden."
       },
       "paymentMethod": "Zahlungsmethode",
       "success": {

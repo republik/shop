@@ -176,6 +176,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           title={t("checkout.checkout.title")}
         >
           <CheckoutView
+            offer={checkoutState.offer}
             company={checkoutState.offer.company}
             clientSecret={checkoutState.checkoutSession.client_secret ?? ""}
           />

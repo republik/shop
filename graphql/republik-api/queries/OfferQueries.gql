@@ -28,6 +28,8 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     requiresAddress
     availability
 
+    # __typename needs to be specified explicitly
+    __typename
     ... on SubscriptionOffer {
       startDate
     }

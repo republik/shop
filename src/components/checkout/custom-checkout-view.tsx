@@ -1,8 +1,13 @@
 "use client";
 
+import {
+  OfferAvailability,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { ErrorMessage } from "@/components/checkout/error-message";
 import { PaymentSummary } from "@/components/checkout/payment-summary";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import { loadStripe } from "@/lib/stripe/client";
 import { css } from "@/theme/css";
@@ -16,11 +21,45 @@ import {
   type StripeElementsOptions,
 } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
-import { useActionState, useState } from "react";
+import Link from "next/link";
+import { useActionState, type ReactNode } from "react";
+
+const translationLinks = {
+  privacyLink: (chunks: ReactNode) => (
+    <Link
+      key="privacyPolicyLink"
+      href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/datenschutz`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {chunks}
+    </Link>
+  ),
+  tosLink: (chunks: ReactNode) => (
+    <Link
+      key="tosLink"
+      href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/agb`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {chunks}
+    </Link>
+  ),
+  statutesLink: (chunks: ReactNode) => (
+    <Link
+      key="statutesLink"
+      href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/statuten`}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {chunks}
+    </Link>
+  ),
+};
 
 interface CheckoutViewProps {
   clientSecret: string;
-  company: string;
+  offer: NonNullable<OfferCheckoutQuery["offer"]>;
 }
 
 const elementsOptions: StripeElementsOptions = {
@@ -31,23 +70,35 @@ const elementsOptions: StripeElementsOptions = {
       fontFamily: "GT-America-Standard",
       fontWeightMedium: "500",
       fontSizeSm: "14px",
-      borderRadius: "4px",
+      colorPrimary: "#000",
+      colorText: "#000",
+      colorTextSecondary: "rgba(0,0,0,0.55)",
+      colorDanger: "#dc2626",
+      borderRadius: "0.25rem",
       spacingUnit: "0.25rem",
       focusBoxShadow: "none",
+      gridRowSpacing: "1rem",
+
+      accordionItemSpacing: "1rem",
     },
 
     rules: {
       ".AccordionItem": {
-        borderColor: "rgba(0,0,0,0.25)",
-        boxShadow: "none",
         paddingLeft: "16px",
         paddingRight: "16px",
-      },
-      ".Input": {
+        borderColor: "rgba(0,0,0,0.25)",
         boxShadow: "none",
+      },
+      ".Input, .Block": {
+        boxShadow: "none",
+        borderColor: "rgba(0,0,0,0.25)",
       },
       ".Label": {
         fontWeight: "500",
+        marginBottom: "6px",
+      },
+      ".p-GridCell": {
+        marginBottom: "16px",
       },
     },
   },
@@ -71,11 +122,11 @@ const elementsOptions: StripeElementsOptions = {
   ],
 };
 
-export function CheckoutView({ clientSecret, company }: CheckoutViewProps) {
+export function CheckoutView({ clientSecret, offer }: CheckoutViewProps) {
   return (
     <div id="checkout">
       <CheckoutProvider
-        stripe={loadStripe(company)}
+        stripe={loadStripe(offer.company)}
         options={{
           fetchClientSecret: async () => {
             return clientSecret;
@@ -87,7 +138,7 @@ export function CheckoutView({ clientSecret, company }: CheckoutViewProps) {
           elementsOptions,
         }}
       >
-        <CheckoutForm />
+        <CheckoutForm offer={offer} />
       </CheckoutProvider>
     </div>
   );
@@ -105,12 +156,16 @@ type CheckoutFormState =
       type: "initial";
     };
 
-function CheckoutForm() {
-  const checkoutState = useCheckout();
+function CheckoutForm({
+  offer,
+}: {
+  offer: NonNullable<OfferCheckoutQuery["offer"]>;
+}) {
+  const stripeCheckoutState = useCheckout();
   const [formState, formAction, isPending] =
     useActionState<StripeCheckoutConfirmResult | null>(async () => {
-      if (checkoutState.type === "success") {
-        const confirmResult = await checkoutState.checkout.confirm();
+      if (stripeCheckoutState.type === "success") {
+        const confirmResult = await stripeCheckoutState.checkout.confirm();
         return confirmResult;
       }
       return null;
@@ -118,9 +173,19 @@ function CheckoutForm() {
 
   const t = useTranslations();
 
-  console.log("state", checkoutState);
+  console.log("state", stripeCheckoutState);
 
-  switch (checkoutState.type) {
+  const startInfo =
+    offer.availability === OfferAvailability.Upgradeable &&
+    offer.__typename === "SubscriptionOffer" &&
+    offer.startDate
+      ? t.rich("checkout.checkout.summary.startInfo", {
+          startDate: new Date(offer.startDate),
+          date: (chunks) => <b>{chunks}</b>,
+        })
+      : undefined;
+
+  switch (stripeCheckoutState.type) {
     case "loading":
       return <Spinner />;
     case "error":
@@ -140,12 +205,17 @@ function CheckoutForm() {
             gap: "4",
           })}
         >
-          <PaymentSummary checkoutState={checkoutState} />
+          <PaymentSummary
+            checkoutState={stripeCheckoutState}
+            startInfo={startInfo}
+          />
 
-          {checkoutState.checkout.lastPaymentError ? (
+          {stripeCheckoutState.checkout.lastPaymentError ? (
             <ErrorMessage
               title={t("checkout.checkout.failed.title")}
-              description={checkoutState.checkout.lastPaymentError.message}
+              description={
+                stripeCheckoutState.checkout.lastPaymentError.message
+              }
             />
           ) : null}
 
@@ -176,22 +246,31 @@ function CheckoutForm() {
             }}
           />
 
-          <p>AGB einverstanden ja/nein</p>
+          <p>
+            <Checkbox
+              name="terms"
+              value="termsAccepted"
+              type="checkbox"
+              required
+            >
+              {offer.company === "PROJECT_R"
+                ? t.rich("checkout.checkout.terms.PROJECT_R", translationLinks)
+                : t.rich("checkout.checkout.terms.REPUBLIK", translationLinks)}
+            </Checkbox>
+          </p>
 
           <Button
             size="large"
             type="submit"
-            disabled={!checkoutState.checkout.canConfirm}
+            disabled={!stripeCheckoutState.checkout.canConfirm}
             loading={isPending}
           >
-            Bezahlen
+            {t("checkout.actions.pay")}
           </Button>
-
-          <p>Bla blah Abbuchen, Kündigen</p>
 
           <details>
             <summary>Debug Checkout State</summary>
-            <pre>{JSON.stringify(checkoutState.checkout, null, 2)}</pre>
+            <pre>{JSON.stringify(stripeCheckoutState.checkout, null, 2)}</pre>
           </details>
         </form>
       );
