@@ -23,25 +23,27 @@ export function PaymentSummary({
   const { total, taxAmounts } = checkoutState.checkout;
 
   return (
-    <div>
-      <div>{t("amountToPay")}:</div>
-      <div
-        className={css({
-          fontWeight: "medium",
-          fontSize: "2xl",
-        })}
-      >
-        {formatPrice(total.total.minorUnitsAmount)}
+    <div
+      className={css({
+        background: "background.light",
+        borderRadius: "lg",
+        p: "4",
+        spaceY: "4",
+      })}
+    >
+      <div>
+        <h3>{t("amountToPay")}</h3>
+        <div
+          className={css({
+            fontWeight: "medium",
+            fontSize: "2xl",
+          })}
+        >
+          {formatPrice(total.total.minorUnitsAmount)}
+        </div>
       </div>
 
-      {startInfo && (
-        <div className={css({ mt: "4" })}>
-          <Alert>
-            <InfoIcon />
-            <AlertDescription>{startInfo}</AlertDescription>
-          </Alert>
-        </div>
-      )}
+      {startInfo && <AlertDescription>{startInfo}</AlertDescription>}
 
       {taxAmounts?.length ? (
         <div className={css({ fontSize: "sm", color: "text.secondary" })}>

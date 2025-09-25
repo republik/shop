@@ -115,9 +115,17 @@ export const presetRepublik = definePreset({
             },
           },
           background: {
-            value: {
-              base: "white",
-              _dark: "#191919",
+            DEFAULT: {
+              value: {
+                base: "white",
+                _dark: "#191919",
+              },
+            },
+            light: {
+              value: {
+                base: "#F1F1F1",
+                _dark: "#191919",
+              },
             },
           },
           pageBackground: {

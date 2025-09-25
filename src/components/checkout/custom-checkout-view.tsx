@@ -88,6 +88,7 @@ const elementsOptions: StripeElementsOptions = {
         paddingRight: "16px",
         borderColor: "rgba(0,0,0,0.25)",
         boxShadow: "none",
+        fontSize: "var(--fontSizeBase)",
       },
       ".Input, .Block": {
         boxShadow: "none",
@@ -229,6 +230,7 @@ function CheckoutForm({
           <h2
             className={css({
               textStyle: "h3Sans",
+              mt: "4",
             })}
           >
             {t("checkout.checkout.paymentMethod")}
@@ -246,7 +248,7 @@ function CheckoutForm({
             }}
           />
 
-          <p>
+          <p className={css({ mt: "4" })}>
             <Checkbox
               name="terms"
               value="termsAccepted"
