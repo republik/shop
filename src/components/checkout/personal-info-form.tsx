@@ -11,11 +11,13 @@ import { useActionState, useEffect } from "react";
 export function PersonalInfoForm({
   code,
   me,
+  birthyear,
   addressRequired,
   onComplete,
 }: {
   code?: string;
   me: Me;
+  birthyear?: string;
   addressRequired: boolean;
   onComplete: () => void;
 }) {
@@ -30,6 +32,7 @@ export function PersonalInfoForm({
       postalCode: me.address?.postalCode,
       city: me.address?.city,
       country: me.address?.country,
+      birthyear,
     },
   });
 
@@ -88,6 +91,16 @@ export function PersonalInfoForm({
         defaultValue={state.data.lastName ?? undefined}
         required
       />
+
+      {state.data.birthyear && (
+        <FormField
+          type="text"
+          label={tField("birthyear")}
+          name="birthyear"
+          defaultValue={state.data.birthyear}
+          readOnly
+        />
+      )}
 
       {addressRequired && (
         <>

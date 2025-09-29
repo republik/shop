@@ -124,8 +124,7 @@ export function U30Chooser({}: {}) {
         )}
 
         <FormField
-          // No field name because we don't actually pass the value to the form
-          name=""
+          name="birthyear"
           label={t("birthYearLabel")}
           value={promoCode.birthYear}
           onChange={(e) => {

@@ -1,12 +1,19 @@
 mutation UpdateMe(
   $firstName: String
   $lastName: String
+  $birthyear: Int
   $address: AddressInput
 ) {
-  updateMe(firstName: $firstName, lastName: $lastName, address: $address) {
+  updateMe(
+    firstName: $firstName
+    lastName: $lastName
+    address: $address
+    birthyear: $birthyear
+  ) {
     id
     firstName
     lastName
+    birthyear
     address {
       name
       line1

@@ -20,6 +20,7 @@ import { notFound, redirect } from "next/navigation";
 type PageSearchParams = {
   session_id?: string;
   promo_code?: string;
+  birthyear?: string;
   return_from_checkout?: "true";
   step?: string;
 };
@@ -44,7 +45,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
 
   const { offerId } = await params;
-  const { step, promo_code, return_from_checkout, session_id } =
+  const { step, promo_code, birthyear, return_from_checkout, session_id } =
     await searchParams;
 
   const checkoutState = await getCheckoutState({
@@ -65,6 +66,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     }
     if (promo_code) {
       p.set("promo_code", promo_code);
+    }
+    if (birthyear) {
+      p.set("birthyear", birthyear);
     }
     if (params.sessionId) {
       p.set("session_id", params.sessionId);
@@ -133,6 +137,9 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
               if (promo_code) {
                 p.set("promo_code", promo_code);
               }
+              if (birthyear) {
+                p.set("birthyear", birthyear);
+              }
               redirect(`/angebot/${offerId}/?${p}`);
             }}
           />
@@ -154,6 +161,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         >
           <PersonalInfoForm
             me={checkoutState.me}
+            birthyear={birthyear}
             addressRequired={checkoutState.addressRequired}
             onComplete={async () => {
               "use server";
