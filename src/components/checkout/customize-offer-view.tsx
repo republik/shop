@@ -26,6 +26,7 @@ type DiscountOptionParams = {
 interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
+  birthyear?: string;
   onComplete: (params: {
     sessionId: string;
     donationOption?: DonationOptionParams;
@@ -36,6 +37,7 @@ interface CustomizeOfferProps {
 export function CustomizeOfferView({
   offer,
   promoCode,
+  birthyear,
   onComplete,
 }: CustomizeOfferProps) {
   const donationOptions = offer.suggestedDonations?.map((amount) => {
@@ -221,8 +223,12 @@ export function CustomizeOfferView({
         gap: "4",
       })}
     >
-      <input type="hidden" readOnly name="offerId" defaultValue={offer.id} />
-      <input type="hidden" readOnly name="promoCode" defaultValue={promoCode} />
+      <input type="hidden" readOnly name="offerId" value={offer.id} />
+      <input type="hidden" readOnly name="promoCode" value={promoCode} />
+
+      {birthyear && (
+        <input type="hidden" readOnly name="birthyear" value={birthyear} />
+      )}
 
       {donationAmount && (
         <input

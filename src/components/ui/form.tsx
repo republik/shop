@@ -76,6 +76,10 @@ export function FormField({
               color: "text.secondary",
               background: "disabled",
             },
+            _readOnly: {
+              color: "text.secondary",
+              background: "disabled",
+            },
             _placeholder: {
               color: "text.tertiary",
               fontWeight: "normal",
