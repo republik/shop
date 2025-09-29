@@ -115,6 +115,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           <CustomizeOfferView
             offer={checkoutState.offer}
             promoCode={promo_code}
+            birthyear={birthyear}
             onComplete={async ({ sessionId }) => {
               "use server";
 
