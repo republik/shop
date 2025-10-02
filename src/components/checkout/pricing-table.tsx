@@ -3,9 +3,10 @@ import { Button } from "@/components/ui/button";
 import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css, cx } from "@/theme/css";
-import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
+import { HandHeartIcon, InfoIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
+import { ErrorMessage } from "@/components/checkout/error-message";
 export interface LineItem {
   type: "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
@@ -16,6 +17,7 @@ export interface LineItem {
   duration?: string;
   repeating?: number;
   recurringInterval?: string;
+  startDate?: Date;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
 }
@@ -93,6 +95,128 @@ function SubscriptionPriceSummary({
         interval: t(`checkout.preCheckout.intervals.${recurringInterval}`),
       })}
     </>
+  );
+}
+
+function LineItem({ currency, ...item }: LineItem & { currency: string }) {
+  const t = useTranslations();
+  const formatPrice = useFormatCurrency(currency);
+
+  const Icon = lineItemIcons[item.type];
+
+  return (
+    <tr
+      className={cx(
+        item.hidden && "sr-only",
+        css({
+          borderColor: "divider",
+          borderTopWidth: 1,
+          _firstOfType: { borderTop: "none" },
+        })
+      )}
+      data-f={JSON.stringify(item)}
+    >
+      <th scope="row">
+        <div
+          className={css({
+            fontSize: "lg",
+            display: "flex",
+            gap: "2",
+            alignItems: "center",
+          })}
+        >
+          {Icon && <Icon />}
+          {item.label}
+        </div>
+
+        {item.description && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              mt: "2",
+            })}
+          >
+            {item.description}
+          </p>
+        )}
+
+        {item.info && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {item.info}
+          </p>
+        )}
+
+        {item.startDate && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {t.rich("checkout.preCheckout.upgradeable.startInfo", {
+              startDate: item.startDate,
+              date: (chunks) => (
+                <b
+                  className={css({
+                    whiteSpace: "nowrap",
+                    fontWeight: "medium",
+                  })}
+                >
+                  {chunks}
+                </b>
+              ),
+            })}
+          </p>
+        )}
+
+        {(item.onChange || item.onRemove) && (
+          <p
+            className={css({
+              display: "flex",
+              gap: "2",
+              mt: "2",
+              color: "text.tertiary",
+              fontWeight: "normal",
+            })}
+          >
+            {item.onChange && (
+              <Button
+                variant="link"
+                type="button"
+                onClick={() => {
+                  item.onChange?.(item);
+                }}
+              >
+                {t("checkout.actions.change")}
+              </Button>
+            )}
+            {item.onRemove && (
+              <Button
+                variant="link"
+                type="button"
+                onClick={() => {
+                  item.onRemove?.(item);
+                }}
+              >
+                {t("checkout.actions.remove")}
+              </Button>
+            )}
+          </p>
+        )}
+      </th>
+      <td className={css({ fontSize: "lg", fontWeight: "medium" })}>
+        {formatPrice(item.amount, { displayZeroAmount: false })}
+      </td>
+    </tr>
   );
 }
 
@@ -187,98 +311,7 @@ export function PricingTable({
         </thead>
         <tbody>
           {lineItems.map((item) => {
-            const Icon = lineItemIcons[item.type];
-
-            return (
-              <tr
-                key={item.label}
-                className={cx(
-                  item.hidden && "sr-only",
-                  css({
-                    borderColor: "divider",
-                    borderTopWidth: 1,
-                    _firstOfType: { borderTop: "none" },
-                  })
-                )}
-                data-f={JSON.stringify(item)}
-              >
-                <th scope="row">
-                  <div
-                    className={css({
-                      fontSize: "lg",
-                      display: "flex",
-                      gap: "2",
-                      alignItems: "center",
-                    })}
-                  >
-                    {Icon && <Icon />}
-                    {item.label}
-                  </div>
-
-                  {item.description && (
-                    <p
-                      className={css({
-                        fontWeight: "normal",
-                        mt: "2",
-                      })}
-                    >
-                      {item.description}
-                    </p>
-                  )}
-
-                  {item.info && (
-                    <p
-                      className={css({
-                        fontWeight: "normal",
-                        color: "text.tertiary",
-                        mt: "2",
-                        _firstLetter: { textTransform: "uppercase" },
-                      })}
-                    >
-                      {item.info}
-                    </p>
-                  )}
-
-                  {(item.onChange || item.onRemove) && (
-                    <p
-                      className={css({
-                        display: "flex",
-                        gap: "2",
-                        mt: "2",
-                        color: "text.tertiary",
-                        fontWeight: "normal",
-                      })}
-                    >
-                      {item.onChange && (
-                        <Button
-                          variant="link"
-                          type="button"
-                          onClick={() => {
-                            item.onChange?.(item);
-                          }}
-                        >
-                          {t("checkout.actions.change")}
-                        </Button>
-                      )}
-                      {item.onRemove && (
-                        <Button
-                          variant="link"
-                          type="button"
-                          onClick={() => {
-                            item.onRemove?.(item);
-                          }}
-                        >
-                          {t("checkout.actions.remove")}
-                        </Button>
-                      )}
-                    </p>
-                  )}
-                </th>
-                <td className={css({ fontSize: "lg", fontWeight: "medium" })}>
-                  {formatPrice(item.amount, { displayZeroAmount: false })}
-                </td>
-              </tr>
-            );
+            return <LineItem key={item.label} currency={currency} {...item} />;
           })}
 
           {extraItem && (

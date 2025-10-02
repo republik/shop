@@ -4,22 +4,10 @@ import { getClient } from "@/lib/graphql/client";
 export async function fetchOffer(offerId: string, promoCode?: string) {
   const gql = await getClient();
 
-  const { data } = await gql.query(
-    OfferCheckoutDocument,
-    {
-      offerId,
-      promoCode,
-    },
-    {
-      fetchOptions: {
-        // Should be safe because cache keys use headers
-        cache: "force-cache",
-        next: {
-          revalidate: 60,
-        },
-      },
-    }
-  );
+  const { data } = await gql.query(OfferCheckoutDocument, {
+    offerId,
+    promoCode,
+  });
 
   return data?.offer ?? undefined;
 }

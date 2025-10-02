@@ -1,6 +1,9 @@
 "use client";
 
-import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  OfferAvailability,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
 import { DiscountChooser } from "@/components/checkout/discount-chooser";
 import { DonationChooser } from "@/components/checkout/donation-chooser";
@@ -109,12 +112,20 @@ export function CustomizeOfferView({
         t(descriptionTranslationKey)
       : undefined;
 
+    const startDate =
+      offer.availability === OfferAvailability.Upgradeable &&
+      offer.__typename === "SubscriptionOffer" &&
+      offer.startDate
+        ? new Date(offer.startDate)
+        : undefined;
+
     items.push({
       type: "OFFER",
       label: offer.name,
       description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
+      startDate,
     });
 
     if (offer.discount) {
