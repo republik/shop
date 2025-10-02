@@ -38,6 +38,7 @@ export function PaymentSummary({
             fontWeight: "medium",
             fontSize: "3xl",
           })}
+          data-testid="product-summary-total-amount"
         >
           {formatPrice(total.total.minorUnitsAmount)}
         </div>

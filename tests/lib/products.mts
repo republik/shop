@@ -1,4 +1,4 @@
-type ProductTest = {
+export type ProductTest = {
   id: string;
   offerId: string;
   name: string;
@@ -138,6 +138,29 @@ export const PRODUCTS: ProductTest[] = [
     expectedAmount: "120",
     requiresAddress: true,
     requiresLogin: true,
+  },
+];
+
+export const UPGRADES: { id: string; from: ProductTest; to: ProductTest }[] = [
+  {
+    id: "monthly to yearly",
+    from: {
+      id: "monthly",
+      offerId: "MONTHLY",
+      name: "Monats-Abo",
+      expectedAmount: "22",
+      futurePriceDescription: "pro Monat",
+      requiresAddress: false,
+      requiresLogin: true,
+    },
+    to: {
+      id: "yearly",
+      offerId: "YEARLY",
+      name: "Jahresmitgliedschaft",
+      expectedAmount: "0",
+      requiresAddress: true,
+      requiresLogin: true,
+    },
   },
 ];
 
