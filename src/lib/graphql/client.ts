@@ -9,9 +9,9 @@ import { headers } from "next/headers";
  */
 export async function getClient(): Promise<Client> {
   const _headers = await headers();
+
   const reqHeaders = {
     cookie: _headers.get("cookie") ?? "",
-    accept: _headers.get("accept") ?? "",
     Authorization: _headers.get("Authorization") ?? "",
   };
 
