@@ -12,6 +12,7 @@ const CheckoutSessionInput = z.object({
   donationRecurring: z.coerce.boolean(),
   discountOption: z.string().optional(),
   discountReason: z.string().optional(),
+  birthyear: z.string().optional(),
 });
 
 type CreateCheckoutState = {
@@ -29,6 +30,7 @@ export async function createCheckoutSession(
     donationRecurring,
     discountOption,
     discountReason,
+    birthyear,
   } = CheckoutSessionInput.parse(Object.fromEntries(formData));
 
   const gqlClient = await getClient();
@@ -39,7 +41,7 @@ export async function createCheckoutSession(
     CreateCheckoutSessionDocument,
     {
       offerId: offerId,
-      metadata: { ...analyticsParams, reason: discountReason },
+      metadata: { ...analyticsParams, reason: discountReason, birthyear },
       promoCode,
       customDonation: donationAmount
         ? { amount: donationAmount, recurring: donationRecurring }

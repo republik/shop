@@ -396,7 +396,8 @@
       "line2": "Zusatz (optional)",
       "postalCode": "Postleitzahl",
       "city": "Ort",
-      "country": "Land"
+      "country": "Land",
+      "birthyear": "Geburtsjahr"
     },
 
     "defaults": {
