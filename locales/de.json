@@ -186,6 +186,15 @@
         "description": "Wir haben Ihnen einen Bestätigungs-Code an <email></email> geschickt. Geben Sie ihn ein, um Ihre E-Mail-Adresse zu bestätigen."
       }
     },
+    "currentSubscription": {
+      "title": "Aktuell",
+      "subscriptionType": {
+        "YEARLY_SUBSCRIPTION": "Jahresmitgliedschaft",
+        "MONTHLY_SUBSCRIPTION": "Monats-Abo",
+        "BENEFACTOR_SUBSCRIPTION": "Gönnermitgliedschaft"
+      },
+      "renewsOnDate": "Erneuert sich am {currentPeriodEnd, date, long} für {price}."
+    },
     "preCheckout": {
       "title": "Überprüfen Sie Ihre Wahl",
       "summary": {
@@ -213,10 +222,14 @@
           "generic": ""
         }
       },
-      "upgradeable": {
+      "scheduledSubscription": {
+        "label": "Neu",
         "startInfo": "Beginnt, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> abläuft."
       },
-
+      "currentSubscription": {
+        "label": "Aktuell",
+        "endInfo": "Wird auf den <date>{endDate, date, long}</date> gekündigt."
+      },
       "offer": {
         "YEARLY": {
           "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."

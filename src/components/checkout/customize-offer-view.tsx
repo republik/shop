@@ -9,6 +9,7 @@ import { DiscountChooser } from "@/components/checkout/discount-chooser";
 import { DonationChooser } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import type { Me } from "@/lib/auth/types";
 import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
 import { AlertCircleIcon } from "lucide-react";
@@ -30,6 +31,7 @@ interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
   birthyear?: string;
+  activeSubscription?: Me["activeMagazineSubscription"];
   onComplete: (params: {
     sessionId: string;
     donationOption?: DonationOptionParams;
@@ -41,6 +43,7 @@ export function CustomizeOfferView({
   offer,
   promoCode,
   birthyear,
+  activeSubscription,
   onComplete,
 }: CustomizeOfferProps) {
   const donationOptions = offer.suggestedDonations?.map((amount) => {
@@ -60,22 +63,22 @@ export function CustomizeOfferView({
 
   const [state, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
-    {}
+    {},
   );
 
   const [showOptions, setShowOptions] = useState(false);
 
   const [donationAmount, setDonationAmount] = useSessionStorage(
-    `${offer.id}_donationAmount`
+    `${offer.id}_donationAmount`,
   );
   const [discountReason, setDiscountReason] = useSessionStorage(
-    `${offer.id}_discountReason`
+    `${offer.id}_discountReason`,
   );
   const [discountOption, setDiscountOption] = useSessionStorage(
-    `${offer.id}_discountOption`
+    `${offer.id}_discountOption`,
   );
   const [donationRecurring, setDonationRecurring] = useSessionStorage(
-    `${offer.id}_donationRecurring`
+    `${offer.id}_donationRecurring`,
   );
 
   useEffect(() => {
@@ -99,7 +102,7 @@ export function CustomizeOfferView({
   };
 
   const selectedDonation = donationOptions?.find(
-    ({ id }) => id === donationAmount
+    ({ id }) => id === donationAmount,
   );
 
   const lineItems: LineItem[] = useMemo(() => {
@@ -118,6 +121,17 @@ export function CustomizeOfferView({
       offer.startDate
         ? new Date(offer.startDate)
         : undefined;
+
+    if (activeSubscription) {
+      items.push({
+        type: "OFFER",
+        endDate: new Date(activeSubscription.currentPeriodEnd),
+        label: t(
+          `checkout.currentSubscription.subscriptionType.${activeSubscription.type}`,
+        ),
+        amount: 0,
+      });
+    }
 
     items.push({
       type: "OFFER",
@@ -171,7 +185,7 @@ export function CustomizeOfferView({
         t("checkout.preCheckout.recurringInfo", {
           intervalAdjective: t.has(
             // @ts-expect-error unknown message key
-            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`,
           )
             ? // @ts-expect-error unknown message key
               t(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
@@ -190,7 +204,7 @@ export function CustomizeOfferView({
     }
 
     const selectedDiscount = discountOptions?.find(
-      ({ id }) => id === discountOption
+      ({ id }) => id === discountOption,
     );
 
     if (selectedDiscount) {

@@ -1,12 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
+import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { css, cx } from "@/theme/css";
-import { HandHeartIcon, InfoIcon, TicketPercentIcon } from "lucide-react";
+import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
-import { ErrorMessage } from "@/components/checkout/error-message";
 export interface LineItem {
   type: "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
@@ -18,6 +17,7 @@ export interface LineItem {
   repeating?: number;
   recurringInterval?: string;
   startDate?: Date;
+  endDate?: Date;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
 }
@@ -65,7 +65,7 @@ function SubscriptionPriceSummary({
           {
             repeating: couponRepeating,
             price: formatPrice(futureAmount),
-          }
+          },
         )}
       </>
     );
@@ -79,7 +79,7 @@ function SubscriptionPriceSummary({
           `checkout.preCheckout.priceDescriptionCouponOnce.${recurringInterval}`,
           {
             price: formatPrice(futureAmount),
-          }
+          },
         )}
       </>
     );
@@ -112,11 +112,29 @@ function LineItem({ currency, ...item }: LineItem & { currency: string }) {
           borderColor: "divider",
           borderTopWidth: 1,
           _firstOfType: { borderTop: "none" },
-        })
+        }),
       )}
       data-f={JSON.stringify(item)}
     >
       <th scope="row">
+        {item.endDate && (
+          <span
+            className={css({
+              color: "text.marketingAccent",
+            })}
+          >
+            {t(`checkout.preCheckout.currentSubscription.label`)}:
+          </span>
+        )}
+        {item.startDate && (
+          <span
+            className={css({
+              color: "text.marketingAccent",
+            })}
+          >
+            {t(`checkout.preCheckout.scheduledSubscription.label`)}:
+          </span>
+        )}
         <div
           className={css({
             fontSize: "lg",
@@ -162,8 +180,33 @@ function LineItem({ currency, ...item }: LineItem & { currency: string }) {
               _firstLetter: { textTransform: "uppercase" },
             })}
           >
-            {t.rich("checkout.preCheckout.upgradeable.startInfo", {
+            {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
               startDate: item.startDate,
+              date: (chunks) => (
+                <b
+                  className={css({
+                    whiteSpace: "nowrap",
+                    fontWeight: "medium",
+                  })}
+                >
+                  {chunks}
+                </b>
+              ),
+            })}
+          </p>
+        )}
+
+        {item.endDate && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {t.rich("checkout.preCheckout.currentSubscription.endInfo", {
+              endDate: item.endDate,
               date: (chunks) => (
                 <b
                   className={css({
@@ -233,7 +276,7 @@ export function PricingTable({
       lineItems.reduce((acc, item) => {
         return acc + item.amount;
       }, 0),
-    [lineItems]
+    [lineItems],
   );
 
   const futureAmount = useMemo(
@@ -244,12 +287,12 @@ export function PricingTable({
         }
         return sum;
       }, 0),
-    [lineItems]
+    [lineItems],
   );
 
   const recurringInterval = useMemo(
     () => lineItems.find((item) => item.recurringInterval)?.recurringInterval,
-    [lineItems]
+    [lineItems],
   );
 
   // One of "once" | "forever" | "repeating"

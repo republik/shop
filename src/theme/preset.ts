@@ -107,6 +107,9 @@ export const presetRepublik = definePreset({
             primaryForeground: {
               value: "white",
             },
+            marketingAccent: {
+              value: "#FF6969",
+            },
           },
           contrast: {
             value: {

@@ -1,7 +1,6 @@
 import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/custom-checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
-import { EmbeddedCheckoutView } from "@/components/checkout/embedded-checkout-view";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import {
   DonationSuccess,
@@ -117,6 +116,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
             offer={checkoutState.offer}
             promoCode={promo_code}
             birthyear={birthyear}
+            activeSubscription={checkoutState.me?.activeMagazineSubscription}
             onComplete={async ({ sessionId }) => {
               "use server";
 
@@ -126,7 +126,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
                   checkoutState.offer.company,
                   // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
                   checkoutState.checkoutSession?.id,
-                  checkoutState.me?.stripeCustomer?.customerId
+                  checkoutState.me?.stripeCustomer?.customerId,
                 );
               }
 

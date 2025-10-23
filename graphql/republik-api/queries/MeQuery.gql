@@ -43,6 +43,7 @@ query Me($stripeCompany: CompanyName) {
       status
       currentPeriodStart
       currentPeriodEnd
+      renewsAtPrice
     }
     magazineSubscriptions {
       id

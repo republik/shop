@@ -16,9 +16,9 @@ import {
   PaymentElement,
   useCheckout,
 } from "@stripe/react-stripe-js/checkout";
-import {
-  type StripeCheckoutConfirmResult,
-  type StripeElementsOptions,
+import type {
+  StripeCheckoutConfirmResult,
+  StripeElementsOptions,
 } from "@stripe/stripe-js";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
@@ -130,9 +130,7 @@ export function CheckoutView({ clientSecret, offer }: CheckoutViewProps) {
       <CheckoutProvider
         stripe={loadStripe(offer.company)}
         options={{
-          fetchClientSecret: async () => {
-            return clientSecret;
-          },
+          clientSecret,
           // onComplete: () => {
           //   setComplete(true);
           //   window.location.reload();
@@ -189,7 +187,7 @@ function CheckoutForm({
 
   switch (stripeCheckoutState.type) {
     case "loading":
-      return <Spinner />;
+      return <Spinner size="large" />;
     case "error":
       return (
         <ErrorMessage
