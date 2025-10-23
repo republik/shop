@@ -1,13 +1,13 @@
 import Stripe from "stripe";
 
-const API_VERSION = "2025-08-27.basil";
+const API_VERSION = "2025-09-30.clover";
 
 function initStripe(company: string): Stripe {
   const stripeSecretKey = process.env[`STRIPE_SECRET_KEY_${company}`];
 
   if (!stripeSecretKey) {
     throw new Error(
-      `Couldn't initialize Stripe: STRIPE_SECRET_KEY_${company} is undefined`
+      `Couldn't initialize Stripe: STRIPE_SECRET_KEY_${company} is undefined`,
     );
   }
 
@@ -23,7 +23,7 @@ export type CheckoutSessionData = {
 export async function expireCheckoutSession(
   company: string,
   sessionId: string,
-  customerId?: string | null
+  customerId?: string | null,
 ) {
   const stripe = initStripe(company);
   try {
@@ -41,7 +41,7 @@ export async function expireCheckoutSession(
 export async function getCheckoutSession(
   company: string,
   sessionId: string,
-  customerId?: string | null
+  customerId?: string | null,
 ): Promise<CheckoutSessionData | undefined> {
   const stripe = initStripe(company);
   try {

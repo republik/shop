@@ -1,7 +1,7 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
-import type { CheckoutState } from "@stripe/react-stripe-js/checkout";
+import type { StripeCheckoutValue } from "@stripe/react-stripe-js/checkout";
 import { InfoIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
@@ -10,7 +10,10 @@ export function PaymentSummary({
   checkoutState,
   startInfo,
 }: {
-  checkoutState: CheckoutState;
+  checkoutState: {
+    type: "success";
+    checkout: StripeCheckoutValue;
+  };
   startInfo?: ReactNode;
 }) {
   const t = useTranslations("checkout.checkout.summary");

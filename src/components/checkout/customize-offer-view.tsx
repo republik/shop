@@ -122,7 +122,7 @@ export function CustomizeOfferView({
         ? new Date(offer.startDate)
         : undefined;
 
-    if (activeSubscription) {
+    if (activeSubscription && activeSubscription.currentPeriodEnd) {
       items.push({
         type: "OFFER",
         endDate: new Date(activeSubscription.currentPeriodEnd),
