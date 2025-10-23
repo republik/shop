@@ -173,8 +173,6 @@ function CheckoutForm({
 
   const t = useTranslations();
 
-  console.log("state", stripeCheckoutState);
-
   const startInfo =
     offer.availability === OfferAvailability.Upgradeable &&
     offer.__typename === "SubscriptionOffer" &&

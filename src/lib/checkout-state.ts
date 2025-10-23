@@ -80,8 +80,6 @@ export async function getCheckoutState({
 }): Promise<CheckoutState> {
   const offer = await fetchOffer(offerId, promoCode);
 
-  console.log(offer);
-
   if (!offer) {
     return {
       step: "ERROR",
@@ -97,7 +95,7 @@ export async function getCheckoutState({
     ? await getCheckoutSession(
         company,
         sessionId,
-        me?.stripeCustomer?.customerId
+        me?.stripeCustomer?.customerId,
       )
     : undefined;
 
