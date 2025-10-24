@@ -224,11 +224,12 @@
       },
       "scheduledSubscription": {
         "label": "Neu",
-        "startInfo": "Beginnt, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> abläuft."
+        "startInfo": "Beginnt, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> ausläuft."
       },
       "currentSubscription": {
         "label": "Aktuell",
-        "endInfo": "Wird auf den <date>{endDate, date, long}</date> gekündigt."
+        "willBeCanceled": "Wird auf den <date>{endDate, date, long}</date> gekündigt.",
+        "wasCanceled": "Läuft am <date>{endDate, date, long}</date> aus."
       },
       "offer": {
         "YEARLY": {

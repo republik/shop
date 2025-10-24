@@ -6,8 +6,8 @@ import { css, cx } from "@/theme/css";
 import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { type ReactNode, useMemo } from "react";
-export interface LineItem {
-  type: "OFFER" | "DONATION" | "DISCOUNT";
+export type LineItem = {
+  type: "ACTIVE_SUBSCRIPTION" | "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
   description?: string;
   info?: string;
@@ -18,9 +18,11 @@ export interface LineItem {
   recurringInterval?: string;
   startDate?: Date;
   endDate?: Date;
+  canceled?: boolean;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
-}
+};
+
 interface PricingTableProps {
   currency: string;
   lineItems: LineItem[];
@@ -29,6 +31,7 @@ interface PricingTableProps {
 
 const lineItemIcons = {
   OFFER: null,
+  ACTIVE_SUBSCRIPTION: null,
   DISCOUNT: TicketPercentIcon,
   DONATION: HandHeartIcon,
 } as const;
@@ -205,19 +208,36 @@ function LineItem({ currency, ...item }: LineItem & { currency: string }) {
               _firstLetter: { textTransform: "uppercase" },
             })}
           >
-            {t.rich("checkout.preCheckout.currentSubscription.endInfo", {
-              endDate: item.endDate,
-              date: (chunks) => (
-                <b
-                  className={css({
-                    whiteSpace: "nowrap",
-                    fontWeight: "medium",
-                  })}
-                >
-                  {chunks}
-                </b>
-              ),
-            })}
+            {item.canceled
+              ? t.rich("checkout.preCheckout.currentSubscription.wasCanceled", {
+                  endDate: item.endDate,
+                  date: (chunks) => (
+                    <b
+                      className={css({
+                        whiteSpace: "nowrap",
+                        fontWeight: "medium",
+                      })}
+                    >
+                      {chunks}
+                    </b>
+                  ),
+                })
+              : t.rich(
+                  "checkout.preCheckout.currentSubscription.willBeCanceled",
+                  {
+                    endDate: item.endDate,
+                    date: (chunks) => (
+                      <b
+                        className={css({
+                          whiteSpace: "nowrap",
+                          fontWeight: "medium",
+                        })}
+                      >
+                        {chunks}
+                      </b>
+                    ),
+                  },
+                )}
           </p>
         )}
 

@@ -122,14 +122,15 @@ export function CustomizeOfferView({
         ? new Date(offer.startDate)
         : undefined;
 
-    if (activeSubscription && activeSubscription.currentPeriodEnd) {
+    if (activeSubscription) {
       items.push({
-        type: "OFFER",
-        endDate: new Date(activeSubscription.currentPeriodEnd),
+        type: "ACTIVE_SUBSCRIPTION",
+        endDate: startDate,
+        canceled: activeSubscription.cancelAt ? true : false,
+        amount: 0,
         label: t(
           `checkout.currentSubscription.subscriptionType.${activeSubscription.type}`,
         ),
-        amount: 0,
       });
     }
 
