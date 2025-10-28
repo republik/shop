@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
+import { HandHeart, HandHeartIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { RadioGroup } from "radix-ui";
 
@@ -47,7 +48,7 @@ export function DonationChooser({
     props.setDonationAmount(
       customAmount
         ? (parseInt(customAmount, 10) * 100).toString()
-        : amount ?? ""
+        : amount ?? "",
     );
     props.setDonationRecurring(recurring);
     setShowOptions(false);
@@ -65,20 +66,45 @@ export function DonationChooser({
         className={css({
           width: "full",
           padding: "4",
-          borderRadius: "sm",
+          borderRadius: "lg",
           backgroundColor: "var(--color-donation-highlight)",
-          whiteSpace: "normal",
-          spaceY: "3",
+          fontSize: "sm",
+          display: "grid",
+          rowGap: "2",
+          columnGap: "3",
+          gridTemplateColumns: "auto 1fr",
+          gridTemplateRows: "auto",
+
+          "& > svg": {
+            gridColumnStart: "1",
+            gridColumnEnd: "1",
+            color: "black",
+            width: "5",
+            height: "5",
+          },
         })}
       >
-        <h3 className={css({ fontWeight: "medium" })}>{t("title")}</h3>
-        <p>{t("description")}</p>
+        <HandHeartIcon />
+        <div
+          className={css({
+            whiteSpace: "normal",
+            spaceY: "3",
+          })}
+        >
+          <h3 className={css({ fontWeight: "medium" })}>{t("title")}</h3>
+          <p>{t("description")}</p>
 
-        <DialogTrigger asChild>
-          <Button type="button" variant="outline" className={css({})}>
-            {t("showOptions")}
-          </Button>
-        </DialogTrigger>
+          <DialogTrigger asChild>
+            <Button
+              type="button"
+              variant="outline"
+              size="small"
+              className={css({})}
+            >
+              {t("showOptions")}
+            </Button>
+          </DialogTrigger>
+        </div>
       </div>
       <DialogContent title={t("chooseAmount")}>
         <DonationChooserOptions {...props} onSubmit={handleSubmit} />
@@ -125,8 +151,8 @@ function DonationChooserOptions({
           new FormData(
             e.currentTarget,
             // Pass the submitter (= the button that was used to submit the form), so its value is available in the FormData
-            (e.nativeEvent as SubmitEvent).submitter
-          )
+            (e.nativeEvent as SubmitEvent).submitter,
+          ),
         );
         e.preventDefault();
       }}

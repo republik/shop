@@ -14,7 +14,7 @@ const alertVariants = cva({
     "& > svg": {
       gridColumnStart: "1",
       gridColumnEnd: "1",
-      color: "black",
+      color: "text",
       width: "5",
       height: "5",
     },
@@ -22,8 +22,8 @@ const alertVariants = cva({
   variants: {
     variant: {
       info: {
-        backgroundColor: "slate.100",
-        "& > svg": { color: "slate.700" },
+        backgroundColor: "background.light",
+        "& > svg": { color: "text" },
       },
       error: { backgroundColor: "red.50", "& > svg": { color: "red.700" } },
       warning: {

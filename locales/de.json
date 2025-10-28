@@ -193,6 +193,11 @@
         "MONTHLY_SUBSCRIPTION": "Monats-Abo",
         "BENEFACTOR_SUBSCRIPTION": "Gönnermitgliedschaft"
       },
+      "subscriptionTypeWithPronoun": {
+        "YEARLY_SUBSCRIPTION": "ihre Jahresmitgliedschaft",
+        "MONTHLY_SUBSCRIPTION": "ihr Monats-Abo",
+        "BENEFACTOR_SUBSCRIPTION": "ihre Gönnermitgliedschaft"
+      },
       "renewsOnDate": "Erneuert sich am {currentPeriodEnd, date, long} für {price}."
     },
     "preCheckout": {
@@ -213,6 +218,9 @@
           "action": "Zum Magazin"
         }
       },
+      "upgrade": {
+        "title": "Wechsel zu {product}"
+      },
       "unavailable": {
         "title": "Das Angebot ist leider nicht für Sie verfügbar.",
         "action": "Zurück zu allen Angeboten",
@@ -222,9 +230,9 @@
           "generic": ""
         }
       },
+
       "scheduledSubscription": {
-        "label": "Neu",
-        "startInfo": "Beginnt, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> ausläuft."
+        "startInfo": "Beginnt am <date>{startDate, date, long}</date>, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
       },
       "currentSubscription": {
         "label": "Aktuell",

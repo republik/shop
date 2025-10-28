@@ -5,9 +5,9 @@ import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { css, cx } from "@/theme/css";
 import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useMemo } from "react";
+import { Fragment, type ReactNode, useMemo } from "react";
 export type LineItem = {
-  type: "ACTIVE_SUBSCRIPTION" | "OFFER" | "DONATION" | "DISCOUNT";
+  type: "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
   description?: string;
   info?: string;
@@ -21,6 +21,7 @@ export type LineItem = {
   canceled?: boolean;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
+  extraInfo?: ReactNode;
 };
 
 interface PricingTableProps {
@@ -117,27 +118,8 @@ function LineItem({ currency, ...item }: LineItem & { currency: string }) {
           _firstOfType: { borderTop: "none" },
         }),
       )}
-      data-f={JSON.stringify(item)}
     >
       <th scope="row">
-        {item.endDate && (
-          <span
-            className={css({
-              color: "text.marketingAccent",
-            })}
-          >
-            {t(`checkout.preCheckout.currentSubscription.label`)}:
-          </span>
-        )}
-        {item.startDate && (
-          <span
-            className={css({
-              color: "text.marketingAccent",
-            })}
-          >
-            {t(`checkout.preCheckout.scheduledSubscription.label`)}:
-          </span>
-        )}
         <div
           className={css({
             fontSize: "lg",
@@ -329,7 +311,7 @@ export function PricingTable({
       <table
         className={css({
           borderCollapse: "collapse",
-          "& th, td": {
+          "& th, & td": {
             py: "4",
 
             verticalAlign: "top",
@@ -374,7 +356,23 @@ export function PricingTable({
         </thead>
         <tbody>
           {lineItems.map((item) => {
-            return <LineItem key={item.label} currency={currency} {...item} />;
+            return (
+              <Fragment key={item.label}>
+                <LineItem currency={currency} {...item} />
+                {item.extraInfo && (
+                  <tr className="extra">
+                    <td
+                      colSpan={2}
+                      className={css({
+                        pt: "0!",
+                      })}
+                    >
+                      {item.extraInfo}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
+            );
           })}
 
           {extraItem && (
@@ -382,7 +380,8 @@ export function PricingTable({
               <td
                 colSpan={2}
                 className={css({
-                  p: "0",
+                  pt: "0!",
+                  spaceY: "4",
                 })}
               >
                 {extraItem}

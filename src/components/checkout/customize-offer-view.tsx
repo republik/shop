@@ -12,7 +12,13 @@ import { Button } from "@/components/ui/button";
 import type { Me } from "@/lib/auth/types";
 import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
-import { AlertCircleIcon } from "lucide-react";
+import {
+  AlertCircleIcon,
+  CalendarClockIcon,
+  CalendarIcon,
+  ClockIcon,
+  InfoIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
@@ -105,6 +111,9 @@ export function CustomizeOfferView({
     ({ id }) => id === donationAmount,
   );
 
+  const isUpgrade =
+    activeSubscription && offer.availability === OfferAvailability.Upgradeable;
+
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
 
@@ -116,31 +125,52 @@ export function CustomizeOfferView({
       : undefined;
 
     const startDate =
-      offer.availability === OfferAvailability.Upgradeable &&
-      offer.__typename === "SubscriptionOffer" &&
-      offer.startDate
+      isUpgrade && offer.__typename === "SubscriptionOffer" && offer.startDate
         ? new Date(offer.startDate)
         : undefined;
 
-    if (activeSubscription) {
-      items.push({
-        type: "ACTIVE_SUBSCRIPTION",
-        endDate: startDate,
-        canceled: activeSubscription.cancelAt ? true : false,
-        amount: 0,
-        label: t(
-          `checkout.currentSubscription.subscriptionType.${activeSubscription.type}`,
-        ),
-      });
-    }
+    // if (activeSubscription) {
+    //   items.push({
+    //     type: "ACTIVE_SUBSCRIPTION",
+    //     endDate: startDate,
+    //     canceled: activeSubscription.cancelAt ? true : false,
+    //     amount: 0,
+    //     label: t(
+    //       `checkout.currentSubscription.subscriptionType.${activeSubscription.type}`,
+    //     ),
+    //   });
+    // }
 
     items.push({
       type: "OFFER",
-      label: offer.name,
+      label: isUpgrade
+        ? t("checkout.preCheckout.upgrade.title", { product: offer.name })
+        : offer.name,
       description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
-      startDate,
+      // startDate,
+      extraInfo: isUpgrade ? (
+        <Alert>
+          <CalendarIcon />
+          <AlertDescription>
+            {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
+              startDate: startDate,
+              currentSubscription: activeSubscription.type,
+              date: (chunks) => (
+                <b
+                  className={css({
+                    whiteSpace: "nowrap",
+                    fontWeight: "medium",
+                  })}
+                >
+                  {chunks}
+                </b>
+              ),
+            })}
+          </AlertDescription>
+        </Alert>
+      ) : undefined,
     });
 
     if (offer.discount) {
@@ -225,6 +255,7 @@ export function CustomizeOfferView({
     offer.name,
     offer.price,
     offer.discount,
+    isUpgrade,
     donationAmount,
     discountOptions,
     discountOption,
