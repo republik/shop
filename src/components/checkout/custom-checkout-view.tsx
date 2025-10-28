@@ -266,11 +266,6 @@ function CheckoutForm({
           >
             {t("checkout.actions.pay")}
           </Button>
-
-          <details>
-            <summary>Debug Checkout State</summary>
-            <pre>{JSON.stringify(stripeCheckoutState.checkout, null, 2)}</pre>
-          </details>
         </form>
       );
   }
