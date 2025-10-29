@@ -132,21 +132,19 @@ export function CheckoutView({
   offer,
 }: CheckoutViewProps) {
   return (
-    <div id="checkout">
-      <CheckoutProvider
-        stripe={loadStripe(offer.company)}
-        options={{
-          clientSecret,
-          // onComplete: () => {
-          //   setComplete(true);
-          //   window.location.reload();
-          // },
-          elementsOptions,
-        }}
-      >
-        <CheckoutForm offer={offer} activeSubscription={activeSubscription} />
-      </CheckoutProvider>
-    </div>
+    <CheckoutProvider
+      stripe={loadStripe(offer.company)}
+      options={{
+        clientSecret,
+        // onComplete: () => {
+        //   setComplete(true);
+        //   window.location.reload();
+        // },
+        elementsOptions,
+      }}
+    >
+      <CheckoutForm offer={offer} activeSubscription={activeSubscription} />
+    </CheckoutProvider>
   );
 }
 
@@ -201,7 +199,18 @@ function CheckoutForm({
 
   switch (stripeCheckoutState.type) {
     case "loading":
-      return <Spinner size="large" />;
+      return (
+        <div
+          className={css({
+            display: "flex",
+            flexGrow: 1,
+            placeContent: "center",
+            placeItems: "center",
+          })}
+        >
+          <Spinner size="large" />
+        </div>
+      );
     case "error":
       return (
         <ErrorMessage
