@@ -114,6 +114,11 @@ export function CustomizeOfferView({
   const isUpgrade =
     activeSubscription && offer.availability === OfferAvailability.Upgradeable;
 
+  const startDate =
+    isUpgrade && offer.__typename === "SubscriptionOffer" && offer.startDate
+      ? new Date(offer.startDate)
+      : undefined;
+
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
 
@@ -123,11 +128,6 @@ export function CustomizeOfferView({
       ? // @ts-expect-error unknown message key
         t(descriptionTranslationKey)
       : undefined;
-
-    const startDate =
-      isUpgrade && offer.__typename === "SubscriptionOffer" && offer.startDate
-        ? new Date(offer.startDate)
-        : undefined;
 
     items.push({
       type: "OFFER",
@@ -248,6 +248,7 @@ export function CustomizeOfferView({
     offer.price,
     offer.discount,
     isUpgrade,
+    startDate,
     donationAmount,
     discountOptions,
     discountOption,
@@ -318,6 +319,7 @@ export function CustomizeOfferView({
         <PricingTable
           currency={offer.price.currency}
           lineItems={lineItems}
+          upgradeStartDate={startDate}
           extraItem={
             (hasDiscountOptions || hasDonationOptions) && (
               <>

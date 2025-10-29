@@ -28,6 +28,7 @@ interface PricingTableProps {
   currency: string;
   lineItems: LineItem[];
   extraItem?: ReactNode;
+  upgradeStartDate?: Date;
 }
 
 const lineItemIcons = {
@@ -44,6 +45,7 @@ function SubscriptionPriceSummary({
   recurringInterval,
   couponDuration,
   couponRepeating,
+  upgradeStartDate,
 }: {
   currency: string;
   futureAmount: number;
@@ -51,6 +53,7 @@ function SubscriptionPriceSummary({
   recurringInterval: string;
   couponDuration?: "once" | "forever" | "repeating" | string;
   couponRepeating?: number;
+  upgradeStartDate?: Date;
 }) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
@@ -80,8 +83,9 @@ function SubscriptionPriceSummary({
     return (
       <>
         {t(
-          `checkout.preCheckout.priceDescriptionCouponOnce.${recurringInterval}`,
+          `checkout.preCheckout.priceDescriptionCouponRepeating.${recurringInterval}`,
           {
+            repeating: 1,
             price: formatPrice(futureAmount),
           },
         )}
@@ -269,6 +273,7 @@ export function PricingTable({
   currency,
   lineItems,
   extraItem,
+  upgradeStartDate,
 }: PricingTableProps) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
@@ -424,6 +429,7 @@ export function PricingTable({
                     recurringInterval={recurringInterval}
                     couponDuration={couponDuration}
                     couponRepeating={couponRepeating}
+                    upgradeStartDate={upgradeStartDate}
                   />
                 </td>
               </tr>
@@ -437,7 +443,22 @@ export function PricingTable({
                     textAlign: "right",
                   })}
                 >
-                  {t("checkout.preCheckout.cancelableAnytime")}
+                  {upgradeStartDate
+                    ? t.rich("checkout.preCheckout.cancelableAnytimeUpgrade", {
+                        startDate: upgradeStartDate,
+                        date: (chunks) => (
+                          <b
+                            className={css({
+                              whiteSpace: "nowrap",
+                              fontWeight: "medium",
+                            })}
+                          >
+                            {chunks}
+                          </b>
+                        ),
+                        br: () => <br />,
+                      })
+                    : t("checkout.preCheckout.cancelableAnytime")}
                 </td>
               </tr>
             </>

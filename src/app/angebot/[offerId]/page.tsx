@@ -186,6 +186,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         >
           <CheckoutView
             offer={checkoutState.offer}
+            activeSubscription={checkoutState.me?.activeMagazineSubscription}
             clientSecret={checkoutState.checkoutSession.client_secret ?? ""}
           />
         </Step>

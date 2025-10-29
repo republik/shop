@@ -158,6 +158,7 @@ export async function getCheckoutState({
       step: "PAYMENT",
       offer,
       checkoutSession,
+      me,
       returnFromCheckout,
       totalSteps,
       currentStep: totalSteps, // always the last step
@@ -169,6 +170,7 @@ export async function getCheckoutState({
       step: "SUCCESS",
       offer,
       checkoutSession,
+      me,
     };
   }
 

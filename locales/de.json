@@ -294,15 +294,12 @@
         "auto": "automatisch"
       },
       "priceDescription": "pro {interval}.",
-      "priceDescriptionCouponOnce": {
-        "month": "im ersten Monat, danach monatlich {price}.",
-        "year": "im ersten Jahr, danach jährlich {price}."
-      },
       "priceDescriptionCouponRepeating": {
-        "month": "für {repeating, plural, =1 {1 Monat} other {# Monate}}, danach monatlich {price}.",
-        "year": "für {repeating, plural, =1 {1 Jahr} other {# Jahre}}, danach jährlich {price}."
+        "month": "{repeating, plural, =1 {im ersten Monat} other {für # Monate}, danach monatlich {price}.",
+        "year": "{repeating, plural, =1 {im ersten Jahr} other {für # Jahre}}, danach jährlich {price}."
       },
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
+      "cancelableAnytimeUpgrade": "Der Betrag wird erst am <date>{startDate, date, long}</date> fällig.<br></br>Davor ist der Wechsel jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
       "recurringInfo": "Wird {intervalAdjective} erneuert.",
       "discount": {
@@ -357,7 +354,7 @@
       "title": "Bezahlen",
       "summary": {
         "amountToPay": "Jetzt zu bezahlender Betrag",
-        "startInfo": "Die gewählte Zahlungsmethode wird erst belastet, sobald Ihr aktuelles Abonnement am <date>{startDate, date, long}</date> abläuft."
+        "startInfo": "Die gewählte Zahlungsmethode wird erst am <date>{startDate, date, long}</date> belastet, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
       },
       "terms": {
         "PROJECT_R": "Ich bin mit den <tosLink>AGB</tosLink>, den <privacyLink>Datenschutz­bestimmungen</privacyLink> und den <statutesLink>Statuten</statutesLink> der Project R Genossenschaft einverstanden.",

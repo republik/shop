@@ -9,6 +9,7 @@ import { PaymentSummary } from "@/components/checkout/payment-summary";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
+import type { Me } from "@/lib/auth/types";
 import { loadStripe } from "@/lib/stripe/client";
 import { css } from "@/theme/css";
 import {
@@ -60,6 +61,7 @@ const translationLinks = {
 interface CheckoutViewProps {
   clientSecret: string;
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
+  activeSubscription?: Me["activeMagazineSubscription"];
 }
 
 const elementsOptions: StripeElementsOptions = {
@@ -124,7 +126,11 @@ const elementsOptions: StripeElementsOptions = {
   ],
 };
 
-export function CheckoutView({ clientSecret, offer }: CheckoutViewProps) {
+export function CheckoutView({
+  clientSecret,
+  activeSubscription,
+  offer,
+}: CheckoutViewProps) {
   return (
     <div id="checkout">
       <CheckoutProvider
@@ -138,7 +144,7 @@ export function CheckoutView({ clientSecret, offer }: CheckoutViewProps) {
           elementsOptions,
         }}
       >
-        <CheckoutForm offer={offer} />
+        <CheckoutForm offer={offer} activeSubscription={activeSubscription} />
       </CheckoutProvider>
     </div>
   );
@@ -158,9 +164,8 @@ type CheckoutFormState =
 
 function CheckoutForm({
   offer,
-}: {
-  offer: NonNullable<OfferCheckoutQuery["offer"]>;
-}) {
+  activeSubscription,
+}: Pick<CheckoutViewProps, "offer" | "activeSubscription">) {
   const stripeCheckoutState = useCheckout();
   const [formState, formAction, isPending] =
     useActionState<StripeCheckoutConfirmResult | null>(async () => {
@@ -176,10 +181,21 @@ function CheckoutForm({
   const startInfo =
     offer.availability === OfferAvailability.Upgradeable &&
     offer.__typename === "SubscriptionOffer" &&
+    activeSubscription &&
     offer.startDate
       ? t.rich("checkout.checkout.summary.startInfo", {
           startDate: new Date(offer.startDate),
-          date: (chunks) => <b>{chunks}</b>,
+          currentSubscription: activeSubscription.type,
+          date: (chunks) => (
+            <b
+              className={css({
+                whiteSpace: "nowrap",
+                fontWeight: "medium",
+              })}
+            >
+              {chunks}
+            </b>
+          ),
         })
       : undefined;
 
