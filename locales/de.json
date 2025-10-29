@@ -219,7 +219,7 @@
         }
       },
       "upgrade": {
-        "title": "Wechsel zu {product}"
+        "title": "Wechsel {offerId, select, MONTHLY {zum} other {zur}} {offerName}"
       },
       "unavailable": {
         "title": "Das Angebot ist leider nicht für Sie verfügbar.",

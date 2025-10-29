@@ -129,48 +129,40 @@ export function CustomizeOfferView({
         ? new Date(offer.startDate)
         : undefined;
 
-    // if (activeSubscription) {
-    //   items.push({
-    //     type: "ACTIVE_SUBSCRIPTION",
-    //     endDate: startDate,
-    //     canceled: activeSubscription.cancelAt ? true : false,
-    //     amount: 0,
-    //     label: t(
-    //       `checkout.currentSubscription.subscriptionType.${activeSubscription.type}`,
-    //     ),
-    //   });
-    // }
-
     items.push({
       type: "OFFER",
       label: isUpgrade
-        ? t("checkout.preCheckout.upgrade.title", { product: offer.name })
+        ? t("checkout.preCheckout.upgrade.title", {
+            offerName: offer.name,
+            offerId: offer.id,
+          })
         : offer.name,
       description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
       // startDate,
-      extraInfo: isUpgrade ? (
-        <Alert>
-          <CalendarIcon />
-          <AlertDescription>
-            {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
-              startDate: startDate,
-              currentSubscription: activeSubscription.type,
-              date: (chunks) => (
-                <b
-                  className={css({
-                    whiteSpace: "nowrap",
-                    fontWeight: "medium",
-                  })}
-                >
-                  {chunks}
-                </b>
-              ),
-            })}
-          </AlertDescription>
-        </Alert>
-      ) : undefined,
+      extraInfo:
+        isUpgrade && startDate ? (
+          <Alert>
+            <CalendarIcon />
+            <AlertDescription>
+              {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
+                startDate: startDate,
+                currentSubscription: activeSubscription.type,
+                date: (chunks) => (
+                  <b
+                    className={css({
+                      whiteSpace: "nowrap",
+                      fontWeight: "medium",
+                    })}
+                  >
+                    {chunks}
+                  </b>
+                ),
+              })}
+            </AlertDescription>
+          </Alert>
+        ) : undefined,
     });
 
     if (offer.discount) {
