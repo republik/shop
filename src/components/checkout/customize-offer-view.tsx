@@ -39,7 +39,7 @@ interface CustomizeOfferProps {
   birthyear?: string;
   activeSubscription?: Me["activeMagazineSubscription"];
   onComplete: (params: {
-    sessionId: string;
+    orderId: string;
     donationOption?: DonationOptionParams;
     discountOption?: DiscountOptionParams;
   }) => Promise<void>;
@@ -88,9 +88,9 @@ export function CustomizeOfferView({
   );
 
   useEffect(() => {
-    if (state.sessionId) {
+    if (state.orderId) {
       onComplete({
-        sessionId: state.sessionId,
+        orderId: state.orderId,
       });
     }
   }, [state, onComplete]);

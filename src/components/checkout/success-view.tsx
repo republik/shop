@@ -4,7 +4,7 @@ import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
-import type { CheckoutSessionData } from "@/lib/stripe/server";
+import type { CheckoutSessionData } from "@/lib/checkout-session";
 import { css } from "@/theme/css";
 import { CheckCircleIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -49,7 +49,7 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
         requestPolicy: "network-only",
       });
     },
-    startCheckingForActiveSubscription ? 1_000 : null
+    startCheckingForActiveSubscription ? 1_000 : null,
   );
 
   return (
@@ -105,7 +105,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
         {t.rich("description", {
           email: () => (
             <strong data-testid="success-recipient-email">
-              {session.email}
+              {/* TODO {session.email}*/}
             </strong>
           ),
         })}
@@ -141,7 +141,7 @@ export function DonationSuccess({ offer, session }: SuccessProps) {
         {t.rich("description", {
           email: () => (
             <strong data-testid="success-recipient-email">
-              {session.email}
+              {/* TODO {session.email} */}
             </strong>
           ),
         })}

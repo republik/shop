@@ -12,13 +12,12 @@ import { CenterContainer } from "@/components/layout/center-container";
 import { LoginView } from "@/components/login/login-view";
 import { getCheckoutState } from "@/lib/checkout-state";
 import { fetchOffer } from "@/lib/offers";
-import { expireCheckoutSession } from "@/lib/stripe/server";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
 type PageSearchParams = {
-  session_id?: string;
+  order_id?: string;
   promo_code?: string;
   birthyear?: string;
   return_from_checkout?: "true";
@@ -45,24 +44,24 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
 
   const { offerId } = await params;
-  const { step, promo_code, birthyear, return_from_checkout, session_id } =
+  const { step, promo_code, birthyear, return_from_checkout, order_id } =
     await searchParams;
 
   const checkoutState = await getCheckoutState({
     offerId,
     step: step,
-    sessionId: session_id,
+    orderId: order_id,
     promoCode: promo_code,
     returnFromCheckout: return_from_checkout === "true",
   });
 
   const buildUrl = (params: {
-    sessionId?: string | null;
+    orderId?: string | null;
     step?: string | null;
   }): string => {
     const p = new URLSearchParams();
-    if (session_id) {
-      p.set("session_id", session_id);
+    if (order_id) {
+      p.set("order_id", order_id);
     }
     if (promo_code) {
       p.set("promo_code", promo_code);
@@ -70,10 +69,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     if (birthyear) {
       p.set("birthyear", birthyear);
     }
-    if (params.sessionId) {
-      p.set("session_id", params.sessionId);
-    } else if (params.sessionId === null) {
-      p.delete("session_id");
+    if (params.orderId) {
+      p.set("order_id", params.orderId);
+    } else if (params.orderId === null) {
+      p.delete("order_id");
     }
     if (params.step) {
       p.set("step", params.step);
@@ -89,7 +88,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         case "NOT_FOUND":
           notFound();
         case "EXPIRED":
-          redirect(buildUrl({ sessionId: null }));
+          redirect(buildUrl({ orderId: null }));
         default:
           checkoutState.error satisfies never;
       }
@@ -117,23 +116,13 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
             promoCode={promo_code}
             birthyear={birthyear}
             activeSubscription={checkoutState.me?.activeMagazineSubscription}
-            onComplete={async ({ sessionId }) => {
+            onComplete={async ({ orderId }) => {
               "use server";
-
-              // Expire previous checkout session
-              if (checkoutState.checkoutSession?.status === "open") {
-                await expireCheckoutSession(
-                  checkoutState.offer.company,
-                  // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
-                  checkoutState.checkoutSession?.id,
-                  checkoutState.me?.stripeCustomer?.customerId,
-                );
-              }
 
               // Construct URL for next step
               const p = new URLSearchParams({
                 step: checkoutState.requiresInfo ? "info" : "payment",
-                session_id: sessionId,
+                order_id: orderId,
               });
 
               if (promo_code) {
@@ -142,6 +131,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
               if (birthyear) {
                 p.set("birthyear", birthyear);
               }
+
               redirect(`/angebot/${offerId}/?${p}`);
             }}
           />
@@ -151,7 +141,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     case "INFO":
       const checkoutStepUrl = buildUrl({
         step: "payment",
-        sessionId: checkoutState.checkoutSession.id,
+        orderId: checkoutState.checkoutSession.orderId,
       });
 
       return (
@@ -179,7 +169,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           currentStep={checkoutState.currentStep}
           maxStep={checkoutState.totalSteps}
           previousUrl={buildUrl({
-            sessionId: checkoutState.checkoutSession.id,
+            orderId: checkoutState.checkoutSession.orderId,
             step: checkoutState.offer.requiresLogin ? "info" : null,
           })}
           title={t("checkout.checkout.title")}
@@ -187,7 +177,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           <CheckoutView
             offer={checkoutState.offer}
             activeSubscription={checkoutState.me?.activeMagazineSubscription}
-            clientSecret={checkoutState.checkoutSession.client_secret ?? ""}
+            clientSecret={checkoutState.checkoutSession.clientSecret ?? ""}
           />
         </Step>
       );

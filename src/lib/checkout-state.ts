@@ -10,7 +10,7 @@ import { fetchOffer } from "@/lib/offers";
 import {
   type CheckoutSessionData,
   getCheckoutSession,
-} from "@/lib/stripe/server";
+} from "@/lib/checkout-session";
 
 type Offer = NonNullable<OfferCheckoutQuery["offer"]>;
 
@@ -68,13 +68,13 @@ type CheckoutState =
 export async function getCheckoutState({
   step,
   offerId,
-  sessionId,
+  orderId,
   promoCode,
   returnFromCheckout,
 }: {
   step: string | undefined;
   offerId: string;
-  sessionId?: string;
+  orderId?: string;
   promoCode?: string;
   returnFromCheckout?: boolean;
 }): Promise<CheckoutState> {
@@ -91,12 +91,8 @@ export async function getCheckoutState({
 
   const me = await fetchMe(company);
 
-  const checkoutSession = sessionId
-    ? await getCheckoutSession(
-        company,
-        sessionId,
-        me?.stripeCustomer?.customerId,
-      )
+  const checkoutSession = orderId
+    ? await getCheckoutSession({ orderId: orderId })
     : undefined;
 
   // FIXME Replace ID check with something?

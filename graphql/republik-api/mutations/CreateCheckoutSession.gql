@@ -13,9 +13,6 @@ mutation CreateCheckoutSession(
     withCustomDonation: $customDonation
     options: { uiMode: CUSTOM, metadata: $metadata, returnURL: $returnUrl }
   ) {
-    company
-    sessionId
-    clientSecret
-    url
+    orderId
   }
 }

@@ -16,12 +16,12 @@ const CheckoutSessionInput = z.object({
 });
 
 type CreateCheckoutState = {
-  sessionId?: string;
+  orderId?: string;
 };
 
 export async function createCheckoutSession(
   previousState: CreateCheckoutState,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateCheckoutState> {
   const {
     offerId,
@@ -47,8 +47,8 @@ export async function createCheckoutSession(
         ? { amount: donationAmount, recurring: donationRecurring }
         : null,
       selectedDiscount: discountOption ?? null,
-      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&session_id={CHECKOUT_SESSION_ID}&step=payment`,
-    }
+      returnUrl: `${process.env.NEXT_PUBLIC_URL}/angebot/${offerId}?return_from_checkout=true&step=payment`,
+    },
   );
 
   if (!data?.createCheckoutSession || error) {
@@ -57,6 +57,6 @@ export async function createCheckoutSession(
   }
 
   return {
-    sessionId: data.createCheckoutSession.sessionId,
+    orderId: data.createCheckoutSession.orderId,
   };
 }
