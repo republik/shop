@@ -354,7 +354,7 @@
       "title": "Bezahlen",
       "summary": {
         "amountToPay": "Jetzt zu bezahlender Betrag",
-        "startInfo": "Die gewählte Zahlungsmethode wird erst am <b>{startDate, date, long}</b> mit <b>{amount}</b> belastet, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
+        "startInfo": "<b>{amount}</b> werden am <b>{startDate, date, long}</b> von der gewählten Zahlungsmethode abgebucht, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
       },
       "terms": {
         "PROJECT_R": "Ich bin mit den <tosLink>AGB</tosLink>, den <privacyLink>Datenschutz­bestimmungen</privacyLink> und den <statutesLink>Statuten</statutesLink> der Project R Genossenschaft einverstanden.",
