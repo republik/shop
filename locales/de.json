@@ -366,7 +366,14 @@
           "title": "Vielen Dank für Ihren Kauf",
           "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
           "ready": "Ihr Zugang ist bereit!",
-          "action": "Zum Magazin"
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
+        },
+        "upgrade": {
+          "title": "Vielen Dank",
+          "description": "{currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} wechselt am <b>{startDate, date, long}</b> {upgradeSubscription, select, YEARLY {zur Jahresmitgliedschaft} MONTHLY {zum Monats-Abo} BENEFACTOR {zur Gönner-Mitgliedschaft} other {}}.",
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
         },
         "gift": {
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
@@ -381,7 +388,8 @@
         "redeem": {
           "title": "Herzlichen Glückwunsch",
           "description": "Ihr Geschenk wurde eingelöst, Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
-          "action": "Zum Magazin"
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
         }
       },
       "failed": {

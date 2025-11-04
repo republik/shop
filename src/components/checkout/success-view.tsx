@@ -1,5 +1,8 @@
 "use client";
-import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  MeDocument,
+  OfferAvailability,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
@@ -12,6 +15,7 @@ import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
+import type { Me } from "@/lib/auth/types";
 
 type SuccessProps = {
   offer: { id: string; name: string };
@@ -73,10 +77,74 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
               {t("action")}
             </Link>
           </Button>
+          <Link
+            className={css({ textDecoration: "underline" })}
+            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
+          >
+            {t("action2")}
+          </Link>
         </>
       ) : (
         <p>{t("waiting")}</p>
       )}
+    </CenterContainer>
+  );
+}
+
+export function UpgradeSuccess({
+  offer,
+  me,
+  session,
+}: SuccessProps & { me: Me }) {
+  const t = useTranslations("checkout.checkout.success.upgrade");
+
+  const plausible = usePlausible();
+
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
+
+  return (
+    <CenterContainer>
+      <CheckCircleIcon
+        className={css({
+          height: "10",
+          width: "10",
+        })}
+      />
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      <p className={css({ mb: "4" })}>
+        {session.breakdown?.startDate &&
+          me.activeMagazineSubscription &&
+          t.rich("description", {
+            currentSubscription: me.activeMagazineSubscription.type,
+            upgradeSubscription: offer.id,
+            startDate: new Date(session.breakdown.startDate),
+            b: (chunks) => (
+              <b
+                className={css({
+                  whiteSpace: "nowrap",
+                  fontWeight: "medium",
+                })}
+              >
+                {chunks}
+              </b>
+            ),
+          })}
+      </p>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
+      <Link
+        className={css({ textDecoration: "underline" })}
+        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
+      >
+        {t("action2")}
+      </Link>
     </CenterContainer>
   );
 }

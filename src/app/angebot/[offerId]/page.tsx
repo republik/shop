@@ -1,3 +1,4 @@
+import { OfferAvailability } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/custom-checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
@@ -6,6 +7,7 @@ import {
   DonationSuccess,
   GiftSuccess,
   SubscriptionSuccess,
+  UpgradeSuccess,
 } from "@/components/checkout/success-view";
 import { UnavailableView } from "@/components/checkout/unavailable-view";
 import { CenterContainer } from "@/components/layout/center-container";
@@ -185,6 +187,11 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     case "SUCCESS":
       const isDonation = checkoutState.offer.id === "DONATION";
       const isGift = checkoutState.offer.id.startsWith("GIFT_");
+      const isUpgrade =
+        checkoutState.offer.availability === OfferAvailability.Upgradeable ||
+        OfferAvailability.UnavailableUpgradePending;
+
+      console.log(checkoutState);
 
       return isGift ? (
         <GiftSuccess
@@ -193,6 +200,12 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         />
       ) : isDonation ? (
         <DonationSuccess
+          offer={checkoutState.offer}
+          session={checkoutState.checkoutSession}
+        />
+      ) : isUpgrade ? (
+        <UpgradeSuccess
+          me={checkoutState.me}
           offer={checkoutState.offer}
           session={checkoutState.checkoutSession}
         />
