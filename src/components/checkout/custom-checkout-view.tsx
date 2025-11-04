@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import type { Me } from "@/lib/auth/types";
+import type { CheckoutSessionData } from "@/lib/checkout-session";
+import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { loadStripe } from "@/lib/stripe/client";
 import { css } from "@/theme/css";
 import {
@@ -59,7 +61,7 @@ const translationLinks = {
 };
 
 interface CheckoutViewProps {
-  clientSecret: string;
+  checkoutSession: CheckoutSessionData;
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   activeSubscription?: Me["activeMagazineSubscription"];
 }
@@ -127,7 +129,7 @@ const elementsOptions: StripeElementsOptions = {
 };
 
 export function CheckoutView({
-  clientSecret,
+  checkoutSession,
   activeSubscription,
   offer,
 }: CheckoutViewProps) {
@@ -135,7 +137,7 @@ export function CheckoutView({
     <CheckoutProvider
       stripe={loadStripe(offer.company)}
       options={{
-        clientSecret,
+        clientSecret: checkoutSession.clientSecret ?? "",
         // onComplete: () => {
         //   setComplete(true);
         //   window.location.reload();
@@ -143,7 +145,11 @@ export function CheckoutView({
         elementsOptions,
       }}
     >
-      <CheckoutForm offer={offer} activeSubscription={activeSubscription} />
+      <CheckoutForm
+        offer={offer}
+        activeSubscription={activeSubscription}
+        checkoutSession={checkoutSession}
+      />
     </CheckoutProvider>
   );
 }
@@ -163,7 +169,12 @@ type CheckoutFormState =
 function CheckoutForm({
   offer,
   activeSubscription,
-}: Pick<CheckoutViewProps, "offer" | "activeSubscription">) {
+  checkoutSession,
+}: Pick<
+  CheckoutViewProps,
+  "offer" | "activeSubscription" | "checkoutSession"
+>) {
+  const formatPrice = useFormatCurrency("CHF");
   const stripeCheckoutState = useCheckout();
   const [formState, formAction, isPending] =
     useActionState<StripeCheckoutConfirmResult | null>(async () => {
@@ -180,11 +191,13 @@ function CheckoutForm({
     offer.availability === OfferAvailability.Upgradeable &&
     offer.__typename === "SubscriptionOffer" &&
     activeSubscription &&
-    offer.startDate
+    offer.startDate &&
+    checkoutSession.breakdown
       ? t.rich("checkout.checkout.summary.startInfo", {
           startDate: new Date(offer.startDate),
           currentSubscription: activeSubscription.type,
-          date: (chunks) => (
+          amount: formatPrice(checkoutSession.breakdown?.total),
+          b: (chunks) => (
             <b
               className={css({
                 whiteSpace: "nowrap",

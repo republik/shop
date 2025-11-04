@@ -1,8 +1,7 @@
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertDescription } from "@/components/ui/alert";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { css } from "@/theme/css";
 import type { StripeCheckoutValue } from "@stripe/react-stripe-js/checkout";
-import { InfoIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
@@ -39,7 +38,7 @@ export function PaymentSummary({
         <div
           className={css({
             fontWeight: "medium",
-            fontSize: "3xl",
+            fontSize: "2xl",
           })}
           data-testid="product-summary-total-amount"
         >
@@ -54,6 +53,7 @@ export function PaymentSummary({
             borderTopStyle: "solid",
             borderTopWidth: "1",
             pt: "2",
+            fontSize: "md",
           })}
         >
           <AlertDescription>{startInfo}</AlertDescription>
