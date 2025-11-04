@@ -39,8 +39,10 @@ async function checkout({
     offerId,
     promoCode,
     expectedAmount,
-    futureAmount,
-    futurePriceDescription,
+    recurringAmount,
+    recurringPriceDescription,
+    paymentSummaryAmount,
+    paymentSummaryDescription,
     requiresAddress,
     requiresLogin,
     donationOption,
@@ -104,15 +106,15 @@ async function checkout({
     expectedAmount
   );
 
-  if (futureAmount) {
+  if (recurringAmount) {
     await expect(page.getByTestId("price-future-summary")).toContainText(
-      futureAmount
+      recurringAmount
     );
   }
 
-  if (futurePriceDescription) {
+  if (recurringPriceDescription) {
     await expect(page.getByTestId("price-future-summary")).toContainText(
-      futurePriceDescription
+      recurringPriceDescription
     );
   }
 
@@ -154,19 +156,19 @@ async function checkout({
 
   await expect(
     page.getByRole("heading", {
+      level: 1,
       name: "Bezahlen",
     })
   ).toBeVisible();
 
-  await expect(page.getByTestId("product-summary-total-amount")).toContainText(
-    expectedAmount
+  await expect(page.getByTestId("payment-summary-total-amount")).toContainText(
+    paymentSummaryAmount ?? expectedAmount
   );
 
-  if (futureAmount) {
-    // TODO: add future amount
-    // await expect(
-    //   page.getByTestId("product-summary-description")
-    // ).toContainText(futureAmount);
+  if (paymentSummaryDescription) {
+    await expect(page.getByTestId("payment-summary-description")).toContainText(
+      paymentSummaryDescription
+    );
   }
 
   const stripeFrame = page.frameLocator(".StripeElement iframe");

@@ -40,7 +40,7 @@ export function PaymentSummary({
             fontWeight: "medium",
             fontSize: "2xl",
           })}
-          data-testid="product-summary-total-amount"
+          data-testid="payment-summary-total-amount"
         >
           {formatPrice(total.total.minorUnitsAmount)}
         </div>
@@ -48,6 +48,7 @@ export function PaymentSummary({
 
       {startInfo && (
         <div
+          data-testid="payment-summary-description"
           className={css({
             borderColor: "divider",
             borderTopStyle: "solid",
