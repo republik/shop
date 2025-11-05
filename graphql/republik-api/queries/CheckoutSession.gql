@@ -1,5 +1,5 @@
 query GetCheckoutSession($orderId: ID!) {
-  checkoutSession: getCheckout(orderId: $orderId) {
+  checkoutSession: getCheckoutSession(orderId: $orderId) {
     orderId
     clientSecret
     orderId
