@@ -247,6 +247,7 @@ export function CustomizeOfferView({
     offer.name,
     offer.price,
     offer.discount,
+    activeSubscription?.type,
     isUpgrade,
     startDate,
     donationAmount,

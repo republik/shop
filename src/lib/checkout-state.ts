@@ -14,7 +14,7 @@ import {
 
 type Offer = NonNullable<OfferCheckoutQuery["offer"]>;
 
-type CheckoutState =
+export type CheckoutState =
   | {
       step: "LOGIN";
       offer: Offer;

@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/form";
 import { Spinner } from "@/components/ui/spinner";
 import type { Me } from "@/lib/auth/types";
 import type { CheckoutSessionData } from "@/lib/checkout-session";
+import type { CheckoutState } from "@/lib/checkout-state";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
 import { loadStripe } from "@/lib/stripe/client";
 import { css } from "@/theme/css";
@@ -61,9 +62,7 @@ const translationLinks = {
 };
 
 interface CheckoutViewProps {
-  checkoutSession: CheckoutSessionData;
-  offer: NonNullable<OfferCheckoutQuery["offer"]>;
-  activeSubscription?: Me["activeMagazineSubscription"];
+  checkoutState: Extract<CheckoutState, { step: "PAYMENT" }>;
 }
 
 const elementsOptions: StripeElementsOptions = {
@@ -128,16 +127,12 @@ const elementsOptions: StripeElementsOptions = {
   ],
 };
 
-export function CheckoutView({
-  checkoutSession,
-  activeSubscription,
-  offer,
-}: CheckoutViewProps) {
+export function CheckoutView({ checkoutState }: CheckoutViewProps) {
   return (
     <CheckoutProvider
-      stripe={loadStripe(offer.company)}
+      stripe={loadStripe(checkoutState.offer.company)}
       options={{
-        clientSecret: checkoutSession.clientSecret ?? "",
+        clientSecret: checkoutState.checkoutSession.clientSecret ?? "",
         // onComplete: () => {
         //   setComplete(true);
         //   window.location.reload();
@@ -145,11 +140,7 @@ export function CheckoutView({
         elementsOptions,
       }}
     >
-      <CheckoutForm
-        offer={offer}
-        activeSubscription={activeSubscription}
-        checkoutSession={checkoutSession}
-      />
+      <CheckoutForm checkoutState={checkoutState} />
     </CheckoutProvider>
   );
 }
@@ -167,13 +158,8 @@ type CheckoutFormState =
     };
 
 function CheckoutForm({
-  offer,
-  activeSubscription,
-  checkoutSession,
-}: Pick<
-  CheckoutViewProps,
-  "offer" | "activeSubscription" | "checkoutSession"
->) {
+  checkoutState: { offer, me, checkoutSession },
+}: CheckoutViewProps) {
   const formatPrice = useFormatCurrency("CHF");
   const stripeCheckoutState = useCheckout();
   const [formState, formAction, isPending] =
@@ -190,12 +176,12 @@ function CheckoutForm({
   const startInfo =
     offer.availability === OfferAvailability.Upgradeable &&
     offer.__typename === "SubscriptionOffer" &&
-    activeSubscription &&
+    me?.activeMagazineSubscription &&
     offer.startDate &&
     checkoutSession.breakdown
       ? t.rich("checkout.checkout.summary.startInfo", {
           startDate: new Date(offer.startDate),
-          currentSubscription: activeSubscription.type,
+          currentSubscription: me.activeMagazineSubscription.type,
           amount: formatPrice(checkoutSession.breakdown?.total),
           b: (chunks) => (
             <b

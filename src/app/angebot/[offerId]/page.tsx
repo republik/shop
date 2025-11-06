@@ -176,11 +176,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           })}
           title={t("checkout.checkout.title")}
         >
-          <CheckoutView
-            offer={checkoutState.offer}
-            activeSubscription={checkoutState.me?.activeMagazineSubscription}
-            checkoutSession={checkoutState.checkoutSession}
-          />
+          <CheckoutView checkoutState={checkoutState} />
         </Step>
       );
 
@@ -193,26 +189,13 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           OfferAvailability.UnavailableUpgradePending;
 
       return isGift ? (
-        <GiftSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <GiftSuccess checkoutState={checkoutState} />
       ) : isDonation ? (
-        <DonationSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <DonationSuccess checkoutState={checkoutState} />
       ) : isUpgrade ? (
-        <UpgradeSuccess
-          me={checkoutState.me}
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <UpgradeSuccess checkoutState={checkoutState} />
       ) : (
-        <SubscriptionSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <SubscriptionSuccess checkoutState={checkoutState} />
       );
     default:
       // Make sure all cases are handled

@@ -16,13 +16,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
 import type { Me } from "@/lib/auth/types";
+import type { CheckoutState } from "@/lib/checkout-state";
 
 type SuccessProps = {
-  offer: { id: string; name: string };
-  session: CheckoutSessionData;
+  checkoutState: Extract<CheckoutState, { step: "SUCCESS" }>;
 };
 
-export function SubscriptionSuccess({ offer }: SuccessProps) {
+export function SubscriptionSuccess({
+  checkoutState: { offer },
+}: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.subscription");
 
   const [meRes, refetchMe] = useQuery({
@@ -92,10 +94,8 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
 }
 
 export function UpgradeSuccess({
-  offer,
-  me,
-  session,
-}: SuccessProps & { me?: Me }) {
+  checkoutState: { offer, me, checkoutSession },
+}: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.upgrade");
 
   const plausible = usePlausible();
@@ -116,12 +116,12 @@ export function UpgradeSuccess({
         {t("title")}
       </h1>
       <p className={css({ mb: "4" })}>
-        {session.breakdown?.startDate &&
+        {checkoutSession.breakdown?.startDate &&
           me?.activeMagazineSubscription &&
           t.rich("description", {
             currentSubscription: me.activeMagazineSubscription.type,
             upgradeSubscription: offer.id,
-            startDate: new Date(session.breakdown.startDate),
+            startDate: new Date(checkoutSession.breakdown.startDate),
             b: (chunks) => (
               <b
                 className={css({
@@ -149,7 +149,7 @@ export function UpgradeSuccess({
   );
 }
 
-export function GiftSuccess({ offer, session }: SuccessProps) {
+export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.gift");
 
   const plausible = usePlausible();
@@ -172,9 +172,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
-            <strong data-testid="success-recipient-email">
-              {/* TODO {session.email}*/}
-            </strong>
+            <strong data-testid="success-recipient-email">{me?.email}</strong>
           ),
         })}
       </p>
@@ -185,7 +183,9 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
   );
 }
 
-export function DonationSuccess({ offer, session }: SuccessProps) {
+export function DonationSuccess({
+  checkoutState: { offer, me },
+}: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.donation");
 
   const plausible = usePlausible();
@@ -208,9 +208,7 @@ export function DonationSuccess({ offer, session }: SuccessProps) {
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
-            <strong data-testid="success-recipient-email">
-              {/* TODO {session.email} */}
-            </strong>
+            <strong data-testid="success-recipient-email">{me?.email}</strong>
           ),
         })}
       </p>

@@ -1,9 +1,9 @@
-type U30MCoupon = {
+type U30Coupon = {
   durationInMonths: number;
   promoCode: string;
 };
 
-export const u30Coupons: U30MCoupon[] = [
+export const U30_COUPONS: U30Coupon[] = [
   { durationInMonths: 12, promoCode: "U30M012" },
   { durationInMonths: 24, promoCode: "U30M024" },
   { durationInMonths: 36, promoCode: "U30M036" },
