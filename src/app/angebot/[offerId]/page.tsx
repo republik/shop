@@ -189,7 +189,8 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       const isGift = checkoutState.offer.id.startsWith("GIFT_");
       const isUpgrade =
         checkoutState.offer.availability === OfferAvailability.Upgradeable ||
-        OfferAvailability.UnavailableUpgradePending;
+        checkoutState.offer.availability ===
+          OfferAvailability.UnavailableUpgradePending;
 
       return isGift ? (
         <GiftSuccess
