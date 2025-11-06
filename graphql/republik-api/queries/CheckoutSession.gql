@@ -1,0 +1,13 @@
+query GetCheckoutSession($orderId: ID!) {
+  checkoutSession: getCheckoutSession(orderId: $orderId) {
+    orderId
+    clientSecret
+    orderId
+    status
+    breakdown {
+      startDate
+      discount
+      total
+    }
+  }
+}

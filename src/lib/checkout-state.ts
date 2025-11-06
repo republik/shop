@@ -1,18 +1,20 @@
 "use server";
 
-import type { OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  OfferAvailability,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import type { Me } from "@/lib/auth/types";
 import { fetchOffer } from "@/lib/offers";
-import { checkIfUserCanPurchase } from "@/lib/product-purchase-guards";
 import {
   type CheckoutSessionData,
   getCheckoutSession,
-} from "@/lib/stripe/server";
+} from "@/lib/checkout-session";
 
 type Offer = NonNullable<OfferCheckoutQuery["offer"]>;
 
-type CheckoutState =
+export type CheckoutState =
   | {
       step: "LOGIN";
       offer: Offer;
@@ -66,13 +68,13 @@ type CheckoutState =
 export async function getCheckoutState({
   step,
   offerId,
-  sessionId,
+  orderId,
   promoCode,
   returnFromCheckout,
 }: {
   step: string | undefined;
   offerId: string;
-  sessionId?: string;
+  orderId?: string;
   promoCode?: string;
   returnFromCheckout?: boolean;
 }): Promise<CheckoutState> {
@@ -89,12 +91,8 @@ export async function getCheckoutState({
 
   const me = await fetchMe(company);
 
-  const checkoutSession = sessionId
-    ? await getCheckoutSession(
-        company,
-        sessionId,
-        me?.stripeCustomer?.customerId
-      )
+  const checkoutSession = orderId
+    ? await getCheckoutSession({ orderId: orderId })
     : undefined;
 
   // FIXME Replace ID check with something?
@@ -110,12 +108,14 @@ export async function getCheckoutState({
     };
   }
 
-  const productAvailability = checkIfUserCanPurchase({ me, offer });
+  const offerAvailable =
+    offer.availability === OfferAvailability.Purchasable ||
+    offer.availability === OfferAvailability.Upgradeable;
 
-  if (!checkoutSession && !productAvailability.available) {
+  if (!checkoutSession && !offerAvailable) {
     return {
       step: "UNAVAILABLE",
-      reason: productAvailability.reason,
+      // TODO: reason
       offer,
     };
   }
@@ -154,6 +154,7 @@ export async function getCheckoutState({
       step: "PAYMENT",
       offer,
       checkoutSession,
+      me,
       returnFromCheckout,
       totalSteps,
       currentStep: totalSteps, // always the last step
@@ -165,6 +166,7 @@ export async function getCheckoutState({
       step: "SUCCESS",
       offer,
       checkoutSession,
+      me,
     };
   }
 

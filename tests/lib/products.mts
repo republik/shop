@@ -1,10 +1,12 @@
-type ProductTest = {
+export type ProductTest = {
   id: string;
   offerId: string;
   name: string;
   expectedAmount: string | RegExp;
-  futureAmount?: string | RegExp;
-  futurePriceDescription?: string | RegExp;
+  recurringAmount?: string | RegExp;
+  recurringPriceDescription?: string | RegExp;
+  paymentSummaryAmount?: string | RegExp;
+  paymentSummaryDescription?: string | RegExp;
   requiresAddress: boolean;
   requiresLogin: boolean;
   promoCode?: string;
@@ -20,7 +22,7 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "MONTHLY",
     name: "Monats-Abo",
     expectedAmount: "22",
-    futurePriceDescription: "pro Monat",
+    recurringPriceDescription: "pro Monat",
     requiresAddress: false,
     requiresLogin: true,
   },
@@ -37,8 +39,8 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
     expectedAmount: "199",
-    futureAmount: "240",
-    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 240",
+    recurringAmount: "240",
+    recurringPriceDescription: "im ersten Jahr, danach jährlich CHF 240",
     promoCode: "E2ETEST",
     requiresAddress: true,
     requiresLogin: true,
@@ -48,8 +50,8 @@ export const PRODUCTS: ProductTest[] = [
     offerId: "YEARLY",
     name: "Jahresmitgliedschaft",
     expectedAmount: "163",
-    // futureAmount: "240",
-    futurePriceDescription: "für 2 Jahre, danach jährlich CHF 240",
+    // recurringAmount: "240",
+    recurringPriceDescription: "für 2 Jahre, danach jährlich CHF 240",
     promoCode: "COOL",
     requiresAddress: true,
     requiresLogin: true,
@@ -69,7 +71,7 @@ export const PRODUCTS: ProductTest[] = [
     name: "Jahresmitgliedschaft",
     donationOption: { name: "CHF 60" },
     expectedAmount: "300",
-    futurePriceDescription: "pro Jahr",
+    recurringPriceDescription: "pro Jahr",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -79,8 +81,8 @@ export const PRODUCTS: ProductTest[] = [
     name: "Jahresmitgliedschaft",
     donationOption: { amount: "240", interval: "einmalig" },
     expectedAmount: "480",
-    futureAmount: "240",
-    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 240",
+    recurringAmount: "240",
+    recurringPriceDescription: "im ersten Jahr, danach jährlich CHF 240",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -91,8 +93,8 @@ export const PRODUCTS: ProductTest[] = [
     donationOption: { amount: "240" },
     expectedAmount: "439",
     promoCode: "E2ETEST",
-    futureAmount: "480",
-    futurePriceDescription: "im ersten Jahr, danach jährlich CHF 480",
+    recurringAmount: "480",
+    recurringPriceDescription: "im ersten Jahr, danach jährlich CHF 480",
     requiresAddress: true,
     requiresLogin: true,
   },
@@ -138,6 +140,32 @@ export const PRODUCTS: ProductTest[] = [
     expectedAmount: "120",
     requiresAddress: true,
     requiresLogin: true,
+  },
+];
+
+export const UPGRADES: { id: string; from: ProductTest; to: ProductTest }[] = [
+  {
+    id: "monthly to yearly",
+    from: {
+      id: "monthly",
+      offerId: "MONTHLY",
+      name: "Monats-Abo",
+      expectedAmount: "22",
+      recurringPriceDescription: "pro Monat",
+      requiresAddress: false,
+      requiresLogin: true,
+    },
+    to: {
+      id: "yearly",
+      offerId: "YEARLY",
+      name: "Jahresmitgliedschaft",
+      expectedAmount: "240",
+      recurringPriceDescription: "pro Jahr",
+      paymentSummaryAmount: "0",
+      paymentSummaryDescription: "240",
+      requiresAddress: true,
+      requiresLogin: true,
+    },
   },
 ];
 

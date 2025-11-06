@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { useFormatCurrency } from "@/lib/hooks/use-format";
+import { isKeyOfValue } from "@/lib/is-key-of-value";
 import { css, cx } from "@/theme/css";
 import { HandHeartIcon, TicketPercentIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { type ReactNode, useMemo } from "react";
-export interface LineItem {
+import { Fragment, type ReactNode, useMemo } from "react";
+export type LineItem = {
   type: "OFFER" | "DONATION" | "DISCOUNT";
   label: string;
   description?: string;
@@ -16,17 +16,24 @@ export interface LineItem {
   duration?: string;
   repeating?: number;
   recurringInterval?: string;
+  startDate?: Date;
+  endDate?: Date;
+  canceled?: boolean;
   onChange?: (item: LineItem) => void;
   onRemove?: (item: LineItem) => void;
-}
+  extraInfo?: ReactNode;
+};
+
 interface PricingTableProps {
   currency: string;
   lineItems: LineItem[];
   extraItem?: ReactNode;
+  upgradeStartDate?: Date;
 }
 
 const lineItemIcons = {
   OFFER: null,
+  ACTIVE_SUBSCRIPTION: null,
   DISCOUNT: TicketPercentIcon,
   DONATION: HandHeartIcon,
 } as const;
@@ -38,6 +45,7 @@ function SubscriptionPriceSummary({
   recurringInterval,
   couponDuration,
   couponRepeating,
+  upgradeStartDate,
 }: {
   currency: string;
   futureAmount: number;
@@ -45,6 +53,7 @@ function SubscriptionPriceSummary({
   recurringInterval: string;
   couponDuration?: "once" | "forever" | "repeating" | string;
   couponRepeating?: number;
+  upgradeStartDate?: Date;
 }) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
@@ -63,7 +72,7 @@ function SubscriptionPriceSummary({
           {
             repeating: couponRepeating,
             price: formatPrice(futureAmount),
-          }
+          },
         )}
       </>
     );
@@ -74,10 +83,11 @@ function SubscriptionPriceSummary({
     return (
       <>
         {t(
-          `checkout.preCheckout.priceDescriptionCouponOnce.${recurringInterval}`,
+          `checkout.preCheckout.priceDescriptionCouponRepeating.${recurringInterval}`,
           {
+            repeating: 1,
             price: formatPrice(futureAmount),
-          }
+          },
         )}
       </>
     );
@@ -96,10 +106,174 @@ function SubscriptionPriceSummary({
   );
 }
 
+function LineItem({ currency, ...item }: LineItem & { currency: string }) {
+  const t = useTranslations();
+  const formatPrice = useFormatCurrency(currency);
+
+  const Icon = lineItemIcons[item.type];
+
+  return (
+    <tr
+      className={cx(
+        item.hidden && "sr-only",
+        css({
+          borderColor: "divider",
+          borderTopWidth: 1,
+          _firstOfType: { borderTop: "none" },
+        }),
+      )}
+    >
+      <th scope="row">
+        <div
+          className={css({
+            fontSize: "lg",
+            display: "flex",
+            gap: "2",
+            alignItems: "center",
+          })}
+        >
+          {Icon && <Icon />}
+          {item.label}
+        </div>
+
+        {item.description && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              mt: "2",
+            })}
+          >
+            {item.description}
+          </p>
+        )}
+
+        {item.info && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {item.info}
+          </p>
+        )}
+
+        {item.startDate && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
+              startDate: item.startDate,
+              date: (chunks) => (
+                <b
+                  className={css({
+                    whiteSpace: "nowrap",
+                    fontWeight: "medium",
+                  })}
+                >
+                  {chunks}
+                </b>
+              ),
+            })}
+          </p>
+        )}
+
+        {item.endDate && (
+          <p
+            className={css({
+              fontWeight: "normal",
+              color: "text.tertiary",
+              mt: "2",
+              _firstLetter: { textTransform: "uppercase" },
+            })}
+          >
+            {item.canceled
+              ? t.rich("checkout.preCheckout.currentSubscription.wasCanceled", {
+                  endDate: item.endDate,
+                  date: (chunks) => (
+                    <b
+                      className={css({
+                        whiteSpace: "nowrap",
+                        fontWeight: "medium",
+                      })}
+                    >
+                      {chunks}
+                    </b>
+                  ),
+                })
+              : t.rich(
+                  "checkout.preCheckout.currentSubscription.willBeCanceled",
+                  {
+                    endDate: item.endDate,
+                    date: (chunks) => (
+                      <b
+                        className={css({
+                          whiteSpace: "nowrap",
+                          fontWeight: "medium",
+                        })}
+                      >
+                        {chunks}
+                      </b>
+                    ),
+                  },
+                )}
+          </p>
+        )}
+
+        {(item.onChange || item.onRemove) && (
+          <p
+            className={css({
+              display: "flex",
+              gap: "2",
+              mt: "2",
+              color: "text.tertiary",
+              fontWeight: "normal",
+            })}
+          >
+            {item.onChange && (
+              <Button
+                variant="link"
+                type="button"
+                onClick={() => {
+                  item.onChange?.(item);
+                }}
+              >
+                {t("checkout.actions.change")}
+              </Button>
+            )}
+            {item.onRemove && (
+              <Button
+                variant="link"
+                type="button"
+                onClick={() => {
+                  item.onRemove?.(item);
+                }}
+              >
+                {t("checkout.actions.remove")}
+              </Button>
+            )}
+          </p>
+        )}
+      </th>
+      <td className={css({ fontSize: "lg", fontWeight: "medium" })}>
+        {formatPrice(item.amount, { displayZeroAmount: false })}
+      </td>
+    </tr>
+  );
+}
+
 export function PricingTable({
   currency,
   lineItems,
   extraItem,
+  upgradeStartDate,
 }: PricingTableProps) {
   const t = useTranslations();
   const formatPrice = useFormatCurrency(currency);
@@ -109,7 +283,7 @@ export function PricingTable({
       lineItems.reduce((acc, item) => {
         return acc + item.amount;
       }, 0),
-    [lineItems]
+    [lineItems],
   );
 
   const futureAmount = useMemo(
@@ -120,12 +294,12 @@ export function PricingTable({
         }
         return sum;
       }, 0),
-    [lineItems]
+    [lineItems],
   );
 
   const recurringInterval = useMemo(
     () => lineItems.find((item) => item.recurringInterval)?.recurringInterval,
-    [lineItems]
+    [lineItems],
   );
 
   // One of "once" | "forever" | "repeating"
@@ -142,7 +316,7 @@ export function PricingTable({
       <table
         className={css({
           borderCollapse: "collapse",
-          "& th, td": {
+          "& th, & td": {
             py: "4",
 
             verticalAlign: "top",
@@ -187,97 +361,22 @@ export function PricingTable({
         </thead>
         <tbody>
           {lineItems.map((item) => {
-            const Icon = lineItemIcons[item.type];
-
             return (
-              <tr
-                key={item.label}
-                className={cx(
-                  item.hidden && "sr-only",
-                  css({
-                    borderColor: "divider",
-                    borderTopWidth: 1,
-                    _firstOfType: { borderTop: "none" },
-                  })
+              <Fragment key={item.label}>
+                <LineItem currency={currency} {...item} />
+                {item.extraInfo && (
+                  <tr className="extra">
+                    <td
+                      colSpan={2}
+                      className={css({
+                        pt: "0!",
+                      })}
+                    >
+                      {item.extraInfo}
+                    </td>
+                  </tr>
                 )}
-                data-f={JSON.stringify(item)}
-              >
-                <th scope="row">
-                  <div
-                    className={css({
-                      fontSize: "lg",
-                      display: "flex",
-                      gap: "2",
-                      alignItems: "center",
-                    })}
-                  >
-                    {Icon && <Icon />}
-                    {item.label}
-                  </div>
-
-                  {item.description && (
-                    <p
-                      className={css({
-                        fontWeight: "normal",
-                        mt: "2",
-                      })}
-                    >
-                      {item.description}
-                    </p>
-                  )}
-
-                  {item.info && (
-                    <p
-                      className={css({
-                        fontWeight: "normal",
-                        color: "text.tertiary",
-                        mt: "2",
-                        _firstLetter: { textTransform: "uppercase" },
-                      })}
-                    >
-                      {item.info}
-                    </p>
-                  )}
-
-                  {(item.onChange || item.onRemove) && (
-                    <p
-                      className={css({
-                        display: "flex",
-                        gap: "2",
-                        mt: "2",
-                        color: "text.tertiary",
-                        fontWeight: "normal",
-                      })}
-                    >
-                      {item.onChange && (
-                        <Button
-                          variant="link"
-                          type="button"
-                          onClick={() => {
-                            item.onChange?.(item);
-                          }}
-                        >
-                          {t("checkout.actions.change")}
-                        </Button>
-                      )}
-                      {item.onRemove && (
-                        <Button
-                          variant="link"
-                          type="button"
-                          onClick={() => {
-                            item.onRemove?.(item);
-                          }}
-                        >
-                          {t("checkout.actions.remove")}
-                        </Button>
-                      )}
-                    </p>
-                  )}
-                </th>
-                <td className={css({ fontSize: "lg", fontWeight: "medium" })}>
-                  {formatPrice(item.amount, { displayZeroAmount: false })}
-                </td>
-              </tr>
+              </Fragment>
             );
           })}
 
@@ -286,7 +385,8 @@ export function PricingTable({
               <td
                 colSpan={2}
                 className={css({
-                  p: "0",
+                  pt: "0!",
+                  spaceY: "4",
                 })}
               >
                 {extraItem}
@@ -329,6 +429,7 @@ export function PricingTable({
                     recurringInterval={recurringInterval}
                     couponDuration={couponDuration}
                     couponRepeating={couponRepeating}
+                    upgradeStartDate={upgradeStartDate}
                   />
                 </td>
               </tr>
@@ -342,7 +443,22 @@ export function PricingTable({
                     textAlign: "right",
                   })}
                 >
-                  {t("checkout.preCheckout.cancelableAnytime")}
+                  {upgradeStartDate
+                    ? t.rich("checkout.preCheckout.cancelableAnytimeUpgrade", {
+                        startDate: upgradeStartDate,
+                        date: (chunks) => (
+                          <b
+                            className={css({
+                              whiteSpace: "nowrap",
+                              fontWeight: "medium",
+                            })}
+                          >
+                            {chunks}
+                          </b>
+                        ),
+                        br: () => <br />,
+                      })
+                    : t("checkout.preCheckout.cancelableAnytime")}
                 </td>
               </tr>
             </>

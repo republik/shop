@@ -9,6 +9,12 @@ const nextConfig = {
   experimental: {
     // testProxy: true,
   },
+  env: {
+    // Override NEXT_PUBLIC_URL for Vercel deploy previews
+    NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_BRANCH_URL}`
+      : undefined,
+  },
   logging: {
     fetches: {
       fullUrl: true,
@@ -91,5 +97,5 @@ export default withSentryConfig(
 
     // Automatically tree-shake Sentry logger statements to reduce bundle size
     disableLogger: true,
-  }
+  },
 );

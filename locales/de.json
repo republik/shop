@@ -8,7 +8,8 @@
 
   "error": {
     "generic": {
-      "title": "Es ist ein Fehler aufgetreten."
+      "title": "Es ist ein Fehler aufgetreten.",
+      "message": "Versuchen Sie, die Seite neu zu laden."
     },
     "global": {
       "title": "Es ist ein Fehler aufgetreten.",
@@ -167,6 +168,7 @@
       "remove": "Entfernen",
       "choose": "Wählen",
       "buy": "Kaufen",
+      "pay": "Bezahlen",
       "next": "Weiter"
     },
     "loginStep": {
@@ -183,6 +185,20 @@
         "title": "Code",
         "description": "Wir haben Ihnen einen Bestätigungs-Code an <email></email> geschickt. Geben Sie ihn ein, um Ihre E-Mail-Adresse zu bestätigen."
       }
+    },
+    "currentSubscription": {
+      "title": "Aktuell",
+      "subscriptionType": {
+        "YEARLY_SUBSCRIPTION": "Jahresmitgliedschaft",
+        "MONTHLY_SUBSCRIPTION": "Monats-Abo",
+        "BENEFACTOR_SUBSCRIPTION": "Gönnermitgliedschaft"
+      },
+      "subscriptionTypeWithPronoun": {
+        "YEARLY_SUBSCRIPTION": "ihre Jahresmitgliedschaft",
+        "MONTHLY_SUBSCRIPTION": "ihr Monats-Abo",
+        "BENEFACTOR_SUBSCRIPTION": "ihre Gönnermitgliedschaft"
+      },
+      "renewsOnDate": "Erneuert sich am {currentPeriodEnd, date, long} für {price}."
     },
     "preCheckout": {
       "title": "Überprüfen Sie Ihre Wahl",
@@ -202,6 +218,9 @@
           "action": "Zum Magazin"
         }
       },
+      "upgrade": {
+        "title": "Wechsel {offerId, select, MONTHLY {zum} other {zur}} {offerName}"
+      },
       "unavailable": {
         "title": "Das Angebot ist leider nicht für Sie verfügbar.",
         "action": "Zurück zu allen Angeboten",
@@ -212,6 +231,14 @@
         }
       },
 
+      "scheduledSubscription": {
+        "startInfo": "Beginnt am <date>{startDate, date, long}</date>, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
+      },
+      "currentSubscription": {
+        "label": "Aktuell",
+        "willBeCanceled": "Wird auf den <date>{endDate, date, long}</date> gekündigt.",
+        "wasCanceled": "Läuft am <date>{endDate, date, long}</date> aus."
+      },
       "offer": {
         "YEARLY": {
           "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."
@@ -267,15 +294,12 @@
         "auto": "automatisch"
       },
       "priceDescription": "pro {interval}.",
-      "priceDescriptionCouponOnce": {
-        "month": "im ersten Monat, danach monatlich {price}.",
-        "year": "im ersten Jahr, danach jährlich {price}."
-      },
       "priceDescriptionCouponRepeating": {
-        "month": "für {repeating, plural, =1 {1 Monat} other {# Monate}}, danach monatlich {price}.",
-        "year": "für {repeating, plural, =1 {1 Jahr} other {# Jahre}}, danach jährlich {price}."
+        "month": "{repeating, plural, =1 {im ersten Monat} other {für # Monate}, danach monatlich {price}.",
+        "year": "{repeating, plural, =1 {im ersten Jahr} other {für # Jahre}}, danach jährlich {price}."
       },
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
+      "cancelableAnytimeUpgrade": "Der Betrag wird erst am <date>{startDate, date, long}</date> fällig.<br></br>Davor ist der Wechsel jederzeit in Ihrem Konto kündbar.",
       "action": "Kaufen",
       "recurringInfo": "Wird {intervalAdjective} erneuert.",
       "discount": {
@@ -328,12 +352,28 @@
     },
     "checkout": {
       "title": "Bezahlen",
+      "summary": {
+        "amountToPay": "Jetzt zu bezahlender Betrag",
+        "startInfo": "<b>{amount}</b> werden am <b>{startDate, date, long}</b> von der gewählten Zahlungsmethode abgebucht, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
+      },
+      "terms": {
+        "PROJECT_R": "Ich bin mit den <tosLink>AGB</tosLink>, den <privacyLink>Datenschutz­bestimmungen</privacyLink> und den <statutesLink>Statuten</statutesLink> der Project R Genossenschaft einverstanden.",
+        "REPUBLIK": "Ich bin mit den <tosLink>AGB</tosLink> und den <privacyLink>Datenschutz­bestimmungen</privacyLink> einverstanden."
+      },
+      "paymentMethod": "Zahlungsmethode",
       "success": {
         "subscription": {
           "title": "Vielen Dank für Ihren Kauf",
           "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
           "ready": "Ihr Zugang ist bereit!",
-          "action": "Zum Magazin"
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
+        },
+        "upgrade": {
+          "title": "Vielen Dank",
+          "description": "{currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} wechselt am <b>{startDate, date, long}</b> {upgradeSubscription, select, YEARLY {zur Jahresmitgliedschaft} MONTHLY {zum Monats-Abo} BENEFACTOR {zur Gönner-Mitgliedschaft} other {}}.",
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
         },
         "gift": {
           "title": "Vielen Dank für Ihren Geschenk-Kauf",
@@ -348,7 +388,8 @@
         "redeem": {
           "title": "Herzlichen Glückwunsch",
           "description": "Ihr Geschenk wurde eingelöst, Sie werden in Kürze ein Bestätigungs-E-Mail an <email></email> erhalten.",
-          "action": "Zum Magazin"
+          "action": "Zum Magazin",
+          "action2": "Zu Ihrem Konto"
         }
       },
       "failed": {

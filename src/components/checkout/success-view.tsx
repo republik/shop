@@ -1,10 +1,13 @@
 "use client";
-import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  MeDocument,
+  OfferAvailability,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
-import type { CheckoutSessionData } from "@/lib/stripe/server";
+import type { CheckoutSessionData } from "@/lib/checkout-session";
 import { css } from "@/theme/css";
 import { CheckCircleIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -12,13 +15,16 @@ import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
+import type { Me } from "@/lib/auth/types";
+import type { CheckoutState } from "@/lib/checkout-state";
 
 type SuccessProps = {
-  offer: { id: string; name: string };
-  session: CheckoutSessionData;
+  checkoutState: Extract<CheckoutState, { step: "SUCCESS" }>;
 };
 
-export function SubscriptionSuccess({ offer }: SuccessProps) {
+export function SubscriptionSuccess({
+  checkoutState: { offer },
+}: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.subscription");
 
   const [meRes, refetchMe] = useQuery({
@@ -49,7 +55,7 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
         requestPolicy: "network-only",
       });
     },
-    startCheckingForActiveSubscription ? 1_000 : null
+    startCheckingForActiveSubscription ? 1_000 : null,
   );
 
   return (
@@ -73,6 +79,12 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
               {t("action")}
             </Link>
           </Button>
+          <Link
+            className={css({ textDecoration: "underline" })}
+            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
+          >
+            {t("action2")}
+          </Link>
         </>
       ) : (
         <p>{t("waiting")}</p>
@@ -81,7 +93,63 @@ export function SubscriptionSuccess({ offer }: SuccessProps) {
   );
 }
 
-export function GiftSuccess({ offer, session }: SuccessProps) {
+export function UpgradeSuccess({
+  checkoutState: { offer, me, checkoutSession },
+}: SuccessProps) {
+  const t = useTranslations("checkout.checkout.success.upgrade");
+
+  const plausible = usePlausible();
+
+  useEffect(() => {
+    plausible("Checkout Success", { props: { offer: offer.id } });
+  }, [plausible, offer.id]);
+
+  return (
+    <CenterContainer>
+      <CheckCircleIcon
+        className={css({
+          height: "10",
+          width: "10",
+        })}
+      />
+      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+        {t("title")}
+      </h1>
+      <p className={css({ mb: "4" })}>
+        {checkoutSession.breakdown?.startDate &&
+          me?.activeMagazineSubscription &&
+          t.rich("description", {
+            currentSubscription: me.activeMagazineSubscription.type,
+            upgradeSubscription: offer.id,
+            startDate: new Date(checkoutSession.breakdown.startDate),
+            b: (chunks) => (
+              <b
+                className={css({
+                  whiteSpace: "nowrap",
+                  fontWeight: "medium",
+                })}
+              >
+                {chunks}
+              </b>
+            ),
+          })}
+      </p>
+      <Button asChild>
+        <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+          {t("action")}
+        </Link>
+      </Button>
+      <Link
+        className={css({ textDecoration: "underline" })}
+        href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
+      >
+        {t("action2")}
+      </Link>
+    </CenterContainer>
+  );
+}
+
+export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.gift");
 
   const plausible = usePlausible();
@@ -104,9 +172,7 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
-            <strong data-testid="success-recipient-email">
-              {session.email}
-            </strong>
+            <strong data-testid="success-recipient-email">{me?.email}</strong>
           ),
         })}
       </p>
@@ -117,7 +183,9 @@ export function GiftSuccess({ offer, session }: SuccessProps) {
   );
 }
 
-export function DonationSuccess({ offer, session }: SuccessProps) {
+export function DonationSuccess({
+  checkoutState: { offer, me },
+}: SuccessProps) {
   const t = useTranslations("checkout.checkout.success.donation");
 
   const plausible = usePlausible();
@@ -140,9 +208,7 @@ export function DonationSuccess({ offer, session }: SuccessProps) {
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
-            <strong data-testid="success-recipient-email">
-              {session.email}
-            </strong>
+            <strong data-testid="success-recipient-email">{me?.email}</strong>
           ),
         })}
       </p>

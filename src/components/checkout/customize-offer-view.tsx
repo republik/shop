@@ -1,14 +1,24 @@
 "use client";
 
-import { type OfferCheckoutQuery } from "#graphql/republik-api/__generated__/gql/graphql";
+import {
+  OfferAvailability,
+  type OfferCheckoutQuery,
+} from "#graphql/republik-api/__generated__/gql/graphql";
 import { createCheckoutSession } from "@/actions/create-checkout-session";
 import { DiscountChooser } from "@/components/checkout/discount-chooser";
 import { DonationChooser } from "@/components/checkout/donation-chooser";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
+import type { Me } from "@/lib/auth/types";
 import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
-import { AlertCircleIcon } from "lucide-react";
+import {
+  AlertCircleIcon,
+  CalendarClockIcon,
+  CalendarIcon,
+  ClockIcon,
+  InfoIcon,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
@@ -27,8 +37,9 @@ interface CustomizeOfferProps {
   offer: NonNullable<OfferCheckoutQuery["offer"]>;
   promoCode?: string;
   birthyear?: string;
+  activeSubscription?: Me["activeMagazineSubscription"];
   onComplete: (params: {
-    sessionId: string;
+    orderId: string;
     donationOption?: DonationOptionParams;
     discountOption?: DiscountOptionParams;
   }) => Promise<void>;
@@ -38,6 +49,7 @@ export function CustomizeOfferView({
   offer,
   promoCode,
   birthyear,
+  activeSubscription,
   onComplete,
 }: CustomizeOfferProps) {
   const donationOptions = offer.suggestedDonations?.map((amount) => {
@@ -57,28 +69,28 @@ export function CustomizeOfferView({
 
   const [state, createCheckoutAction, createCheckoutPending] = useActionState(
     createCheckoutSession,
-    {}
+    {},
   );
 
   const [showOptions, setShowOptions] = useState(false);
 
   const [donationAmount, setDonationAmount] = useSessionStorage(
-    `${offer.id}_donationAmount`
+    `${offer.id}_donationAmount`,
   );
   const [discountReason, setDiscountReason] = useSessionStorage(
-    `${offer.id}_discountReason`
+    `${offer.id}_discountReason`,
   );
   const [discountOption, setDiscountOption] = useSessionStorage(
-    `${offer.id}_discountOption`
+    `${offer.id}_discountOption`,
   );
   const [donationRecurring, setDonationRecurring] = useSessionStorage(
-    `${offer.id}_donationRecurring`
+    `${offer.id}_donationRecurring`,
   );
 
   useEffect(() => {
-    if (state.sessionId) {
+    if (state.orderId) {
       onComplete({
-        sessionId: state.sessionId,
+        orderId: state.orderId,
       });
     }
   }, [state, onComplete]);
@@ -96,8 +108,16 @@ export function CustomizeOfferView({
   };
 
   const selectedDonation = donationOptions?.find(
-    ({ id }) => id === donationAmount
+    ({ id }) => id === donationAmount,
   );
+
+  const isUpgrade =
+    activeSubscription && offer.availability === OfferAvailability.Upgradeable;
+
+  const startDate =
+    isUpgrade && offer.__typename === "SubscriptionOffer" && offer.startDate
+      ? new Date(offer.startDate)
+      : undefined;
 
   const lineItems: LineItem[] = useMemo(() => {
     const items: LineItem[] = [];
@@ -111,10 +131,38 @@ export function CustomizeOfferView({
 
     items.push({
       type: "OFFER",
-      label: offer.name,
+      label: isUpgrade
+        ? t("checkout.preCheckout.upgrade.title", {
+            offerName: offer.name,
+            offerId: offer.id,
+          })
+        : offer.name,
       description,
       amount: offer.price.amount,
       recurringInterval: offer.price.recurring?.interval,
+      // startDate,
+      extraInfo:
+        isUpgrade && startDate ? (
+          <Alert>
+            <CalendarIcon />
+            <AlertDescription>
+              {t.rich("checkout.preCheckout.scheduledSubscription.startInfo", {
+                startDate: startDate,
+                currentSubscription: activeSubscription.type,
+                date: (chunks) => (
+                  <b
+                    className={css({
+                      whiteSpace: "nowrap",
+                      fontWeight: "medium",
+                    })}
+                  >
+                    {chunks}
+                  </b>
+                ),
+              })}
+            </AlertDescription>
+          </Alert>
+        ) : undefined,
     });
 
     if (offer.discount) {
@@ -160,7 +208,7 @@ export function CustomizeOfferView({
         t("checkout.preCheckout.recurringInfo", {
           intervalAdjective: t.has(
             // @ts-expect-error unknown message key
-            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`
+            `checkout.preCheckout.intervalsAdjective.${recurringInterval}`,
           )
             ? // @ts-expect-error unknown message key
               t(`checkout.preCheckout.intervalsAdjective.${recurringInterval}`)
@@ -179,7 +227,7 @@ export function CustomizeOfferView({
     }
 
     const selectedDiscount = discountOptions?.find(
-      ({ id }) => id === discountOption
+      ({ id }) => id === discountOption,
     );
 
     if (selectedDiscount) {
@@ -199,6 +247,9 @@ export function CustomizeOfferView({
     offer.name,
     offer.price,
     offer.discount,
+    activeSubscription?.type,
+    isUpgrade,
+    startDate,
     donationAmount,
     discountOptions,
     discountOption,
@@ -269,6 +320,7 @@ export function CustomizeOfferView({
         <PricingTable
           currency={offer.price.currency}
           lineItems={lineItems}
+          upgradeStartDate={startDate}
           extraItem={
             (hasDiscountOptions || hasDonationOptions) && (
               <>

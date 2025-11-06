@@ -1,7 +1,7 @@
 "use client";
 
 import { LandingPageOption } from "@/components/landing-page/product-option";
-import { u30Coupons } from "@/components/landing-page/u30/coupons";
+import { U30_COUPONS } from "@/components/landing-page/u30/coupons";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/ui/form";
@@ -44,17 +44,17 @@ export function U30Chooser({}: {}) {
   });
 
   const minBirthYear = useMemo(
-    () => getBirthYear(u30Coupons[0].durationInMonths),
-    [u30Coupons]
+    () => getBirthYear(U30_COUPONS[0].durationInMonths),
+    [],
   );
 
   const couponsByBirthYear = useMemo(() => {
     return new Map(
-      u30Coupons.map(({ durationInMonths, promoCode }) => {
+      U30_COUPONS.map(({ durationInMonths, promoCode }) => {
         return [getBirthYear(durationInMonths).toString(), promoCode];
-      })
+      }),
     );
-  }, [u30Coupons]);
+  }, []);
 
   const updatePromoCode = (birthYear: string) => {
     if (birthYear.length !== 4) {

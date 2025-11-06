@@ -1,24 +1,25 @@
+import { OfferAvailability } from "#graphql/republik-api/__generated__/gql/graphql";
 import { Step } from "@/components/checkout/checkout-step";
+import { CheckoutView } from "@/components/checkout/custom-checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
-import { EmbeddedCheckoutView } from "@/components/checkout/embedded-checkout-view";
 import { PersonalInfoForm } from "@/components/checkout/personal-info-form";
 import {
   DonationSuccess,
   GiftSuccess,
   SubscriptionSuccess,
+  UpgradeSuccess,
 } from "@/components/checkout/success-view";
 import { UnavailableView } from "@/components/checkout/unavailable-view";
 import { CenterContainer } from "@/components/layout/center-container";
 import { LoginView } from "@/components/login/login-view";
 import { getCheckoutState } from "@/lib/checkout-state";
 import { fetchOffer } from "@/lib/offers";
-import { expireCheckoutSession } from "@/lib/stripe/server";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound, redirect } from "next/navigation";
 
 type PageSearchParams = {
-  session_id?: string;
+  order_id?: string;
   promo_code?: string;
   birthyear?: string;
   return_from_checkout?: "true";
@@ -45,24 +46,24 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
   const t = await getTranslations();
 
   const { offerId } = await params;
-  const { step, promo_code, birthyear, return_from_checkout, session_id } =
+  const { step, promo_code, birthyear, return_from_checkout, order_id } =
     await searchParams;
 
   const checkoutState = await getCheckoutState({
     offerId,
     step: step,
-    sessionId: session_id,
+    orderId: order_id,
     promoCode: promo_code,
     returnFromCheckout: return_from_checkout === "true",
   });
 
   const buildUrl = (params: {
-    sessionId?: string | null;
+    orderId?: string | null;
     step?: string | null;
   }): string => {
     const p = new URLSearchParams();
-    if (session_id) {
-      p.set("session_id", session_id);
+    if (order_id) {
+      p.set("order_id", order_id);
     }
     if (promo_code) {
       p.set("promo_code", promo_code);
@@ -70,10 +71,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     if (birthyear) {
       p.set("birthyear", birthyear);
     }
-    if (params.sessionId) {
-      p.set("session_id", params.sessionId);
-    } else if (params.sessionId === null) {
-      p.delete("session_id");
+    if (params.orderId) {
+      p.set("order_id", params.orderId);
+    } else if (params.orderId === null) {
+      p.delete("order_id");
     }
     if (params.step) {
       p.set("step", params.step);
@@ -89,7 +90,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         case "NOT_FOUND":
           notFound();
         case "EXPIRED":
-          redirect(buildUrl({ sessionId: null }));
+          redirect(buildUrl({ orderId: null }));
         default:
           checkoutState.error satisfies never;
       }
@@ -116,23 +117,14 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
             offer={checkoutState.offer}
             promoCode={promo_code}
             birthyear={birthyear}
-            onComplete={async ({ sessionId }) => {
+            activeSubscription={checkoutState.me?.activeMagazineSubscription}
+            onComplete={async ({ orderId }) => {
               "use server";
-
-              // Expire previous checkout session
-              if (checkoutState.checkoutSession?.status === "open") {
-                await expireCheckoutSession(
-                  checkoutState.offer.company,
-                  // Note: for some reason, when creating server actions as closure, this gets accessed early, so we need to keep the optional chaining operator on checkoutSession?.id
-                  checkoutState.checkoutSession?.id,
-                  checkoutState.me?.stripeCustomer?.customerId
-                );
-              }
 
               // Construct URL for next step
               const p = new URLSearchParams({
                 step: checkoutState.requiresInfo ? "info" : "payment",
-                session_id: sessionId,
+                order_id: orderId,
               });
 
               if (promo_code) {
@@ -141,6 +133,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
               if (birthyear) {
                 p.set("birthyear", birthyear);
               }
+
               redirect(`/angebot/${offerId}/?${p}`);
             }}
           />
@@ -150,7 +143,7 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
     case "INFO":
       const checkoutStepUrl = buildUrl({
         step: "payment",
-        sessionId: checkoutState.checkoutSession.id,
+        orderId: checkoutState.checkoutSession.orderId,
       });
 
       return (
@@ -178,47 +171,31 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           currentStep={checkoutState.currentStep}
           maxStep={checkoutState.totalSteps}
           previousUrl={buildUrl({
-            sessionId: checkoutState.checkoutSession.id,
+            orderId: checkoutState.checkoutSession.orderId,
             step: checkoutState.offer.requiresLogin ? "info" : null,
           })}
           title={t("checkout.checkout.title")}
         >
-          <EmbeddedCheckoutView
-            company={checkoutState.offer.company}
-            clientSecret={checkoutState.checkoutSession.client_secret}
-            errors={
-              checkoutState.returnFromCheckout
-                ? [
-                    {
-                      title: t("checkout.checkout.failed.title"),
-                      description: t("checkout.checkout.failed.description"),
-                    },
-                  ]
-                : []
-            }
-          />
+          <CheckoutView checkoutState={checkoutState} />
         </Step>
       );
 
     case "SUCCESS":
       const isDonation = checkoutState.offer.id === "DONATION";
       const isGift = checkoutState.offer.id.startsWith("GIFT_");
+      const isUpgrade =
+        checkoutState.offer.availability === OfferAvailability.Upgradeable ||
+        checkoutState.offer.availability ===
+          OfferAvailability.UnavailableUpgradePending;
 
       return isGift ? (
-        <GiftSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <GiftSuccess checkoutState={checkoutState} />
       ) : isDonation ? (
-        <DonationSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <DonationSuccess checkoutState={checkoutState} />
+      ) : isUpgrade ? (
+        <UpgradeSuccess checkoutState={checkoutState} />
       ) : (
-        <SubscriptionSuccess
-          offer={checkoutState.offer}
-          session={checkoutState.checkoutSession}
-        />
+        <SubscriptionSuccess checkoutState={checkoutState} />
       );
     default:
       // Make sure all cases are handled

@@ -393,3 +393,80 @@ export function RadioOption({
     </label>
   );
 }
+
+export function Checkbox({
+  children,
+  ...inputProps
+}: {
+  value: string;
+  name: string;
+  children: ReactNode;
+} & InputHTMLAttributes<HTMLInputElement>) {
+  const id = useId();
+  return (
+    <label
+      htmlFor={id}
+      className={css({
+        // borderWidth: 2,
+        // borderStyle: "solid",
+        // borderRadius: "5px",
+        // borderColor: "disabled",
+        w: "full",
+        display: "flex",
+        gap: "4",
+        alignItems: "center",
+        "&:has(:checked, [data-checked])": {
+          borderColor: "text",
+        },
+        // fontSize: "xl",
+      })}
+    >
+      <input
+        {...inputProps}
+        id={id}
+        type="checkbox"
+        // Also set data-checked because the checked attribute doesn't update reliably on re-renders
+        data-checked={inputProps.checked ? true : undefined}
+        className={cx(
+          css({
+            flexShrink: 0,
+            // Custom checkbox style, see https://moderncss.dev/pure-css-custom-styled-radio-buttons/
+            appearance: "none",
+            backgroundColor: "transparent",
+            margin: "0",
+            color: "current",
+            width: "[1.15em]",
+            height: "[1.15em]",
+            borderWidth: 2,
+            borderStyle: "solid",
+            borderColor: "text",
+            borderRadius: "[0.15em]",
+            display: "grid",
+            placeContent: "center",
+            outline: "none",
+            _before: {
+              content: '""',
+              width: "[0.65em]",
+              height: "[0.65em]",
+              borderRadius: "full",
+              backgroundColor: "transparent",
+              transformOrigin: "bottom left",
+              clipPath:
+                "polygon(0 64%, 36% 98%, 100% 16%, 84% 2%, 35% 67%, 13% 49%)",
+            },
+
+            _checked: {
+              backgroundColor: "text",
+              _before: {
+                backgroundColor: "text.inverted",
+              },
+            },
+          }),
+          inputProps.className
+        )}
+      />
+
+      <span>{children}</span>
+    </label>
+  );
+}

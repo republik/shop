@@ -1,7 +1,8 @@
-query OfferCard($offerId: ID!) {
-  offer: getOffer(offerId: $offerId) {
+query OfferCard($offerId: ID!, $promoCode: String) {
+  offer: getOffer(offerId: $offerId, promoCode: $promoCode) {
     id
     name
+    availability
 
     price {
       amount
@@ -25,6 +26,13 @@ query OfferCheckout($offerId: ID!, $promoCode: String) {
     name
     requiresLogin
     requiresAddress
+    availability
+
+    # __typename needs to be specified explicitly
+    __typename
+    ... on SubscriptionOffer {
+      startDate
+    }
 
     price {
       amount
