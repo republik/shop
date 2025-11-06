@@ -295,7 +295,7 @@
       },
       "priceDescription": "pro {interval}.",
       "priceDescriptionCouponRepeating": {
-        "month": "{repeating, plural, =1 {im ersten Monat} other {für # Monate}, danach monatlich {price}.",
+        "month": "{repeating, plural, =1 {im ersten Monat} other {für # Monate}}, danach monatlich {price}.",
         "year": "{repeating, plural, =1 {im ersten Jahr} other {für # Jahre}}, danach jährlich {price}."
       },
       "cancelableAnytime": "Jederzeit in Ihrem Konto kündbar.",
