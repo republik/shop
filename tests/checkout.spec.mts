@@ -12,10 +12,20 @@ PRODUCTS.forEach((product) => {
 
 UPGRADES.forEach(({ id, from, to }) => {
   test(`Buy a ${id} upgrade`, async ({ page }) => {
+    test.slow();
+
     const testId = nanoid(5);
 
     await test.step(`Buy ${from.id}`, async () => {
       await checkout({ testId, product: from, page });
+    });
+
+    await test.step(`Wait for subscription to be active`, async () => {
+      await expect(page.getByRole("link", { name: "Zum Magazin" })).toBeVisible(
+        {
+          timeout: 20_000,
+        },
+      );
     });
 
     await test.step(`Buy ${to.id}`, async () => {
@@ -66,7 +76,7 @@ async function checkout({
   await expect(
     page.getByRole("heading", {
       name: "Überprüfen Sie Ihre Wahl",
-    })
+    }),
   ).toBeVisible();
 
   // Wait until Next.js has hydrated the page and all client side-scripts / server actions are available
@@ -103,18 +113,18 @@ async function checkout({
   }
 
   await expect(page.getByTestId("price-overview-total")).toContainText(
-    expectedAmount
+    expectedAmount,
   );
 
   if (recurringAmount) {
     await expect(page.getByTestId("price-future-summary")).toContainText(
-      recurringAmount
+      recurringAmount,
     );
   }
 
   if (recurringPriceDescription) {
     await expect(page.getByTestId("price-future-summary")).toContainText(
-      recurringPriceDescription
+      recurringPriceDescription,
     );
   }
 
@@ -124,13 +134,13 @@ async function checkout({
     await expect(
       page.getByRole("heading", {
         name: "Vervollständigen Sie Ihre Angaben",
-      })
+      }),
     ).toBeVisible();
 
     // Navigate 1 step back and check if the price is still the same, then proceed again
     await page.getByRole("link", { name: "Zurück" }).click();
     await expect(page.getByTestId("price-overview-total")).toContainText(
-      expectedAmount
+      expectedAmount,
     );
     await page.getByRole("button", { name: "Weiter" }).click();
 
@@ -138,7 +148,7 @@ async function checkout({
     await expect(
       page.getByRole("heading", {
         name: "Vervollständigen Sie Ihre Angaben",
-      })
+      }),
     ).toBeVisible();
 
     await page.getByLabel("Vorname").fill("Tester");
@@ -158,16 +168,16 @@ async function checkout({
     page.getByRole("heading", {
       level: 1,
       name: "Bezahlen",
-    })
+    }),
   ).toBeVisible();
 
   await expect(page.getByTestId("payment-summary-total-amount")).toContainText(
-    paymentSummaryAmount ?? expectedAmount
+    paymentSummaryAmount ?? expectedAmount,
   );
 
   if (paymentSummaryDescription) {
     await expect(page.getByTestId("payment-summary-description")).toContainText(
-      paymentSummaryDescription
+      paymentSummaryDescription,
     );
   }
 

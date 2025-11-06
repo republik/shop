@@ -32,7 +32,7 @@ export function SubscriptionSuccess({
     variables: { stripeCompany: null },
   });
 
-  const ready = !!meRes.data?.me?.activeMagazineSubscription || true;
+  const ready = !!meRes.data?.me?.activeMagazineSubscription;
 
   const [
     startCheckingForActiveSubscription,
