@@ -95,7 +95,7 @@ export function UpgradeSuccess({
   offer,
   me,
   session,
-}: SuccessProps & { me: Me }) {
+}: SuccessProps & { me?: Me }) {
   const t = useTranslations("checkout.checkout.success.upgrade");
 
   const plausible = usePlausible();
@@ -117,7 +117,7 @@ export function UpgradeSuccess({
       </h1>
       <p className={css({ mb: "4" })}>
         {session.breakdown?.startDate &&
-          me.activeMagazineSubscription &&
+          me?.activeMagazineSubscription &&
           t.rich("description", {
             currentSubscription: me.activeMagazineSubscription.type,
             upgradeSubscription: offer.id,

@@ -191,8 +191,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
         checkoutState.offer.availability === OfferAvailability.Upgradeable ||
         OfferAvailability.UnavailableUpgradePending;
 
-      console.log(checkoutState);
-
       return isGift ? (
         <GiftSuccess
           offer={checkoutState.offer}
