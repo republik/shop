@@ -8,6 +8,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DISABLED !== "true") {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     enableLogs: true,
+    integrations: [Sentry.consoleLoggingIntegration()],
   });
 }
 
