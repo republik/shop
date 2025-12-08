@@ -1,22 +1,17 @@
 "use client";
-import {
-  MeDocument,
-  OfferAvailability,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
+import type { CheckoutState } from "@/lib/checkout-state";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
-import type { CheckoutSessionData } from "@/lib/checkout-session";
 import { css } from "@/theme/css";
-import { CheckCircleIcon, HeartIcon } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
-import type { Me } from "@/lib/auth/types";
-import type { CheckoutState } from "@/lib/checkout-state";
 
 type SuccessProps = {
   checkoutState: Extract<CheckoutState, { step: "SUCCESS" }>;

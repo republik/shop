@@ -361,6 +361,10 @@
         "REPUBLIK": "Ich bin mit den <tosLink>AGB</tosLink> und den <privacyLink>Datenschutz­bestimmungen</privacyLink> einverstanden."
       },
       "paymentMethod": "Zahlungsmethode",
+      "appDownload": {
+        "title": "Holen Sie sich die App",
+        "subtitle": "Die Republik jederzeit griffbereit."
+      },
       "success": {
         "subscription": {
           "title": "Vielen Dank für Ihren Kauf",
