@@ -1,4 +1,4 @@
-query Me($stripeCompany: CompanyName) {
+query Me {
   me {
     id
     portrait
