@@ -24,7 +24,6 @@ export function SubscriptionSuccess({
 
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
-    variables: { stripeCompany: null },
   });
 
   const ready = !!meRes.data?.me?.activeMagazineSubscription;
