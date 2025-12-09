@@ -66,23 +66,18 @@ export function SubscriptionSuccess({
       </h1>
       {ready ? (
         <>
-          <p className={css({ mb: "4" })}>{t("ready")}</p>
+          <p>{t("ready", { offer: offer.id })}</p>
+          <p className={css({ mb: "4" })}>
+            {t.rich("tips", { b: (chunks) => <b>{chunks}</b> })}
+          </p>
           <Button asChild>
-            <Link
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-            >
+            <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten`}>
               {t("action")}
             </Link>
           </Button>
-          <Link
-            className={css({ textDecoration: "underline" })}
-            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
-          >
-            {t("action2")}
-          </Link>
         </>
       ) : (
-        <p>{t("waiting")}</p>
+        <p>{t("waiting", { offer: offer.id })}</p>
       )}
     </CenterContainer>
   );

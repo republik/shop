@@ -368,9 +368,10 @@
       "success": {
         "subscription": {
           "title": "Vielen Dank für Ihren Kauf",
-          "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
-          "ready": "Ihr Zugang ist bereit!",
-          "action": "Zum Magazin",
+          "waiting": "{offer, select, YEARLY {Ihre Jahresmitgliedschaft} MONTHLY {Ihr Monats-Abo} BENEFACTOR {Ihre Gönner-Mitgliedschaft} other {}} wird vorbereitet. Einen Moment bitte …",
+          "ready": "{offer, select, YEARLY {Ihre Jahresmitgliedschaft} MONTHLY {Ihr Monats-Abo} BENEFACTOR {Ihre Gönner-Mitgliedschaft} other {}} ist bereit!",
+          "tips": "Zum Start haben wir <b>zwei Tipps</b> für Sie:",
+          "action": "Los gehts!",
           "action2": "Zu Ihrem Konto"
         },
         "upgrade": {
