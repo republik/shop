@@ -6,7 +6,6 @@ query Me {
     firstName
     lastName
     email
-    onboarded
 
     address {
       name
