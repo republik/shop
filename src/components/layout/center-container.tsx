@@ -20,6 +20,7 @@ export function CenterContainer({
           margin: "auto",
           px: "6",
           py: "8",
+          md: { py: "16" },
         }),
         className,
       )}
