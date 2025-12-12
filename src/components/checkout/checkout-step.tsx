@@ -49,6 +49,10 @@ export function Step({
         flexDirection: "column",
         gap: "4",
         flexGrow: 1,
+        width: "full",
+        maxWidth: "[512px]",
+        mx: "auto",
+        pb: "8",
       })}
     >
       <ProgressBar value={currentStep} max={maxStep} />

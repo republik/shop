@@ -1,15 +1,11 @@
-query Me($stripeCompany: CompanyName) {
+query Me {
   me {
     id
-    username
-    slug
     portrait
     name
     firstName
     lastName
     email
-    initials
-    roles
 
     address {
       name
@@ -28,14 +24,7 @@ query Me($stripeCompany: CompanyName) {
       active
       endDate
     }
-    memberships {
-      id
-      type {
-        name
-      }
-      active
-      endDate
-    }
+
     activeMagazineSubscription {
       id
       type
@@ -45,16 +34,6 @@ query Me($stripeCompany: CompanyName) {
       currentPeriodEnd
       renewsAtPrice
       cancelAt
-    }
-    magazineSubscriptions {
-      id
-      type
-      status
-      currentPeriodStart
-      currentPeriodEnd
-    }
-    stripeCustomer(company: $stripeCompany) {
-      customerId
     }
   }
 }

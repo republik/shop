@@ -1,4 +1,5 @@
 import { OfferAvailability } from "#graphql/republik-api/__generated__/gql/graphql";
+import { AppDownload } from "@/components/checkout/app-download";
 import { Step } from "@/components/checkout/checkout-step";
 import { CheckoutView } from "@/components/checkout/custom-checkout-view";
 import { CustomizeOfferView } from "@/components/checkout/customize-offer-view";
@@ -195,7 +196,10 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
       ) : isUpgrade ? (
         <UpgradeSuccess checkoutState={checkoutState} />
       ) : (
-        <SubscriptionSuccess checkoutState={checkoutState} />
+        <>
+          <SubscriptionSuccess checkoutState={checkoutState} />
+          <AppDownload />
+        </>
       );
     default:
       // Make sure all cases are handled

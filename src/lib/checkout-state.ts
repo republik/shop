@@ -87,9 +87,7 @@ export async function getCheckoutState({
     };
   }
 
-  const { company } = offer;
-
-  const me = await fetchMe(company);
+  const me = await fetchMe();
 
   const checkoutSession = orderId
     ? await getCheckoutSession({ orderId: orderId })

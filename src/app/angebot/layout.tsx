@@ -11,11 +11,6 @@ export default function CheckoutLayout({ children }: { children: ReactNode }) {
       <main
         className={css({
           flexGrow: 1,
-          pb: "8",
-
-          maxWidth: "[510px]",
-          width: "full",
-          mx: "auto",
           display: "flex",
           flexDirection: "column",
         })}

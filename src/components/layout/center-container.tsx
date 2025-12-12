@@ -12,17 +12,17 @@ export function CenterContainer({
     <div
       className={cx(
         css({
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
+          display: "grid",
+          placeContent: "center",
+          placeItems: "center",
           gap: "4",
           textAlign: "center",
           margin: "auto",
           px: "6",
-          py: "4",
+          py: "8",
+          md: { py: "16" },
         }),
-        className
+        className,
       )}
     >
       {children}

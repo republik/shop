@@ -1,22 +1,17 @@
 "use client";
-import {
-  MeDocument,
-  OfferAvailability,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
+import type { CheckoutState } from "@/lib/checkout-state";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
-import type { CheckoutSessionData } from "@/lib/checkout-session";
 import { css } from "@/theme/css";
-import { CheckCircleIcon, HeartIcon } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
-import type { Me } from "@/lib/auth/types";
-import type { CheckoutState } from "@/lib/checkout-state";
 
 type SuccessProps = {
   checkoutState: Extract<CheckoutState, { step: "SUCCESS" }>;
@@ -29,7 +24,6 @@ export function SubscriptionSuccess({
 
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
-    variables: { stripeCompany: null },
   });
 
   const ready = !!meRes.data?.me?.activeMagazineSubscription;
@@ -71,23 +65,18 @@ export function SubscriptionSuccess({
       </h1>
       {ready ? (
         <>
-          <p className={css({ mb: "4" })}>{t("ready")}</p>
+          <p>{t("ready", { offer: offer.id })}</p>
+          <p className={css({ mb: "4" })}>
+            {t.rich("tips", { b: (chunks) => <b>{chunks}</b> })}
+          </p>
           <Button asChild>
-            <Link
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-            >
+            <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten`}>
               {t("action")}
             </Link>
           </Button>
-          <Link
-            className={css({ textDecoration: "underline" })}
-            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
-          >
-            {t("action2")}
-          </Link>
         </>
       ) : (
-        <p>{t("waiting")}</p>
+        <p>{t("waiting", { offer: offer.id })}</p>
       )}
     </CenterContainer>
   );
