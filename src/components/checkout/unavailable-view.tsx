@@ -16,7 +16,7 @@ export async function UnavailableView({ reason }: { reason?: string }) {
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
+      <h1 className={css({ textStyle: "h2Sans" })}>
         {t("checkout.preCheckout.unavailable.title")}
       </h1>
 
@@ -26,9 +26,9 @@ export async function UnavailableView({ reason }: { reason?: string }) {
             reason === "hasSubscription"
               ? "hasSubscription"
               : reason === "needsMembershipForDonation"
-              ? "needsMembershipForDonation"
-              : "generic"
-          }`
+                ? "needsMembershipForDonation"
+                : "generic"
+          }`,
         )}
       </p>
       <Button asChild>

@@ -26,7 +26,7 @@ export function AppStoreButtons({
   // Show each button exclusively for its own platform or both
 
   const badgeStyle = css({
-    width: "48",
+    width: "40",
   });
   return (
     <div
@@ -66,8 +66,8 @@ function QRCode() {
       <div
         className={css({
           "& svg": {
-            width: "48",
-            height: "48",
+            width: "40",
+            height: "40",
           },
         })}
         dangerouslySetInnerHTML={{ __html: qrSVG }}

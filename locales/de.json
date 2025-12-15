@@ -367,9 +367,9 @@
       },
       "success": {
         "subscription": {
-          "title": "Vielen Dank für Ihren Kauf",
-          "waiting": "{offer, select, YEARLY {Ihre Jahresmitgliedschaft} MONTHLY {Ihr Monats-Abo} BENEFACTOR {Ihre Gönner-Mitgliedschaft} other {}} wird vorbereitet. Einen Moment bitte …",
-          "ready": "{offer, select, YEARLY {Ihre Jahresmitgliedschaft} MONTHLY {Ihr Monats-Abo} BENEFACTOR {Ihre Gönner-Mitgliedschaft} other {}} ist bereit!",
+          "title": "Willkommen!",
+          "waiting": "Ihre Zahlung war erfolgreich, {offer, select, MONTHLY {Ihr Abo} other {Ihre Mitgliedschaft}} wird vorbereitet. Einen Moment bitte …",
+          "ready": "Ihre Zahlung war erfolgreich, {offer, select, MONTHLY {Ihr Abo} other {Ihre Mitgliedschaft}} ist jetzt aktiv.",
           "tips": "Zum Start haben wir <b>zwei Tipps</b> für Sie:",
           "action": "Los gehts!",
           "action2": "Zu Ihrem Konto"

@@ -60,16 +60,14 @@ export function SubscriptionSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       {ready ? (
         <>
           <p>{t("ready", { offer: offer.id })}</p>
           <p className={css({ mb: "4" })}>
             {t.rich("tips", { b: (chunks) => <b>{chunks}</b> })}
           </p>
-          <Button asChild>
+          <Button asChild size="large">
             <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten`}>
               {t("action")}
             </Link>
@@ -101,9 +99,7 @@ export function UpgradeSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {checkoutSession.breakdown?.startDate &&
           me?.activeMagazineSubscription &&
@@ -123,7 +119,7 @@ export function UpgradeSuccess({
             ),
           })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>
@@ -155,9 +151,7 @@ export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
@@ -165,7 +159,7 @@ export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
           ),
         })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`/`}>{t("action")}</Link>
       </Button>
     </CenterContainer>
@@ -191,9 +185,7 @@ export function DonationSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
@@ -201,7 +193,7 @@ export function DonationSuccess({
           ),
         })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>
