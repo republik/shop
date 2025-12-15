@@ -7,28 +7,16 @@ import { type ReactNode } from "react";
 export default function CheckoutLayout({ children }: { children: ReactNode }) {
   return (
     <>
-      <div
+      <Header />
+      <main
         className={css({
+          flexGrow: 1,
           display: "flex",
           flexDirection: "column",
-          flexGrow: 1,
-          smDown: {
-            minHeight: "[100dvh]",
-          },
         })}
       >
-        <Header />
-        <main
-          className={css({
-            flexGrow: 1,
-            display: "flex",
-            flexDirection: "column",
-          })}
-        >
-          {children}
-        </main>
-      </div>
-      <Footer />
+        {children}
+      </main>
     </>
   );
 }

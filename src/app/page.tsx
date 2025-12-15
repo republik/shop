@@ -18,7 +18,7 @@ export default async function Home() {
   const t = await getTranslations("overview");
 
   return (
-    <div>
+    <>
       <AboBanner />
       <div
         className={css({
@@ -89,7 +89,6 @@ export default async function Home() {
           <DonationCard />
         </OfferGrid>
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }

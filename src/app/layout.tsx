@@ -10,6 +10,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { type ReactNode } from "react";
 import "./globals.css";
+import { Footer } from "@/components/layout/footer";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();
@@ -50,7 +51,19 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <GraphQLProvider>
-            {children}
+            <div
+              className={css({
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                smDown: {
+                  minHeight: "[100dvh]",
+                },
+              })}
+            >
+              {children}
+            </div>
+            <Footer />
             <Toaster />
           </GraphQLProvider>
         </NextIntlClientProvider>

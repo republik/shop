@@ -24,7 +24,7 @@ export async function LandingPageLayout({
 
             transition: "background",
           }),
-          className
+          className,
         )}
       >
         <div
@@ -45,7 +45,6 @@ export async function LandingPageLayout({
           </p>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

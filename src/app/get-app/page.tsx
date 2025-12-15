@@ -33,7 +33,6 @@ export default async function GetApp({}: PageProps<"/get-app">) {
         <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
         <AppStoreButtons platform={os.name} />
       </CenterContainer>
-      <Footer />
     </>
   );
 }
