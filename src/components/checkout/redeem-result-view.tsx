@@ -29,9 +29,7 @@ export function RedeemSuccess({
           fill: "[#B7A5EC]",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
@@ -65,9 +63,7 @@ export function RedeemFailed({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           voucher: () => (

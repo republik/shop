@@ -1,22 +1,17 @@
 "use client";
-import {
-  MeDocument,
-  OfferAvailability,
-} from "#graphql/republik-api/__generated__/gql/graphql";
+import { MeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { CenterContainer } from "@/components/layout/center-container";
 import { Button } from "@/components/ui/button";
+import type { CheckoutState } from "@/lib/checkout-state";
 import useInterval from "@/lib/hooks/use-interval";
 import useTimeout from "@/lib/hooks/use-timeout";
-import type { CheckoutSessionData } from "@/lib/checkout-session";
 import { css } from "@/theme/css";
-import { CheckCircleIcon, HeartIcon } from "lucide-react";
+import { CheckCircleIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePlausible } from "next-plausible";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQuery } from "urql";
-import type { Me } from "@/lib/auth/types";
-import type { CheckoutState } from "@/lib/checkout-state";
 
 type SuccessProps = {
   checkoutState: Extract<CheckoutState, { step: "SUCCESS" }>;
@@ -29,7 +24,6 @@ export function SubscriptionSuccess({
 
   const [meRes, refetchMe] = useQuery({
     query: MeDocument,
-    variables: { stripeCompany: null },
   });
 
   const ready = !!meRes.data?.me?.activeMagazineSubscription;
@@ -66,28 +60,21 @@ export function SubscriptionSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       {ready ? (
         <>
-          <p className={css({ mb: "4" })}>{t("ready")}</p>
-          <Button asChild>
-            <Link
-              href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten?context=pledge&package=ABO`}
-            >
+          <p>{t("ready", { offer: offer.id })}</p>
+          <p className={css({ mb: "4" })}>
+            {t.rich("tips", { b: (chunks) => <b>{chunks}</b> })}
+          </p>
+          <Button asChild size="large">
+            <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten`}>
               {t("action")}
             </Link>
           </Button>
-          <Link
-            className={css({ textDecoration: "underline" })}
-            href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/konto`}
-          >
-            {t("action2")}
-          </Link>
         </>
       ) : (
-        <p>{t("waiting")}</p>
+        <p>{t("waiting", { offer: offer.id })}</p>
       )}
     </CenterContainer>
   );
@@ -112,9 +99,7 @@ export function UpgradeSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {checkoutSession.breakdown?.startDate &&
           me?.activeMagazineSubscription &&
@@ -134,7 +119,7 @@ export function UpgradeSuccess({
             ),
           })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>
@@ -166,9 +151,7 @@ export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
@@ -176,7 +159,7 @@ export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
           ),
         })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`/`}>{t("action")}</Link>
       </Button>
     </CenterContainer>
@@ -202,9 +185,7 @@ export function DonationSuccess({
           width: "10",
         })}
       />
-      <h1 className={css({ fontSize: "lg", fontWeight: "bold" })}>
-        {t("title")}
-      </h1>
+      <h1 className={css({ textStyle: "h2Sans" })}>{t("title")}</h1>
       <p className={css({ mb: "4" })}>
         {t.rich("description", {
           email: () => (
@@ -212,7 +193,7 @@ export function DonationSuccess({
           ),
         })}
       </p>
-      <Button asChild>
+      <Button asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>

@@ -1,4 +1,3 @@
-import { Footer } from "@/components/layout/footer";
 import { css, cx } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
@@ -24,7 +23,7 @@ export async function LandingPageLayout({
 
             transition: "background",
           }),
-          className
+          className,
         )}
       >
         <div
@@ -45,7 +44,6 @@ export async function LandingPageLayout({
           </p>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

@@ -361,12 +361,17 @@
         "REPUBLIK": "Ich bin mit den <tosLink>AGB</tosLink> und den <privacyLink>Datenschutz­bestimmungen</privacyLink> einverstanden."
       },
       "paymentMethod": "Zahlungsmethode",
+      "appDownload": {
+        "title": "Holen Sie sich die App",
+        "subtitle": "Die Republik jederzeit griffbereit."
+      },
       "success": {
         "subscription": {
-          "title": "Vielen Dank für Ihren Kauf",
-          "waiting": "Ihr Zugang wird vorbereitet. Einen Moment bitte …",
-          "ready": "Ihr Zugang ist bereit!",
-          "action": "Zum Magazin",
+          "title": "Willkommen!",
+          "waiting": "Ihre Zahlung war erfolgreich, {offer, select, MONTHLY {Ihr Abo} other {Ihre Mitgliedschaft}} wird vorbereitet. Einen Moment bitte …",
+          "ready": "Ihre Zahlung war erfolgreich, {offer, select, MONTHLY {Ihr Abo} other {Ihre Mitgliedschaft}} ist jetzt aktiv.",
+          "tips": "Zum Start haben wir <b>zwei Tipps</b> für Sie:",
+          "action": "Los gehts!",
           "action2": "Zu Ihrem Konto"
         },
         "upgrade": {

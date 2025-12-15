@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
+import { Footer } from "@/components/layout/footer";
 import { AnalyticsProvider } from "@/lib/analytics-provider";
 import { GraphQLProvider } from "@/lib/graphql/client-browser";
 import { css } from "@/theme/css";
@@ -50,7 +51,19 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
           <GraphQLProvider>
-            {children}
+            <div
+              className={css({
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                smDown: {
+                  minHeight: "[100dvh]",
+                },
+              })}
+            >
+              {children}
+            </div>
+            <Footer />
             <Toaster />
           </GraphQLProvider>
         </NextIntlClientProvider>
