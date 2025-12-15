@@ -13,7 +13,7 @@ export async function generateMetadata() {
   };
 }
 
-export default async function U30LandingPage() {
+export default async function InstitutionenLandingPage() {
   const t = await getTranslations("landing.institutionen");
   const tDescriptionItems = await getTranslations(
     "landing.institutionen.description.items"
@@ -67,8 +67,7 @@ export default async function U30LandingPage() {
       <p>{t("form")}</p>
       <TallyFormEmbed
         url="https://tally.so/embed/yPMQkd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-        title="Republik Zugriff für Firmen und Institutionen"
-        height={776}
+        title={t("formtitle")}
       />
     </LandingPageLayout>
   );
