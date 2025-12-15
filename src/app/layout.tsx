@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
+import { Footer } from "@/components/layout/footer";
 import { AnalyticsProvider } from "@/lib/analytics-provider";
 import { GraphQLProvider } from "@/lib/graphql/client-browser";
 import { css } from "@/theme/css";
@@ -10,7 +11,6 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { type ReactNode } from "react";
 import "./globals.css";
-import { Footer } from "@/components/layout/footer";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations();

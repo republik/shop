@@ -1,5 +1,4 @@
 import { AboBanner } from "@/components/layout/abo-banner";
-import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/layout/hero";
 import { OfferDescription } from "@/components/overview/description";
 import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";

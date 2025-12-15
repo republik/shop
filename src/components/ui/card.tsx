@@ -14,7 +14,7 @@ const Card = React.forwardRef<
         borderStyle: "solid",
         borderColor: "divider",
       }),
-      className
+      className,
     )}
     {...props}
   />
@@ -33,7 +33,7 @@ const CardHeader = React.forwardRef<
         flexDir: "column",
         p: "6",
       }),
-      className
+      className,
     )}
     {...props}
   />
@@ -50,7 +50,7 @@ const CardTitle = React.forwardRef<
       css({
         textStyle: "h3Sans",
       }),
-      className
+      className,
     )}
     {...props}
   />
@@ -67,7 +67,7 @@ const CardDescription = React.forwardRef<
       css({
         fontSize: "sm",
       }),
-      className
+      className,
     )}
     {...props}
   />
@@ -99,7 +99,7 @@ const CardFooter = React.forwardRef<
         p: "6",
         pt: "0",
       }),
-      className
+      className,
     )}
     {...props}
   />

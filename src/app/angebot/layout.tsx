@@ -1,5 +1,3 @@
-import { LoginStatus } from "@/components/login/login-status";
-import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { css } from "@/theme/css";
 import { type ReactNode } from "react";

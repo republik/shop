@@ -1,7 +1,7 @@
-import Link from "next/link";
+import { LoginStatus } from "@/components/login/login-status";
 import { css } from "@/theme/css";
 import { container } from "@/theme/patterns";
-import { LoginStatus } from "@/components/login/login-status";
+import Link from "next/link";
 
 type Link = {
   text: string;

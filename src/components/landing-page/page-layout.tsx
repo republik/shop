@@ -1,4 +1,3 @@
-import { Footer } from "@/components/layout/footer";
 import { css, cx } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";

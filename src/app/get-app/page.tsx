@@ -4,7 +4,6 @@ import {
   AppStoreButtons,
 } from "@/components/checkout/app-download";
 import { CenterContainer } from "@/components/layout/center-container";
-import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
 import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
