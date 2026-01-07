@@ -15,7 +15,8 @@
     "gql:types": "graphql-codegen --config graphql/configs/codegen-dev.ts",
     "test": "NODE_ENV=test playwright test --project 'Mobile Chrome'",
     "test:generate": "pnpm exec playwright codegen ",
-    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy"
+    "yaproxy:staging": "CORS_ORIGIN=http://localhost:3000 PORT=5010 TARGET=https://api.republik.love yaproxy",
+    "knip": "knip"
   },
   "dependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -54,6 +55,7 @@
     "eslint": "^9.39.1",
     "eslint-config-next": "^15.5.9",
     "imapflow": "^1.1.1",
+    "knip": "^5.80.0",
     "nanoid": "^5.1.6",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
