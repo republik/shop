@@ -19,12 +19,10 @@ export async function generateMetadata() {
 export default async function U30LandingPage() {
   const t = await getTranslations("landing.u30");
   const tDescriptionItems = await getTranslations(
-    "landing.u30.description.items"
+    "landing.u30.description.items",
   );
 
-  const getText = (
-    tKey: "dialog" | "general" | "briefings" | "disclaimer" | "allTheContent"
-  ) =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,

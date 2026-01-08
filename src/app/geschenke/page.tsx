@@ -36,10 +36,10 @@ const styles = {
 export default async function GiftsPage() {
   const t = await getTranslations("landing.gifts");
   const tDescriptionItems = await getTranslations(
-    "landing.gifts.description.items"
+    "landing.gifts.description.items",
   );
 
-  const getText = (tKey: "dialog" | "general" | "briefings" | "goodie") =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,

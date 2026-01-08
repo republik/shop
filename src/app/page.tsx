@@ -51,6 +51,7 @@ export default async function Home() {
               offerId="YEARLY"
               color="#324442"
               background="#9CC5B5"
+              recommended
             />
             <OfferCardPrimary
               offerId="MONTHLY"

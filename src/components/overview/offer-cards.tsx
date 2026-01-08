@@ -22,6 +22,7 @@ export async function OfferCardPrimary({
   background,
   ctaColor,
   redirect,
+  recommended,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
   promoCode?: string;
@@ -29,8 +30,10 @@ export async function OfferCardPrimary({
   background?: string;
   ctaColor?: string;
   redirect?: string;
+  recommended?: boolean;
 }) {
   const gql = await getClient();
+  const t = await getTranslations(`overview`);
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
   const { data } = await gql.query(OfferCardDocument, {
@@ -62,7 +65,7 @@ export async function OfferCardPrimary({
       background={background}
       ctaColor={ctaColor}
     >
-      {tOffer.has("recommended") && (
+      {recommended && (
         <div
           className={css({
             position: "absolute",
@@ -75,7 +78,7 @@ export async function OfferCardPrimary({
             py: "2",
           })}
         >
-          {tOffer("recommended")}
+          {t("recommended")}
         </div>
       )}
 

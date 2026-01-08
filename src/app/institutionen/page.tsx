@@ -16,9 +16,9 @@ export async function generateMetadata() {
 export default async function InstitutionenLandingPage() {
   const t = await getTranslations("landing.institutionen");
   const tDescriptionItems = await getTranslations(
-    "landing.institutionen.description.items"
+    "landing.institutionen.description.items",
   );
-  const getText = (tKey: "general" | "price" | "access") =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,

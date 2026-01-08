@@ -22,16 +22,7 @@ export default async function GiftsPage({
   const t = await getTranslations("overview");
   const tDescriptionItems = await getTranslations("overview.description.items");
   const { promo_code } = await searchParams;
-  const getText = (
-    tKey:
-      | "dialog"
-      | "general"
-      | "briefings"
-      | "podcasts"
-      | "adFree"
-      | "projectRDescription"
-      | "projectR",
-  ) =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,
