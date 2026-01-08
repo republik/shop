@@ -1,7 +1,7 @@
 "use client";
 import { loadStripe as stripeLoadStripe, type Stripe } from "@stripe/stripe-js";
 
-export function getStripePublishablekey(company: string): string {
+function getStripePublishablekey(company: string): string {
   switch (company) {
     case "REPUBLIK":
       return process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_REPUBLIK;

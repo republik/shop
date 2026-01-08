@@ -42,7 +42,7 @@ type SubmitProps = {
   children?: ReactNode;
 };
 
-export function Submit({ children }: SubmitProps) {
+function Submit({ children }: SubmitProps) {
   const { pending } = useFormStatus();
   const t = useTranslations("login");
   return (
