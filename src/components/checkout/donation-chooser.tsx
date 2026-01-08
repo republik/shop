@@ -13,8 +13,6 @@ import { HandHeart, HandHeartIcon, HeartIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { RadioGroup } from "radix-ui";
 
-export const OPTION_CUSTOM = "CUSTOM";
-
 type DonationOption = {
   id: string;
   amount: number;

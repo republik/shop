@@ -54,7 +54,7 @@ export function FormField({
             fontWeight: "medium",
             textAlign: "left",
           }),
-          hideLabel && visuallyHidden()
+          hideLabel && visuallyHidden(),
         )}
       >
         {label}
@@ -86,7 +86,7 @@ export function FormField({
             },
           }),
           error && css({ borderColor: "error" }),
-          inputProps?.className
+          inputProps?.className,
         )}
       />
       {error && (
@@ -123,6 +123,9 @@ type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
   children: ReactNode;
 };
 
+/**
+ * @lintignore keep around, although it's unused at the moment
+ */
 export function SelectField({
   label,
   error,
@@ -157,7 +160,7 @@ export function SelectField({
             textAlign: "left",
             // fontWeight: "medium",
           }),
-          hideLabel && visuallyHidden()
+          hideLabel && visuallyHidden(),
         )}
       >
         {label}
@@ -183,7 +186,7 @@ export function SelectField({
               },
             }),
             error && css({ borderColor: "error" }),
-            inputProps?.className
+            inputProps?.className,
           )}
         />
         <span
@@ -266,7 +269,7 @@ export function TextArea({
             color: "text.secondary",
             textAlign: "left",
           }),
-          hideLabel && visuallyHidden()
+          hideLabel && visuallyHidden(),
         )}
       >
         {label}
@@ -292,7 +295,7 @@ export function TextArea({
             },
           }),
           error && css({ borderColor: "error" }),
-          inputProps?.className
+          inputProps?.className,
         )}
       />
       {error && (
@@ -320,6 +323,9 @@ export function TextArea({
   );
 }
 
+/**
+ * @lintignore keep around, although it's unused at the moment
+ */
 export function RadioOption({
   children,
   ...inputProps
@@ -385,7 +391,7 @@ export function RadioOption({
               },
             },
           }),
-          inputProps.className
+          inputProps.className,
         )}
       />
 
@@ -462,7 +468,7 @@ export function Checkbox({
               },
             },
           }),
-          inputProps.className
+          inputProps.className,
         )}
       />
 

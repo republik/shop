@@ -5,6 +5,10 @@
     "type": true
   },
   "tags": ["-lintignore"],
-  "entry": ["panda.config.ts"],
-  "project": ["src/**/*.{js,ts,tsx}", "tests/**/*.{mjs,mts,js,ts,tsx}"]
+  "entry": ["panda.config.ts", "graphql/**/__generated__/gql/index.ts"],
+  "project": ["src/**/*.{js,ts,tsx}", "tests/**/*.{mjs,mts,js,ts,tsx}"],
+  "graphql-codegen": {
+    "config": ["graphql/configs/*.ts"]
+  },
+  "ignoreDependencies": ["@graphql*", "eslint*"]
 }
