@@ -17,12 +17,14 @@ const formatCurrencyShort = (amountInRappen: number) => {
 
 export async function OfferCardPrimary({
   offerId,
+  promoCode,
   color,
   background,
   ctaColor,
   redirect,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
+  promoCode?: string;
   color?: string;
   background?: string;
   ctaColor?: string;
@@ -31,7 +33,10 @@ export async function OfferCardPrimary({
   const gql = await getClient();
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
-  const { data } = await gql.query(OfferCardDocument, { offerId });
+  const { data } = await gql.query(OfferCardDocument, {
+    offerId,
+    promoCode: promoCode ?? null,
+  });
 
   const offer = data?.offer;
 
