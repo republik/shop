@@ -4,9 +4,10 @@ import { Hero } from "@/components/layout/hero";
 import { OfferCardPrimary } from "@/components/overview/offer-cards";
 import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.gifts");
 
   return {

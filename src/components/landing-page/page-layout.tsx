@@ -1,16 +1,20 @@
+"use client";
 import { css, cx } from "@/theme/css";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { type ReactNode } from "react";
 
-export async function LandingPageLayout({
+export function LandingPageLayout({
   className,
   children,
 }: {
   className?: string;
   children: ReactNode;
 }) {
-  const t = await getTranslations("landing");
+  const t = useTranslations("landing");
+  const searchParams = useSearchParams();
+  const overviewHref = `/?${searchParams}`;
 
   return (
     <>
@@ -40,7 +44,7 @@ export async function LandingPageLayout({
           {children}
 
           <p>
-            <Link href={"/"}>{t("goBack")}</Link>
+            <Link href={overviewHref}>{t("goBack")}</Link>
           </p>
         </div>
       </main>

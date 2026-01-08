@@ -9,8 +9,9 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import type { Metadata } from "next";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.gifts");
 
   return {

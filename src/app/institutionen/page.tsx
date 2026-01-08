@@ -5,7 +5,8 @@ import { css } from "@/theme/css";
 import { KeyIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { TallyFormEmbed } from "@/components/landing-page/institutionen/tally-embed";
-export async function generateMetadata() {
+import type { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.institutionen");
 
   return {

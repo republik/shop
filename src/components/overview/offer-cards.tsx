@@ -21,7 +21,6 @@ export async function OfferCardPrimary({
   color,
   background,
   ctaColor,
-  redirect,
   recommended,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
@@ -29,7 +28,6 @@ export async function OfferCardPrimary({
   color?: string;
   background?: string;
   ctaColor?: string;
-  redirect?: string;
   recommended?: boolean;
 }) {
   const gql = await getClient();
@@ -57,6 +55,10 @@ export async function OfferCardPrimary({
     fontWeight: "medium",
     lineHeight: "normal",
   });
+
+  const cardHref = promoCode
+    ? `/angebot/${offerId}?promo_code=${promoCode}`
+    : `/angebot/${offerId}`;
 
   return (
     <OfferCard
@@ -119,11 +121,8 @@ export async function OfferCardPrimary({
         {tOffer.has("info") && <p>{tOffer("info")}</p>}
       </div>
 
-      <div className={css({})}>
-        <Link
-          href={redirect || `/angebot/${offerId}`}
-          className={cx(cardButton(), linkOverlay())}
-        >
+      <div>
+        <Link href={cardHref} className={cx(cardButton(), linkOverlay())}>
           {tOffer("cta")}
         </Link>
 

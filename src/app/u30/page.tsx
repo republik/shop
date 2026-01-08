@@ -5,10 +5,11 @@ import { U30Chooser } from "@/components/landing-page/u30/product-chooser";
 import { Hero } from "@/components/layout/hero";
 import { css } from "@/theme/css";
 import { PiggyBankIcon } from "lucide-react";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.u30");
 
   return {
