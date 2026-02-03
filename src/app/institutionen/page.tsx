@@ -5,7 +5,8 @@ import { css } from "@/theme/css";
 import { KeyIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { TallyFormEmbed } from "@/components/landing-page/institutionen/tally-embed";
-export async function generateMetadata() {
+import type { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.institutionen");
 
   return {
@@ -16,9 +17,9 @@ export async function generateMetadata() {
 export default async function InstitutionenLandingPage() {
   const t = await getTranslations("landing.institutionen");
   const tDescriptionItems = await getTranslations(
-    "landing.institutionen.description.items"
+    "landing.institutionen.description.items",
   );
-  const getText = (tKey: "general" | "price" | "access") =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,

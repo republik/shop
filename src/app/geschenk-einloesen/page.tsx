@@ -13,8 +13,9 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 
 import giftOpenSrc from "@/assets/gift-open.svg";
+import type { Metadata } from "next";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.redeem");
 
   return {

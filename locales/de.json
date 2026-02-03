@@ -36,14 +36,14 @@
       "status": "Sieht so aus, als wären Sie Abonnent.",
       "link": "Besuchen Sie die Startseite der Republik"
     },
+    "recommended": "Empfehlung",
     "offer": {
       "YEARLY": {
         "title": "Jährlich",
         "interval": "pro Jahr",
         "intervalDiscount": "im ersten Jahr",
         "cta": "Mitglied werden",
-        "cancelable": "Jederzeit kündbar",
-        "recommended": "Empfehlung"
+        "cancelable": "Jederzeit kündbar"
       },
       "MONTHLY": {
         "title": "Monatlich",
@@ -100,7 +100,8 @@
         "dialog": "Zugang zum höflichsten <b>Debattenraum</b> der Schweiz",
         "podcasts": "Vorgelesene <b>Beiträge und Podcasts</b>",
         "adFree": "Und das alles <b>ohne Werbung</b>",
-        "projectR": "<b>Nur bei jährlicher Zahlungsweise:</b> Sie werden Mitglied der <b>Project R Genossenschaft</b>",
+        "projectRCondition": "<b>Nur bei jährlicher Zahlungsweise:</b>",
+        "projectR": "Sie werden Mitglied der <b>Project R Genossenschaft</b>",
         "projectRDescription": "<p><b>Project R</b> ist eine Genossenschaft, die sich für unabhängigen Journalismus, freie Meinungsäusserung, öffentliche Debatten und eine funktionierende Demokratie einsetzt.</p><p>Mit 46,4 Prozent der Anteile ist sie <b>Hauptaktionärin der Republik AG</b> und garantiert damit die Unabhängigkeit des Magazins.</p><p><b>Als Mitglied haben Sie keine Verpflichtungen, können aber bei ausgewählten Fragen mitentscheiden.</b></p>"
       },
       "reducedPrice": "Sie können sich keinen der genannten Beiträge leisten? <reducedLink>Gemeinsam finden wir eine Lösung.</reducedLink>"

@@ -9,8 +9,9 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
+import type { Metadata } from "next";
 
-export async function generateMetadata() {
+export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.gifts");
 
   return {
@@ -36,10 +37,10 @@ const styles = {
 export default async function GiftsPage() {
   const t = await getTranslations("landing.gifts");
   const tDescriptionItems = await getTranslations(
-    "landing.gifts.description.items"
+    "landing.gifts.description.items",
   );
 
-  const getText = (tKey: "dialog" | "general" | "briefings" | "goodie") =>
+  const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
       p: (chunks) => <p className={css({ mt: "2" })}>{chunks}</p>,

@@ -13,9 +13,13 @@ import { css } from "@/theme/css";
 import { visuallyHidden } from "@/theme/patterns";
 import { getTranslations } from "next-intl/server";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ promo_code?: string }>;
+}) {
   const t = await getTranslations("overview");
-
+  const { promo_code } = await searchParams;
   return (
     <>
       <AboBanner />
@@ -49,11 +53,14 @@ export default async function Home() {
           <OfferGridCompact>
             <OfferCardPrimary
               offerId="YEARLY"
+              promoCode={promo_code}
               color="#324442"
               background="#9CC5B5"
+              recommended
             />
             <OfferCardPrimary
               offerId="MONTHLY"
+              promoCode={promo_code}
               color="#D1CDD8"
               background="#383654"
               ctaColor="black"

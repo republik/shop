@@ -1,7 +1,7 @@
 import { Logo } from "@/components/logo";
 import { css } from "@/theme/css";
-import Link from "next/link";
 import { type ReactNode } from "react";
+import { OverviewLink } from "../overview-link";
 
 export function Hero({ children }: { children: ReactNode }) {
   return (
@@ -17,9 +17,9 @@ export function Hero({ children }: { children: ReactNode }) {
         textAlign: "center",
       })}
     >
-      <Link className={css({ mb: "8" })} href={process.env.NEXT_PUBLIC_URL}>
+      <OverviewLink className={css({ mb: "8" })}>
         <Logo />
-      </Link>
+      </OverviewLink>
       {children}
     </section>
   );

@@ -1,16 +1,16 @@
 import { css, cx } from "@/theme/css";
-import { getTranslations } from "next-intl/server";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { type ReactNode } from "react";
+import { OverviewLink } from "../overview-link";
 
-export async function LandingPageLayout({
+export function LandingPageLayout({
   className,
   children,
 }: {
   className?: string;
   children: ReactNode;
 }) {
-  const t = await getTranslations("landing");
+  const t = useTranslations("landing");
 
   return (
     <>
@@ -40,7 +40,7 @@ export async function LandingPageLayout({
           {children}
 
           <p>
-            <Link href={"/"}>{t("goBack")}</Link>
+            <OverviewLink>{t("goBack")}</OverviewLink>
           </p>
         </div>
       </main>

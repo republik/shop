@@ -17,21 +17,27 @@ const formatCurrencyShort = (amountInRappen: number) => {
 
 export async function OfferCardPrimary({
   offerId,
+  promoCode,
   color,
   background,
   ctaColor,
-  redirect,
+  recommended,
 }: {
   offerId: "YEARLY" | "MONTHLY" | "BENEFACTOR" | "STUDENT" | "DONATION";
+  promoCode?: string;
   color?: string;
   background?: string;
   ctaColor?: string;
-  redirect?: string;
+  recommended?: boolean;
 }) {
   const gql = await getClient();
+  const t = await getTranslations(`overview`);
   const tOffer = await getTranslations(`overview.offer.${offerId}`);
 
-  const { data } = await gql.query(OfferCardDocument, { offerId });
+  const { data } = await gql.query(OfferCardDocument, {
+    offerId,
+    promoCode: promoCode ?? null,
+  });
 
   const offer = data?.offer;
 
@@ -50,6 +56,10 @@ export async function OfferCardPrimary({
     lineHeight: "normal",
   });
 
+  const cardHref = promoCode
+    ? `/angebot/${offerId}?promo_code=${promoCode}`
+    : `/angebot/${offerId}`;
+
   return (
     <OfferCard
       id={offerId}
@@ -57,7 +67,7 @@ export async function OfferCardPrimary({
       background={background}
       ctaColor={ctaColor}
     >
-      {tOffer.has("recommended") && (
+      {recommended && (
         <div
           className={css({
             position: "absolute",
@@ -70,7 +80,7 @@ export async function OfferCardPrimary({
             py: "2",
           })}
         >
-          {tOffer("recommended")}
+          {t("recommended")}
         </div>
       )}
 
@@ -111,11 +121,8 @@ export async function OfferCardPrimary({
         {tOffer.has("info") && <p>{tOffer("info")}</p>}
       </div>
 
-      <div className={css({})}>
-        <Link
-          href={redirect || `/angebot/${offerId}`}
-          className={cx(cardButton(), linkOverlay())}
-        >
+      <div>
+        <Link href={cardHref} className={cx(cardButton(), linkOverlay())}>
           {tOffer("cta")}
         </Link>
 
