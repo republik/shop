@@ -196,7 +196,7 @@ async function checkout({
   await page.getByRole("checkbox", { name: "Ich bin mit" }).check();
   await page.getByRole("button", { name: "Bezahlen" }).click();
 
-  await expect(page.getByRole("heading", { name: "Vielen Dank" })).toBeVisible({
+  await expect(page.getByTestId("checkout-success-action")).toBeVisible({
     timeout: 20_000,
   });
 }

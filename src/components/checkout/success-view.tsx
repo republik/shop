@@ -67,7 +67,7 @@ export function SubscriptionSuccess({
           <p className={css({ mb: "4" })}>
             {t.rich("tips", { b: (chunks) => <b>{chunks}</b> })}
           </p>
-          <Button asChild size="large">
+          <Button data-testid="checkout-success-action" asChild size="large">
             <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}/einrichten`}>
               {t("action")}
             </Link>
@@ -119,7 +119,7 @@ export function UpgradeSuccess({
             ),
           })}
       </p>
-      <Button asChild size="large">
+      <Button data-testid="checkout-success-action" asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>
@@ -159,7 +159,7 @@ export function GiftSuccess({ checkoutState: { offer, me } }: SuccessProps) {
           ),
         })}
       </p>
-      <Button asChild size="large">
+      <Button data-testid="checkout-success-action" asChild size="large">
         <Link href={`/`}>{t("action")}</Link>
       </Button>
     </CenterContainer>
@@ -193,7 +193,7 @@ export function DonationSuccess({
           ),
         })}
       </p>
-      <Button asChild size="large">
+      <Button data-testid="checkout-success-action" asChild size="large">
         <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
           {t("action")}
         </Link>

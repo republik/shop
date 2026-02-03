@@ -94,7 +94,7 @@ export async function OfferCardPrimary({
                 {currencyPrefix}
                 <del>{offer.price.amount / 100}</del>
               </p>
-              <p className={titleStyle}>
+              <p data-testid="offer-price" className={titleStyle}>
                 {currencyPrefix}
                 {formatCurrencyShort(
                   offer.price.amount - offer.discount.amountOff,
@@ -108,7 +108,7 @@ export async function OfferCardPrimary({
             </>
           ) : (
             <>
-              <p className={titleStyle}>
+              <p data-testid="offer-price" className={titleStyle}>
                 {currencyPrefix}
                 {formatCurrencyShort(offer.price.amount)}
               </p>
