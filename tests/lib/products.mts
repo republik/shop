@@ -14,6 +14,7 @@ export type ProductTest = {
     | { name: string; interval?: string }
     | { amount: string; interval?: string };
   discountOption?: { name: string; reason: string };
+  landingPagePath?: string;
 };
 
 export const PRODUCTS: ProductTest[] = [
@@ -25,6 +26,18 @@ export const PRODUCTS: ProductTest[] = [
     recurringPriceDescription: "pro Monat",
     requiresAddress: false,
     requiresLogin: true,
+    landingPagePath: "/monatsabo",
+  },
+  {
+    id: "monthly (with promo code)",
+    offerId: "MONTHLY",
+    name: "Monats-Abo",
+    expectedAmount: "11",
+    recurringPriceDescription: "im ersten Monat, danach monatlich CHF 22",
+    promoCode: "E2ETEST",
+    requiresAddress: false,
+    requiresLogin: true,
+    landingPagePath: "/monatsabo",
   },
   {
     id: "yearly",
@@ -33,6 +46,7 @@ export const PRODUCTS: ProductTest[] = [
     expectedAmount: "240",
     requiresAddress: true,
     requiresLogin: true,
+    landingPagePath: "/mitgliedschaft",
   },
   {
     id: "yearly (with promo code)",
@@ -44,6 +58,7 @@ export const PRODUCTS: ProductTest[] = [
     promoCode: "E2ETEST",
     requiresAddress: true,
     requiresLogin: true,
+    landingPagePath: "/mitgliedschaft",
   },
   {
     id: "yearly (with multi-year promo code)",
@@ -55,6 +70,7 @@ export const PRODUCTS: ProductTest[] = [
     promoCode: "COOL",
     requiresAddress: true,
     requiresLogin: true,
+    landingPagePath: "/mitgliedschaft",
   },
   {
     id: "yearly (with invalid promo code)",
@@ -64,6 +80,7 @@ export const PRODUCTS: ProductTest[] = [
     promoCode: "NOPE",
     requiresAddress: true,
     requiresLogin: true,
+    landingPagePath: "/mitgliedschaft",
   },
   {
     id: "yearly (with donation)",
