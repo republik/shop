@@ -39,7 +39,7 @@ function curtainHOC(middleware: Middleware): Middleware {
 
     if (
       CURTAIN_PASSTHROUGH_PATHS.some((path) =>
-        req.nextUrl.pathname.startsWith(path)
+        req.nextUrl.pathname.startsWith(path),
       )
     ) {
       return middleware(req);
@@ -102,7 +102,7 @@ function analyticsHOC(middleware: Middleware): Middleware {
   return async (req: NextRequest) => {
     const res = await middleware(req);
     const analyticsParams = collectAnalyticsParams(
-      Object.fromEntries(req.nextUrl.searchParams.entries())
+      Object.fromEntries(req.nextUrl.searchParams.entries()),
     );
 
     if (Object.keys(analyticsParams).length > 0) {
@@ -116,7 +116,7 @@ function analyticsHOC(middleware: Middleware): Middleware {
         toAnalyticsCookie(analyticsParams),
         {
           maxAge: ANALYTICS_COOKIE_MAX_AGE,
-        }
+        },
       );
       return res;
     }
@@ -129,7 +129,7 @@ async function middlewareFunc(_: NextRequest): Promise<NextResponse> {
   return NextResponse.next();
 }
 
-export const middleware = analyticsHOC(curtainHOC(middlewareFunc));
+export default analyticsHOC(curtainHOC(middlewareFunc));
 
 export const config = {
   matcher: [
