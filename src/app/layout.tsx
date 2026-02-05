@@ -1,4 +1,3 @@
-import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 
 import { Footer } from "@/components/layout/footer";
@@ -64,7 +63,6 @@ export default async function RootLayout({
               {children}
             </div>
             <Footer />
-            <Toaster />
           </GraphQLProvider>
         </NextIntlClientProvider>
       </body>

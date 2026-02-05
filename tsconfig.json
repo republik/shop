@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -11,7 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -19,8 +23,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "#graphql/*": ["./graphql/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "#graphql/*": [
+        "./graphql/*"
+      ]
     },
     "target": "ES2017"
   },
@@ -30,7 +38,10 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "tests/lib/**/*.ts",
-    "tests/lib/**/*.mts"
+    "tests/lib/**/*.mts",
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
