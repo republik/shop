@@ -67,6 +67,14 @@ const nextConfig = {
       },
     ];
   },
+  async rewrites() {
+    return [
+      {
+        source: "/graphql",
+        destination: process.env.NEXT_PUBLIC_API_URL,
+      },
+    ];
+  },
 };
 
 const withConfiguredPlausibleProxy = withPlausibleProxy({

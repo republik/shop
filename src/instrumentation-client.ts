@@ -8,7 +8,13 @@ if (process.env.NEXT_PUBLIC_SENTRY_DISABLED !== "true") {
   Sentry.init({
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
     enableLogs: true,
-    integrations: [Sentry.consoleLoggingIntegration()],
+    integrations: [
+      // Include GraphQL queries in error spans
+      Sentry.graphqlClientIntegration({
+        endpoints: [process.env.NEXT_PUBLIC_API_URL, "/graphql"],
+      }),
+      Sentry.consoleLoggingIntegration(),
+    ],
   });
 }
 
