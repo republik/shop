@@ -1,8 +1,4 @@
-import {
-  ANALYTICS_COOKIE_NAME,
-  collectAnalyticsParams,
-  toAnalyticsCookie,
-} from "@/lib/analytics";
+import { ANALYTICS_COOKIE_NAME, collectAnalyticsParams } from "@/lib/analytics";
 import { NextRequest, NextResponse } from "next/server";
 
 const ANALYTICS_COOKIE_MAX_AGE = 60 * 60 * 24; // 24h
@@ -13,14 +9,11 @@ export async function proxy(req: NextRequest) {
   );
 
   if (Object.keys(analyticsParams).length > 0) {
-    const url = req.nextUrl.clone();
-    Object.keys(analyticsParams).forEach((key) => {
-      url.searchParams.delete(key);
-    });
-    const res = NextResponse.redirect(url.toString());
-    res.cookies.set(ANALYTICS_COOKIE_NAME, toAnalyticsCookie(analyticsParams), {
+    const res = NextResponse.next();
+    res.cookies.set(ANALYTICS_COOKIE_NAME, JSON.stringify(analyticsParams), {
       maxAge: ANALYTICS_COOKIE_MAX_AGE,
     });
+
     return res;
   }
 }
