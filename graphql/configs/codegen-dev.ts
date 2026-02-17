@@ -26,7 +26,7 @@ const config: CodegenConfig = {
     //   plugins: [],
     // },
     "./graphql/republik-api/__generated__/gql/": {
-      schema: process.env.NEXT_PUBLIC_API_URL,
+      schema: process.env.API_URL,
       documents: ["./graphql/republik-api/**/*.{ts,tsx,gql,graphql}"],
       preset: "client",
       presetConfig: {
