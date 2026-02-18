@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 import { Client, fetchExchange } from "@urql/core";
 import { headers as nextHeaders } from "next/headers";
 
