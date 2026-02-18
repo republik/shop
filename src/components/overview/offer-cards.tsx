@@ -1,6 +1,6 @@
 import { OfferCardDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { cardButton } from "@/components/ui/card-button";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/client-server";
 import { css, cx } from "@/theme/css";
 import { grid, linkOverlay } from "@/theme/patterns";
 import { token } from "@/theme/tokens";
