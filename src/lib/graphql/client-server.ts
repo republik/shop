@@ -18,7 +18,7 @@ export async function getClient(): Promise<Client> {
       headers: {
         cookie: requestHeaders.get("cookie") ?? "",
         authorization: requestHeaders.get("authorization") ?? "",
-        "x-api-gateway-client": "shop",
+        "x-api-gateway-client": process.env.API_GATEWAY_CLIENT ?? "shop",
         "x-api-gateway-token": process.env.API_GATEWAY_TOKEN ?? "",
       },
       credentials: "include",

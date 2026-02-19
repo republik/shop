@@ -9,7 +9,10 @@ export async function proxy(req: NextRequest) {
    */
   if (req.nextUrl.pathname === "/graphql") {
     const headers = new Headers(req.headers);
-    headers.set("x-api-gateway-client", "shop");
+    headers.set(
+      "x-api-gateway-client",
+      process.env.API_GATEWAY_CLIENT ?? "shop",
+    );
     headers.set("x-api-gateway-token", process.env.API_GATEWAY_TOKEN ?? "");
 
     const res = NextResponse.rewrite(new URL(process.env.API_URL), {

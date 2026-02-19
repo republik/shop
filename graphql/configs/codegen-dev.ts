@@ -29,7 +29,7 @@ const config: CodegenConfig = {
       schema: {
         [process.env.API_URL]: {
           headers: {
-            "x-api-gateway-client": "shop",
+            "x-api-gateway-client": process.env.API_GATEWAY_CLIENT ?? "shop",
             "x-api-gateway-token": process.env.API_GATEWAY_TOKEN ?? "",
           },
         },

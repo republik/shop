@@ -20,6 +20,7 @@ The following environment variables are required for the application to correctl
 - `FEATURE_FLAGS`: which features are enabled, in a comma-separated list.
 - `API_URL`: The URL of the API.
 - `API_GATEWAY_TOKEN`: Secret token for authenticating with the API.
+- `API_GATEWAY_CLIENT`: Client identifier for authenticating with the API. Optional (default: `shop`).
 
 #### Stripe
 
