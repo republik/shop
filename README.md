@@ -19,7 +19,6 @@ The following environment variables are required for the application to correctl
 - `NEXT_PUBLIC_MAGAZIN_URL`: Used for linking to the magazine front, account page and the imprint.
 - `FEATURE_FLAGS`: which features are enabled, in a comma-separated list.
 - `API_URL`: The URL of the API.
-- `API_GATEWAY_CLIENT`: Name of the API gateway client.
 - `API_GATEWAY_TOKEN`: Secret token for authenticating with the API.
 
 #### Stripe

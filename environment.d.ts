@@ -9,7 +9,6 @@ declare global {
 
       // API
       API_URL: string;
-      API_GATEWAY_CLIENT?: string;
       API_GATEWAY_TOKEN?: string;
 
       // STRIPE
