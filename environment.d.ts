@@ -4,9 +4,12 @@ declare global {
       NODE_ENV?: "development" | "production" | "test";
       // GENERAL
       NEXT_PUBLIC_URL: string;
-      NEXT_PUBLIC_API_URL: string;
       NEXT_PUBLIC_MAGAZIN_URL: string;
       NEXT_PUBLIC_PLAUSIBLE_DOMAIN?: string;
+
+      // API
+      API_URL: string;
+      API_GATEWAY_TOKEN?: string;
 
       // STRIPE
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY_PROJECT_R: string;

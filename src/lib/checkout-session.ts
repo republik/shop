@@ -2,7 +2,7 @@ import {
   GetCheckoutSessionDocument,
   type GetCheckoutSessionQuery,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/client-server";
 
 export type CheckoutSessionData = NonNullable<
   GetCheckoutSessionQuery["checkoutSession"]

@@ -3,7 +3,7 @@
 import { ValidateGiftVoucherDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { fetchMe } from "@/lib/auth/fetch-me";
 import type { Me } from "@/lib/auth/types";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/client-server";
 
 async function validateVoucher(voucher: string) {
   const gql = await getClient();

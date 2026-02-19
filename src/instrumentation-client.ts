@@ -11,7 +11,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DISABLED !== "true") {
     integrations: [
       // Include GraphQL queries in error spans
       Sentry.graphqlClientIntegration({
-        endpoints: [process.env.NEXT_PUBLIC_API_URL, "/graphql"],
+        endpoints: ["/graphql"],
       }),
       Sentry.consoleLoggingIntegration(),
     ],

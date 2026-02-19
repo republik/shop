@@ -4,7 +4,7 @@ import {
   RedeemGiftVoucherDocument,
   type RedeemGiftVoucherMutation,
 } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/client-server";
 
 type RedeemGiftVoucherState =
   | { type: "error"; errors: Record<string, string> }
@@ -14,7 +14,7 @@ type RedeemGiftVoucherState =
     };
 
 export async function redeemGiftVoucher(
-  voucher: string
+  voucher: string,
 ): Promise<RedeemGiftVoucherState> {
   const gql = await getClient();
 

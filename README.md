@@ -16,9 +16,11 @@ The following environment variables are required to run the application in devel
 The following environment variables are required for the application to correctly link to it's self, the API and the magazine:
 
 - `NEXT_PUBLIC_URL`: The URL of the website.
-- `NEXT_PUBLIC_API_URL`: The URL of the API.
 - `NEXT_PUBLIC_MAGAZIN_URL`: Used for linking to the magazine front, account page and the imprint.
-- `FEATURE_FLAGS`: which features are enabled, in a comma-separated list
+- `FEATURE_FLAGS`: which features are enabled, in a comma-separated list.
+- `API_URL`: The URL of the API.
+- `API_GATEWAY_TOKEN`: Secret token for authenticating with the API.
+- `API_GATEWAY_CLIENT`: Client identifier for authenticating with the API. Optional (default: `shop`).
 
 #### Stripe
 

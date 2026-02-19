@@ -1,7 +1,7 @@
 "use server";
 
 import { UpdateMeDocument } from "#graphql/republik-api/__generated__/gql/graphql";
-import { getClient } from "@/lib/graphql/client";
+import { getClient } from "@/lib/graphql/client-server";
 
 import * as z from "zod";
 
@@ -49,7 +49,7 @@ type UpdateMeState =
 
 export async function updateMe(
   previousState: UpdateMeState,
-  formData: FormData
+  formData: FormData,
 ): Promise<UpdateMeState> {
   const gql = await getClient();
   const data = Object.fromEntries(formData) as Record<string, string>;
@@ -59,7 +59,7 @@ export async function updateMe(
     return {
       type: "error",
       errors: Object.fromEntries(
-        input.error.issues.map((e) => [e.path[0], "valueMissing"])
+        input.error.issues.map((e) => [e.path[0], "valueMissing"]),
       ),
       data,
     };
