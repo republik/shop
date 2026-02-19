@@ -4,7 +4,7 @@
   "private": true,
   "license": "BSD-3-Clause",
   "engines": {
-    "node": "22"
+    "node": "24"
   },
   "scripts": {
     "dev": "concurrently \"next dev\" \"pnpm run gql:types --watch\" \"panda --watch\"",
