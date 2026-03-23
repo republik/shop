@@ -12,13 +12,7 @@ import { Button } from "@/components/ui/button";
 import type { Me } from "@/lib/auth/types";
 import { useSessionStorage } from "@/lib/hooks/use-session-storage";
 import { css } from "@/theme/css";
-import {
-  AlertCircleIcon,
-  CalendarClockIcon,
-  CalendarIcon,
-  ClockIcon,
-  InfoIcon,
-} from "lucide-react";
+import { AlertCircleIcon, CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useActionState, useEffect, useMemo, useState } from "react";
 import { type LineItem, PricingTable } from "./pricing-table";
@@ -231,12 +225,19 @@ export function CustomizeOfferView({
     );
 
     if (selectedDiscount) {
+      const repeating = selectedDiscount.durationInMonths
+        ? offer.price.recurring?.interval === "year"
+          ? Math.ceil(selectedDiscount.durationInMonths / 12)
+          : selectedDiscount.durationInMonths
+        : undefined;
+
       items.push({
         type: "DISCOUNT",
         label: t("checkout.preCheckout.reduced.itemName"),
         amount: -selectedDiscount.amountOff,
         duration: selectedDiscount.duration,
         onChange: () => setShowOptions(true),
+        repeating,
         onRemove: resetDiscount,
       });
     }
