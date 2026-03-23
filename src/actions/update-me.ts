@@ -6,6 +6,7 @@ import { getClient } from "@/lib/graphql/client-server";
 import * as z from "zod";
 
 const Address = z.object({
+  organization: z.string().optional(),
   // name is required for the mutation but if not present, we assemble it from firstName and lastName
   name: z.string().optional(),
   line1: z.string().nonempty(),
