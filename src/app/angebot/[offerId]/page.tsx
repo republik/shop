@@ -112,7 +112,6 @@ export default async function OfferPage({ params, searchParams }: PageProps) {
           currentStep={checkoutState.currentStep}
           maxStep={checkoutState.totalSteps}
           title={t("checkout.preCheckout.title")}
-          previousUrl={"/"}
         >
           <CustomizeOfferView
             offer={checkoutState.offer}
