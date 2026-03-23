@@ -437,6 +437,7 @@
     "fields": {
       "email": "E-Mail-Adresse",
       "confirmationCode": "Bestätigungs-Code",
+      "organization": "Firma (optional)",
       "firstName": "Vorname",
       "lastName": "Nachname",
       "name": "Name",

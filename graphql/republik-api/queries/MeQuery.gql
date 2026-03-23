@@ -8,6 +8,7 @@ query Me {
     email
 
     address {
+      organization
       name
       line1
       line2

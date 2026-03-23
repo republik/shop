@@ -26,6 +26,7 @@ export function PersonalInfoForm({
     data: {
       firstName: me.firstName,
       lastName: me.lastName,
+      organization: me.address?.organization,
       name: me.address?.name,
       line1: me.address?.line1,
       line2: me.address?.line2,
@@ -115,6 +116,23 @@ export function PersonalInfoForm({
 
           <p>{tForm("addressNote")}</p>
 
+          <FormField
+            type="text"
+            label={tField("organization")}
+            name="organization"
+            error={state.errors?.organization}
+            autoComplete="organization"
+            defaultValue={state.data.organization ?? undefined}
+          />
+          <FormField
+            type="text"
+            label={tField("name")}
+            name="name"
+            error={state.errors?.name}
+            autoComplete="name"
+            defaultValue={state.data.name ?? undefined}
+            required
+          />
           <FormField
             type="text"
             label={tField("line1")}
