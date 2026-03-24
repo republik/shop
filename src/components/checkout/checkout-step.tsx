@@ -6,6 +6,7 @@ import { ChevronLeftIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { type ReactNode } from "react";
+import { useRouter } from "next/navigation";
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
   const progress = value / max;
@@ -28,6 +29,8 @@ function ProgressBar({ value, max }: { value: number; max: number }) {
   );
 }
 
+const DEFAULT_PREVIOUS_URL = "/";
+
 export function Step({
   title,
   currentStep,
@@ -38,10 +41,20 @@ export function Step({
   title: string;
   currentStep: number;
   maxStep: number;
-  previousUrl: string;
+  previousUrl?: string;
   children: ReactNode;
 }) {
   const t = useTranslations("step");
+  const router = useRouter();
+
+  function navigateBack(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    if (window.history.length > 1) {
+      router.back();
+    } else {
+      router.push(DEFAULT_PREVIOUS_URL);
+    }
+  }
   return (
     <div
       className={css({
@@ -67,19 +80,32 @@ export function Step({
           pr: "6",
         })}
       >
-        <Link
-          href={previousUrl}
-          className={css({
+        {previousUrl ? (
+          <Link
+            href={previousUrl}
+            className={css({
+              cursor: "pointer",
+              borderRadius: "sm",
+              _hover: {
+                background: "overlay",
+              },
+            })}
+          >
+            <ChevronLeftIcon />
+            <span className={visuallyHidden()}>{t("back")}</span>
+          </Link>
+        ) : (
+          <button onClick={navigateBack} className={css({
             cursor: "pointer",
             borderRadius: "sm",
             _hover: {
               background: "overlay",
             },
-          })}
-        >
-          <ChevronLeftIcon />
-          <span className={visuallyHidden()}>{t("back")}</span>
-        </Link>
+          })}>
+            <ChevronLeftIcon />
+            <span className={visuallyHidden()}>{t("back")}</span>
+          </button>
+        )}
 
         <div
           className={css({

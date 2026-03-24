@@ -1,4 +1,5 @@
 import { AboBanner } from "@/components/layout/abo-banner";
+import CampaignBanner from "@/components/campaign/banner";
 import { Hero } from "@/components/layout/hero";
 import { OfferDescription } from "@/components/overview/description";
 import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";
@@ -22,6 +23,7 @@ export default async function Home({
   const { promo_code } = await searchParams;
   return (
     <>
+      <CampaignBanner />
       <AboBanner />
       <div
         className={css({
