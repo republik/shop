@@ -23,8 +23,8 @@ export default async function Home({
   const { promo_code } = await searchParams;
   return (
     <>
-      <CampaignBanner />
       <AboBanner />
+      <CampaignBanner />
       <div
         className={css({
           background: "[#DFD6C7]",
