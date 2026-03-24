@@ -1,0 +1,9 @@
+query CampaignReferrals {
+  campaign(slug: "spring-2026") {
+    id
+    isActive
+    newMembers {
+      count
+    }
+  }
+}

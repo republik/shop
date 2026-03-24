@@ -95,7 +95,13 @@ export function Step({
             <span className={visuallyHidden()}>{t("back")}</span>
           </Link>
         ) : (
-          <button onClick={navigateBack}>
+          <button onClick={navigateBack} className={css({
+            cursor: "pointer",
+            borderRadius: "sm",
+            _hover: {
+              background: "overlay",
+            },
+          })}>
             <ChevronLeftIcon />
             <span className={visuallyHidden()}>{t("back")}</span>
           </button>
