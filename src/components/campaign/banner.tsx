@@ -70,7 +70,7 @@ async function CampaignBanner() {
           </p>
           <div className={css({ textAlign: "center", ml: "auto" })}>
             <Link
-              href="https://wwww.republik.ch/versprechen"
+              href="https://www.republik.ch/versprechen"
               style={{ background: "#F0084C", borderColor: "#F0084C" }}
               className={cx(
                 button(),
