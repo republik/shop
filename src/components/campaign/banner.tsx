@@ -1,9 +1,10 @@
-import { css, cx } from "@/theme/css";
-import { button } from "@/theme/recipes";
+import { css } from "@/theme/css";
 import Link from "next/link";
-import {CampaignReferralsDocument} from "#graphql/republik-api/__generated__/gql/graphql";
+import { CampaignReferralsDocument } from "#graphql/republik-api/__generated__/gql/graphql";
 import { getClient } from "@/lib/graphql/client-server";
 import CampaignMembershipsCounter from "@/components/campaign/counter";
+import { Offers } from "@/components/campaign/offers";
+import { Logo } from "@/components/logo";
 
 async function CampaignBanner() {
   const gql = await getClient();
@@ -16,12 +17,11 @@ async function CampaignBanner() {
       style={{
         color: "#F0084C",
         backgroundColor: "#FED9E1",
-        boxShadow: "shadows.sm",
       }}
     >
       <div
         className={css({
-          maxWidth: "content.wide",
+          maxWidth: "content.narrow",
           mx: "auto",
           pt: "4",
           pb: "6",
@@ -31,58 +31,52 @@ async function CampaignBanner() {
           },
           lg: {
             py: "8",
-            px: "0"
-          }
+            px: "0",
+          },
         })}
       >
-        <CampaignMembershipsCounter membersCount={data?.campaign?.newMembers?.count} />
-        <div
+        <CampaignMembershipsCounter
+          membersCount={data?.campaign?.newMembers?.count}
+        />
+        <h2
           className={css({
-            mt: "1",
-            md: {
-              mt: "4",
-              display: "flex",
-              alignItems: "center",
-              gap: "4",
-            },
+            fontSize: "3xl",
+            fontFamily: "republikSerif",
+            lineHeight: "[1.1]",
+            mt: "12",
+            mb: "2",
+            md: { mb: "4" },
           })}
         >
-          <p
-            className={css({
-              textAlign: "center",
-              fontFamily: "gtAmericaStandard",
-              textStyle: "serifBold",
-              lineHeight: "tight",
-              fontSize: "xl",
-              py: "2",
-              mb: "2",
-              md: {
-                textAlign: "left",
-                fontSize: "3xl",
-                lineHeight: "1",
-                py: "0",
-                mb: "0",
-              },
-            })}
-          >
-            Mit 2000&nbsp;neuen Mitgliedern lösen wir 3&nbsp;Versprechen ein.
-            Machen Sie mit?
-          </p>
-          <div className={css({ textAlign: "center", ml: "auto" })}>
-            <Link
-              href="https://www.republik.ch/versprechen"
-              style={{ background: "#F0084C", borderColor: "#F0084C" }}
-              className={cx(
-                button(),
-                css({
-                  color: "white",
-                }),
-              )}
-            >
-              Jetzt 50 % günstiger
-            </Link>
-          </div>
-        </div>
+          Mit 2000&nbsp;neuen Mitgliedern lösen wir 3&nbsp;Versprechen ein.
+        </h2>
+        <p
+          className={css({
+            fontSize: "xl",
+            fontWeight: "medium",
+            mb: "0",
+            md: { mb: "4" },
+          })}
+        >
+          Kommen Sie bis zum 14.&nbsp;April an Bord.
+        </p>
+        <p
+          className={css({
+            fontSize: "lg",
+            mb: "6",
+          })}
+        >
+          Sie bestimmen, wie viel Sie im ersten Jahr zahlen:
+        </p>
+        <Offers />
+        <p
+          className={css({
+            textAlign: "center",
+            mt: "6",
+          })}
+        >
+          Jederzeit kündbar
+        </p>
       </div>
     </div>
   );
