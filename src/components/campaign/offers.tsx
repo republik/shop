@@ -38,7 +38,7 @@ const radioContainerStyle = css({
     borderColor: "[#F0084C]",
     color: "white",
   },
-  fontSize: "2xl",
+  fontSize: "xl",
   fontWeight: "medium",
 });
 
@@ -85,7 +85,7 @@ export function Offers() {
                 {highlighted && (
                   <span
                     className={css({
-                      fontSize: "sm",
+                      fontSize: "xs",
                       lineHeight: "1",
                       position: "absolute",
                       color: "[#FED9E1]",
