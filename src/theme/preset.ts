@@ -208,6 +208,14 @@ export const presetRepublik = definePreset({
             fontFamily: "gtAmericaStandard",
           },
         },
+        heavy: {
+          value: {
+            fontFamily: "gtAmericaStandard",
+            fontSize: "20px",
+            lineHeight: 1.5,
+            fontWeight: 500,
+          },
+        },
         title: {
           value: {
             fontFamily: "republikSerif",

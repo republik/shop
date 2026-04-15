@@ -3,9 +3,7 @@
     "title": "Shop – Republik",
     "description": ""
   },
-
   "imprint": "Impressum",
-
   "error": {
     "generic": {
       "title": "Es ist ein Fehler aufgetreten.",
@@ -24,9 +22,9 @@
       "networkError": "Die Verbindung zur Republik schlug fehl."
     }
   },
-
-  "login": { "action": "Anmelden" },
-
+  "login": {
+    "action": "Anmelden"
+  },
   "overview": {
     "title": "Die Republik-Angebote",
     "lead": "Unabhängiger Journalismus,<br></br>finanziert von seinen Leserinnen und Lesern.",
@@ -107,10 +105,8 @@
       "reducedPrice": "Sie können sich keinen der genannten Beiträge leisten? <reducedLink>Gemeinsam finden wir eine Lösung.</reducedLink>"
     }
   },
-
   "landing": {
     "goBack": "Alle Angebote anzeigen",
-
     "gifts": {
       "title": "Die Republik zum Verschenken",
       "lead": "Vielleicht das einzige Geschenk, das Sie Freunden und Feinden gleichermassen  herzlich machen können.",
@@ -154,7 +150,7 @@
     "institutionen": {
       "title": "Für Firmen und Institutionen",
       "formtitle": "Republik Zugriff für Firmen und Institutionen",
-      "lead": "Unbegrenzter Zugang zum Republik-Journalismus, für Mitarbeitende und Mitglieder Ihrer Organisation. ",
+      "lead": "Unbegrenzter Zugang zum Republik-Journalismus, für Mitarbeitende und Mitglieder Ihrer Organisation.",
       "intro": "Erhältlich für Unternehmen, Universitäten, Bibliotheken und andere Institutionen. Gewähren Sie allen Mitarbeitenden oder Mitgliedern:",
       "form": "Füllen Sie das folgende Formular aus, um das Republik Magazin in Ihre Community zu bringen. Ein Mitglied unseres Teams wird sich mit Ihnen in Kontakt setzen.",
       "info": "* Der Zugriff erfolgt via IP-Adressen Ihrer Standorte. Alle Geräte, die via diese IP-Adressen auf die Republik zugreifen, erhalten unbeschränkten Zugriff.",
@@ -164,6 +160,23 @@
           "price": "Alle Beiträge der Republik und aus dem Archiv zum Lesen und Hören",
           "general": "Aktuelle <b>Recherchen, Analysen und Reportagen</b> zu den Themen unserer Zeit"
         }
+      }
+    },
+    "schools": {
+      "title": "Die Republik an Ihrer Schule",
+      "lead": "Unabhängiger Journalismus für die nächste Generation unabhängiger Köpfe",
+      "intro": "Alle im <b>Schulnetzwerk*</b> erhalten Zugang zu:",
+      "description": {
+        "items": {
+          "general": "Aktuellen Recherchen, Reportagen, Interviews und Analysen",
+          "audio": "Vorgelesenen Geschichten und Podcasts",
+          "archive": "Dem Archiv aus über 8 Jahren Republik"
+        }
+      },
+      "info": "*Alle Geräte, die über die der Schule zugehörige öffentliche IP-Adresse mit dem Internet verbunden sind. Das ist die technische Voraussetzung für den kostenlosen Zugang.",
+      "form": {
+        "title": "Republik Zugriff für Schulen",
+        "intro": "Bitte ergänzen Sie die folgenden Angaben, um einen kostenlosen Republik-Zugang an Ihrer Schule zu beantragen:"
       }
     },
     "redeem": {
@@ -177,7 +190,6 @@
       }
     }
   },
-
   "checkout": {
     "actions": {
       "change": "Ändern",
@@ -246,7 +258,6 @@
           "generic": ""
         }
       },
-
       "scheduledSubscription": {
         "startInfo": "Beginnt am <date>{startDate, date, long}</date>, sobald {currentSubscription, select, YEARLY_SUBSCRIPTION {Ihre aktuelle Jahresmitgliedschaft} MONTHLY_SUBSCRIPTION {Ihr aktuelles Monats-Abo} BENEFACTOR_SUBSCRIPTION {Ihre aktuelle Gönner-Mitgliedschaft} other {Ihr aktuelles Abonnement}} abläuft."
       },
@@ -272,7 +283,6 @@
           "description": "Zugang zu allem, was die Republik zu bieten hat. Und Sie werden Mitglied der Project R Genossenschaft."
         }
       },
-
       "durationAvailable": {
         "once": "Einmalig gültig.",
         "forever": "Erneuert sich automatisch mit der Verlängerung.",
@@ -281,7 +291,6 @@
           "year": "{repeating, plural, =1 {1 Jahr} other {# Jahre}} gültig."
         }
       },
-
       "invalidPromoCode": {
         "title": "Ungültiges Sonderangebot",
         "description": "Das Sonderangebot ist ungültig oder abgelaufen."
@@ -430,10 +439,8 @@
   "form": {
     "name": "Name",
     "address": "Adresse",
-
     "changeEmailNote": "Um die E-Mail-Adresse zu ändern, <signOutButton>melden Sie sich neu an</signOutButton>.",
     "addressNote": "Für Ihre Mitgliedschaft bei der Project R Genossenschaft benötigen wir eine Adresse.",
-
     "fields": {
       "email": "E-Mail-Adresse",
       "confirmationCode": "Bestätigungs-Code",
@@ -448,7 +455,6 @@
       "country": "Land",
       "birthyear": "Geburtsjahr"
     },
-
     "defaults": {
       "country": "Schweiz"
     }
