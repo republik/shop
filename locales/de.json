@@ -165,7 +165,7 @@
     "schools": {
       "title": "Die Republik an Ihrer Schule",
       "lead": "Unabhängiger Journalismus für die nächste Generation unabhängiger Köpfe",
-      "intro": "Alle im <b>Schulnetzwerk*</b> erhalten Zugang zu:",
+      "intro": "Alle <b>im Schulnetzwerk*</b> erhalten Zugang zu:",
       "description": {
         "items": {
           "general": "Aktuellen Recherchen, Reportagen, Interviews und Analysen",
@@ -173,7 +173,7 @@
           "archive": "Dem Archiv aus über 8 Jahren Republik"
         }
       },
-      "info": "*Alle Geräte, die über die der Schule zugehörige öffentliche IP-Adresse mit dem Internet verbunden sind. Das ist die technische Voraussetzung für den kostenlosen Zugang.",
+      "info": "* Alle Geräte, die über die der Schule zugehörige öffentliche IP-Adresse mit dem Internet verbunden sind. Das ist die technische Voraussetzung für den kostenlosen Zugang.",
       "form": {
         "title": "Republik Zugriff für Schulen",
         "intro": "Bitte ergänzen Sie die folgenden Angaben, um einen kostenlosen Republik-Zugang an Ihrer Schule zu beantragen:"
