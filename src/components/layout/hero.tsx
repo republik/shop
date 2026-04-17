@@ -15,6 +15,9 @@ export function Hero({ children }: { children: ReactNode }) {
         alignItems: "center",
         fontSize: "xl",
         textAlign: "center",
+        "& h1": {
+          mb: "2",
+        },
       })}
     >
       <OverviewLink className={css({ mb: "8" })}>

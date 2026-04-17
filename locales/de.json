@@ -150,7 +150,7 @@
     "institutionen": {
       "title": "Für Firmen und Institutionen",
       "formtitle": "Republik Zugriff für Firmen und Institutionen",
-      "lead": "Unbegrenzter Zugang zum Republik-Journalismus, für Mitarbeitende und Mitglieder Ihrer Organisation.",
+      "lead": "Unbegrenzter Zugang zum Republik-Journalismus,<br></br>für Mitarbeitende und Mitglieder Ihrer Organisation.",
       "intro": "Erhältlich für Unternehmen, Universitäten, Bibliotheken und andere Institutionen. Gewähren Sie allen Mitarbeitenden oder Mitgliedern:",
       "form": "Füllen Sie das folgende Formular aus, um das Republik Magazin in Ihre Community zu bringen. Ein Mitglied unseres Teams wird sich mit Ihnen in Kontakt setzen.",
       "info": "* Der Zugriff erfolgt via IP-Adressen Ihrer Standorte. Alle Geräte, die via diese IP-Adressen auf die Republik zugreifen, erhalten unbeschränkten Zugriff.",
@@ -164,7 +164,7 @@
     },
     "schools": {
       "title": "Die Republik an Ihrer Schule",
-      "lead": "Unabhängiger Journalismus für die nächste Generation unabhängiger Köpfe",
+      "lead": "Unabhängiger Journalismus für die nächste<br></br>Generation unabhängiger Köpfe",
       "intro": "Alle <b>im Schulnetzwerk*</b> erhalten Zugang zu:",
       "description": {
         "items": {
@@ -177,6 +177,27 @@
       "form": {
         "title": "Republik Zugriff für Schulen",
         "intro": "Bitte ergänzen Sie die folgenden Angaben, um einen kostenlosen Republik-Zugang an Ihrer Schule zu beantragen:"
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "items": {
+          "ip": {
+            "question": "Woher weiss ich, ob meine Schule über eine feste öffentliche IP-Adresse verfügt?",
+            "answer": "Am einfachsten fragen Sie bei Ihrer IT-Verantwortlichen oder Ihrem  Internetanbieter nach. Eine feste öffentliche IP-Adresse ist eine  eindeutig zugewiesene Adresse, die sich normalerweise nicht ändert."
+          },
+          "price": {
+            "question": "Ist der Zugang komplett kostenlos?",
+            "answer": "Ja, sofern Ihre Schule die Voraussetzungen erfüllt, ist der Zugang für die Personen im Schulnetzwerk kostenlos."
+          },
+          "duration": {
+            "question": "Für welche Dauer kann meine Schule Zugang zur Republik erhalten?",
+            "answer": "Aktuell ist die Dauer des Zugangs zeitlich nicht beschränkt."
+          },
+          "conditions": {
+            "question": "Was sind die Voraussetzungen für einen kostenlosen Schul-Zugang?",
+            "answer": "Voraussetzung ist, dass sich Ihre Schule in der Schweiz befindet und dass dort auf Sekundarstufe unterrichtet wird. Dazu gehören etwa Gymnasien, Berufsschulen und Sekundarschulen. Fachhochschulen und Universitäten können das Angebot nicht beanspruchen. Als technische Voraussetzung sind wir auf eine feste öffentliche IP-Adresse der Schule angewiesen."
+          }
+        }
       }
     },
     "redeem": {

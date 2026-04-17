@@ -1,5 +1,6 @@
 import { DescriptionItem } from "@/components/landing-page/description-item";
 import { LandingPageLayout } from "@/components/landing-page/page-layout";
+import { Faq } from "@/app/schulen/faq";
 import { Hero } from "@/components/layout/hero";
 import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
@@ -19,6 +20,7 @@ export default async function SchoolsLandingPage() {
   const tDescriptionItems = await getTranslations(
     "landing.schools.description.items",
   );
+  const tFaq = await getTranslations("landing.schools.faq");
   const getText = (tKey: Parameters<typeof tDescriptionItems>[0]) =>
     tDescriptionItems.rich(tKey, {
       b: (chunks) => <b>{chunks}</b>,
@@ -39,11 +41,19 @@ export default async function SchoolsLandingPage() {
         >
           {t("title")}
         </h1>
-        <p>{t("lead")}</p>
+        <p className={css({ textStyle: "lead" })}>
+          {t.rich("lead", {
+            br: () => <br />,
+          })}
+        </p>
       </Hero>
 
       <div
-        className={css({ fontSize: "lg", textAlign: "left", width: "full" })}
+        className={css({
+          textAlign: "left",
+          width: "full",
+          md: { fontSize: "lg" },
+        })}
       >
         <p>
           {t.rich("intro", {
@@ -75,6 +85,28 @@ export default async function SchoolsLandingPage() {
           title={t("form.title")}
         />
       </div>
+
+      <Faq
+        title={tFaq("title")}
+        items={[
+          {
+            question: tFaq("items.ip.question"),
+            answer: tFaq("items.ip.answer"),
+          },
+          {
+            question: tFaq("items.price.question"),
+            answer: tFaq("items.price.answer"),
+          },
+          {
+            question: tFaq("items.duration.question"),
+            answer: tFaq("items.duration.answer"),
+          },
+          {
+            question: tFaq("items.conditions.question"),
+            answer: tFaq("items.conditions.answer"),
+          },
+        ]}
+      />
     </LandingPageLayout>
   );
 }
