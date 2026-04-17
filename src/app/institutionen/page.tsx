@@ -4,8 +4,9 @@ import { Hero } from "@/components/layout/hero";
 import { css } from "@/theme/css";
 import { KeyIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
-import { TallyFormEmbed } from "@/components/landing-page/institutionen/tally-embed";
+import { TallyFormEmbed } from "@/components/landing-page/tally-embed";
 import type { Metadata } from "next";
+
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.institutionen");
 
