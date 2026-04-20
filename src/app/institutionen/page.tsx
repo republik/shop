@@ -72,7 +72,7 @@ export default async function InstitutionenLandingPage() {
           <DescriptionItem>{getText("general")}</DescriptionItem>
         </ul>
 
-        <p className={css({ fontSize: "sm" })}>{t("info")}</p>
+        <p className={css({ fontSize: "md" })}>{t("info")}</p>
       </div>
 
       <div>

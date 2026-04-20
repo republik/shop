@@ -50,7 +50,7 @@ export default async function SchoolsLandingPage() {
         </p>
       </Hero>
 
-      <Image src={illu} width={220} alt="illustration" />
+      <Image src={illu} width={220} loading="eager" alt="illustration" />
 
       <div
         className={css({
@@ -80,7 +80,7 @@ export default async function SchoolsLandingPage() {
           <DescriptionItem>{getText("archive")}</DescriptionItem>
         </ul>
 
-        <p className={css({ fontSize: "sm" })}>{t("info")}</p>
+        <p className={css({ fontSize: "md" })}>{t("info")}</p>
       </div>
 
       <div>
