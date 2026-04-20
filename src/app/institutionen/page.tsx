@@ -47,30 +47,41 @@ export default async function InstitutionenLandingPage() {
         </p>
       </Hero>
 
-      <p>{t("intro")}</p>
-
-      <ul
+      <div
         className={css({
-          display: "flex",
-          flexDirection: "column",
-          gap: "2",
+          textAlign: "left",
+          width: "full",
           fontSize: "lg",
         })}
       >
-        <DescriptionItem icon={<KeyIcon />}>
-          {getText("access")}
-        </DescriptionItem>
-        <DescriptionItem>{getText("price")}</DescriptionItem>
-        <DescriptionItem>{getText("general")}</DescriptionItem>
-      </ul>
+        <p>{t("intro")}</p>
 
-      <p className={css({ fontSize: "sm" })}>{t("info")}</p>
+        <ul
+          className={css({
+            display: "flex",
+            flexDirection: "column",
+            gap: "2",
+            mt: "2",
+            mb: "8",
+          })}
+        >
+          <DescriptionItem icon={<KeyIcon />}>
+            {getText("access")}
+          </DescriptionItem>
+          <DescriptionItem>{getText("price")}</DescriptionItem>
+          <DescriptionItem>{getText("general")}</DescriptionItem>
+        </ul>
 
-      <p>{t("form")}</p>
-      <TallyFormEmbed
-        url="https://tally.so/embed/yPMQkd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-        title={t("formtitle")}
-      />
+        <p className={css({ fontSize: "sm" })}>{t("info")}</p>
+      </div>
+
+      <div>
+        <p className={css({ textStyle: "heavy" })}>{t("form")}</p>
+        <TallyFormEmbed
+          url="https://tally.so/embed/yPMQkd?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+          title={t("formtitle")}
+        />
+      </div>
     </LandingPageLayout>
   );
 }

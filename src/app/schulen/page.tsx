@@ -6,6 +6,8 @@ import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";
 import { TallyFormEmbed } from "@/components/landing-page/tally-embed";
 import type { Metadata } from "next";
+import illu from "@/assets/landing-page-schools.png";
+import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.schools");
@@ -30,7 +32,7 @@ export default async function SchoolsLandingPage() {
   return (
     <LandingPageLayout
       className={css({
-        background: "[#92C5FF]",
+        background: "[#E0C1BA]",
       })}
     >
       <Hero>
@@ -48,11 +50,14 @@ export default async function SchoolsLandingPage() {
         </p>
       </Hero>
 
+      <Image src={illu} width={220} alt="illustration" />
+
       <div
         className={css({
           textAlign: "left",
           width: "full",
-          md: { fontSize: "lg" },
+          fontSize: "lg",
+          mt: "4",
         })}
       >
         <p>

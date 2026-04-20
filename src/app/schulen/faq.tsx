@@ -1,5 +1,3 @@
-"use client";
-
 import { css } from "@/theme/css";
 import { ChevronDownIcon } from "lucide-react";
 import { Accordion } from "radix-ui";
@@ -30,7 +28,6 @@ function Item({ item }: { item: FaqItem }) {
             alignItems: "center",
             justifyContent: "space-between",
             gap: "4",
-            backgroundColor: "[#92C5FF]",
             textAlign: "left",
             transition: "transform",
             transitionDuration: "[300ms]",
@@ -43,7 +40,6 @@ function Item({ item }: { item: FaqItem }) {
           <span
             className={css({
               textStyle: "heavy",
-              lineHeight: "[120%]",
             })}
           >
             {item.question}
@@ -72,6 +68,7 @@ function Item({ item }: { item: FaqItem }) {
       >
         <p
           className={css({
+            pt: "1",
             lineHeight: "[120%]",
             fontSize: "lg",
             md: { fontSize: "xl" },
