@@ -84,6 +84,16 @@
         "cta": "Abonnement einlösen"
       }
     },
+    "institutions": {
+      "title": "Zugang für Firmen und Institutionen",
+      "info": "Unbegrenzter Zugang für Mitarbeitende und Mitglieder Ihrer Organisation.",
+      "cta": "Abonnement einlösen "
+    },
+    "schools": {
+      "title": "Freier Zugang für Schulen",
+      "info": "Beantrage an deiner weiterführenden Schule einen kostenlosen Zugang.",
+      "cta": "Abonnement einlösen "
+    },
     "u30": {
       "title": "Für Junge",
       "interval": "pro Monat",
