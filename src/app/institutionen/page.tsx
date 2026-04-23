@@ -6,6 +6,8 @@ import { KeyIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { TallyFormEmbed } from "@/components/landing-page/tally-embed";
 import type { Metadata } from "next";
+import illu from "@/assets/landing-page-institutions.png";
+import Image from "next/image";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("landing.institutionen");
@@ -47,11 +49,14 @@ export default async function InstitutionenLandingPage() {
         </p>
       </Hero>
 
+      <Image src={illu} width={220} loading="eager" alt="illustration" />
+
       <div
         className={css({
           textAlign: "left",
           width: "full",
           fontSize: "lg",
+          mt: "4",
         })}
       >
         <p>{t("intro")}</p>

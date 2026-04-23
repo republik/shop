@@ -84,6 +84,16 @@
         "cta": "Abonnement einlösen"
       }
     },
+    "institutions": {
+      "title": "Für Firmen und Institutionen",
+      "info": "Unbegrenzter Zugang für Mitarbeitende und Mitglieder Ihrer Organisation.",
+      "cta": "Angebot anfordern"
+    },
+    "schools": {
+      "title": "Für Schulen",
+      "info": "Kostenloser Zugang für Gymnasien, Sekundarschulen und Berufsschulen in der Schweiz.",
+      "cta": "Zugang einrichten"
+    },
     "u30": {
       "title": "Für Junge",
       "interval": "pro Monat",

@@ -4,6 +4,10 @@ import { Hero } from "@/components/layout/hero";
 import { OfferDescription } from "@/components/overview/description";
 import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";
 import {
+  InstitutionsCard,
+  SchoolsCard,
+} from "@/components/overview/landing-page-cards";
+import {
   DonationCard,
   OfferCardPrimary,
   OfferGrid,
@@ -94,6 +98,8 @@ export default async function Home({
           <U30Card />
           <GiftCard />
           <RedeemCard />
+          <InstitutionsCard />
+          <SchoolsCard />
           <DonationCard />
         </OfferGrid>
       </div>
