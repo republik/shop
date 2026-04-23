@@ -85,14 +85,14 @@
       }
     },
     "institutions": {
-      "title": "Zugang für Firmen und Institutionen",
+      "title": "Für Firmen und Institutionen",
       "info": "Unbegrenzter Zugang für Mitarbeitende und Mitglieder Ihrer Organisation.",
-      "cta": "Abonnement einlösen "
+      "cta": "Angebot anfordern"
     },
     "schools": {
-      "title": "Freier Zugang für Schulen",
-      "info": "Beantrage an deiner weiterführenden Schule einen kostenlosen Zugang.",
-      "cta": "Abonnement einlösen "
+      "title": "Für Schulen",
+      "info": "Kostenloser Zugang für Gymnasien, Sekundarschulen und Berufsschulen in der Schweiz.",
+      "cta": "Zugang einrichten"
     },
     "u30": {
       "title": "Für Junge",
