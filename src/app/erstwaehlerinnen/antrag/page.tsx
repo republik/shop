@@ -36,7 +36,9 @@ export default async function ErstwaehlerinnenAntragPage({
         </h1>
         <p>{tFtv("success.description")}</p>
         <Button asChild>
-          <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>{tFtv("success.action")}</Link>
+          <Link href={`${process.env.NEXT_PUBLIC_MAGAZIN_URL}`}>
+            {tFtv("success.action")}
+          </Link>
         </Button>
       </CenterContainer>
     );
@@ -50,7 +52,9 @@ export default async function ErstwaehlerinnenAntragPage({
         previousUrl="/erstwaehlerinnen"
         title={t("checkout.loginStep.title")}
       >
-        <LoginView />
+        <CenterContainer>
+          <LoginView />
+        </CenterContainer>
       </Step>
     );
   }

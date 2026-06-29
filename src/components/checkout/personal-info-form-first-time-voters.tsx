@@ -121,7 +121,10 @@ export function PersonalInfoFormFirstTimeVoters({
   useEffect(() => {
     if (state.type === "success") {
       startRequestAccess(async () => {
-        const result = await requestAccess(FIRST_TIME_VOTERS_CAMPAIGN_ID, motivation);
+        const result = await requestAccess(
+          FIRST_TIME_VOTERS_CAMPAIGN_ID,
+          motivation,
+        );
         if (result.type === "success") {
           onComplete();
         } else if (result.type === "error") {
@@ -220,7 +223,7 @@ export function PersonalInfoFormFirstTimeVoters({
         type="number"
         label={tField("birthyear")}
         name="birthyear"
-        defaultValue={state.data.birthyear ?? undefined}
+        defaultValue={state.data.birthyear ?? new Date().getFullYear()}
         required
         min={new Date().getFullYear() - 20}
         max={new Date().getFullYear()}
@@ -354,7 +357,8 @@ export function PersonalInfoFormFirstTimeVoters({
         </Button>
         {requestAccessError && (
           <p className={css({ mt: "2", color: "error" })}>
-            {requestAccessError === "Sie können keinen weiteren Zugriff vergeben."
+            {requestAccessError ===
+            "Sie können keinen weiteren Zugriff vergeben."
               ? t("checkout.errors.requestAccessAlreadyRequested")
               : t("checkout.errors.requestAccessFailed")}
           </p>
