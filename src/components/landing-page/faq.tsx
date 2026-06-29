@@ -81,7 +81,7 @@ function Item({ item }: { item: FaqItem }) {
   );
 }
 
-export async function Faq({
+export function Faq({
   title,
   items,
 }: {

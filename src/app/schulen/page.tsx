@@ -1,6 +1,6 @@
 import { DescriptionItem } from "@/components/landing-page/description-item";
 import { LandingPageLayout } from "@/components/landing-page/page-layout";
-import { Faq } from "@/app/schulen/faq";
+import { Faq } from "@/components/landing-page/faq";
 import { Hero } from "@/components/layout/hero";
 import { css } from "@/theme/css";
 import { getTranslations } from "next-intl/server";

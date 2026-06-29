@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import illu from "@/assets/landing-page-first-time-voters.png";
-import { Faq } from "./faq";
+import { Faq } from "@/components/landing-page/faq";
 import { CheckIcon, KeyIcon, MapPinIcon } from "lucide-react";
 import { DescriptionItem } from "@/components/landing-page/description-item";
 
