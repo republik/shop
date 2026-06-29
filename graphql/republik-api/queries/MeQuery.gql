@@ -5,6 +5,7 @@ query Me {
     name
     firstName
     lastName
+    gender
     email
 
     address {
@@ -35,6 +36,13 @@ query Me {
       currentPeriodEnd
       renewsAtPrice
       cancelAt
+    }
+
+    accessGrants {
+      id
+      status
+      revokedAt
+      invalidatedAt
     }
   }
 }

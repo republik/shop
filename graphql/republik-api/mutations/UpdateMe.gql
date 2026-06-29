@@ -2,6 +2,7 @@ mutation UpdateMe(
   $firstName: String
   $lastName: String
   $birthyear: Int
+  $gender: String
   $address: AddressInput
 ) {
   updateMe(
@@ -9,11 +10,13 @@ mutation UpdateMe(
     lastName: $lastName
     address: $address
     birthyear: $birthyear
+    gender: $gender
   ) {
     id
     firstName
     lastName
     birthyear
+    gender
     address {
       organization
       name

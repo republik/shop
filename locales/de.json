@@ -100,6 +100,11 @@
       "info": "Allen unter 30 bieten wir die Republik deutlich günstiger an.",
       "cta": "Optionen anzeigen"
     },
+    "first-time-voters": {
+      "title": "Freier Zugang für Erstwählerinnen",
+      "info": "Ein kostenloses Jahresabo für alle Erstwählerinnen unter 20.",
+      "cta": "Zugang beantragen"
+    },
     "description": {
       "title": "Was Sie erwartet:",
       "items": {
@@ -116,6 +121,53 @@
     }
   },
   "landing": {
+    "first-time-voters": {
+      "title": "Journalismus für Erstwählerinnen",
+      "lead": "Ein kostenloses Jahresabo für junge Menschen, die zum ersten Mal abstimmen oder wählen.",
+      "description": "Voraussetzungen:",
+      "items": {
+        "age": "Du bist jünger als 20 Jahre alt.",
+        "location": "Du lebst in der Schweiz."
+      },
+      "cta": "Zugang beantragen",
+      "formular": "Bitte ergänze die folgenden Angaben:",
+      "motivation": {
+        "label": "Was motiviert dich, politisch aktiv zu werden?",
+        "description": "Bitte beschreibe in wenigen Sätzen, warum du wählen oder abstimmen gehst."
+      },
+      "legal": {
+        "title": "Rechtliches und Bestätigung",
+        "accountSuspension": "Ich bin mir bewusst, dass die Republik bei Verdacht auf Falschangaben das Recht hat, mein Konto zu sperren."
+      },
+      "success": {
+        "title": "Vielen Dank für dein Interesse!",
+        "description": "Wir melden uns in den nächsten Tagen bei dir und informieren dich über das weitere Vorgehen.",
+        "action": "Zum Magazin"
+      },
+      "faq": {
+        "title": "Häufig gestellte Fragen",
+        "conclusion": "Dir ist etwas anderes unklar, du hast eine Frage, die hier nicht beantwortet wurde?",
+        "conclusionContact": "Dann melde dich mit deinem Anliegen per E-Mail, wir helfen dir gerne weiter: <emailLink>kontakt@republik.ch</emailLink>.",
+        "items": {
+          "ip": {
+            "question": "Ich darf in diesem Jahr zum ersten Mal abstimmen, aber ich bin mehr als 20 Jahre alt. Kann ich das Angebot in Anspruch nehmen?",
+            "answer": "Leider nein. Das kostenlose Angebot richtet sich ausschliesslich an unter 20-Jährige. Für unter 30-Jährige bieten wir aber ein vergünstigtes Abonnement an. Und wer sich den Betrag für ein Abo nicht leisten kann, mit dem finden wir eine individuelle Lösung. Hier findest du alle Angebote in der Übersicht. "
+          },
+          "price": {
+            "question": "Benötige ich eine Kreditkarte?",
+            "answer": "Nein. Dieses Angebot ist kostenlos. Wir benötigen keine Zahlungsinformationen von dir. "
+          },
+          "duration": {
+            "question": "Wird dieses Abonnement nach einem Jahr automatisch verlängert?",
+            "answer": "Nein. Nach 12 Monaten läuft das kostenlose Abonnement aus. Wir werden dich dann fragen, ob du an Bord bleiben möchtest. Danach steht es dir frei, zu gehen oder ein vergünstigtes Monatsabo oder eine Jahresmitgliedschaft für unter 30-Jährige abzuschliessen.  "
+          },
+          "conditions": {
+            "question": "Kann ich das Angebot auch ohne Schweizer Staatsbürgerschaft in Anspruch nehmen?",
+            "answer": "Selbstverständlich! Die Staatsbürgerschaft ist kein Ausschlusskriterium. Als Erstwähler zählst du auch, wenn du in einem anderen Land als der Schweiz abstimmen oder wählen kannst. Wir setzen lediglich voraus, dass dein Wohnsitz in der Schweiz ist."
+          }
+        }
+      }
+    },
     "goBack": "Alle Angebote anzeigen",
     "gifts": {
       "title": "Die Republik zum Verschenken",
@@ -222,6 +274,10 @@
     }
   },
   "checkout": {
+    "errors": {
+      "requestAccessFailed": "Es ist ein Fehler aufgetreten. Bitte versuche es erneut oder kontaktiere uns unter kontakt@republik.ch.",
+      "requestAccessAlreadyRequested": "Du hast bereits einen Zugang beantragt. Wir melden uns per E-Mail, sobald wir deine Angaben geprüft haben – das dauert in der Regel ein paar Tage."
+    },
     "actions": {
       "change": "Ändern",
       "remove": "Entfernen",
@@ -285,6 +341,7 @@
         "action": "Zurück zu allen Angeboten",
         "reasons": {
           "hasSubscription": "Sie haben schon ein aktives Abonnement.",
+          "hasAccessGrant": "Du hast bereits einen aktiven Zugang zur Republik. Das Angebot ist erst verfügbar, wenn dein bestehender Zugang ausläuft.",
           "needsMembershipForDonation": "Um spenden zu können, benötigen Sie eine laufende Mitgliedschaft bei der Project R Genossenschaft.",
           "generic": ""
         }
@@ -404,7 +461,9 @@
       }
     },
     "personalInfo": {
-      "title": "Vervollständigen Sie Ihre Angaben"
+      "title": "Vervollständigen Sie Ihre Angaben",
+      "title-first-time-voters": "Persönliche Angaben",
+      "intro-first-time-voters": "Fast geschafft! Jetzt brauchen wir nur noch ein paar Angaben über dich: "
     },
     "checkout": {
       "title": "Bezahlen",
@@ -478,6 +537,7 @@
       "organization": "Firma (optional)",
       "firstName": "Vorname",
       "lastName": "Nachname",
+      "gender": "Gender",
       "name": "Name",
       "line1": "Strasse und Hausnummer",
       "line2": "Zusatz (optional)",
@@ -488,6 +548,13 @@
     },
     "defaults": {
       "country": "Schweiz"
+    },
+    "genderOptions": {
+      "female": "weiblich",
+      "male": "männlich",
+      "non-binary": "non-binär",
+      "unspecified": "keine Angabe",
+      "custom": "eigene Abgabe"
     }
   },
   "formValidation": {

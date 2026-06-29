@@ -117,7 +117,7 @@ export function FormField({
 type SelectFieldProps = SelectHTMLAttributes<HTMLSelectElement> & {
   label: string;
   error?: string;
-  name: string;
+  name?: string;
   description?: ReactNode;
   hideLabel?: boolean;
   children: ReactNode;

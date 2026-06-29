@@ -21,13 +21,15 @@ export async function UnavailableView({ reason }: { reason?: string }) {
       </h1>
 
       <p className={css({ mb: "4" })}>
-        {t(
+        {      t(
           `checkout.preCheckout.unavailable.reasons.${
             reason === "hasSubscription"
               ? "hasSubscription"
-              : reason === "needsMembershipForDonation"
-                ? "needsMembershipForDonation"
-                : "generic"
+              : reason === "hasAccessGrant"
+                ? "hasAccessGrant"
+                : reason === "needsMembershipForDonation"
+                  ? "needsMembershipForDonation"
+                  : "generic"
           }`,
         )}
       </p>

@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 import schoolsIllu from "@/assets/landing-page-schools.png";
 import institutionsIllu from "@/assets/landing-page-institutions.png";
+import firstTimeVotersIllu from "@/assets/landing-page-first-time-voters.png";
 import { cardButton } from "@/components/ui/card-button";
 import Image, { type StaticImageData } from "next/image";
 
@@ -72,6 +73,26 @@ export async function InstitutionsCard() {
           className={cx(cardButton({ visual: "outline" }), linkOverlay())}
         >
           {tInstitutions("cta")}
+        </Link>
+      </div>
+    </OfferCard>
+  );
+}
+
+export async function FirstTimeVotersCard() {
+  const tFirstTimeVoters = await getTranslations("overview.first-time-voters");
+
+  return (
+    <OfferCard id="first-time-voters" background={lpBg}>
+      <Illu src={firstTimeVotersIllu} />
+      <h2 className={titleStyle}>{tFirstTimeVoters("title")}</h2>
+      <p>{tFirstTimeVoters("info")}</p>
+      <div className={css({ mt: "auto" })}>
+        <Link
+          href="/erstwaehlerinnen"
+          className={cx(cardButton({ visual: "outline" }), linkOverlay())}
+        >
+          {tFirstTimeVoters("cta")}
         </Link>
       </div>
     </OfferCard>
