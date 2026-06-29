@@ -5,8 +5,21 @@ import { MessageSquareWarningIcon } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Link from "next/link";
 
+const REASON_KEYS = {
+  hasSubscription: "checkout.preCheckout.unavailable.reasons.hasSubscription",
+  hasAccessGrant: "checkout.preCheckout.unavailable.reasons.hasAccessGrant",
+  needsMembershipForDonation:
+    "checkout.preCheckout.unavailable.reasons.needsMembershipForDonation",
+} as const;
+
+type UnavailableReason = keyof typeof REASON_KEYS;
+
 export async function UnavailableView({ reason }: { reason?: string }) {
   const t = await getTranslations();
+  const reasonKey =
+    reason && reason in REASON_KEYS
+      ? REASON_KEYS[reason as UnavailableReason]
+      : "checkout.preCheckout.unavailable.reasons.generic";
 
   return (
     <CenterContainer>
@@ -21,17 +34,7 @@ export async function UnavailableView({ reason }: { reason?: string }) {
       </h1>
 
       <p className={css({ mb: "4" })}>
-        {      t(
-          `checkout.preCheckout.unavailable.reasons.${
-            reason === "hasSubscription"
-              ? "hasSubscription"
-              : reason === "hasAccessGrant"
-                ? "hasAccessGrant"
-                : reason === "needsMembershipForDonation"
-                  ? "needsMembershipForDonation"
-                  : "generic"
-          }`,
-        )}
+        {t(reasonKey)}
       </p>
       <Button asChild>
         <Link href={`/`}>{t("checkout.preCheckout.unavailable.action")}</Link>
