@@ -1,10 +1,11 @@
 import { css } from "@/theme/css";
 import { ChevronDownIcon } from "lucide-react";
 import { Accordion } from "radix-ui";
+import type { ReactNode } from "react";
 
 type FaqItem = {
   question: string;
-  answer: string;
+  answer: ReactNode;
 };
 
 function Item({ item }: { item: FaqItem }) {

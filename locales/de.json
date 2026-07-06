@@ -102,7 +102,7 @@
     },
     "first-time-voters": {
       "title": "Freier Zugang für Erstwählerinnen",
-      "info": "Ein kostenloses Jahresabo für alle Erstwählerinnen unter 20.",
+      "info": "Ein kostenloses Jahresabo für alle Erstwähler unter 20.",
       "cta": "Zugang beantragen"
     },
     "description": {
@@ -151,7 +151,7 @@
         "items": {
           "ip": {
             "question": "Ich darf in diesem Jahr zum ersten Mal abstimmen, aber ich bin mehr als 20 Jahre alt. Kann ich das Angebot in Anspruch nehmen?",
-            "answer": "Leider nein. Das kostenlose Angebot richtet sich ausschliesslich an unter 20-Jährige. Für unter 30-Jährige bieten wir aber ein vergünstigtes Abonnement an. Und wer sich den Betrag für ein Abo nicht leisten kann, mit dem finden wir eine individuelle Lösung. Hier findest du alle Angebote in der Übersicht. "
+            "answer": "Leider nein. Das kostenlose Angebot richtet sich ausschliesslich an unter 20-Jährige. Für unter 30-Jährige bieten wir aber ein vergünstigtes Abonnement an. Und wer sich den Betrag für ein Abo nicht leisten kann, mit dem finden wir eine individuelle Lösung. <overviewLink>Hier</overviewLink> findest du alle Angebote in der Übersicht. "
           },
           "price": {
             "question": "Benötige ich eine Kreditkarte?",
