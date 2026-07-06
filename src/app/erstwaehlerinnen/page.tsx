@@ -78,7 +78,16 @@ export default async function ErstwaehlerinnenLandingPage() {
         items={[
           {
             question: tFaq("items.ip.question"),
-            answer: tFaq("items.ip.answer"),
+            answer: tFaq.rich("items.ip.answer", {
+              overviewLink: (chunks) => (
+                <Link
+                  href="/"
+                  className={css({ textDecoration: "underline" })}
+                >
+                  {chunks}
+                </Link>
+              ),
+            }),
           },
           {
             question: tFaq("items.price.question"),
