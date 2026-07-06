@@ -537,7 +537,7 @@
       "organization": "Firma (optional)",
       "firstName": "Vorname",
       "lastName": "Nachname",
-      "gender": "Gender",
+      "gender": "Geschlecht",
       "name": "Name",
       "line1": "Strasse und Hausnummer",
       "line2": "Zusatz (optional)",
