@@ -6,6 +6,7 @@ import { GiftCard, RedeemCard } from "@/components/overview/gift-cards";
 import {
   InstitutionsCard,
   SchoolsCard,
+  FirstTimeVotersCard,
 } from "@/components/overview/landing-page-cards";
 import {
   DonationCard,
@@ -100,7 +101,8 @@ export default async function Home({
           <RedeemCard />
           <InstitutionsCard />
           <SchoolsCard />
-          <DonationCard />
+          <FirstTimeVotersCard />
+          <DonationCard />  
         </OfferGrid>
       </div>
     </>

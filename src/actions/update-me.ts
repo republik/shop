@@ -16,18 +16,21 @@ const Address = z.object({
   country: z.string().nonempty(),
 });
 
+const sharedMeFields = {
+  firstName: z.string().nonempty(),
+  lastName: z.string().nonempty(),
+  birthyear: z.coerce.number().optional(),
+  gender: z.string().optional(),
+};
+
 const MeInput = z.discriminatedUnion("addressRequired", [
   Address.extend({
     addressRequired: z.literal("required"),
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
-    birthyear: z.coerce.number().optional(),
+    ...sharedMeFields,
   }),
   z.object({
     addressRequired: z.literal("notRequired"),
-    firstName: z.string().nonempty(),
-    lastName: z.string().nonempty(),
-    birthyear: z.coerce.number().optional(),
+    ...sharedMeFields,
   }),
 ]);
 
@@ -67,13 +70,14 @@ export async function updateMe(
   }
 
   if (input.data) {
-    const { firstName, lastName, birthyear } = input.data;
+    const { firstName, lastName, birthyear, gender } = input.data;
     const address = Address.safeParse(input.data);
 
     const res = await gql.mutation(UpdateMeDocument, {
       firstName,
       lastName,
       birthyear,
+      gender,
       address: address.data
         ? {
             name: `${firstName} ${lastName}`,
