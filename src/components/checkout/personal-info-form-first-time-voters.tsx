@@ -21,8 +21,6 @@ import React, {
   useTransition,
 } from "react";
 
-const FIRST_TIME_VOTERS_CAMPAIGN_ID = "68eddf0f-1161-45b4-8911-d33ad3f1c2ad";
-
 const GENDER_PRESET_KEYS = [
   "female",
   "male",
@@ -48,12 +46,14 @@ function getInitialGenderMode(
 }
 
 export function PersonalInfoFormFirstTimeVoters({
+  campaignId,
   code,
   me,
   birthyear,
   addressRequired,
   onComplete,
 }: {
+  campaignId: string;
   code?: string;
   me: Me;
   birthyear?: string;
@@ -122,7 +122,7 @@ export function PersonalInfoFormFirstTimeVoters({
     if (state.type === "success") {
       startRequestAccess(async () => {
         const result = await requestAccess(
-          FIRST_TIME_VOTERS_CAMPAIGN_ID,
+          campaignId,
           motivation,
         );
         if (result.type === "success") {

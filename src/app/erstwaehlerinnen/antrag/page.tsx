@@ -87,6 +87,7 @@ export default async function ErstwaehlerinnenAntragPage({
         {t("checkout.personalInfo.intro-first-time-voters")}
       </h3>
       <PersonalInfoFormFirstTimeVoters
+        campaignId={process.env.ACCESS_CAMPAIGN_FIRST_TIME_VOTERS!}
         me={me}
         addressRequired={true}
         onComplete={onComplete}
