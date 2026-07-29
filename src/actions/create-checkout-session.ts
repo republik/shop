@@ -9,7 +9,7 @@ const CheckoutSessionInput = z.object({
   offerId: z.string(),
   promoCode: z.string().optional(),
   donationAmount: z.coerce.number().optional(),
-  donationRecurring: z.coerce.boolean(),
+  donationRecurring: z.coerce.boolean().optional(),
   discountOption: z.string().optional(),
   discountReason: z.string().optional(),
   birthyear: z.string().optional(),
