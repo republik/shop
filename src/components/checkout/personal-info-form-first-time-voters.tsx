@@ -223,10 +223,10 @@ export function PersonalInfoFormFirstTimeVoters({
         type="number"
         label={tField("birthyear")}
         name="birthyear"
-        defaultValue={state.data.birthyear ?? new Date().getFullYear()}
+        defaultValue={state.data.birthyear}
         required
         min={new Date().getFullYear() - 20}
-        max={new Date().getFullYear()}
+        max={new Date().getFullYear() - 18}
       />
 
       <h2 className={css({ fontSize: "md", fontWeight: "medium", mt: "4" })}>
