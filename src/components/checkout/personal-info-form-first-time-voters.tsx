@@ -223,7 +223,7 @@ export function PersonalInfoFormFirstTimeVoters({
         type="number"
         label={tField("birthyear")}
         name="birthyear"
-        defaultValue={state.data.birthyear}
+        defaultValue={state.data.birthyear ?? undefined}
         required
         min={new Date().getFullYear() - 20}
         max={new Date().getFullYear() - 18}
