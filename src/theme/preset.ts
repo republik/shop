@@ -51,9 +51,6 @@ export const presetRepublik = definePreset({
             value:
               "GT-America-Standard, Helvetica-Neue, Arial, Roboto, sans-serif",
           },
-          inicia: {
-            value: "Inicia-Medium, Helvetica-Neue, Arial, Roboto, sans-serif",
-          },
           druk: {
             value: "Druk, Helvetica-Neue, Arial, Roboto, sans-serif",
           },
@@ -438,13 +435,6 @@ export const presetRepublik = definePreset({
             fontFamily: "Menlo, Courier, monospace",
             fontWeight: 400,
             fontStyle: "normal",
-          },
-        },
-        cursiveTitle: {
-          value: {
-            fontFamily: "inicia",
-            fontWeight: 500,
-            fontStyle: "italic",
           },
         },
         flyerTitle: {
