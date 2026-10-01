@@ -5,3 +5,7 @@ allowBuilds:
   esbuild: true
   sharp: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - next
+  - "@next/*"
+  - eslint-config-next
