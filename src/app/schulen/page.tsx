@@ -110,6 +110,14 @@ export default async function SchoolsLandingPage() {
             question: tFaq("items.conditions.question"),
             answer: tFaq("items.conditions.answer"),
           },
+          {
+            question: tFaq("items.howitworks.question"),
+            answer: tFaq("items.howitworks.answer"),
+          },
+          {
+            question: tFaq("items.info.question"),
+            answer: tFaq("items.info.answer"),
+          },
         ]}
       />
     </LandingPageLayout>

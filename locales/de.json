@@ -258,6 +258,14 @@
           "conditions": {
             "question": "Was sind die Voraussetzungen für einen kostenlosen Schul-Zugang?",
             "answer": "Voraussetzung ist, dass sich Ihre Schule in der Schweiz befindet und dass dort auf Sekundarstufe unterrichtet wird. Dazu gehören etwa Gymnasien, Berufsschulen und Sekundarschulen. Fachhochschulen und Universitäten können das Angebot nicht beanspruchen. Als technische Voraussetzung sind wir auf eine feste öffentliche IP-Adresse der Schule angewiesen."
+          },
+          "howitworks": {
+            "question": "Wie funktioniert der Schulzugang?",
+            "answer": "Die Schule beantragt die Freigabe ihrer öffentlichen IP-Adresse. Sobald wir diese Adresse (oder mehrere) freigeschaltet haben, ist Republik.ch im WLAN auf dem Schulgelände uneingeschränkt zugänglich. Dafür braucht niemand einen persönlichen Republik-Account."
+          },
+          "info": {
+            "question": "Wie werde ich über die Freigabe informiert?",
+            "answer": "Wir schalten die IP-Adressen gesammelt alle paar Wochen frei, je nach Anzahl der Anfragen. Ist die angegebene Adresse eine gültige öffentliche IP-Adresse, dauert es deshalb einige Tage bis wenige Wochen bis zur Freischaltung. Danach erhalten Sie eine Bestätigung per E-Mail an die Adresse, von der aus Sie die Anfrage gestellt haben."
           }
         }
       }
