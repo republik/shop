@@ -155,6 +155,7 @@ async function checkout({
     await page.getByLabel("Nachname").fill("Tester");
 
     if (requiresAddress) {
+      await page.getByLabel("Name", { exact: true }).fill("Tester-Name");
       await page.getByLabel("Strasse und Hausnummer").fill("Teststr. 42");
       await page.getByLabel("Postleitzahl").fill("4242");
       await page.getByLabel("Ort").fill("Testort");

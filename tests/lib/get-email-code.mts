@@ -1,14 +1,27 @@
 import { ImapFlow } from "imapflow";
 
 export const getEmailCode = async (
-  email: string
+  email: string,
 ): Promise<string | undefined> => {
   let code: string | undefined;
 
+  const port = parseInt(process.env.TEST_EMAIL_PORT || "993", 10);
+  // Port 993 uses implicit TLS; other ports (e.g. 143, Proton Bridge on 1143)
+  // start in plaintext and upgrade via STARTTLS. Override with TEST_EMAIL_SECURE.
+  const secure = process.env.TEST_EMAIL_SECURE
+    ? process.env.TEST_EMAIL_SECURE === "true"
+    : port === 993;
+
   const client = new ImapFlow({
-    host: "imap.gmail.com",
-    port: 993,
-    secure: true,
+    host: process.env.TEST_EMAIL_HOST || "imap.gmail.com",
+    port,
+    secure,
+    // Local bridges (e.g. Proton Mail Bridge) use self-signed certificates
+    tls: {
+      rejectUnauthorized: !["127.0.0.1", "localhost"].includes(
+        process.env.TEST_EMAIL_HOST ?? "",
+      ),
+    },
     auth: {
       user: process.env.TEST_EMAIL_USERNAME ?? "oops",
       pass: process.env.TEST_EMAIL_PASSWORD,
