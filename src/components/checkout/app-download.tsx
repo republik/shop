@@ -57,7 +57,6 @@ export function AppStoreButtons({
 const qrSVG = encodeQR(
   new URL("/get-app", process.env.NEXT_PUBLIC_URL).toString(),
   "svg",
-  { border: 0 },
 );
 
 function QRCode() {
